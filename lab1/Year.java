@@ -7,15 +7,21 @@ public class Year {
      *  @return true if year is a leap year
      *          false if year is not a leap year
      */
-    static boolean isLeapYear(int year) {
-        return true;    // YOUR CODE HERE
+    static boolean isLeapYear(int year) {    
+        if (year % 400 == 0) {
+            return true;
+        } else if (year % 4 == 0 && year % 100 != 0) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /** Calls isLeapYear to print correct statement.
      *  @param  year to be analyzed
      */
     private static void checkLeapYear(int year) {
-        if (isLeapYear(year)) {
+        if (isLeapYear(year)==true) {
             System.out.printf("%d is a leap year.\n", year);
         } else {
             System.out.printf("%d is not a leap year.\n", year);
