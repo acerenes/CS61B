@@ -28,4 +28,14 @@ public class Planet {
 		return G*mass*otherplanet.mass / (calcDistance(otherplanet)*calcDistance(otherplanet));
 	}
 
+	public double calcPairwiseForceX(Planet otherplanet) {
+		double xdist= Math.abs(otherplanet.x - x);
+		return calcPairwiseForce(otherplanet)*xdist / calcDistance(otherplanet);
+	}
+
+	public double calcPairwiseForceY(Planet otherplanet) {
+		double ydist= Math.abs(otherplanet.y -y);
+		return calcPairwiseForce(otherplanet)*ydist / calcDistance(otherplanet);
+	}
+
 }
