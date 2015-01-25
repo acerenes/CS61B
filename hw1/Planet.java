@@ -1,3 +1,3 @@
-public class Dog {
-	
+public class Planet {
+
 }
