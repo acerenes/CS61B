@@ -10,6 +10,9 @@ public class Planet {
 	public double xNetForce; 
 	public double yNetForce; 
 
+	public double xAccel;
+	public double yAccel;
+
 	// constructor inializes an instance of the Planet class
 	public Planet(double xpos, double ypos, double xVel, double yVel, double m, String image) {
 		x= xpos;
@@ -60,6 +63,15 @@ public class Planet {
 		StdDraw.setPenRadius(); // set pen size to default .002
 		StdDraw.setPenColor(); // set pen color to default- black
 		StdDraw.point(x, y); // draw a point at (x,y)
+	}
+
+	public void update(double dt) {
+		xAccel= xNetForce/mass;
+		yAccel= yNetForce/mass;
+		xVelocity= xVelocity + dt*xAccel;
+		yVelocity= yVelocity + dt*yAccel;
+		x= x + dt*xVelocity;
+		y= y + dt*yVelocity;
 	}
 
 }
