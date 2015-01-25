@@ -23,4 +23,9 @@ public class Planet {
 		return Math.sqrt(xdist*xdist + ydist*ydist);
 	}
 
+	public double calcPairwiseForce(Planet otherplanet) {
+		double G= 6.67 * Math.pow(10, -11);
+		return G*mass*otherplanet.mass / (calcDistance(otherplanet)*calcDistance(otherplanet));
+	}
+
 }
