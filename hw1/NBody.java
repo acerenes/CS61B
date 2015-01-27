@@ -1,11 +1,29 @@
 public class NBody {
 	public static void main(String[] args) {
-		double T = Double.valueOf(args[0]);
-		double dt = Double.valueOf(args[1]);
-		String filename= args[2];
+		double T = Double.valueOf(args[0]); //0th command line argument
+		double dt = Double.valueOf(args[1]); //1st command line argument
+		String filename= args[2]; //2nd command line argument
 		In universe= new In(filename); //In is a class created by Josh Hug
 		int planetnum= universe.readInt();
 		double radius= universe.readDouble();
+
+		/* Drawing the Initial Universe State */
+		Planet[] allplanets= new Planet[planetnum]; //read all planets into array
+		// dividing by 6 because of allplanets[i] thing
+		for (int i=0; i<=planetnum-1; i= i+1) {
+			allplanets[i]= getPlanet(universe);
+			/*allplanets= (allplanets + getPlanet(universe));*/
+		}
+		StdDraw.setScale(-radius, radius); 
+		String starfield= "images/starfield.jpg"; //it's not in the hw1 folder; it's in the images folder IN hw1
+		StdDraw.picture(0, 0, starfield); // like normal coordinate system
+		StdDraw.show(); //need this to make it show up
+		int length= allplanets.length-1;
+		int i=0;
+		while (i<=length) {
+			allplanets[i].draw();
+			i= i+1;
+			}
 		}
 
 	public static Planet getPlanet(In universe) {
