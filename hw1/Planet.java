@@ -59,10 +59,7 @@ public class Planet {
 	}
 
 	public void draw() {
-		StdDraw.setCanvasSize(); // set window size to default 512x512 pixels
-		StdDraw.setPenRadius(); // set pen size to default .002
-		StdDraw.setPenColor(); // set pen color to default- black
-		StdDraw.point(x, y); // draw a point at (x,y)
+		StdDraw.picture(x, y, "images/" + img); //need to insert the planet pic at (x,y); and since it's in a diff folder, need to concatenate the thing to get images/img
 	}
 
 	public void update(double dt) {
