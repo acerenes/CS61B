@@ -24,7 +24,26 @@ public class NBody {
 			allplanets[i].draw();
 			i= i+1;
 			}
+
+		/* Creating an Animation */
+		double time= 0;
+		while (time<T) {
+			for (int j=0; j<=length; j= j+1) {
+				allplanets[j].setNetForce(allplanets);
+				//setNetForce needs all the planets info in, but it only sets net force for one object at a time, so that's why it's in the loop
+				allplanets[j].update(dt);
+			}
+			StdDraw.setScale(-radius, radius);
+			StdDraw.picture(0,0, starfield);
+			int k=0;
+			while (k<=length) {
+				allplanets[k].draw();
+				k= k+1;
+			}
+			StdDraw.show(10); //do show for like EVERYTHING that's been drawn so far
+			time= time+dt;
 		}
+	}
 
 	public static Planet getPlanet(In universe) {
 			double xpos= universe.readDouble(); 
