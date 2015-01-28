@@ -31,7 +31,9 @@ public class NBody {
 			for (int j=0; j<=length; j= j+1) {
 				allplanets[j].setNetForce(allplanets);
 				//setNetForce needs all the planets info in, but it only sets net force for one object at a time, so that's why it's in the loop
-				allplanets[j].update(dt);
+			}
+			for (int q=0; q<=length; q= q+1) {
+				allplanets[q].update(dt);
 			}
 			StdDraw.setScale(-radius, radius);
 			StdDraw.picture(0,0, starfield);
@@ -42,6 +44,16 @@ public class NBody {
 			}
 			StdDraw.show(10); //do show for like EVERYTHING that's been drawn so far
 			time= time+dt;
+		}
+
+		/* Printing the Universe */
+		System.out.println(planetnum);
+		System.out.println(radius);
+		//StdOut.out.println(getPlanet(allplanets));
+		for (int z=0; z<length+1; z= z+1) {
+			StdOut.printf("%11.4e %11.4e %11.4e %11.4e %11.4e %12s\n", allplanets[z].x, allplanets[z].y, allplanets[z].xVelocity, allplanets[z].yVelocity, allplanets[z].mass, allplanets[z].img); 
+			// was in the hw hints I have no idea wat
+			// if declare public variables at top, then can .them and .methods
 		}
 	}
 
