@@ -22,12 +22,35 @@ public class TriangleTest {
 
     @Test
     public void testEquilateral() {
-      //TODO: FILL IN
+      Triangle tEq= new Triangle (30, 30, 30);
+      String resultEq= tEq.triangleType();
+      assertEquals("Equilateral", resultEq);
     }
 
-    //TODO: CREATE MORE TESTS
+    @Test
+    public void testIsosceles() {
+      Triangle tIs= new Triangle (20, 20, 2);
+      String resultIs= tIs.triangleType();
+      assertEquals("Isosceles", resultIs);
+    }
+
+    @Test
+    public void testNegative() {
+      Triangle tNeg= new Triangle(-1, -2, -3);
+      String resultNeg= tNeg.triangleType();
+      assertEquals("At least one length is less than 0!", resultNeg);
+    }
+
+    @Test
+    public void testInvalid() {
+      Triangle tInv= new Triangle(2, 3, 6);
+      String resultInv= tInv.triangleType();
+      assertEquals("The lengths of the triangles do not form a valid triangle!", resultInv);
+    }
+
 
     public static void main(String[] args) {
-      //TODO: RUN TESTS (Look in ArithmeticTest.java main method for help!)
+      //TODO: RUN TESTS (Look in ArithmeticTest.java main method for help!
+      jh61b.junit.textui.runClasses(TriangleTest.class);
     }
 }
