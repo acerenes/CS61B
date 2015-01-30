@@ -49,7 +49,24 @@ public class IntListTest {
         assertEquals(IntList.list(1, 4, 9, 16, 25), Tsquare);
         assertEquals(IntList.list(1, 2, 3, 4, 5), T);
     }
-    //TODO:  Create testDcatenate and testCatenate
+    
+    @Test
+    public void testdcatenate() {
+        IntList A= IntList.list(1, 2, 3, 4);
+        IntList B= IntList.list(5, 6, 7, 8);
+        IntList Dres= IntList.dcatenate(A, B);
+        assertEquals(IntList.list(1, 2, 3, 4, 5, 6, 7, 8), Dres);
+        assertEquals(Dres, A);
+    }
+
+    @Test
+    public void testcatenate() {
+        IntList AC= IntList.list(10, 9, 8);
+        IntList BC= IntList.list(7, 6, 5);
+        IntList Cres= IntList.catenate(AC, BC);
+        assertEquals(IntList.list(10, 9, 8, 7, 6, 5), Cres);
+        assertEquals(IntList.list(10, 9, 8), AC);
+    }
 
     /* Run the unit tests in this file. */
     public static void main(String... args) {
