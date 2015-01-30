@@ -57,6 +57,12 @@ public class IntListTest {
         IntList Dres= IntList.dcatenate(A, B);
         assertEquals(IntList.list(1, 2, 3, 4, 5, 6, 7, 8), Dres);
         assertEquals(Dres, A);
+
+        IntList a= IntList.list(10);
+        IntList b= IntList.list(9, 8, 7);
+        IntList res= IntList.dcatenate(a, b);
+        assertEquals(IntList.list(10, 9, 8, 7), res);
+        assertEquals(res, a);        
     }
 
     @Test
