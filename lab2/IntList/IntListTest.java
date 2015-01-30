@@ -72,6 +72,12 @@ public class IntListTest {
         IntList Cres= IntList.catenate(AC, BC);
         assertEquals(IntList.list(10, 9, 8, 7, 6, 5), Cres);
         assertEquals(IntList.list(10, 9, 8), AC);
+
+        IntList ac= IntList.list(15);
+        IntList bc= IntList.list(10, 5, 0);
+        IntList cres= IntList.catenate(ac, bc);
+        assertEquals(IntList.list(15, 10, 5, 0), cres);
+        assertEquals(IntList.list(15), ac);
     }
 
     /* Run the unit tests in this file. */
