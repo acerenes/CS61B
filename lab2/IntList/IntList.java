@@ -1,3 +1,6 @@
+
+
+
 import java.util.Formatter;
 
 /** Scheme-like pairs that can be used to form a list of integers.
@@ -46,6 +49,7 @@ public class IntList {
     }
     return res;
   }
+  // when use new method, create a new pointer L in the local frame, that points to the original L in the main frame. But when you change L in the method, you don't change the main L, you just change the pointer in the local frame.
 
   /** Returns a list equal to L with all elements squared. Non-destructive. */
   public static IntList squareListRecursive(IntList L) {
@@ -62,15 +66,18 @@ public class IntList {
    **  elements of B.  May modify items of A. Don't use 'new'. */
 
   public static IntList dcatenate(IntList A, IntList B) {
-    //TODO:  fill in method
-    return null;
+    if (A==null) {
+      return B; //A is empty, so just would be B 
+    }
+    A.tail= dcatenate(A.tail, B); 
+    return A; 
   }
 
   /** Returns a list consisting of the elements of A followed by the
    ** elements of B.  May NOT modify items of A.  Use 'new'. */
   public static IntList catenate(IntList A, IntList B) {
-    //TODO:  fill in method
     return null;
+    /* IntList AA */
   }
 
 
