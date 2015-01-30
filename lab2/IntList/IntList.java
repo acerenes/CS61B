@@ -67,7 +67,7 @@ public class IntList {
 
   public static IntList dcatenate(IntList A, IntList B) {
     if (A==null) {
-      return B; //A is empty, so just would be B 
+      return B; //A is empty, so just would be B- base case
     }
     A.tail= dcatenate(A.tail, B); 
     return A; 
@@ -76,8 +76,10 @@ public class IntList {
   /** Returns a list consisting of the elements of A followed by the
    ** elements of B.  May NOT modify items of A.  Use 'new'. */
   public static IntList catenate(IntList A, IntList B) {
-    return null;
-    /* IntList AA */
+    if (A==null) {
+      return B;
+    }
+    return new IntList(A.head, catenate(A.tail, B));
   }
 
 
