@@ -20,10 +20,33 @@ public class CalculatorTest {
     }
 
     // TASK 1: WRITE JUNIT TESTS
-    // YOUR CODE HERE
+    @Test
+    public void testadd1() {
+        assertEquals(891, tester.add(324, 567)); 
+    }
+
+    @Test
+    public void testadd2() {
+        assertEquals(-2, tester.add(-6, 4));
+    }
+
+    @Test
+    public void testadd3() {
+        assertEquals(-2147483647, tester.add(2147483647, 2));
+    }
 
     /* Run the unit tests in this file. */
     public static void main(String... args) {
         jh61b.junit.textui.runClasses(CalculatorTest.class);
-    }       
+    } 
+
+
+    // Tests for Multiply
+    @Test
+    public void testmultiply() {
+        assertEquals(6, tester.multiply(2, 3));
+        assertEquals(144, tester.multiply(12, 12));
+        assertEquals(-10, tester.multiply(-2, 5));
+        assertEquals(-2147479015, tester.multiply(46341, 46341));
+    }     
 }

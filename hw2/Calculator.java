@@ -2,6 +2,7 @@ import list.EquationList;
 
 public class Calculator {
     // YOU MAY WISH TO ADD SOME FIELDS
+    public EquationList equationhist; // Just declaring the existence 
 
     /**
      * TASK 2: ADDING WITH BIT OPERATIONS
@@ -12,8 +13,16 @@ public class Calculator {
      * @return the sum of x and y
      **/
     public int add(int x, int y) {
-        // YOUR CODE HERE
-        return -1;
+        int nocarryadd= x^ y; 
+        int carry= x & y; // Where there are both 1s, gotta carry
+        int sum= 0;
+        while (carry !=0) { 
+            carry= carry << 1; // You're going to actually add the carry 1 step to the left
+            sum= nocarryadd ^ carry; // Add it 
+            carry= nocarryadd & carry; // Check if there's another carry
+            nocarryadd= sum; 
+        }
+        return nocarryadd; // For some reason it doesn't work if you return sum
     }
 
     /**
@@ -24,9 +33,30 @@ public class Calculator {
      * @param y is an integer which is the other of the two numbers to multiply
      * @return the product of x and y
      **/
+    public int getBit(int x, int i) {
+        int shift= x >>> i; 
+        int result= shift & 1;
+        return result; 
+    }
+
     public int multiply(int x, int y) {
-        // YOUR CODE HERE
-        return -1;
+        // Gonna simulate human multiplication
+        int i=0; 
+        int partialsum= 0; 
+        int newline= 0; 
+        int ybit= 0; 
+        while (i<=31) {// because ints in java are 32 bits
+            ybit= getBit(y, i); // Starting from rightmost digit of y
+            if (ybit ==0) {
+                newline= 0; // Row of 0s
+            }
+            else {
+                newline= x << i; // ybit= 1, so copy x and shift by i
+            }
+            partialsum= add(partialsum, newline); // Keep adding those lines of multiplication
+            i= i+1;
+        }
+        return partialsum; 
     }
 
     /**
@@ -39,7 +69,7 @@ public class Calculator {
      * @param result is an integer corresponding to the result of the equation
      **/
     public void saveEquation(String equation, int result) {
-        // YOUR CODE HERE
+        equationhist= new EquationList(equation, result, equationhist); // If pointer is pointing at different thing, then need new
     }
 
     /**
@@ -50,7 +80,12 @@ public class Calculator {
      * Ex   "1 + 2 = 3"
      **/
     public void printAllHistory() {
-        // YOUR CODE HERE
+        EquationList temppointer= equationhist; // Don't need new because pointing at same thing
+        // Just going to change where temppointer is pointing to
+        while (temppointer!=null) {
+            System.out.println(temppointer.equation + " = " + temppointer.result); 
+            temppointer= temppointer.next; 
+        }
     }
 
     /**
@@ -61,7 +96,13 @@ public class Calculator {
      * Ex   "1 + 2 = 3"
      **/
     public void printHistory(int n) {
-        // YOUR CODE HERE
+        int i= 1; 
+        EquationList temppointer2= equationhist; 
+        while (i<=n) {
+            System.out.println(temppointer2.equation + " = " + temppointer2.result); 
+            temppointer2= temppointer2.next; 
+            i= i+1; 
+        }
     }    
 
     /**
@@ -69,7 +110,7 @@ public class Calculator {
      * undoEquation() removes the most recent equation we saved to our history.
     **/
     public void undoEquation() {
-        // YOUR CODE HERE
+        equationhist= equationhist.next; 
     }
 
     /**
@@ -77,7 +118,10 @@ public class Calculator {
      * clearHistory() removes all entries in our history.
      **/
     public void clearHistory() {
-        // YOUR CODE HERE
+        while (equationhist!= null) {
+            equationhist= equationhist.next;
+            // It's like undo for ALL THE WAY 
+        }
     }
 
     /**
@@ -86,9 +130,17 @@ public class Calculator {
      * history.
      * @return the sum of all of the results in history
      **/
+
     public int cumulativeSum() {
-        // YOUR CODE HERE
-        return -1;
+        int sum= 0; 
+        // Borrowing part of the code from printallhistory
+        EquationList temppointer= equationhist; // Don't need new because pointing at same thing
+        // Just going to change where temppointer is pointing to
+        while (temppointer!=null) {
+            sum= sum + temppointer.result; 
+            temppointer= temppointer.next; 
+        }
+        return sum;
     }
 
     /**
@@ -98,7 +150,12 @@ public class Calculator {
      * @return the product of all of the results in history
      **/
     public int cumulativeProduct() {
-        // YOUR CODE HERE
-        return -1;
+        int product= 1; 
+        EquationList temppointer= equationhist;
+        while (temppointer!=null) {
+            product= product * temppointer.result;
+            temppointer= temppointer.next; 
+        }
+        return product; 
     }
 }
