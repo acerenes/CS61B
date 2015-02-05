@@ -4,7 +4,7 @@ public class DoubleChain {
 	private DNode head;
 	
 	public DoubleChain(double val) {
-		head = null; 
+		head = new DNode(val);
 	}
 
 	public DNode getFront() {
@@ -13,8 +13,11 @@ public class DoubleChain {
 
 	/** Returns the last item in the DoubleChain. */		
 	public DNode getBack() {
-		/* your code here */
-		return null;
+		/*DNode chain= this.head; 
+		while (chain.tail != null) {
+			chain= chain.tail;
+		}*/
+		return null; 
 	}
 	
 	/** Adds D to the front of the DoubleChain. */	
