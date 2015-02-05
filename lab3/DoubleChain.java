@@ -8,7 +8,7 @@ public class DoubleChain {
 	}
 
 	public DNode getFront() {
-		return head; // WHY DOES THIS WORK B/C WON'T IT RETURN LIKE ALL OF THE THINGS hsrliughlirduhgliuhliuhdarlgihulr@@@@@@@@@@HELEEPSOIEHFOSIHFOSHOIHSOGIHOSIHGOSHGODSHOSIHGOSIDHGOISHDGOISHOISHGOISHGOISHDGOISHDGOIHSDOGIHSOGIHOISHDOIGHSODIGHO
+		return head; // Okay so it only returns the node and not the whole list of things because head refers to the DNode, which contains val and 2 pointers. But the pointers aren't like actual things (they're not stored next to each other), they're just addresses of the next DNodes. 
 	}
 
 	/** Returns the last item in the DoubleChain. */		
