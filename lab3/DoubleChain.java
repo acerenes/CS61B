@@ -8,7 +8,7 @@ public class DoubleChain {
 	}
 
 	public DNode getFront() {
-		return head; 
+		return head; // WHY DOES THIS WORK B/C WON'T IT RETURN LIKE ALL OF THE THINGS hsrliughlirduhgliuhliuhdarlgihulr@@@@@@@@@@HELEEPSOIEHFOSIHFOSHOIHSOGIHOSIHGOSHGODSHOSIHGOSIDHGOISHDGOISHOISHGOISHGOISHDGOISHDGOIHSDOGIHSOGIHOISHDOIGHSODIGHO
 	}
 
 	/** Returns the last item in the DoubleChain. */		
