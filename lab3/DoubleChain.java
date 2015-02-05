@@ -8,26 +8,33 @@ public class DoubleChain {
 	}
 
 	public DNode getFront() {
-		return head;
+		return head; 
 	}
 
 	/** Returns the last item in the DoubleChain. */		
 	public DNode getBack() {
-		/*DNode chain= this.head; 
-		while (chain.tail != null) {
-			chain= chain.tail;
-		}*/
-		return null; 
+		DNode pointer= head; 
+		while (pointer.next!=null) {
+			pointer= pointer.next;
+		}
+		return pointer;
 	}
 	
 	/** Adds D to the front of the DoubleChain. */	
 	public void insertFront(double d) {
-		/* your code here */
+		DNode newbie= new DNode(d); 
+		newbie.next= head; 
+		head= newbie;
 	}
 	
 	/** Adds D to the back of the DoubleChain. */	
 	public void insertBack(double d) {
-		/* your code here */
+		DNode pointer= head;
+		DNode newbie= new DNode(d);
+		while (pointer.next!=null) {
+			pointer= pointer.next;
+		}
+		pointer.next= newbie; 
 	}
 	
 	/** Removes the last item in the DoubleChain and returns it. 
