@@ -5,7 +5,9 @@ public class TestPieceClass {
 
 	/* Test Constructor */
 	@Test
-	
+	public void testConstructor() {
+		Piece pawn= new Piece(boolean isFire, Board b, int x, int y, String type)
+	}
 
 
 	public static void main(String[] args) {
