@@ -26,9 +26,9 @@ public class DoubleChain {
 	/** Adds D to the front of the DoubleChain. */	
 	public void insertFront(double d) {
 		if (head==null) { 
-			head= new DNode(d);
+			head= new DNode(null, d, null);
 		} else { 
-			DNode D= new DNode(d);
+			DNode D= new DNode(null, d, null);
 			D.next= head; 
 			head= D;
 		}
@@ -37,10 +37,10 @@ public class DoubleChain {
 	/** Adds D to the back of the DoubleChain. */	
 	public void insertBack(double d) {
 		if (head==null) {
-			head= new DNode(d);
+			head= new DNode(null, d, null);
 		}
 		DNode pointer= head;
-		DNode D= new DNode(d);
+		DNode D= new DNode(null, d, null);
 		while (pointer.next!=null) {
 			pointer= pointer.next;
 		}
