@@ -9,6 +9,10 @@ public class Piece {
 
 	/* Constructor for a Piece */
 	public Piece(boolean isFire, Board b, int x, int y, String type) {
-
+		element= isFire; 
+		board= b;
+		xpos= x; 
+		ypos= y;
+		class= type; 
 	}
 }
