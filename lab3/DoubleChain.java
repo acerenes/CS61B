@@ -13,6 +13,9 @@ public class DoubleChain {
 
 	/** Returns the last item in the DoubleChain. */		
 	public DNode getBack() {
+		if (head== null) {
+			return null;
+		}
 		DNode pointer= head; 
 		while (pointer.next!=null) {
 			pointer= pointer.next;
@@ -22,13 +25,20 @@ public class DoubleChain {
 	
 	/** Adds D to the front of the DoubleChain. */	
 	public void insertFront(double d) {
-		DNode newbie= new DNode(d); 
-		newbie.next= head; 
-		head= newbie;
+		if (head==null) { 
+			head= new DNode(d);
+		} else { 
+			DNode D= new DNode(d);
+			D.next= head; 
+			head= D;
+		}
 	}
 	
 	/** Adds D to the back of the DoubleChain. */	
 	public void insertBack(double d) {
+		if (head==null) {
+			head= new DNode(d);
+		}
 		DNode pointer= head;
 		DNode newbie= new DNode(d);
 		while (pointer.next!=null) {
