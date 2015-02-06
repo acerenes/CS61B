@@ -4,7 +4,7 @@ public class DoubleChain {
 	private DNode head;
 	
 	public DoubleChain(double val) {
-		head = new DNode(val);
+		head = new DNode(null, val, null);
 	}
 
 	public DNode getFront() {
