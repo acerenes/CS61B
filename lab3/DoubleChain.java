@@ -30,6 +30,7 @@ public class DoubleChain {
 		} else { 
 			DNode D= new DNode(null, d, null);
 			D.next= head; 
+			head.prev= D; 
 			head= D;
 		}
 	}
