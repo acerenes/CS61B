@@ -40,11 +40,12 @@ public class DoubleChain {
 			head= new DNode(d);
 		}
 		DNode pointer= head;
-		DNode newbie= new DNode(d);
+		DNode D= new DNode(d);
 		while (pointer.next!=null) {
 			pointer= pointer.next;
 		}
-		pointer.next= newbie; 
+		pointer.next= D; 
+		D.prev= pointer; 
 	}
 	
 	/** Removes the last item in the DoubleChain and returns it. 
