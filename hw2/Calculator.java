@@ -2,7 +2,8 @@ import list.EquationList;
 
 public class Calculator {
     // YOU MAY WISH TO ADD SOME FIELDS
-    public EquationList equationhist; // Just declaring the existence 
+    public EquationList equationhist; // Just declaring the existence- it isn't actually anything
+    // Don't need .s if already told the class you want it from- you always need to say what class it's from
 
     /**
      * TASK 2: ADDING WITH BIT OPERATIONS
