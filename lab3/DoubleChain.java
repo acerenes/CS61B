@@ -30,6 +30,7 @@ public class DoubleChain {
 		} else { 
 			DNode D= new DNode(d);
 			D.next= head; 
+			head.prev= D; // DON'T FORGET IT'S A DOUBLY LINKED LIST
 			head= D;
 		}
 	}
@@ -40,11 +41,12 @@ public class DoubleChain {
 			head= new DNode(d);
 		}
 		DNode pointer= head;
-		DNode newbie= new DNode(d);
+		DNode D= new DNode(d);
 		while (pointer.next!=null) {
 			pointer= pointer.next;
 		}
-		pointer.next= newbie; 
+		pointer.next= D; 
+		D.prev= pointer;
 	}
 	
 	/** Removes the last item in the DoubleChain and returns it. 
