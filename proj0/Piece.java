@@ -1,11 +1,18 @@
 public class Piece {
 
 	/* Declaring instance variables */
+	/*private boolean element;
+	private Board board; 
+	private int xpos;
+	private int ypos;
+	private String piecetype; */
+
 	public boolean element;
 	public Board board; 
 	public int xpos;
 	public int ypos;
-	public  String piecetype; // CHANGE TO PRIVATE SLIGUHDSRLIGHSDLIRHUdDRLIUGHLSIRHGLISRHUGLISDHGLIDSHGLIDHSLGIRHUDSLIRUGHSDRDLSIHGLDIFHGLDIHGLISUHLIU
+	public String piecetype; 
+	// FOR TESTING
 
 	/* Constructor for a Piece */
 	public Piece(boolean isFire, Board b, int x, int y, String type) {
@@ -33,5 +40,12 @@ public class Piece {
 		else {
 			return 1;
 		}
+	}
+
+	public boolean isKing() {
+		if (piecetype== "king") {
+			return true; 
+		}
+		return false;
 	}
 }

@@ -38,6 +38,16 @@ public class TestPieceClass {
 		assertEquals(0, pawn.side());
 	}
 
+	@Test
+	public void testisKing() {
+		Board b= new Board(true);
+		Piece king= new Piece(false, b, 5, 5, "king"); 
+		assertEquals(true, king.isKing()); 
+
+		Piece notking= new Piece(true, b, 7, 0, "bomb"); 
+		assertEquals(false, notking.isKing());
+	}
+
 
 	public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestPieceClass.class);
