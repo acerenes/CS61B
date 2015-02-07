@@ -55,6 +55,16 @@ public class TestPieceClass {
 		assertEquals(false, notbomb.isBomb());
 	}
 
+	@Test 
+	public void testisShield() {
+		Board b= new Board(true); 
+		Piece shield= new Piece(true, b, 3, 7, "shield"); 
+		assertEquals(true, shield.isShield()); 
+
+		Piece notshield= new Piece(false, b, 4, 4, "pawn"); 
+		assertEquals(false, notshield.isShield()); 
+	}
+
 
 	public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestPieceClass.class);

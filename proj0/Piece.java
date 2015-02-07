@@ -54,4 +54,11 @@ public class Piece {
 		}
 		return false;
 	}
+
+	public boolean isShield() {
+		if (piecetype== "shield") {
+			return true; 
+		}
+		return false; 
+	}
 }
