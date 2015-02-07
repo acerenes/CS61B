@@ -5,7 +5,7 @@ public class Piece {
 	private Board board; 
 	private int xpos;
 	private int ypos;
-	private String class; 
+	private String piecetype; 
 
 	/* Constructor for a Piece */
 	public Piece(boolean isFire, Board b, int x, int y, String type) {
@@ -13,7 +13,7 @@ public class Piece {
 		board= b;
 		xpos= x; 
 		ypos= y;
-		class= type; 
+		piecetype= type; 
 	}
 
 	/* Fire piece? */
@@ -27,6 +27,11 @@ public class Piece {
 	}
 
 	public int side() {
-		
+		if (element) {
+			return 0;
+		}
+		else {
+			return 1;
+		}
 	}
 }
