@@ -15,4 +15,18 @@ public class Piece {
 		ypos= y;
 		class= type; 
 	}
+
+	/* Fire piece? */
+	public boolean isFire() {
+		if (side() == 0) {
+			return true; 
+		}
+		else {
+			return false;
+		}
+	}
+
+	public int side() {
+		
+	}
 }
