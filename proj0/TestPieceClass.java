@@ -3,7 +3,6 @@ import org.junit.Test;
 
 public class TestPieceClass {
 
-	/* Test Constructor */
 	@Test
 	public void testConstructor() { 
 		/* If want to testConstructor, have to change instance variables to public */
@@ -16,7 +15,6 @@ public class TestPieceClass {
 		assertEquals("pawn", pawn.piecetype);
 	}
 
-	/* Test isFire */
 	@Test
 	public void testisFire() {
 		Board b= new Board(true);
@@ -27,7 +25,6 @@ public class TestPieceClass {
 		assertEquals(false, bomb.isFire());
 	}
 
-	/* Test side */
 	@Test
 	public void testside() {
 		Board b= new Board(true);
@@ -46,6 +43,16 @@ public class TestPieceClass {
 
 		Piece notking= new Piece(true, b, 7, 0, "bomb"); 
 		assertEquals(false, notking.isKing());
+	}
+
+	@Test
+	public void testisBomb() {
+		Board b= new Board(true);
+		Piece bomb= new Piece(false, b, 4, 5, "bomb");
+		assertEquals(true, bomb.isBomb()); 
+
+		Piece notbomb= new Piece(true, b, 1, 2, "king"); 
+		assertEquals(false, notbomb.isBomb());
 	}
 
 

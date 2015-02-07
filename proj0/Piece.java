@@ -23,7 +23,6 @@ public class Piece {
 		piecetype= type; 
 	}
 
-	/* Fire piece? */
 	public boolean isFire() {
 		if (side() == 0) {
 			return true; 
@@ -45,6 +44,13 @@ public class Piece {
 	public boolean isKing() {
 		if (piecetype== "king") {
 			return true; 
+		}
+		return false;
+	}
+
+	public boolean isBomb() {
+		if (piecetype== "bomb") {
+			return true;
 		}
 		return false;
 	}
