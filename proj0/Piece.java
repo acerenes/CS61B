@@ -1,11 +1,11 @@
 public class Piece {
 
 	/* Declaring instance variables */
-	private boolean element;
-	private Board board; 
-	private int xpos;
-	private int ypos;
-	private String piecetype; 
+	public boolean element;
+	public Board board; 
+	public int xpos;
+	public int ypos;
+	public  String piecetype; // CHANGE TO PRIVATE SLIGUHDSRLIGHSDLIRHUdDRLIUGHLSIRHGLISRHUGLISDHGLIDSHGLIDHSLGIRHUDSLIRUGHSDRDLSIHGLDIFHGLDIHGLISUHLIU
 
 	/* Constructor for a Piece */
 	public Piece(boolean isFire, Board b, int x, int y, String type) {

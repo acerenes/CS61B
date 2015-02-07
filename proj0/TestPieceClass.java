@@ -5,8 +5,21 @@ public class TestPieceClass {
 
 	/* Test Constructor */
 	@Test
-	public void testConstructor_and_isFire() { // Can't really test Constructor by itself
+	public void testConstructor() { 
+		/* If want to testConstructor, have to change instance variables to public */
 		Board b= new Board(true); // Empty board. I think this is like calling the constructor, sorta?
+		Piece pawn= new Piece(true, b, 0, 0, "pawn");
+		assertEquals(true, pawn.element);
+		assertEquals(b, pawn.board);
+		assertEquals(0, pawn.xpos);
+		assertEquals(0, pawn.ypos);
+		assertEquals("pawn", pawn.piecetype);
+	}
+
+	/* Test isFire */
+	@Test
+	public void testisFire() {
+		Board b= new Board(true);
 		Piece pawn= new Piece(true, b, 0, 0, "pawn");
 		assertEquals(true, pawn.isFire());
 
