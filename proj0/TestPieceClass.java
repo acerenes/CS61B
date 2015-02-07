@@ -65,6 +65,27 @@ public class TestPieceClass {
 		assertEquals(false, notshield.isShield()); 
 	}
 
+	@Test
+	public void testhasCaptured() { 
+		Board b= new Board(true);
+		Piece old1= new Piece(true, b, 0, 0, "pawn"); 
+		old1.move(2, 2); 
+		assertEquals(true, old1.hasCaptured());
+
+		Piece old2= new Piece(false, b, 3, 5, "pawn");
+		old2.move(4, 4);
+		assertEquals(false, old2.hasCaptured()); 
+	}
+
+	/*@Test 
+	public void testdoneCapturing() {
+		Board b= new Board(true); 
+		Piece old1= new Piece(true, b, 0, 0, "pawn"); 
+		old1.move(2, 2); 
+		assertEquals(true, old1.hasCaptured());
+		old1. 
+	}*/
+
 
 	public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestPieceClass.class);
