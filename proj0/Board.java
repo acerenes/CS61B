@@ -1,6 +1,6 @@
 public class Board {
 
-	public Board(boolean shouldBeEmpty) {
+	public Board(boolean shouldBeEmpty) { // Almost like a constructor, yeah?
 		if (shouldBeEmpty) { // Display a blank 8x8 board
 			int scale= 8; // 8 because far side of 7 is 8
 			StdDrawPlus.setXscale(0, scale);
