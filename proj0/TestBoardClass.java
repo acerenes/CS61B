@@ -16,6 +16,28 @@ public class TestBoardClass {
 		assertEquals("pawn", testpiece.piecetype);
 	}
 
+	@Test
+	public void testplace() {
+		String[] args= {};
+		Board.main(args);
+		Board b= new Board(false);
+		/* Test the null piece */
+		Piece nullpiece= b.pieceAt(0, 1); // null
+		b.place(nullpiece, 2, 2); // At this place= fire bomb
+		Piece testpiece= b.pieceAt(2, 2);
+		// Want to make sure it's still a fire bomb
+		assertEquals(true, testpiece.element);
+		assertEquals("bomb", testpiece.piecetype); 
+
+		/* Test an actual moven piece - move the fire shield */
+		Piece fireshield= b.pieceAt(5, 1); 
+		b.place(fireshield, 7, 5); 
+		Piece testpiece2= b.pieceAt(7, 5);
+		assertEquals(true, testpiece2.element);
+		assertEquals("shield", testpiece2.piecetype);
+
+	}
+
 
 	public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestBoardClass.class);

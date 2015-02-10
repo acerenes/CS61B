@@ -84,6 +84,16 @@ public class Board {
 		}
 	}
 
+	public void place(Piece p, int x, int y) {
+		if (x>8 || y>8 || p==null) {
+			return;
+		}
+		else {
+			piece_array[y][x]= p; 
+		}
+
+	}
+
 	public static void main(String [] args) {
 		int scale= 8; // 8 because far side of 7 is 8
 		StdDrawPlus.setXscale(0, scale);
