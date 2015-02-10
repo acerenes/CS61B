@@ -75,9 +75,14 @@ public class Board {
 			}
 	}
 
-	/*public Piece pieceAt(int x, int y) {
-		if 
-	}*/
+	public Piece pieceAt(int x, int y) {
+		if (x>8 || y>8) {
+			return null; 
+		}
+		else {
+			return piece_array[y][x];
+		}
+	}
 
 	public static void main(String [] args) {
 		int scale= 8; // 8 because far side of 7 is 8
