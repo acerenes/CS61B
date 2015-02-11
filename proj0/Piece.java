@@ -7,7 +7,8 @@ public class Piece {
 	private int ypos;
 	private String piecetype;
 	private Piece oldpiece; 
-	private Piece newpiece; */
+	private Piece newpiece;
+	private static Piece[] captured; */
 
 	public boolean element;
 	public Board board; 
@@ -15,7 +16,8 @@ public class Piece {
 	public int ypos;
 	public String piecetype;
 	public Piece oldpiece;  
-	public Piece newpiece; // Declare it up here so has captured can use it as well  
+	public Piece newpiece; 
+	public Piece captured= null;// Declare it up here so has captured can use it as well  
 	// FOR TESTING
 
 	/* Constructor for a Piece */
@@ -67,9 +69,24 @@ public class Piece {
 	}
 
 	public void move(int x, int y) {
+		oldpiece= new Piece(this.element, this.board, this.xpos, this.ypos, this.piecetype); 
 		newpiece= new Piece(this.element, this.board, x, y, this.piecetype); 	
 		this.xpos= x;
 		this.ypos= y; 
+		/* I think if you jumped over something, take that piece into a variable, and then remove it */
+		int i= (x- oldpiece.xpos)/ Math.abs(x- oldpiece.xpos); 
+		int j= (y- oldpiece.ypos)/ Math.abs(y- oldpiece.ypos); 
+		while(oldpiece.xpos!=x) {
+			Piece current_piece= board.pieceAt(oldpiece.xpos+i, oldpiece.ypos+j); 
+			if (current_piece==null) {
+				return; 
+			}
+			else if (current_piece.element != oldpiece.element) {
+				captured= board.remove(oldpiece.xpos+i, oldpiece.ypos+j);
+			}
+			oldpiece.xpos= oldpiece.xpos+2*i; 
+			oldpiece.ypos= oldpiece.ypos+2*j; 
+		}
 	}
 
 	public boolean hasCaptured() { 
