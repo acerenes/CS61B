@@ -1,22 +1,22 @@
 public class Piece {
 
 	/* Declaring instance variables */
-	private boolean element;
+	/*private boolean element;
 	private Board board; 
 	private int xpos;
 	private int ypos;
 	private String piecetype;
 	private Piece oldpiece; 
-	private Piece newpiece; 
+	private Piece newpiece; */
 
-	/*public boolean element;
+	public boolean element;
 	public Board board; 
 	public int xpos;
 	public int ypos;
 	public String piecetype;
 	public Piece oldpiece;  
 	public Piece newpiece; // Declare it up here so has captured can use it as well  
-	// FOR TESTING*/
+	// FOR TESTING
 
 	/* Constructor for a Piece */
 	public Piece(boolean isFire, Board b, int x, int y, String type) {
@@ -67,10 +67,12 @@ public class Piece {
 	}
 
 	public void move(int x, int y) {
-		newpiece= new Piece(element, board, x, y, piecetype); // Compiler didn't like it when I just used the original input variables- it "couldn't find symbol". Cause I guess they don't really exist anymore. 
+		oldpiece= this; // both Pieces
+		newpiece= new Piece(element, board, x, y, piecetype); 
+		// --^ THE ONLY CODE THAT DEFS WORKS
+		// Compiler didn't like it when I just used the original input variables- it "couldn't find symbol". Cause I guess they don't really exist anymore. 
 		// also no Piece newpiece= new Piece(stuff) b/c then I would be like declaring a whole new thing or smth, instead of just assigning the variable I already declared at the top. The variable I declared at the top, that's being used by hasCaptured, would just stay empty then.
-		 
-		/*this= newpiece; */
+		oldpiece= new Piece(this.element, this.board, x, y, this.piecetype); 
 
 	}
 

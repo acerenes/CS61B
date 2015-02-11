@@ -8,7 +8,7 @@ public class TestPieceClass {
 		/* If want to testConstructor, have to change instance variables to public */
 		Board b= new Board(true); // Empty board. I think this is like calling the constructor, sorta?
 		Piece pawn= new Piece(true, b, 0, 0, "pawn");
-		assertEquals(true, pawn.element);
+		assertEquals(true, pawn.isFire());
 		assertEquals(b, pawn.board);
 		assertEquals(0, pawn.xpos);
 		assertEquals(0, pawn.ypos);
@@ -85,6 +85,19 @@ public class TestPieceClass {
 		assertEquals(true, old1.hasCaptured());
 		old1.doneCapturing();
 		assertEquals(false, old1.hasCaptured());
+	}
+
+	@Test
+	public void testmove() {
+		String[] args= {};
+		Board.main(args);
+		Board b= new Board(false);
+		Piece testpiece= b.pieceAt(2, 2);
+		testpiece.move(3, 3); 
+		/* These won't work once variables are turned private */
+		assertEquals(3, testpiece.xpos); 
+		assertEquals(3, testpiece.ypos);
+
 	}
 
 

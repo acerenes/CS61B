@@ -16,39 +16,63 @@ public class Board {
 					if (i==0 && j%2==0) {
 						piece_array[i][j]= new Piece(true, board, j, i, "pawn"); 
 					}
-					if (i==1 && j%2==1) {
+					else if (i==1 && j%2==1) {
 						piece_array[i][j]= new Piece(true, board, j, i, "shield"); 
 					}
-					if (i==2 && j%2==0) {
+					else if (i==2 && j%2==0) {
 						piece_array[i][j]= new Piece(true, board, j, i, "bomb"); 
 					}
-					if (i==5 && j%2==1) {
+					else if (i==5 && j%2==1) {
 						piece_array[i][j]= new Piece(false, board, j, i, "bomb");
 					}
-					if (i==6 && j%2==0) {
+					else if (i==6 && j%2==0) {
 						piece_array[i][j]= new Piece(false, board, j, i, "shield");
 					}
-					if (i==7 && j%2==1) {
+					else if (i==7 && j%2==1) {
 						piece_array[i][j]= new Piece(false, board, j, i, "pawn"); 
 					}
-
+					else {
+						piece_array[i][j]= null; 
+					}
+					/*Piece piece= piece_array[i][j];*/
 					/* Now put in the pictures */
-					if (i==0 && j%2==0) {
+					/*if (piece.isFire() && piece.isBomb()==false && piece.isShield()==false) {
 						StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-fire.png", 1, 1); 
 					}
-					if (i==1 && j%2==1) {
+					else if (piece.isFire() && piece.isShield()== true) {
 						StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-fire.png", 1, 1);
 					}
-					if (i==2 && j%2==0) {
+					else if (piece.isFire() && piece.isBomb()== true) {
 						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-fire.png", 1, 1);
 					}
-					if (i==5 && j%2==1) {
+					else if (piece.isFire()== false && piece.isBomb()== true) {
 						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-water.png", 1, 1);
 					}
-					if (i==6 && j%2==0) {
+					else if (piece.isFire()== false && piece.isShield()== true) {
 						StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-water.png", 1, 1);
 					}
-					if (i==7 && j%2==1) {
+					else if (piece.isFire()== false && piece.isBomb()==false && piece.isShield()==false) {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-water.png", 1, 1);
+					}*/
+					if (piece_array[i][j]==null) {
+						continue; 
+					}
+					else if (piece_array[i][j].isFire() && piece_array[i][j].isBomb()==false && piece_array[i][j].isShield()==false) {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-fire.png", 1, 1); 
+					}
+					else if (piece_array[i][j].isFire() && piece_array[i][j].isShield()) {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-fire.png", 1, 1);
+					}
+					else if (piece_array[i][j].isFire() && piece_array[i][j].isBomb()) {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-fire.png", 1, 1);
+					}
+					else if (piece_array[i][j].isFire()== false && piece_array[i][j].isBomb()) {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-water.png", 1, 1);
+					}
+					else if (piece_array[i][j].isFire()== false && piece_array[i][j].isShield()) {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-water.png", 1, 1);
+					}
+					else if (piece_array[i][j].isFire()== false && piece_array[i][j].isBomb()==false && piece_array[i][j].isShield()==false) {
 						StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-water.png", 1, 1);
 					}
 				}
@@ -62,21 +86,22 @@ public class Board {
 
 
 	private static void drawBoard(int N) {
-			for (int i=0; i<N; i= i+1) { // Rows
-				for (int j=0; j<N; j= j+1) { // Columns
-					// Decide which color the square will be
-					if ((i%2==0 && j%2==0) || (i%2!=0 && j%2!=0)) {
-						StdDrawPlus.setPenColor(StdDrawPlus.GRAY);
-					}
-					else {
-						StdDrawPlus.setPenColor(StdDrawPlus.RED);
-					}
-					// Now actually fill in the Square color
-					StdDrawPlus.filledSquare(j+0.5, i+0.5, 0.5);
-
-					
+		int scale= 8;
+		StdDrawPlus.setXscale(0, scale);
+		StdDrawPlus.setYscale(0, scale);
+		for (int i=0; i<N; i= i+1) { // Rows
+			for (int j=0; j<N; j= j+1) { // Columns
+				// Decide which color the square will be
+				if ((i%2==0 && j%2==0) || (i%2!=0 && j%2!=0)) {
+					StdDrawPlus.setPenColor(StdDrawPlus.GRAY);
 				}
+				else {
+					StdDrawPlus.setPenColor(StdDrawPlus.RED);
+				}
+				// Now actually fill in the Square color
+				StdDrawPlus.filledSquare(j+0.5, i+0.5, 0.5);
 			}
+		}
 	}
 
 	public Piece pieceAt(int x, int y) {
@@ -301,9 +326,9 @@ public class Board {
 	}
 
 	public void select(int x, int y) {
+		Piece piece= piece_array[y][x]; 
 		StdDrawPlus.setPenColor(StdDrawPlus.WHITE); 
 		StdDrawPlus.filledSquare(x+0.5, y+0.5, 0.5); 
-		Piece piece= piece_array[y][x]; 
 		if (piece.isFire() && piece.isBomb()==false && piece.isShield()==false) {
 			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-fire.png", 1, 1); 
 		}
@@ -340,13 +365,11 @@ public class Board {
 	}
 
 	public static void main(String [] args) {
-		int scale= 8; // 8 because far side of 7 is 8
-		StdDrawPlus.setXscale(0, scale);
-		StdDrawPlus.setYscale(0, scale);
 		piece_array= new Piece[8][8]; // Initialize piece_array to be 8x8 
 		// technically rn full of nulls
-		board= new Board(true); // Call the board constructor
-
+		/*board= new Board(true); // Call the board constructor*/
+		// --^ USE THAT FOR AUTOGRADER
+		board= new Board(false);
 		/* board.select(0, 0); */ // SELECT CAN HIGHLIGHT!!!
 		
 	}
