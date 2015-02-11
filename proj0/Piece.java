@@ -69,30 +69,36 @@ public class Piece {
 	}
 
 	public void move(int x, int y) {
-		oldpiece= new Piece(this.element, this.board, this.xpos, this.ypos, this.piecetype); 
+		int oldx= this.xpos;
+		int oldy= this.ypos;
+		/*oldpiece= new Piece(this.element, this.board, oldx, oldy, this.piecetype); 
 		newpiece= new Piece(this.element, this.board, x, y, this.piecetype); 	
 		this.xpos= x;
-		this.ypos= y; 
+		this.ypos= y; */
+		board.place(this, x, y); 
+		this.xpos= x;
+		this.ypos= y;
+		/*this= board.pieceAt(x, y);*/
 		/* I think if you jumped over something, take that piece into a variable, and then remove it */
-		int i= (x- oldpiece.xpos)/ Math.abs(x- oldpiece.xpos); 
-		int j= (y- oldpiece.ypos)/ Math.abs(y- oldpiece.ypos); 
-		while(oldpiece.xpos!=x) {
-			Piece current_piece= board.pieceAt(oldpiece.xpos+i, oldpiece.ypos+j); 
-			if (current_piece==null) {
+		int i= (x- oldx)/ Math.abs(x- oldx); 
+		int j= (y- oldy)/ Math.abs(y- oldy); 
+		while(oldx!=x) {
+			Piece jumped= board.pieceAt(oldx+i, oldy+j); 
+			if (jumped==null) {
 				return; 
 			}
-			else if (current_piece.element != oldpiece.element) {
-				captured= board.remove(oldpiece.xpos+i, oldpiece.ypos+j);
+			else if (jumped.element != this.element) {
+				captured= board.remove(oldx+i, oldy+j);
 			}
-			oldpiece.xpos= oldpiece.xpos+2*i; 
-			oldpiece.ypos= oldpiece.ypos+2*j; 
+			oldx= oldx+2*i; 
+			oldy= oldy+2*j; 
 		}
 	}
 
 	public boolean hasCaptured() { 
 		// Check positions! 
 		// Assumes it was a valid move
-		if ((Math.abs(newpiece.xpos - this.xpos)>=2) && (Math.abs(newpiece.ypos - this.ypos)>=2)) {
+		if (captured != null)/*((Math.abs(newpiece.xpos - oldpiece.xpos)>=2) && (Math.abs(newpiece.ypos - oldpiece.ypos)>=2))*/ {
 			return true;
 		}
 		else {

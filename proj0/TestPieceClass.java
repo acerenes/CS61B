@@ -66,15 +66,20 @@ public class TestPieceClass {
 	}
 
 	@Test
-	public void testhasCaptured() { 
-		Board b= new Board(true);
-		Piece old1= new Piece(true, b, 0, 0, "pawn"); 
+	public void testhasCaptured() {
+		String[] args= {};
+		Board.main(args);
+		Board b= new Board(false);
+		/* No capture */
+		Piece old1= b.pieceAt(0, 0); 
 		old1.move(2, 2); 
-		assertEquals(true, old1.hasCaptured());
-
-		Piece old2= new Piece(false, b, 3, 5, "pawn");
-		old2.move(4, 4);
-		assertEquals(false, old2.hasCaptured()); 
+		assertEquals(false, old1.hasCaptured());
+		/* Has captured */
+		Piece waterbomb= b.pieceAt(3, 5);
+		waterbomb.move(3, 3); // JUST MOVING IT HERE SO I CAN CAPTURE IT WITH MY FIRE BOMB
+		Piece firebomb= b.pieceAt(2, 2);
+		firebomb.move(4, 4);
+		assertEquals(true, firebomb.hasCaptured()); 
 	}
 
 	@Test 
@@ -95,8 +100,11 @@ public class TestPieceClass {
 		Piece testpiece= b.pieceAt(2, 2);
 		testpiece.move(3, 3); 
 		/* These won't work once variables are turned private */
+		assertTrue(testpiece.isFire()); 
 		assertEquals(3, testpiece.xpos); 
 		assertEquals(3, testpiece.ypos);
+		assertTrue(testpiece.isBomb()); 
+
 
 	}
 
