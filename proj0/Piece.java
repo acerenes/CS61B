@@ -1,22 +1,22 @@
 public class Piece {
 
 	/* Declaring instance variables */
-	/*private boolean element;
+	private boolean element;
 	private Board board; 
 	private int xpos;
 	private int ypos;
 	private String piecetype;
 	private Piece oldpiece; 
-	private Piece newpiece; */
+	private Piece newpiece; 
 
-	public boolean element;
+	/*public boolean element;
 	public Board board; 
 	public int xpos;
 	public int ypos;
 	public String piecetype;
 	public Piece oldpiece;  
 	public Piece newpiece; // Declare it up here so has captured can use it as well  
-	// FOR TESTING
+	// FOR TESTING*/
 
 	/* Constructor for a Piece */
 	public Piece(boolean isFire, Board b, int x, int y, String type) {
