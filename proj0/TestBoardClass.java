@@ -48,6 +48,16 @@ public class TestBoardClass {
 		assertEquals(false, b.validMove(1, 5, 5, 1)); 
 	}
 
+	@Test
+	public void testremove() {
+		String[] args= {};
+		Board.main(args);
+		Board b= new Board(false); 
+		assertEquals(null, b.remove(8, 8)); 
+		assertEquals(null, b.remove(1, 0)); 
+		assertEquals(b.pieceAt(2, 2), b.remove(2,2));
+	}
+
 
 	public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestBoardClass.class);

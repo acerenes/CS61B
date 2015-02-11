@@ -205,7 +205,7 @@ public class Board {
 		return false; // tbh I'm not sure why this is necessary, but java gets mad if I don't have it	
 	}
 
-	/* AYE YO DON'T FORGET TO CHANGE THIS TO PRIVATE AFTERWARDS OKAY DFLIUHBDLIGUHILDUHGSIALHGLSAIHLUIH */
+	/* MAKE SURE THIS METHOD IS PRIVATE DLIRUGHDSLRIUGHDSLIRUHGLSDIRUGHLISDRUHGLIDSURHGLIDSUHGLISUD OKAY */
 	public boolean validMove(int xi, int yi, int xf, int yf) {
 		/* Make sure not trying to move it out of bounds */
 		if (xf >8 || yf>8) {
@@ -227,6 +227,22 @@ public class Board {
 		else {
 			return false; 
 		}		
+	}
+
+	public Piece remove(int x, int y) {
+		if (x>=8 || y>=8) {
+			System.out.println("Input (" + x + ", " + y + ") is out of bounds.");
+			return null; 
+		}
+		else if (piece_array[y][x]== null) {
+			System.out.println("There is no piece at (" + x + ", " + y + ")."); 
+			return null; 
+		}
+		else {
+			Piece removed_piece= piece_array[y][x]; 
+			piece_array[y][x]= null; 
+			return removed_piece; 
+		}
 	}
 
 	public static void main(String [] args) {
