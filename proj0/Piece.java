@@ -71,14 +71,9 @@ public class Piece {
 	public void move(int x, int y) {
 		int oldx= this.xpos;
 		int oldy= this.ypos;
-		/*oldpiece= new Piece(this.element, this.board, oldx, oldy, this.piecetype); 
-		newpiece= new Piece(this.element, this.board, x, y, this.piecetype); 	
-		this.xpos= x;
-		this.ypos= y; */
 		board.place(this, x, y); 
 		this.xpos= x;
 		this.ypos= y;
-		/*this= board.pieceAt(x, y);*/
 		/* I think if you jumped over something, take that piece into a variable, and then remove it */
 		int i= (x- oldx)/ Math.abs(x- oldx); 
 		int j= (y- oldy)/ Math.abs(y- oldy); 
