@@ -100,8 +100,8 @@ public class Board {
 
 	private boolean single_step(int xi, int yi, int xf, int yf) {
 		Piece curr_piece= pieceAt(xi, yi);
-		if (curr_piece.piecetype!= "king") {
-			if (curr_piece.element) { // Fire
+		if (curr_piece.isKing()==false) {
+			if (curr_piece.isFire()) { // Fire
 				if (Math.abs(xf-xi)==1 && (yf-yi)==1 && pieceAt(xf, yf)==null) {
 					return true;
 				}
@@ -128,22 +128,22 @@ public class Board {
 
 	private boolean single_capture(int xi, int yi, int xf, int yf) {
 		Piece curr_piece= pieceAt(xi, yi);
-		if (curr_piece.piecetype!= "king") {
-			if (curr_piece.element) { // Fire 
-				if (Math.abs(xf-xi)==2 && (yf-yi)==2 && pieceAt((xi+xf)/2, yi+1).element==false && pieceAt(xf, yf)==null) {
+		if (curr_piece.isKing()==false) {
+			if (curr_piece.isFire()) { // Fire 
+				if (Math.abs(xf-xi)==2 && (yf-yi)==2 && pieceAt((xi+xf)/2, yi+1).isFire()==false && pieceAt(xf, yf)==null) {
 						return true;
 					}
 					return false;
 				}
 			else { // Water
-				if (Math.abs(xf-xi)==2 && (yf-yi)== -2 && pieceAt((xi+xf)/2, yi-1).element && pieceAt(xf, yf)==null) {
+				if (Math.abs(xf-xi)==2 && (yf-yi)== -2 && pieceAt((xi+xf)/2, yi-1).isFire() && pieceAt(xf, yf)==null) {
 					return true;
 				}
 				return false; 
 			}
 		}
 		else { // King can move forward & backward
-			if (pieceAt((xi+xf)/2, (yi+yf)/2).element != curr_piece.element && pieceAt(xf, yf)==null) {
+			if (pieceAt((xi+xf)/2, (yi+yf)/2).isFire() != curr_piece.isFire() && pieceAt(xf, yf)==null) {
 				return true;
 			}
 			return false;
@@ -152,12 +152,12 @@ public class Board {
 
 	private boolean multi_capture(int xi, int yi, int xf, int yf) {
 		Piece curr_piece= pieceAt(xi, yi);
-		if (curr_piece.piecetype!= "king") {
-			if (curr_piece.element) { // Fire 
+		if (curr_piece.isKing()==false) {
+			if (curr_piece.isFire()) { // Fire 
 				if ((yf-yi)>=3 && Math.abs(xf-xi)==(yf-yi)) {
 					int i= (xf-xi)/Math.abs(xf-xi); // -1 or 1
 					while (xi!=xf) { // Supes complicated cause sign- right or left
-						if (pieceAt(xi+i, yi+1).element==false) {
+						if (pieceAt(xi+i, yi+1).isFire()==false) {
 							xi= xi + 2*i;
 							yi= yi+2;
 							continue; 
@@ -176,7 +176,7 @@ public class Board {
 				if ((yf-yi)<=-3 && Math.abs(xf-xi)== -(yf-yi)) {
 					int i= (xf-xi)/Math.abs(xf-xi); // -1 or 1
 					while(xi!=xf) { 
-						if (pieceAt(xi+i, yi-1).element) {
+						if (pieceAt(xi+i, yi-1).isFire()) {
 							xi= xi+2*i;
 							yi= yi-2;
 							continue; 
@@ -195,7 +195,7 @@ public class Board {
 			int i= (xf-xi)/Math.abs(xf-xi);
 			int j= (yf-yi)/Math.abs(yf-yi);
 			while(xi!=xf) {
-				if (pieceAt(xi+i, yi+j).element != curr_piece.element) {
+				if (pieceAt(xi+i, yi+j).isFire() != curr_piece.isFire()) {
 					xi= xi + 2*i; 
 					yi= yi + 2*j;
 					continue; 
@@ -258,10 +258,10 @@ public class Board {
 				if (curr_piece==null) {
 					continue;
 				}
-				else if (curr_piece.element==true) {
+				else if (curr_piece.isFire()==true) {
 					fire_count= fire_count +1;
 				}
-				else if (curr_piece.element==false) {
+				else if (curr_piece.isFire()==false) {
 					water_count= water_count+1; 
 				}
 			}
@@ -304,22 +304,22 @@ public class Board {
 		StdDrawPlus.setPenColor(StdDrawPlus.WHITE); 
 		StdDrawPlus.filledSquare(x+0.5, y+0.5, 0.5); 
 		Piece piece= piece_array[y][x]; 
-		if (piece.element && piece.piecetype== "pawn") {
+		if (piece.isFire() && piece.isBomb()==false && piece.isShield()==false) {
 			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-fire.png", 1, 1); 
 		}
-		else if (piece.element && piece.piecetype== "shield") {
+		else if (piece.isFire() && piece.isShield()== true) {
 			StdDrawPlus.picture(x+0.5, y+0.5, "img/shield-fire.png", 1, 1);
 		}
-		else if (piece.element && piece.piecetype== "bomb") {
+		else if (piece.isFire() && piece.isBomb()== true) {
 			StdDrawPlus.picture(x+0.5, y+0.5, "img/bomb-fire.png", 1, 1);
 		}
-		else if (piece.element== false && piece.piecetype== "bomb") {
+		else if (piece.isFire()== false && piece.isBomb()== true) {
 			StdDrawPlus.picture(x+0.5, y+0.5, "img/bomb-water.png", 1, 1);
 		}
-		else if (piece.element== false && piece.piecetype== "shield") {
+		else if (piece.isFire()== false && piece.isShield()== true) {
 			StdDrawPlus.picture(x+0.5, y+0.5, "img/shield-water.png", 1, 1);
 		}
-		else if (piece.element== false && piece.piecetype== "pawn") {
+		else if (piece.isFire()== false && piece.isBomb()==false && piece.isShield()==false) {
 			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-water.png", 1, 1);
 		}
 
