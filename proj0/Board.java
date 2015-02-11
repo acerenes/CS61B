@@ -94,6 +94,141 @@ public class Board {
 
 	}
 
+	private boolean single_step(int xi, int yi, int xf, int yf) {
+		Piece curr_piece= pieceAt(xi, yi);
+		if (curr_piece.piecetype!= "king") {
+			if (curr_piece.element) { // Fire
+				if (Math.abs(xf-xi)==1 && (yf-yi)==1 && pieceAt(xf, yf)==null) {
+					return true;
+				}
+				else {
+					return false; 
+				}
+			}
+			else { // Water
+				if (Math.abs(xf-xi)==1 && (yf-yi)== -1 && pieceAt(xf, yf)==null) {
+					return true; 
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		else { // Is a king- can move forward & back
+			if (pieceAt(xf, yf)==null) {
+				return true; 
+			}
+			return false; 
+		}
+	}
+
+	private boolean single_capture(int xi, int yi, int xf, int yf) {
+		Piece curr_piece= pieceAt(xi, yi);
+		if (curr_piece.piecetype!= "king") {
+			if (curr_piece.element) { // Fire 
+				if (Math.abs(xf-xi)==2 && (yf-yi)==2 && pieceAt((xi+xf)/2, yi+1).element==false && pieceAt(xf, yf)==null) {
+						return true;
+					}
+					return false;
+				}
+			else { // Water
+				if (Math.abs(xf-xi)==2 && (yf-yi)== -2 && pieceAt((xi+xf)/2, yi-1).element && pieceAt(xf, yf)==null) {
+					return true;
+				}
+				return false; 
+			}
+		}
+		else { // King can move forward & backward
+			if (pieceAt((xi+xf)/2, (yi+yf)/2).element != curr_piece.element && pieceAt(xf, yf)==null) {
+				return true;
+			}
+			return false;
+		}
+	}
+
+	private boolean multi_capture(int xi, int yi, int xf, int yf) {
+		Piece curr_piece= pieceAt(xi, yi);
+		if (curr_piece.piecetype!= "king") {
+			if (curr_piece.element) { // Fire 
+				if ((yf-yi)>=3 && Math.abs(xf-xi)==(yf-yi)) {
+					int i= (xf-xi)/Math.abs(xf-xi); // -1 or 1
+					while (xi!=xf) { // Supes complicated cause sign- right or left
+						if (pieceAt(xi+i, yi+1).element==false) {
+							xi= xi + 2*i;
+							yi= yi+2;
+							continue; 
+						}
+						else {
+							return false; 
+						}
+					}
+					return true; 
+				}
+				else {
+					return false;
+				}
+			}
+			else { // Water
+				if ((yf-yi)<=-3 && Math.abs(xf-xi)== -(yf-yi)) {
+					int i= (xf-xi)/Math.abs(xf-xi); // -1 or 1
+					while(xi!=xf) { 
+						if (pieceAt(xi+i, yi-1).element) {
+							xi= xi+2*i;
+							yi= yi-2;
+							continue; 
+						}
+						else {
+							return false; 
+						}
+					}
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		else { // King can move back+forward
+			int i= (xf-xi)/Math.abs(xf-xi);
+			int j= (yf-yi)/Math.abs(yf-yi);
+			while(xi!=xf) {
+				if (pieceAt(xi+i, yi+j).element != curr_piece.element) {
+					xi= xi + 2*i; 
+					yi= yi + 2*j;
+					continue; 
+				}
+				else {
+					return false; 
+				}
+			}
+			return true; 
+		}
+		return false; // tbh I'm not sure why this is necessary, but java gets mad if I don't have it	
+	}
+
+	/* AYE YO DON'T FORGET TO CHANGE THIS TO PRIVATE AFTERWARDS OKAY DFLIUHBDLIGUHILDUHGSIALHGLSAIHLUIH */
+	public boolean validMove(int xi, int yi, int xf, int yf) {
+		/* Make sure not trying to move it out of bounds */
+		if (xf >8 || yf>8) {
+			return false;
+		}
+		
+		// Single Step
+		if (Math.abs(xf-xi)==1 && Math.abs((yf-yi))==1) {
+			return single_step(xi, yi, xf, yf); 
+		}
+		/* Single capture */
+		if (Math.abs(xf-xi)==2 && Math.abs(yf-yi)==2) {
+			return single_capture(xi, yi, xf, yf);
+		}
+		/* Multi-capture */
+		if (Math.abs(xf-xi)>=3 && Math.abs(yf-yi)>=3 && Math.abs(xf-xi)==Math.abs(yf-yi) && pieceAt(xf, yf)==null) {
+			return multi_capture(xi, yi, xf, yf);
+		}
+		else {
+			return false; 
+		}		
+	}
+
 	public static void main(String [] args) {
 		int scale= 8; // 8 because far side of 7 is 8
 		StdDrawPlus.setXscale(0, scale);

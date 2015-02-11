@@ -35,7 +35,17 @@ public class TestBoardClass {
 		Piece testpiece2= b.pieceAt(7, 5);
 		assertEquals(true, testpiece2.element);
 		assertEquals("shield", testpiece2.piecetype);
+	}
 
+	@Test
+	public void testvalidMove() {
+		String[] args= {};
+		Board.main(args);
+		Board b= new Board(false); 
+		/* Test a fire, not king piece, single move */
+		assertEquals(true, b.validMove(0, 2, 1, 3));
+		/* Test a water, multi-capture */
+		assertEquals(false, b.validMove(1, 5, 5, 1)); 
 	}
 
 
