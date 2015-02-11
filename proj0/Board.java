@@ -245,6 +245,38 @@ public class Board {
 		}
 	}
 
+	public String winner() {
+		int fire_count= 0; 
+		int water_count= 0;
+		for (int i=0; i<8; i= i+1) { // Rows
+			for (int j=0; j<8; j= j+1) { // Columns
+				Piece curr_piece= piece_array[j][i];
+				if (curr_piece==null) {
+					continue;
+				}
+				else if (curr_piece.element==true) {
+					fire_count= fire_count +1;
+				}
+				else if (curr_piece.element==false) {
+					water_count= water_count+1; 
+				}
+			}
+		}
+		if (fire_count!=0 && water_count!=0) {
+			return null; // You don't win until all of opponent's pieces are removed, oui?
+		}
+		if (fire_count== water_count) {
+			return "No one";
+		}
+		if (fire_count> water_count) {
+			return "Fire";
+		}
+		else if (water_count>fire_count) {
+			return "Water";
+		}
+		return null; // I guess all other things are null
+	}
+
 	public static void main(String [] args) {
 		int scale= 8; // 8 because far side of 7 is 8
 		StdDrawPlus.setXscale(0, scale);

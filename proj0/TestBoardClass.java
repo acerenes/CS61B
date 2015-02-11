@@ -58,6 +58,15 @@ public class TestBoardClass {
 		assertEquals(b.pieceAt(2, 2), b.remove(2,2));
 	}
 
+	@Test 
+	public void testwinner() {
+		String[] args= {};
+		Board.main(args);
+		Board b= new Board(false);
+		/* Right now all I can do is look at the intial board */
+		assertEquals(null, b.winner()); 
+	}
+
 
 	public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestBoardClass.class);
