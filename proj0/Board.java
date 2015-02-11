@@ -2,6 +2,9 @@ public class Board {
 
 	private static Piece[][] piece_array;
 	private static Board board; 
+	private int player= 1; // Start with fire
+	private boolean has_selected_1= false;
+	private boolean has_selected_0= false;  
 
 	public Board(boolean shouldBeEmpty) { // Constructor
 		if (shouldBeEmpty== false) {
@@ -206,7 +209,7 @@ public class Board {
 	}
 
 	/* MAKE SURE THIS METHOD IS PRIVATE DLIRUGHDSLRIUGHDSLIRUHGLSDIRUGHLISDRUHGLIDSURHGLIDSUHGLISUD OKAY */
-	public boolean validMove(int xi, int yi, int xf, int yf) {
+	private boolean validMove(int xi, int yi, int xf, int yf) {
 		/* Make sure not trying to move it out of bounds */
 		if (xf >8 || yf>8) {
 			return false;
@@ -277,6 +280,62 @@ public class Board {
 		return null; // I guess all other things are null
 	}
 
+	public boolean canSelect(int x, int y) {
+		Piece piece= piece_array[y][x];
+		boolean hasselected;  
+		if (player==0) {
+			hasselected= has_selected_0;
+		}
+		else if (player==1) {
+			hasselected= has_selected_1;
+		}
+		if (piece!=null) { // Square w/a piece
+			if (piece.side()== player && (hasselected==false || )) // DRGHRLIGHALIHALUH HAVEN'T FINISHED IT
+		}
+		else { // Empty square
+
+		}
+	}
+
+	public void select(int x, int y) {
+		StdDrawPlus.setPenColor(StdDrawPlus.WHITE); 
+		StdDrawPlus.filledSquare(x+0.5, y+0.5, 0.5); 
+		Piece piece= piece_array[y][x]; 
+		if (piece.element=="fire" && piece.piecetype== "pawn") {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-fire.png", 1, 1); 
+		}
+		else if (piece.element=="fire" && piece.piecetype== "shield") {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/shield-fire.png", 1, 1);
+		}
+		else if (piece.element=="fire" && piece.piecetype== "bomb") {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/bomb-fire.png", 1, 1);
+		}
+		else if (piece.element== "water" && piece.piecetype== "bomb") {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/bomb-water.png", 1, 1);
+		}
+		else if (piece.element== "water" && piece.piecetype== "shield") {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/shield-water.png", 1, 1);
+		}
+		else if (piece.element=="water" && piece.piecetype== "pawn") {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-water.png", 1, 1);
+		}
+
+		if (player==0) {
+			has_selected_0= true; 
+		}
+		else if (player==1) {
+			has_selected_1= true;
+		}
+	}
+
+	public boolean canEndTurn() {
+
+	}
+
+	public void endTurn() {
+
+	}
+	
 	public static void main(String [] args) {
 		int scale= 8; // 8 because far side of 7 is 8
 		StdDrawPlus.setXscale(0, scale);
@@ -284,6 +343,8 @@ public class Board {
 		piece_array= new Piece[8][8]; // Initialize piece_array to be 8x8 
 		// technically rn full of nulls
 		board= new Board(false); // Call the board constructor
+
+		/* board.select(0, 0); */ // SELECT CAN HIGHLIGHT!!!
 		
 	}
 }

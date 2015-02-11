@@ -77,14 +77,15 @@ public class TestPieceClass {
 		assertEquals(false, old2.hasCaptured()); 
 	}
 
-	/*@Test 
+	@Test 
 	public void testdoneCapturing() {
 		Board b= new Board(true); 
 		Piece old1= new Piece(true, b, 0, 0, "pawn"); 
 		old1.move(2, 2); 
 		assertEquals(true, old1.hasCaptured());
-		old1. 
-	}*/
+		old1.doneCapturing();
+		assertEquals(false, old1.hasCaptured());
+	}
 
 
 	public static void main(String[] args) {
