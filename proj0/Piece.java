@@ -91,8 +91,6 @@ public class Piece {
 	}
 
 	public boolean hasCaptured() { 
-		// Check positions! 
-		// Assumes it was a valid move
 		if (captured != null)/*((Math.abs(newpiece.xpos - oldpiece.xpos)>=2) && (Math.abs(newpiece.ypos - oldpiece.ypos)>=2))*/ {
 			return true;
 		}
