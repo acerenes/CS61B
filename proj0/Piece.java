@@ -68,9 +68,10 @@ public class Piece {
 
 	public void move(int x, int y) {
 		newpiece= new Piece(element, board, x, y, piecetype); // Compiler didn't like it when I just used the original input variables- it "couldn't find symbol". Cause I guess they don't really exist anymore. 
-		// also no Piece newpiece= new Piece(stuff) b/c then I would be like declaring a whole new thing or smth, instead of just assigning the variable I already declared at the top. The variable I declared at the top, that's being used by hasCaptured, would just stay empty then. 
-		this= newpiece; 
-		
+		// also no Piece newpiece= new Piece(stuff) b/c then I would be like declaring a whole new thing or smth, instead of just assigning the variable I already declared at the top. The variable I declared at the top, that's being used by hasCaptured, would just stay empty then.
+		 
+		/*this= newpiece; */
+
 	}
 
 	public boolean hasCaptured() { 
@@ -85,7 +86,7 @@ public class Piece {
 
 	}
 	public void doneCapturing() {
-		this.hasCaptured()= false; 
+		/*this.hasCaptured()= false; */
 		// YOU AREN'T WORKING ALIUGHALIGHALIHGLAIUHELIHU
 	}
 
