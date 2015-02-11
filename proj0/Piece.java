@@ -67,13 +67,9 @@ public class Piece {
 	}
 
 	public void move(int x, int y) {
-		oldpiece= this; // both Pieces
-		newpiece= new Piece(element, board, x, y, piecetype); 
-		// --^ THE ONLY CODE THAT DEFS WORKS
-		// Compiler didn't like it when I just used the original input variables- it "couldn't find symbol". Cause I guess they don't really exist anymore. 
-		// also no Piece newpiece= new Piece(stuff) b/c then I would be like declaring a whole new thing or smth, instead of just assigning the variable I already declared at the top. The variable I declared at the top, that's being used by hasCaptured, would just stay empty then.
-		oldpiece= new Piece(this.element, this.board, x, y, this.piecetype); 
-
+		newpiece= new Piece(this.element, this.board, x, y, this.piecetype); 	
+		this.xpos= x;
+		this.ypos= y; 
 	}
 
 	public boolean hasCaptured() { 

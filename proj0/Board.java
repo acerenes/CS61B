@@ -34,26 +34,7 @@ public class Board {
 					else {
 						piece_array[i][j]= null; 
 					}
-					/*Piece piece= piece_array[i][j];*/
-					/* Now put in the pictures */
-					/*if (piece.isFire() && piece.isBomb()==false && piece.isShield()==false) {
-						StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-fire.png", 1, 1); 
-					}
-					else if (piece.isFire() && piece.isShield()== true) {
-						StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-fire.png", 1, 1);
-					}
-					else if (piece.isFire() && piece.isBomb()== true) {
-						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-fire.png", 1, 1);
-					}
-					else if (piece.isFire()== false && piece.isBomb()== true) {
-						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-water.png", 1, 1);
-					}
-					else if (piece.isFire()== false && piece.isShield()== true) {
-						StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-water.png", 1, 1);
-					}
-					else if (piece.isFire()== false && piece.isBomb()==false && piece.isShield()==false) {
-						StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-water.png", 1, 1);
-					}*/
+					
 					if (piece_array[i][j]==null) {
 						continue; 
 					}
