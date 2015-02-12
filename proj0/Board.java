@@ -8,10 +8,13 @@ public class Board {
 	private boolean hasselected; 
 	private int xval; 
 	private int yval; 
+	private boolean hasmoved= false; 
+	/*private boolean prevselected= false; */
+	private Piece prevselectedpiece= null; 
+	private boolean hascaptured= false; 
 
 	public static void main(String [] args) {
-		piece_array= new Piece[8][8]; // Initialize piece_array to be 8x8 
-		// technically rn full of nulls
+		piece_array= new Piece[8][8]; 
 		/*board= new Board(true); // Call the board constructor*/
 		// --^ USE THAT FOR AUTOGRADER
 		board= new Board(false);
@@ -118,12 +121,22 @@ public class Board {
 			hasselected= has_selected_1;
 		}
 		if (piece!=null) { // Square w/a piece
-			if (piece.side()== player && (hasselected==false)) { // DRGHRLIGHALIHALUH HAVEN'T FINISHED IT
-				return false; // CHANGE
+			if (piece.side()== player && (hasselected==false || (hasselected && hasmoved==false))) { 
+				/*prevselected= true; */
+				prevselectedpiece= piece; 
+				return true; 
 			}
+			return false;
 		}
 		else { // Empty square
-			return false; // CHANGE
+			if (prevselectedpiece!=null) {
+				int xi= getXPos(prevselectedpiece); 
+				int yi= getYPos(prevselectedpiece); 
+				if (piece==null && validMove(xi, yi, x, y)) {
+					return true; 
+				}
+				/*if () // DIDN'T FINISH THIS DSLIRUGHDRILGUHLIRUSHGIULHGALIUHGLIRAUGHALIU*/
+			}
 		}
 		return false; // CHANGE 
 	}
@@ -141,10 +154,12 @@ public class Board {
 		}
 		/* Single capture */
 		if (Math.abs(xf-xi)==2 && Math.abs(yf-yi)==2) {
+			hascaptured= true; 
 			return single_capture(xi, yi, xf, yf);
 		}
 		/* Multi-capture */
 		if (Math.abs(xf-xi)>=3 && Math.abs(yf-yi)>=3 && Math.abs(xf-xi)==Math.abs(yf-yi) && pieceAt(xf, yf)==null) {
+			hascaptured= true; 
 			return multi_capture(xi, yi, xf, yf);
 		}
 		else {
@@ -193,6 +208,7 @@ public class Board {
 			piece_array[y][x]= p; 
 			piece_array[yval][xval]= null; 
 			p.move(x, y); // Have to update back-end stuff too 
+			hasmoved= true; 
 		}
 
 	}
@@ -216,11 +232,21 @@ public class Board {
 	
 
 	public boolean canEndTurn() {
-		
+		if (hasmoved || hascaptured) {
+			endTurn();
+			return true; 
+		}
+		return false; 
 		
 	}
 
 	public void endTurn() {
+		if (player==1) {
+			player=0; 
+		}
+		else if (player==0) {
+			player=1; 
+		}
 		
 	}
 
