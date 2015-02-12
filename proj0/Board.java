@@ -1,6 +1,6 @@
 public class Board {
 
-	/*private Piece[][] piece_array;*/
+	private Piece[][] piece_array;
 	private Board board; 
 	private int player= 1; // Start with fire
 	private boolean has_selected_1= false;
@@ -14,16 +14,16 @@ public class Board {
 	private boolean hascaptured= false; 
 
 	public static void main(String [] args) {
-		piece_array= new Piece[8][8]; 
+		/*piece_array= new Piece[8][8]; */
 		/*board= new Board(true); // Call the board constructor*/
 		// --^ USE THAT FOR AUTOGRADER
-		board= new Board(false);
+		Board board= new Board(false);
 		/* board.select(0, 0); */ // SELECT CAN HIGHLIGHT!!!
 		
 	}
 
 	public Board(boolean shouldBeEmpty) { // Constructor
-		private Piece[][] piece_array; 
+		piece_array= new Piece[8][8]; 
 		if (shouldBeEmpty== false) {
 			// Need to put in the default configuration of the board
 			for(int i=0; i<8; i= i+1) { // Rows
@@ -60,7 +60,7 @@ public class Board {
 		}
 	}
 
-	private static void drawBoard(int N) {
+	private void drawBoard(int N) {
 		int scale= 8;
 		StdDrawPlus.setXscale(0, scale);
 		StdDrawPlus.setYscale(0, scale);
