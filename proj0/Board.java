@@ -219,8 +219,6 @@ public class Board {
 		}*/
 		
 		selectedpiece= pieceAt(x, y); 
-		System.out.println(selectedpiece); 
-		System.out.println(prepped_piece_4move); 
 		if (selectedpiece!=null) { // square with a piece
 			prepped_piece_4move= selectedpiece; 
 			int xpos= getXPos(selectedpiece); 
@@ -231,7 +229,6 @@ public class Board {
 			return; 
 		}
 		else if (selectedpiece==null && prepped_piece_4move!=null) {
-			System.out.println("For 1, 1, it is going through the right loop!"); 
 			int xpos= getXPos(prepped_piece_4move); 
 			int ypos= getYPos(prepped_piece_4move);
 			prepped_piece_4move.move(x, y); 
