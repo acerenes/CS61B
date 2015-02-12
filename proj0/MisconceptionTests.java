@@ -74,7 +74,6 @@ public class MisconceptionTests {
         SpyPiece shield = new SpyPiece(true, b, 0, 0, "shield");
         b.place(shield, 0, 0);
         
-
         b.select(0, 0);
         assertEquals(0, shield.moveCount);
         b.select(1, 1); 

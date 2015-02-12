@@ -129,7 +129,7 @@ public class Board {
 	}
 
 	public Piece pieceAt(int x, int y) {
-		if (x>8 || y>8 || piece_array[y][x]==null) {
+		if (x>7 || y>7 || x<0 || y<0 || piece_array[y][x]==null) {
 			return null; 
 		}
 		else {
@@ -217,21 +217,25 @@ public class Board {
 		else if (piece.isFire()== false && piece.isBomb()==false && piece.isShield()==false) {
 			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-water.png", 1, 1);
 		}*/
+		
 		selectedpiece= pieceAt(x, y); 
+		System.out.println(selectedpiece); 
+		System.out.println(prepped_piece_4move); 
 		if (selectedpiece!=null) { // square with a piece
 			prepped_piece_4move= selectedpiece; 
 			int xpos= getXPos(selectedpiece); 
 			int ypos= getYPos(selectedpiece); 
-			prepped_piece_4move.move(xpos, ypos); 
+			/*board.place(xpos, ypos); */ // I don't think you actually move anything if you just prep a piece for movement
 		}
 		else if (selectedpiece== null && prepped_piece_4move==null) {
 			return; 
 		}
 		else if (selectedpiece==null && prepped_piece_4move!=null) {
+			System.out.println("For 1, 1, it is going through the right loop!"); 
 			int xpos= getXPos(prepped_piece_4move); 
 			int ypos= getYPos(prepped_piece_4move);
-			place(prepped_piece_4move, x, y); 
 			prepped_piece_4move.move(x, y); 
+			/*board.place(x, y); */
 			remove(xpos, ypos); 
 		}
 		
@@ -245,15 +249,11 @@ public class Board {
 	}
 
 	public void place(Piece p, int x, int y) {
-		if (x>8 || y>8 || p==null) {
+		if (x>7 || y>7 || x<0 || y<0 || p==null) {
 			return;
 		}
 		else {
-			int xval= getXPos(p);
-			int yval= getYPos(p); // Current position
 			piece_array[y][x]= p; 
-			piece_array[yval][xval]= null; 
-			p.move(x, y); // Have to update back-end stuff too 
 			hasmoved= true; 
 		}
 

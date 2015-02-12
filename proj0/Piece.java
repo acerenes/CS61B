@@ -73,6 +73,7 @@ public class Piece {
 		int oldy= this.ypos;
 		this.xpos= x;
 		this.ypos= y;
+		board.place(this, x, y); // Place yourself on there if I move you
 		/* I think if you jumped over something, take that piece into a variable, and then remove it */
 		// Only go through this if moved more than 1 space- get the captured piece- possibility of a capture
 		if (Math.abs(x-oldx)>=2 && Math.abs(y-oldy)>=2) {
