@@ -1,7 +1,7 @@
 public class Board {
 
-	private static Piece[][] piece_array;
-	private static Board board; 
+	/*private Piece[][] piece_array;*/
+	private Board board; 
 	private int player= 1; // Start with fire
 	private boolean has_selected_1= false;
 	private boolean has_selected_0= false; 
@@ -23,6 +23,7 @@ public class Board {
 	}
 
 	public Board(boolean shouldBeEmpty) { // Constructor
+		private Piece[][] piece_array; 
 		if (shouldBeEmpty== false) {
 			// Need to put in the default configuration of the board
 			for(int i=0; i<8; i= i+1) { // Rows
