@@ -66,11 +66,12 @@ public class Board {
 					
 				}
 			}
-			drawBoard(8);
+			/*drawBoard(8);*/
 		}
 
 		else {
-			drawBoard(8);
+			/*drawBoard(8);*/
+			return; 
 		}
 	}
 
