@@ -66,11 +66,9 @@ public class Board {
 					
 				}
 			}
-			/*drawBoard(8);*/
 		}
 
 		else {
-			/*drawBoard(8);*/
 			return; 
 		}
 	}
@@ -148,9 +146,12 @@ public class Board {
 				if (piece==null && validMove(xi, yi, x, y)) {
 					return true; 
 				}
-				/*if () // DIDN'T FINISH THIS DSLIRUGHDRILGUHLIRUSHGIULHGALIUHGLIRAUGHALIU*/
+				if (prevselectedpiece!=null && hascaptured && hasselected) {
+					return true; 
+				}
 			}
 		}
+		hasselected= false; 
 		return false; // CHANGE 
 	}
 
@@ -416,6 +417,9 @@ public class Board {
 					water_count= water_count+1; 
 				}
 			}
+		}
+		if (fire_count==0 && water_count==0) {
+			return null; 
 		}
 		if (fire_count!=0 && water_count!=0) {
 			return null; // You don't win until all of opponent's pieces are removed, oui?
