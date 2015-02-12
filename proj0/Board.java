@@ -12,7 +12,6 @@ public class Board {
 	public Board(boolean shouldBeEmpty) { // Constructor
 		if (shouldBeEmpty== false) {
 			// Need to put in the default configuration of the board
-			drawBoard(8); // Put at beginning so won't update everytime I run through the loops
 			for(int i=0; i<8; i= i+1) { // Rows
 				for(int j=0; j<8; j= j+1) { // Columns 
 					if (i==0 && j%2==0) {
@@ -35,31 +34,11 @@ public class Board {
 					}
 					else {
 						piece_array[i][j]= null; 
-					}
+					}	
 					
-					if (piece_array[i][j]==null) {
-						continue; 
-					}
-					else if (piece_array[i][j].isFire() && piece_array[i][j].isBomb()==false && piece_array[i][j].isShield()==false) {
-						StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-fire.png", 1, 1); 
-					}
-					else if (piece_array[i][j].isFire() && piece_array[i][j].isShield()) {
-						StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-fire.png", 1, 1);
-					}
-					else if (piece_array[i][j].isFire() && piece_array[i][j].isBomb()) {
-						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-fire.png", 1, 1);
-					}
-					else if (piece_array[i][j].isFire()== false && piece_array[i][j].isBomb()) {
-						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-water.png", 1, 1);
-					}
-					else if (piece_array[i][j].isFire()== false && piece_array[i][j].isShield()) {
-						StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-water.png", 1, 1);
-					}
-					else if (piece_array[i][j].isFire()== false && piece_array[i][j].isBomb()==false && piece_array[i][j].isShield()==false) {
-						StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-water.png", 1, 1);
-					}
 				}
 			}
+			drawBoard(8);
 		}
 
 		else {
@@ -83,6 +62,31 @@ public class Board {
 				}
 				// Now actually fill in the Square color
 				StdDrawPlus.filledSquare(j+0.5, i+0.5, 0.5);
+			}
+		}
+		for (int i=0; i<N; i= i+1) {
+			for (int j=0; j<N; j= j+1) {
+				if (piece_array[i][j]==null) {
+						continue; 
+				}
+				else if (piece_array[i][j].isFire() && piece_array[i][j].isBomb()==false && piece_array[i][j].isShield()==false) {
+					StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-fire.png", 1, 1); 
+				}
+				else if (piece_array[i][j].isFire() && piece_array[i][j].isShield()) {
+					StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-fire.png", 1, 1);
+				}
+				else if (piece_array[i][j].isFire() && piece_array[i][j].isBomb()) {
+					StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-fire.png", 1, 1);
+				}
+				else if (piece_array[i][j].isFire()== false && piece_array[i][j].isBomb()) {
+					StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-water.png", 1, 1);
+				}
+				else if (piece_array[i][j].isFire()== false && piece_array[i][j].isShield()) {
+					StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-water.png", 1, 1);
+				}
+				else if (piece_array[i][j].isFire()== false && piece_array[i][j].isBomb()==false && piece_array[i][j].isShield()==false) {
+					StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-water.png", 1, 1);
+				}
 			}
 		}
 	}
