@@ -14,10 +14,13 @@ public class Board {
 	private boolean hascaptured= false; 
 
 	public static void main(String [] args) {
-		/*piece_array= new Piece[8][8]; */
+		int scale= 8;
+		StdDrawPlus.setXscale(0, scale);
+		StdDrawPlus.setYscale(0, scale);
+		Board board= new Board(false);
 		/*board= new Board(true); // Call the board constructor*/
 		// --^ USE THAT FOR AUTOGRADER
-		Board board= new Board(false);
+
 		/* board.select(0, 0); */ // SELECT CAN HIGHLIGHT!!!
 		
 	}
