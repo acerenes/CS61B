@@ -80,7 +80,7 @@ public class Piece {
 			int j= (y- oldy)/ Math.abs(y- oldy); // direction
 			
 			Piece jumped= board.pieceAt(oldx+i, oldy+j); 
-			board.remove(oldx+i, oldy+j)
+			board.remove(oldx+i, oldy+j);
 			/*if (jumped==null) {
 				oldx= oldx+2*i; 
 				oldy= oldy+2*j;  
