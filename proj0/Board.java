@@ -13,13 +13,24 @@ public class Board {
 	private Piece prevselectedpiece= null; 
 	private boolean hascaptured= false; 
 
+	private static boolean[][] pieces; 
+
 	public static void main(String [] args) {
 		int scale= 8;
 		StdDrawPlus.setXscale(0, scale);
 		StdDrawPlus.setYscale(0, scale);
+		pieces= new boolean[scale][scale]; 
 		Board board= new Board(false);
-		/*board= new Board(true); // Call the board constructor*/
-		// --^ USE THAT FOR AUTOGRADER
+		
+		while (true) {
+			board.drawBoard(scale); 
+			if (StdDrawPlus.mousePressed()) {
+				double x= StdDrawPlus.mouseX(); 
+				double y= StdDrawPlus.mouseY();
+				pieces[(int) x][(int) y]= true; 
+			}
+			StdDrawPlus.show(100); 
+		}
 
 		/* board.select(0, 0); */ // SELECT CAN HIGHLIGHT!!!
 		
