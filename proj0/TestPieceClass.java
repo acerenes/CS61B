@@ -75,11 +75,11 @@ public class TestPieceClass {
 		old1.move(2, 2); 
 		assertEquals(false, old1.hasCaptured());
 		/* Has captured */
-		/*Piece waterbomb= b.pieceAt(3, 5);
-		waterbomb.move(3, 3); // JUST MOVING IT HERE SO I CAN CAPTURE IT WITH MY FIRE BOMB
+		Piece waterbomb= b.pieceAt(1, 5); 
+		waterbomb.move(3, 3); 
 		Piece firebomb= b.pieceAt(2, 2);
 		firebomb.move(4, 4);
-		assertEquals(true, firebomb.hasCaptured()); */
+		assertEquals(true, firebomb.hasCaptured()); 
 	}
 
 	@Test 
