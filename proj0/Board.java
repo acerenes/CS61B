@@ -2,7 +2,7 @@ public class Board {
 
 	private Piece[][] piece_array;
 	private Board board; 
-	public int player= 1; // Start with fire CHANGE TO PRDLIFUGLDSIHGLSDIUGHLSIDHGLSIUHLIUSHDL
+	private int player= 1; 
 	private boolean has_selected_1= false;
 	private boolean has_selected_0= false; 
 	private boolean hasselected; 
@@ -146,8 +146,6 @@ public class Board {
 			hasselected= has_selected_1;
 		}
 		if (piece!=null) { // Square w/a piece
-			System.out.println("0, 0 is going into the right case"); 
-			System.out.println("hasselected =" + hasselected); 
 			if (piece.side()!= player && hasselected==false) { 
 				/*prevselected= true; */
 				prevselectedpiece= piece; 
