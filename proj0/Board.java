@@ -29,8 +29,8 @@ public class Board {
 			if (StdDrawPlus.mousePressed()) {
 				double x= StdDrawPlus.mouseX(); 
 				double y= StdDrawPlus.mouseY();
-				if (StdDrawPlus.isSpacePressed() && canEndTurn()) {
-					endTurn(); 
+				if (StdDrawPlus.isSpacePressed() && board.canEndTurn()) {
+					board.endTurn(); // b/c non-static methods- need the .
 				}
 				pieces[(int) x][(int) y]= true; 
 			}
@@ -211,6 +211,9 @@ public class Board {
 		selectedpiece= pieceAt(x, y); 
 		if (selectedpiece!=null) { // square with a piece
 			prepped_piece_4move= selectedpiece; 
+			int xpos= getXPos(selectedpiece); 
+			int ypos= getYPos(selectedpiece); 
+			prepped_piece_4move.move(xpos, ypos); 
 		}
 		else if (selectedpiece== null && prepped_piece_4move==null) {
 			return; 
