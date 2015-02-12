@@ -76,9 +76,9 @@ public class TestPieceClass {
 		assertEquals(false, old1.hasCaptured());
 		/* Has captured */
 		Piece waterbomb= b.pieceAt(1, 5); 
-		waterbomb.move(3, 3); 
+		b.place(waterbomb, 3, 3); 
 		Piece firebomb= b.pieceAt(2, 2);
-		firebomb.move(4, 4);
+		b.place(firebomb, 4, 4);
 		assertEquals(true, firebomb.hasCaptured()); 
 	}
 
@@ -88,9 +88,9 @@ public class TestPieceClass {
 		Board.main(args);
 		Board b= new Board(false); 
 		Piece waterbomb= b.pieceAt(1, 5); 
-		waterbomb.move(3, 3); 
+		b.place(waterbomb, 3, 3);
 		Piece firebomb= b.pieceAt(2, 2);
-		firebomb.move(4, 4);
+		b.place(firebomb, 4, 4);
 		assertEquals(true, firebomb.hasCaptured());
 
 		firebomb.doneCapturing();

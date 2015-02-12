@@ -110,8 +110,6 @@ public class Piece {
 	}
 	public void doneCapturing() {
 		captured= null; 
-		/*this.hasCaptured()= false; */
-		// YOU AREN'T WORKING ALIUGHALIGHALIHGLAIUHELIHU
 	}
 
 }
