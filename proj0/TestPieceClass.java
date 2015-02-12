@@ -84,12 +84,17 @@ public class TestPieceClass {
 
 	@Test 
 	public void testdoneCapturing() {
-		Board b= new Board(true); 
-		Piece old1= new Piece(true, b, 0, 0, "pawn"); 
-		old1.move(2, 2); 
-		assertEquals(true, old1.hasCaptured());
-		old1.doneCapturing();
-		assertEquals(false, old1.hasCaptured());
+		String[] args= {};
+		Board.main(args);
+		Board b= new Board(false); 
+		Piece waterbomb= b.pieceAt(1, 5); 
+		waterbomb.move(3, 3); 
+		Piece firebomb= b.pieceAt(2, 2);
+		firebomb.move(4, 4);
+		assertEquals(true, firebomb.hasCaptured());
+
+		firebomb.doneCapturing();
+		assertEquals(false, firebomb.hasCaptured()); 
 	}
 
 	@Test

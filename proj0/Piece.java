@@ -102,15 +102,14 @@ public class Piece {
 	}
 
 	public boolean hasCaptured() { 
-		if (captured != null)/*((Math.abs(newpiece.xpos - oldpiece.xpos)>=2) && (Math.abs(newpiece.ypos - oldpiece.ypos)>=2))*/ {
+		if (captured != null) {
 			return true;
 		}
-		else {
-			return false;
-		}
+		return false;
 
 	}
 	public void doneCapturing() {
+		captured= null; 
 		/*this.hasCaptured()= false; */
 		// YOU AREN'T WORKING ALIUGHALIGHALIHGLAIUHELIHU
 	}
