@@ -68,36 +68,27 @@ public class Piece {
 		return false; 
 	}
 
-	public void move(int x, int y) {
+	public void move(int x, int y) { // Assumes the move is valid 
 		int oldx= this.xpos;
 		int oldy= this.ypos;
-		/*board.place(this, x, y);*/ 
 		this.xpos= x;
 		this.ypos= y;
 		/* I think if you jumped over something, take that piece into a variable, and then remove it */
-		// Only go through this if moved more than 1 space- possibility of a capture
+		// Only go through this if moved more than 1 space- get the captured piece- possibility of a capture
 		if (Math.abs(x-oldx)>=2 && Math.abs(y-oldy)>=2) {
 			int i= (x- oldx)/ Math.abs(x- oldx); 
-			int j= (y- oldy)/ Math.abs(y- oldy); 
-			while(oldx!=x) {
-				if ((i>0 && oldx>x) || (i<0 && oldx<x)) {
-					break;
-				}
-				Piece jumped= board.pieceAt(oldx+i, oldy+j); 
-				if (jumped==null) {
-					oldx= oldx+2*i; 
-					oldy= oldy+2*j;  
-				}
-				else if (jumped.element != this.element) {
-					captured= board.remove(oldx+i, oldy+j);
-					oldx= oldx+2*i; 
-					oldy= oldy+2*j; 
-				}
-				else {
-					break; 
-				}
-
-			}
+			int j= (y- oldy)/ Math.abs(y- oldy); // direction
+			
+			Piece jumped= board.pieceAt(oldx+i, oldy+j); 
+			board.remove(oldx+i, oldy+j)
+			/*if (jumped==null) {
+				oldx= oldx+2*i; 
+				oldy= oldy+2*j;  
+			}*/ // This was assuming had to like check if the move was valid. 
+			/*else if (jumped.element != this.element) {
+				captured= board.remove(oldx+i, oldy+j);*/ // was looking if valid capture 
+				/*oldx= oldx+2*i; 
+				oldy= oldy+2*j; */
 		}
 	}
 
