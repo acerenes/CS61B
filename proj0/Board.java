@@ -17,6 +17,8 @@ public class Board {
 
 	private static boolean[][] pieces; 
 
+
+
 	public static void main(String [] args) {
 		int scale= 8;
 		StdDrawPlus.setXscale(0, scale);
@@ -35,10 +37,17 @@ public class Board {
 				pieces[(int) x][(int) y]= true; 
 			}
 			StdDrawPlus.show(100); 
+			board.updateBoard(); // updating stuff in while loop. Outside while loop, nothing happens, because the while loop is always true. 
 		}
+
+
 
 		/* board.select(0, 0); */ // SELECT CAN HIGHLIGHT!!!
 		
+	}
+
+	private void updateBoard() {
+		board.drawBoard(8); 
 	}
 
 	public Board(boolean shouldBeEmpty) { // Constructor
@@ -137,7 +146,7 @@ public class Board {
 			hasselected= has_selected_1;
 		}
 		if (piece!=null) { // Square w/a piece
-			if (piece.side()== player && (hasselected==false || (hasselected && hasmoved==false))) { 
+			if (piece.side()== player && (hasselected==false || (hasselected==true && hasmoved==false))) { 
 				/*prevselected= true; */
 				prevselectedpiece= piece; 
 				return true; 
@@ -219,7 +228,11 @@ public class Board {
 			return; 
 		}
 		else if (selectedpiece==null && prepped_piece_4move!=null) {
+			int xpos= getXPos(prepped_piece_4move); 
+			int ypos= getYPos(prepped_piece_4move);
+			place(prepped_piece_4move, x, y); 
 			prepped_piece_4move.move(x, y); 
+			remove(xpos, ypos); 
 		}
 		
 		/*if (player==0) {
