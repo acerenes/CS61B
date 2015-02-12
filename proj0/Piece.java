@@ -79,7 +79,7 @@ public class Piece {
 			int i= (x- oldx)/ Math.abs(x- oldx); 
 			int j= (y- oldy)/ Math.abs(y- oldy); // direction
 			
-			Piece jumped= board.pieceAt(oldx+i, oldy+j); 
+			Piece captured= board.pieceAt(oldx+i, oldy+j); 
 			board.remove(oldx+i, oldy+j);
 			/*if (jumped==null) {
 				oldx= oldx+2*i; 
@@ -89,7 +89,21 @@ public class Piece {
 				captured= board.remove(oldx+i, oldy+j);*/ // was looking if valid capture 
 				/*oldx= oldx+2*i; 
 				oldy= oldy+2*j; */
+
+			/* Now take care of bomb pieces exploding */
+			if (this.isBomb()) {
+				board.remove(x-1, y-1);
+				board.remove(x, y-1);
+				board.remove(x+1, y-1); 
+				board.remove(x-1, y); 
+				board.remove(x, y); 
+				board.remove(x+1, y); 
+				board.remove(x-1, y+1);
+				board.remove(x, y+1); 
+				board.remove(x+1, y+1); 
+			}
 		}
+
 	}
 
 	public boolean hasCaptured() { 
