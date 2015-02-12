@@ -32,7 +32,7 @@ public class TestBoardClass {
 		/* Test an actual moven piece - move the fire shield */
 		Piece fireshield= b.pieceAt(5, 1); 
 		b.place(fireshield, 7, 5); 
-		Piece testpiece2= b.pieceAt(7, 5);
+		Piece testpiece2= b.pieceAt(7, 5); 
 		assertEquals(true, testpiece2.element);
 		assertEquals("shield", testpiece2.piecetype);
 	}
@@ -67,7 +67,7 @@ public class TestBoardClass {
 		assertEquals(null, b.winner()); 
 	}
 
-	
+
 
 
 	public static void main(String[] args) {

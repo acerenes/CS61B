@@ -6,6 +6,8 @@ public class Board {
 	private boolean has_selected_1= false;
 	private boolean has_selected_0= false; 
 	private boolean hasselected; 
+	private int xval; 
+	private int yval; 
 
 	public Board(boolean shouldBeEmpty) { // Constructor
 		if (shouldBeEmpty== false) {
@@ -86,7 +88,7 @@ public class Board {
 	}
 
 	public Piece pieceAt(int x, int y) {
-		if (x>8 || y>8) {
+		if (x>8 || y>8 || piece_array[y][x]==null) {
 			return null; 
 		}
 		else {
@@ -99,9 +101,35 @@ public class Board {
 			return;
 		}
 		else {
+			int xval= getXPos(p);
+			int yval= getYPos(p); // Current position
 			piece_array[y][x]= p; 
+			piece_array[yval][xval]= null; 
+			p.move(x, y); // Have to update back-end stuff too 
 		}
 
+	}
+
+	private int getXPos(Piece p) {
+		for(int i=0; i<8; i= i+1) { // Rows
+			for(int j=0; j<8; j= j+1) { // Columns
+				if (piece_array[i][j]==p) {
+					xval= j; 
+				}
+			}
+		}
+		return xval; 
+	}
+
+	private int getYPos(Piece p) {
+		for(int i=0; i<8; i= i+1) {
+			for(int j=0; j<8; j= j+1) {
+				if (piece_array[i][j]==p) {
+					yval= i;
+				}
+			}
+		}
+		return yval; 
 	}
 
 	private boolean single_step(int xi, int yi, int xf, int yf) {
@@ -216,7 +244,7 @@ public class Board {
 	}
 
 	/* MAKE SURE THIS METHOD IS PRIVATE DLIRUGHDSLRIUGHDSLIRUHGLSDIRUGHLISDRUHGLIDSURHGLIDSUHGLISUD OKAY */
-	private boolean validMove(int xi, int yi, int xf, int yf) {
+	public boolean validMove(int xi, int yi, int xf, int yf) {
 		/* Make sure not trying to move it out of bounds */
 		if (xf >8 || yf>8) {
 			return false;

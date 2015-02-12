@@ -71,7 +71,7 @@ public class Piece {
 	public void move(int x, int y) {
 		int oldx= this.xpos;
 		int oldy= this.ypos;
-		board.place(this, x, y); 
+		/*board.place(this, x, y);*/ 
 		this.xpos= x;
 		this.ypos= y;
 		/* I think if you jumped over something, take that piece into a variable, and then remove it */
