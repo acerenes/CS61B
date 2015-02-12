@@ -9,6 +9,16 @@ public class Board {
 	private int xval; 
 	private int yval; 
 
+	public static void main(String [] args) {
+		piece_array= new Piece[8][8]; // Initialize piece_array to be 8x8 
+		// technically rn full of nulls
+		/*board= new Board(true); // Call the board constructor*/
+		// --^ USE THAT FOR AUTOGRADER
+		board= new Board(false);
+		/* board.select(0, 0); */ // SELECT CAN HIGHLIGHT!!!
+		
+	}
+
 	public Board(boolean shouldBeEmpty) { // Constructor
 		if (shouldBeEmpty== false) {
 			// Need to put in the default configuration of the board
@@ -45,7 +55,6 @@ public class Board {
 			drawBoard(8);
 		}
 	}
-
 
 	private static void drawBoard(int N) {
 		int scale= 8;
@@ -100,6 +109,80 @@ public class Board {
 		}
 	}
 
+	public boolean canSelect(int x, int y) {
+		Piece piece= piece_array[y][x];
+		if (player==0) {
+			hasselected= has_selected_0;
+		}
+		else if (player==1) {
+			hasselected= has_selected_1;
+		}
+		if (piece!=null) { // Square w/a piece
+			if (piece.side()== player && (hasselected==false)) { // DRGHRLIGHALIHALUH HAVEN'T FINISHED IT
+				return false; // CHANGE
+			}
+		}
+		else { // Empty square
+			return false; // CHANGE
+		}
+		return false; // CHANGE 
+	}
+
+	/* MAKE SURE THIS METHOD IS PRIVATE DLIRUGHDSLRIUGHDSLIRUHGLSDIRUGHLISDRUHGLIDSURHGLIDSUHGLISUD OKAY */
+	private boolean validMove(int xi, int yi, int xf, int yf) {
+		/* Make sure not trying to move it out of bounds */
+		if (xf >8 || yf>8) {
+			return false;
+		}
+		
+		// Single Step
+		if (Math.abs(xf-xi)==1 && Math.abs((yf-yi))==1) {
+			return single_step(xi, yi, xf, yf); 
+		}
+		/* Single capture */
+		if (Math.abs(xf-xi)==2 && Math.abs(yf-yi)==2) {
+			return single_capture(xi, yi, xf, yf);
+		}
+		/* Multi-capture */
+		if (Math.abs(xf-xi)>=3 && Math.abs(yf-yi)>=3 && Math.abs(xf-xi)==Math.abs(yf-yi) && pieceAt(xf, yf)==null) {
+			return multi_capture(xi, yi, xf, yf);
+		}
+		else {
+			return false; 
+		}		
+	}
+
+	public void select(int x, int y) {
+		Piece piece= piece_array[y][x]; 
+		StdDrawPlus.setPenColor(StdDrawPlus.WHITE); 
+		StdDrawPlus.filledSquare(x+0.5, y+0.5, 0.5); 
+		if (piece.isFire() && piece.isBomb()==false && piece.isShield()==false) {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-fire.png", 1, 1); 
+		}
+		else if (piece.isFire() && piece.isShield()== true) {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/shield-fire.png", 1, 1);
+		}
+		else if (piece.isFire() && piece.isBomb()== true) {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/bomb-fire.png", 1, 1);
+		}
+		else if (piece.isFire()== false && piece.isBomb()== true) {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/bomb-water.png", 1, 1);
+		}
+		else if (piece.isFire()== false && piece.isShield()== true) {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/shield-water.png", 1, 1);
+		}
+		else if (piece.isFire()== false && piece.isBomb()==false && piece.isShield()==false) {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-water.png", 1, 1);
+		}
+
+		if (player==0) {
+			has_selected_0= true; 
+		}
+		else if (player==1) {
+			has_selected_1= true;
+		}
+	}
+
 	public void place(Piece p, int x, int y) {
 		if (x>8 || y>8 || p==null) {
 			return;
@@ -112,6 +195,33 @@ public class Board {
 			p.move(x, y); // Have to update back-end stuff too 
 		}
 
+	}
+
+	public Piece remove(int x, int y) {
+		if (x>=8 || y>=8) {
+			System.out.println("Input (" + x + ", " + y + ") is out of bounds.");
+			return null; 
+		}
+		else if (piece_array[y][x]== null) {
+			System.out.println("There is no piece at (" + x + ", " + y + ")."); 
+			return null; 
+		}
+		else {
+			Piece removed_piece= piece_array[y][x]; 
+			piece_array[y][x]= null; 
+			return removed_piece; 
+		}
+	}
+
+	
+
+	public boolean canEndTurn() {
+		
+		
+	}
+
+	public void endTurn() {
+		
 	}
 
 	private int getXPos(Piece p) {
@@ -247,45 +357,9 @@ public class Board {
 		return false; // tbh I'm not sure why this is necessary, but java gets mad if I don't have it	
 	}
 
-	/* MAKE SURE THIS METHOD IS PRIVATE DLIRUGHDSLRIUGHDSLIRUHGLSDIRUGHLISDRUHGLIDSURHGLIDSUHGLISUD OKAY */
-	public boolean validMove(int xi, int yi, int xf, int yf) {
-		/* Make sure not trying to move it out of bounds */
-		if (xf >8 || yf>8) {
-			return false;
-		}
-		
-		// Single Step
-		if (Math.abs(xf-xi)==1 && Math.abs((yf-yi))==1) {
-			return single_step(xi, yi, xf, yf); 
-		}
-		/* Single capture */
-		if (Math.abs(xf-xi)==2 && Math.abs(yf-yi)==2) {
-			return single_capture(xi, yi, xf, yf);
-		}
-		/* Multi-capture */
-		if (Math.abs(xf-xi)>=3 && Math.abs(yf-yi)>=3 && Math.abs(xf-xi)==Math.abs(yf-yi) && pieceAt(xf, yf)==null) {
-			return multi_capture(xi, yi, xf, yf);
-		}
-		else {
-			return false; 
-		}		
-	}
+	
 
-	public Piece remove(int x, int y) {
-		if (x>=8 || y>=8) {
-			System.out.println("Input (" + x + ", " + y + ") is out of bounds.");
-			return null; 
-		}
-		else if (piece_array[y][x]== null) {
-			System.out.println("There is no piece at (" + x + ", " + y + ")."); 
-			return null; 
-		}
-		else {
-			Piece removed_piece= piece_array[y][x]; 
-			piece_array[y][x]= null; 
-			return removed_piece; 
-		}
-	}
+	
 
 	public String winner() {
 		int fire_count= 0; 
@@ -318,72 +392,5 @@ public class Board {
 		}
 		return null; // I guess all other things are null
 	}
-
-	public boolean canSelect(int x, int y) {
-		Piece piece= piece_array[y][x];
-		if (player==0) {
-			hasselected= has_selected_0;
-		}
-		else if (player==1) {
-			hasselected= has_selected_1;
-		}
-		if (piece!=null) { // Square w/a piece
-			if (piece.side()== player && (hasselected==false)) { // DRGHRLIGHALIHALUH HAVEN'T FINISHED IT
-				return false; // CHANGE
-			}
-		}
-		else { // Empty square
-			return false; // CHANGE
-		}
-		return false; // CHANGE 
-	}
-
-	public void select(int x, int y) {
-		Piece piece= piece_array[y][x]; 
-		StdDrawPlus.setPenColor(StdDrawPlus.WHITE); 
-		StdDrawPlus.filledSquare(x+0.5, y+0.5, 0.5); 
-		if (piece.isFire() && piece.isBomb()==false && piece.isShield()==false) {
-			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-fire.png", 1, 1); 
-		}
-		else if (piece.isFire() && piece.isShield()== true) {
-			StdDrawPlus.picture(x+0.5, y+0.5, "img/shield-fire.png", 1, 1);
-		}
-		else if (piece.isFire() && piece.isBomb()== true) {
-			StdDrawPlus.picture(x+0.5, y+0.5, "img/bomb-fire.png", 1, 1);
-		}
-		else if (piece.isFire()== false && piece.isBomb()== true) {
-			StdDrawPlus.picture(x+0.5, y+0.5, "img/bomb-water.png", 1, 1);
-		}
-		else if (piece.isFire()== false && piece.isShield()== true) {
-			StdDrawPlus.picture(x+0.5, y+0.5, "img/shield-water.png", 1, 1);
-		}
-		else if (piece.isFire()== false && piece.isBomb()==false && piece.isShield()==false) {
-			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-water.png", 1, 1);
-		}
-
-		if (player==0) {
-			has_selected_0= true; 
-		}
-		else if (player==1) {
-			has_selected_1= true;
-		}
-	}
-
-	public boolean canEndTurn() {
-		return false; // CHANGE
-	}
-
-	public void endTurn() {
-		
-	}
-
-	public static void main(String [] args) {
-		piece_array= new Piece[8][8]; // Initialize piece_array to be 8x8 
-		// technically rn full of nulls
-		/*board= new Board(true); // Call the board constructor*/
-		// --^ USE THAT FOR AUTOGRADER
-		board= new Board(false);
-		/* board.select(0, 0); */ // SELECT CAN HIGHLIGHT!!!
-		
-	}
+	
 }
