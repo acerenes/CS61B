@@ -64,9 +64,6 @@ public class Board {
 	}
 
 	private void drawBoard(int N) {
-		int scale= 8;
-		StdDrawPlus.setXscale(0, scale);
-		StdDrawPlus.setYscale(0, scale);
 		for (int i=0; i<N; i= i+1) { // Rows
 			for (int j=0; j<N; j= j+1) { // Columns
 				// Decide which color the square will be
