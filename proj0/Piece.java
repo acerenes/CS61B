@@ -105,4 +105,4 @@ public class Piece {
 
 }
 
-/* Thanks to Sreesha Venkat and Karin Goh and Anna-Marie for help. */ 
+/* Thanks to Sreesha Venkat and Karin Goh and Anna-Marie and Jenny for help. */ 

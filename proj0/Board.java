@@ -12,6 +12,8 @@ public class Board {
 	/*private boolean prevselected= false; */
 	private Piece prevselectedpiece= null; 
 	private boolean hascaptured= false; 
+	private Piece selectedpiece= null;
+	private Piece prepped_piece_4move= null;  
 
 	private static boolean[][] pieces; 
 
@@ -27,6 +29,9 @@ public class Board {
 			if (StdDrawPlus.mousePressed()) {
 				double x= StdDrawPlus.mouseX(); 
 				double y= StdDrawPlus.mouseY();
+				if (StdDrawPlus.isSpacePressed() && canEndTurn()) {
+					endTurn(); 
+				}
 				pieces[(int) x][(int) y]= true; 
 			}
 			StdDrawPlus.show(100); 
@@ -203,13 +208,24 @@ public class Board {
 		else if (piece.isFire()== false && piece.isBomb()==false && piece.isShield()==false) {
 			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-water.png", 1, 1);
 		}*/
-
-		if (player==0) {
+		selectedpiece= pieceAt(x, y); 
+		if (selectedpiece!=null) { // square with a piece
+			prepped_piece_4move= selectedpiece; 
+		}
+		else if (selectedpiece== null && prepped_piece_4move==null) {
+			return; 
+		}
+		else if (selectedpiece==null && prepped_piece_4move!=null) {
+			prepped_piece_4move.move(x, y); 
+		}
+		
+		/*if (player==0) {
 			has_selected_0= true; 
+
 		}
 		else if (player==1) {
 			has_selected_1= true;
-		}
+		}*/
 	}
 
 	public void place(Piece p, int x, int y) {
