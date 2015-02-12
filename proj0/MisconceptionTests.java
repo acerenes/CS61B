@@ -16,6 +16,7 @@ public class MisconceptionTests {
         b.place(shield, 0, 0);
 
         // Verify that it can be selected.
+        System.out.println("player" + "= " + b.player); 
         assertTrue(b.canSelect(0, 0));
         b.select(0, 0);
 
