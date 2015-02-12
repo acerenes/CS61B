@@ -169,7 +169,7 @@ public class Board {
 	}
 
 	public void select(int x, int y) {
-		Piece piece= piece_array[y][x]; 
+		/*Piece piece= piece_array[y][x]; 
 		StdDrawPlus.setPenColor(StdDrawPlus.WHITE); 
 		StdDrawPlus.filledSquare(x+0.5, y+0.5, 0.5); 
 		if (piece.isFire() && piece.isBomb()==false && piece.isShield()==false) {
@@ -189,7 +189,7 @@ public class Board {
 		}
 		else if (piece.isFire()== false && piece.isBomb()==false && piece.isShield()==false) {
 			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-water.png", 1, 1);
-		}
+		}*/
 
 		if (player==0) {
 			has_selected_0= true; 
