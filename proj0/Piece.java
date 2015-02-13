@@ -73,10 +73,9 @@ public class Piece {
 		int oldy= this.ypos;
 		this.xpos= x;
 		this.ypos= y;
-		System.out.println("move");
 
 		if (board==null) {
-			System.out.println("BOARD IS NULL"); 
+			System.out.println("Board is null"); 
 		}
 
 		if (board.pieceAt(oldx, oldy)!=null) {
@@ -102,15 +101,17 @@ public class Piece {
 
 			/* Now take care of bomb pieces exploding */
 			if (this.isBomb()) {
-				board.remove(x-1, y-1);
-				board.remove(x, y-1);
-				board.remove(x+1, y-1); 
-				board.remove(x-1, y); 
-				board.remove(x, y); 
-				board.remove(x+1, y); 
-				board.remove(x-1, y+1);
-				board.remove(x, y+1); 
-				board.remove(x+1, y+1); 
+				int xpos= x-1; 
+				int ypos= y-1;
+				while (xpos<=x+1 && xpos>=0 && xpos<=7) {
+					while (ypos<=y-1 && ypos>=0 && ypos<=7) {
+						if (this.isShield()==false) {
+							board.remove(xpos, ypos);
+						}
+						ypos= ypos+1; 
+					}
+					xpos= xpos+1;
+				}
 			}
 		}
 
