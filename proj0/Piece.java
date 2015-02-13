@@ -1,16 +1,16 @@
 public class Piece {
 
 	/* Declaring instance variables */
-	/*private boolean element;
+	private boolean element;
 	private Board board; 
 	private int xpos;
 	private int ypos;
 	private String piecetype;
 	private Piece oldpiece; 
 	private Piece newpiece;
-	private Piece captured= null; */
+	private Piece captured= null; 
 
-	public boolean element;
+	/*public boolean element;
 	public Board board; 
 	public int xpos;
 	public int ypos;
@@ -18,7 +18,7 @@ public class Piece {
 	public Piece oldpiece;  
 	public Piece newpiece; 
 	public Piece captured= null;// Declare it up here so has captured can use it as well  
-	// FOR TESTING
+	// FOR TESTING*/
 
 	/* Constructor for a Piece */
 	public Piece(boolean isFire, Board b, int x, int y, String type) {
@@ -103,10 +103,14 @@ public class Piece {
 			if (this.isBomb()) {
 				int xstart= x-1; 
 				int ystart= y-1;
+				System.out.println("1");
 				while (xstart<=x+1 && xstart>=0 && xstart<=7) {
+					ystart= y-1; // Set back to y-1 because gotta start back at y-1 place
 					while (ystart<=y+1 && ystart>=0 && ystart<=7) {
-						Piece gonepiece= board.pieceAt(xpos, ypos);
-						if (gonepiece!= null && gonepiece.isShield()==false) {
+						System.out.println("about to check" + xstart +" and " + ystart);
+						Piece gonepiece= board.pieceAt(xstart, ystart);
+						if (gonepiece!= null && !gonepiece.isShield()) {
+							System.out.println("went into loop COOL");
 							board.remove(xstart, ystart);
 						}
 						ystart= ystart+1; 
