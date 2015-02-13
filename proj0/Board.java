@@ -266,7 +266,6 @@ public class Board {
 			System.out.println("canSelect = false"); 
 			System.out.println("I didn't return false for the rest of the loops");
 			return false; 
-		}
 	}
 
 	/* MAKE SURE THIS METHOD IS PRIVATE DLIRUGHDSLRIUGHDSLIRUHGLSDIRUGHLISDRUHGLIDSURHGLIDSUHGLISUD OKAY */
