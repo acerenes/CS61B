@@ -1,16 +1,16 @@
 public class Piece {
 
 	/* Declaring instance variables */
-	private boolean element;
+	/*private boolean element;
 	private Board board; 
 	private int xpos;
 	private int ypos;
 	private String piecetype;
 	private Piece oldpiece; 
 	private Piece newpiece;
-	private Piece captured= null; 
+	private Piece captured= null; */
 
-	/*public boolean element;
+	public boolean element;
 	public Board board; 
 	public int xpos;
 	public int ypos;
@@ -18,7 +18,7 @@ public class Piece {
 	public Piece oldpiece;  
 	public Piece newpiece; 
 	public Piece captured= null;// Declare it up here so has captured can use it as well  
-	// FOR TESTING*/
+	// FOR TESTING
 
 	/* Constructor for a Piece */
 	public Piece(boolean isFire, Board b, int x, int y, String type) {
@@ -106,7 +106,7 @@ public class Piece {
 				while (xstart<=x+1 && xstart>=0 && xstart<=7) {
 					while (ystart<=y+1 && ystart>=0 && ystart<=7) {
 						Piece gonepiece= board.pieceAt(xpos, ypos);
-						if (gonepiece.isShield()==false) {
+						if (gonepiece!= null && gonepiece.isShield()==false) {
 							board.remove(xstart, ystart);
 						}
 						ystart= ystart+1; 

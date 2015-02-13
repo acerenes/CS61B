@@ -102,13 +102,27 @@ public class TestPieceClass {
 		String[] args= {};
 		Board.main(args);
 		Board b= new Board(false);
-		Piece testpiece= b.pieceAt(2, 2);
+		/*Piece testpiece= b.pieceAt(2, 2);
 		testpiece.move(3, 3); 
 		/* These won't work once variables are turned private */
-		assertTrue(testpiece.isFire()); 
+		/*assertTrue(testpiece.isFire()); 
 		assertEquals(3, testpiece.xpos); 
 		assertEquals(3, testpiece.ypos);
-		assertTrue(testpiece.isBomb());
+		assertTrue(testpiece.isBomb());*/
+
+		Piece waterbomb= b.pieceAt(1, 5); 
+		waterbomb.move(3, 3); 
+		Piece firebomb= b.pieceAt(4, 2); 
+		firebomb.move(2, 4); 
+		assertEquals(null, b.pieceAt(1, 3));
+		assertEquals(null, b.pieceAt(2, 3));
+		assertEquals(null, b.pieceAt(3, 3)); 
+		assertEquals(null, b.pieceAt(1, 4));
+		assertEquals(null, b.pieceAt(2, 4));
+		assertEquals(null, b.pieceAt(3, 4)); 
+		assertEquals(null, b.pieceAt(1, 5));
+		assertEquals(null, b.pieceAt(2, 5));
+		assertEquals(null, b.pieceAt(3, 5));
 
 	}
 

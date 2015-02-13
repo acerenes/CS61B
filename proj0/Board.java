@@ -28,16 +28,11 @@ public class Board {
 		// And so for the rest of the main method, to access stuff from this board that you newly created, have to use board.STUFF not this.STUFF
 		
 		while (true) {
-			System.out.println("1");
 			board.drawBoard(scale); 
-			System.out.println("2");
 
 			if (StdDrawPlus.mousePressed()) {
-				System.out.println("lksdjlfks");
-
 				double x= StdDrawPlus.mouseX(); 
 				double y= StdDrawPlus.mouseY();
-				System.out.println("3");
 				board.select((int) x, (int) y); 
 
 				if (StdDrawPlus.isSpacePressed() && board.canEndTurn()) {
