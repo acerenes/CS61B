@@ -349,12 +349,10 @@ public class Board {
 			int xpos= getXPos(prepped_piece_4move); 
 			int ypos= getYPos(prepped_piece_4move);
 			prepped_piece_4move.move(x, y); 
-			hasmoved= true; 
-
 			/*board.place(x, y); */
 			remove(xpos, ypos); 
+			hasmoved= true; 
 			this.updateBoard();
-
 		}
 		
 		if (player==0) {
