@@ -215,11 +215,11 @@ public class Board {
 		if (piece!=null) { // Square w/a piece
 			// for side(), Fire= 0
 			if (piece.side()!= player && hasselected==false) { 
-				/*prevselected= true; */
+
 				/*System.out.println("went into loop 206");*/ 
 				prevselectedpiece= piece; 
-				/*hasselected= true; 
-				if (player==0) {
+				/*hasselected= true; */
+				/*if (player==0) {
 						has_selected_0= true; 
 					}
 					else if (player==1) {
@@ -231,6 +231,7 @@ public class Board {
 			else if (piece.side()!= player && hasselected && !hasmoved) {
 				/*System.out.println("went into loop 213"); */
 				prevselectedpiece= piece; 
+				// selecting a different piece now- made a mistake the first time
 				/*hasselected= true; 
 				if (player==0) {
 						has_selected_0= true; 
@@ -251,10 +252,13 @@ public class Board {
 				System.out.println("prevselectedpiece = " + prevselectedpiece); */
 				int xi= getXPos(prevselectedpiece); 
 				int yi= getYPos(prevselectedpiece); 
-				
-				System.out.println("canSelect = true"); 
-				return true; 
+				if (!hasmoved && validMove(xi, yi, x, y)) {
+					return true; 
 				}
+				else if (hascaptured && validMove(xi, yi, x, y)) {
+					return true; 
+				}
+				
 			}
 			/*hasselected= false;
 			if (player==0) {
@@ -266,6 +270,7 @@ public class Board {
 			System.out.println("canSelect = false"); 
 			System.out.println("I didn't return false for the rest of the loops");
 			return false; 
+		}
 	}
 
 	/* MAKE SURE THIS METHOD IS PRIVATE DLIRUGHDSLRIUGHDSLIRUHGLSDIRUGHLISDRUHGLIDSURHGLIDSUHGLISUD OKAY */
