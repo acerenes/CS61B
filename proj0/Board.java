@@ -218,26 +218,26 @@ public class Board {
 				/*prevselected= true; */
 				/*System.out.println("went into loop 206");*/ 
 				prevselectedpiece= piece; 
-				hasselected= true; 
+				/*hasselected= true; 
 				if (player==0) {
 						has_selected_0= true; 
 					}
 					else if (player==1) {
 						has_selected_1= true; 
-					}
+					}*/
 				System.out.println("canSelect = true"); 
 				return true; 
 			}
 			else if (piece.side()!= player && hasselected && !hasmoved) {
 				/*System.out.println("went into loop 213"); */
 				prevselectedpiece= piece; 
-				hasselected= true; 
+				/*hasselected= true; 
 				if (player==0) {
 						has_selected_0= true; 
 					}
 					else if (player==1) {
 						has_selected_1= true; 
-					}
+					}*/
 				System.out.println("canSelect = true"); 
 				return true; 
 			}
@@ -251,36 +251,9 @@ public class Board {
 				System.out.println("prevselectedpiece = " + prevselectedpiece); */
 				int xi= getXPos(prevselectedpiece); 
 				int yi= getYPos(prevselectedpiece); 
-				if (hascaptured && hasselected) {
-					/*System.out.println("went into loop 232");*/
-					hasselected= true; 
-					hascaptured= true; 
-					if (player==0) {
-						has_selected_0= true;
-						has_captured_0= true;  
-					}
-					else if (player==1) {
-						has_selected_1= true; 
-						has_captured_1= true; 
-					}
-					System.out.println("canSelect = true"); 
-					return true; 
-				}
-				if (piece==null && validMove(xi, yi, x, y)) {
-					/*System.out.println("went into loop 226");*/
-					hasselected= true; 
-					hascaptured= true; 
-					if (player==0) {
-						has_selected_0= true; 
-						has_captured_0= true; 
-					}
-					else if (player==1) {
-						has_selected_1= true; 
-						has_captured_1= true; 
-					}
-
-					System.out.println("canSelect = true"); 
-					return true; 
+				
+				System.out.println("canSelect = true"); 
+				return true; 
 				}
 			}
 			/*hasselected= false;
