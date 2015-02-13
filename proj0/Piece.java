@@ -101,16 +101,17 @@ public class Piece {
 
 			/* Now take care of bomb pieces exploding */
 			if (this.isBomb()) {
-				int xpos= x-1; 
-				int ypos= y-1;
-				while (xpos<=x+1 && xpos>=0 && xpos<=7) {
-					while (ypos<=y-1 && ypos>=0 && ypos<=7) {
-						if (this.isShield()==false) {
-							board.remove(xpos, ypos);
+				int xstart= x-1; 
+				int ystart= y-1;
+				while (xstart<=x+1 && xstart>=0 && xstart<=7) {
+					while (ystart<=y-1 && ystart>=0 && ystart<=7) {
+						Piece gonepiece= board.pieceAt(xpos, ypos);
+						if (gonepiece.isShield()==false) {
+							board.remove(xstart, ystart);
 						}
-						ypos= ypos+1; 
+						ystart= ystart+1; 
 					}
-					xpos= xpos+1;
+					xstart= xstart+1;
 				}
 			}
 		}
