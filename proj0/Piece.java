@@ -104,7 +104,7 @@ public class Piece {
 				int xstart= x-1; 
 				int ystart= y-1;
 				while (xstart<=x+1 && xstart>=0 && xstart<=7) {
-					while (ystart<=y-1 && ystart>=0 && ystart<=7) {
+					while (ystart<=y+1 && ystart>=0 && ystart<=7) {
 						Piece gonepiece= board.pieceAt(xpos, ypos);
 						if (gonepiece.isShield()==false) {
 							board.remove(xstart, ystart);
