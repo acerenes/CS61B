@@ -5,8 +5,6 @@ public class TestBoardClass {
 
 	@Test
 	public void testpieceAt() {
-		String[] args = {};
-		Board.main(args); // Calling the main method of Board.java
 		Board b= new Board(false);
 		Piece testpiece= b.pieceAt(0, 0); // Already returns a piece, so not making like a NEW piece
 		assertEquals(true, testpiece.element);
@@ -18,8 +16,6 @@ public class TestBoardClass {
 
 	@Test
 	public void testplace() {
-		String[] args= {};
-		Board.main(args);
 		Board b= new Board(false);
 		/* Test the null piece */
 		Piece nullpiece= b.pieceAt(0, 1); // null
@@ -37,34 +33,32 @@ public class TestBoardClass {
 		assertEquals("shield", testpiece2.piecetype);
 	}
 
-	@Test
+	/*@Test
 	public void testvalidMove() {
-		String[] args= {};
-		Board.main(args);
 		Board b= new Board(false); 
-		/* Test a fire, not king piece, single move */
+		//Test a fire, not king piece, single move 
 		assertEquals(true, b.validMove(0, 2, 1, 3));
-		/* Test a water, multi-capture */
+		// Test a water, multi-capture
 		assertEquals(false, b.validMove(1, 5, 5, 1)); 
-	}
+	}*/
+	// I DON'T KNOW HOW TO MAKE THIS TEST WORK B/C PRIVATE ACCESS
 
 	@Test
 	public void testremove() {
-		String[] args= {};
-		Board.main(args);
 		Board b= new Board(false); 
 		assertEquals(null, b.remove(8, 8)); 
 		assertEquals(null, b.remove(1, 0)); 
 		assertEquals(b.pieceAt(2, 2), b.remove(2,2));
+
 	}
 
 	@Test 
 	public void testwinner() {
-		String[] args= {};
-		Board.main(args);
+		Board b= new Board(true); 
+		assertEquals("No one", b.winner()); 
 		Board b= new Board(false);
-		/* Right now all I can do is look at the intial board */
 		assertEquals(null, b.winner()); 
+		b.remove()
 	}
 
 

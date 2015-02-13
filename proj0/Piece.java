@@ -1,16 +1,16 @@
 public class Piece {
 
 	/* Declaring instance variables */
-	private boolean element;
+	/*private boolean element;
 	private Board board; 
 	private int xpos;
 	private int ypos;
 	private String piecetype;
 	private Piece oldpiece; 
 	private Piece newpiece;
-	private Piece captured= null; 
+	private Piece captured= null; */
 
-	/*public boolean element;
+	public boolean element;
 	public Board board; 
 	public int xpos;
 	public int ypos;
@@ -18,7 +18,7 @@ public class Piece {
 	public Piece oldpiece;  
 	public Piece newpiece; 
 	public Piece captured= null;// Declare it up here so has captured can use it as well  
-	// FOR TESTING*/
+	// FOR TESTING
 
 	/* Constructor for a Piece */
 	public Piece(boolean isFire, Board b, int x, int y, String type) {
@@ -117,7 +117,33 @@ public class Piece {
 			}
 		}
 
+		if (board.pieceAt(x, y) != null) {
+			if (reachedEnd(board.pieceAt(x, y), y)) {
+			/*DURSYGHDLSIRUGHDSLRIUHGDSRLIU HEY WRITE THE WHOLE CROWNING THING AND CHANGING ALSO 
+			IF TIS A KING AND CAN CAPTURE AGAIN, DO THAT*/
+				boolean isFire= false; 
+				if (y==7) {
+					isFire= true; 
+				}
+				Piece newking= new Piece(isFire, board, x, y, "king"); 
+				board.place(newking, x, y);
+			}
+		}
+	}
 
+	private boolean reachedEnd(Piece p, int y) {
+		if (p.isFire()) {
+			if (y==7) {
+				return true; 
+			}
+			return false; 
+		}
+		else {
+			if (y==0) {
+				return true;
+			}
+			return false; 
+		}
 	}
 
 	public boolean hasCaptured() { 

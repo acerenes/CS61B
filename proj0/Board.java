@@ -1,6 +1,6 @@
 public class Board {
 
-	private Piece[][] piece_array;
+	/*private Piece[][] piece_array;
 	//okay so you don't declare private Board board because every class automatically has a field that is itself. So for the rest of the methods BESIDES MAIN use this.
 	private int player= 1; 
 	private boolean has_selected_1= false;
@@ -10,12 +10,32 @@ public class Board {
 	private int yval; 
 	private boolean hasmoved= false; 
 	/*private boolean prevselected= false; */
-	private Piece prevselectedpiece= null; 
+	/*private Piece prevselectedpiece= null; 
 	private boolean hascaptured= false; 
 	private Piece selectedpiece= null;
 	private Piece prepped_piece_4move= null;  
 
-	private static boolean[][] pieces; 
+	private static boolean[][] pieces; */
+
+
+
+	// FOR TESTING
+	public Piece[][] piece_array;
+	//okay so you don't declare private Board board because every class automatically has a field that is itself. So for the rest of the methods BESIDES MAIN use this.
+	public int player= 1; 
+	public boolean has_selected_1= false;
+	public boolean has_selected_0= false; 
+	public boolean hasselected; 
+	public int xval; 
+	public int yval; 
+	public boolean hasmoved= false; 
+	/*private boolean prevselected= false; */
+	public Piece prevselectedpiece= null; 
+	public boolean hascaptured= false; 
+	public Piece selectedpiece= null;
+	public Piece prepped_piece_4move= null;  
+
+	public static boolean[][] pieces; 
 
 
 
@@ -112,22 +132,52 @@ public class Board {
 						continue; 
 				}
 				else if (piece_array[i][j].isFire() && piece_array[i][j].isBomb()==false && piece_array[i][j].isShield()==false) {
-					StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-fire.png", 1, 1); 
+					if (piece_array[i][j].isKing()) {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-fire-crowned.png", 1, 1); 
+					}
+					else {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-fire.png", 1, 1); 
+					}
 				}
 				else if (piece_array[i][j].isFire() && piece_array[i][j].isShield()) {
-					StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-fire.png", 1, 1);
+					if (piece_array[i][j].isKing()) {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-fire-crowned.png", 1, 1); 
+					}
+					else {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-fire.png", 1, 1);
+					}
 				}
 				else if (piece_array[i][j].isFire() && piece_array[i][j].isBomb()) {
-					StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-fire.png", 1, 1);
+					if (piece_array[i][j].isKing()) {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-fire-crowned.png", 1, 1);
+					}
+					else {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-fire.png", 1, 1);
+					}
 				}
 				else if (piece_array[i][j].isFire()== false && piece_array[i][j].isBomb()) {
-					StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-water.png", 1, 1);
+					if (piece_array[i][j].isKing()) {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-water-crowned.png", 1, 1);
+					}
+					else {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-water.png", 1, 1);
+					}
 				}
 				else if (piece_array[i][j].isFire()== false && piece_array[i][j].isShield()) {
-					StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-water.png", 1, 1);
+					if (piece_array[i][j].isKing()) {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-water-crowned.png", 1, 1);
+					}
+					else {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/shield-water.png", 1, 1);
+					}
 				}
 				else if (piece_array[i][j].isFire()== false && piece_array[i][j].isBomb()==false && piece_array[i][j].isShield()==false) {
-					StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-water.png", 1, 1);
+					if (piece_array[i][j].isKing()) {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-water-crowned.png", 1, 1); 
+					}
+					else {
+						StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-water.png", 1, 1);
+					}
 				}
 			}
 		}
@@ -460,21 +510,20 @@ public class Board {
 			}
 		}
 		if (fire_count==0 && water_count==0) {
-			return null; 
+			return "No one"; 
 		}
-		if (fire_count!=0 && water_count!=0) {
-			return null; // You don't win until all of opponent's pieces are removed, oui?
+
+		else if (fire_count>0 && water_count==0) {
+			return "Fire"; 
 		}
-		if (fire_count== water_count) {
-			return "No one";
-		}
-		if (fire_count> water_count) {
-			return "Fire";
-		}
-		else if (water_count>fire_count) {
+
+		else if (water_count>0 && fire_count==0) {
 			return "Water";
 		}
-		return null; // I guess all other things are null
+
+		else {
+			return null; 
+		}
 	}
 	
 }
