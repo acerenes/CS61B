@@ -397,10 +397,21 @@ public class Board {
 	public void endTurn() {
 		if (player==1) {
 			player=0; 
+
 		}
 		else if (player==0) {
 			player=1; 
 		}
+		has_selected_1= false; 
+		has_selected_0= false; 
+		hasselected= false; 
+		hasmoved= false; 
+		prevselected= false; 
+		prevselectedpiece= null; 
+		hascaptured= false; 
+		selectedpiece= null; 
+		prepped_piece_4move= null; 
+		// Basically I'm just setting them all back to their default states, for a clean slate for the next turn 
 		
 	}
 
