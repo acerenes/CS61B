@@ -11,7 +11,9 @@ public class Board {
 	private boolean hasmoved= false; 
 	private boolean prevselected= false; 
 	private Piece prevselectedpiece= null; 
-	private boolean hascaptured= false; 
+	private boolean has_captured_1= false; 
+	private boolean has_captured_0= false; 
+	private boolean hascaptured;
 	private Piece selectedpiece= null;
 	private Piece prepped_piece_4move= null;  
 
@@ -67,7 +69,7 @@ public class Board {
 					System.out.println("ended turn"); 
 				}
 			}
-			StdDrawPlus.show(1); 
+			StdDrawPlus.show(100); 
 			/*board.updateBoard();*/ // updating stuff in while loop. Outside while loop, nothing happens, because the while loop is always true. 
 		}
 
@@ -137,7 +139,7 @@ public class Board {
 				if (piece_array[i][j]==null) {
 						continue; 
 				}
-				else if (piece_array[i][j].isFire() && piece_array[i][j].isBomb()==false && piece_array[i][j].isShield()==false) {
+				else if (piece_array[i][j].isFire() && !piece_array[i][j].isBomb() && !piece_array[i][j].isShield()) {
 					if (piece_array[i][j].isKing()) {
 						StdDrawPlus.picture(j+0.5, i+0.5, "img/pawn-fire-crowned.png", 1, 1); 
 					}
@@ -154,6 +156,7 @@ public class Board {
 					}
 				}
 				else if (piece_array[i][j].isFire() && piece_array[i][j].isBomb()) {
+					System.out.println("isKing= " + piece_array[i][j].isKing()); 
 					if (piece_array[i][j].isKing()) {
 						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-fire-crowned.png", 1, 1);
 					}
@@ -203,9 +206,11 @@ public class Board {
 		Piece piece= piece_array[y][x];
 		if (player==0) {
 			hasselected= has_selected_0;
+			hascaptured= has_captured_0;
 		}
 		else if (player==1) {
 			hasselected= has_selected_1;
+			hascaptured= has_captured_1; 
 		}
 		if (piece!=null) { // Square w/a piece
 			// for side(), Fire= 0
@@ -246,38 +251,45 @@ public class Board {
 				System.out.println("prevselectedpiece = " + prevselectedpiece); */
 				int xi= getXPos(prevselectedpiece); 
 				int yi= getYPos(prevselectedpiece); 
-				if (piece==null && validMove(xi, yi, x, y)) {
-					/*System.out.println("went into loop 226");*/
+				if (hascaptured && hasselected) {
+					/*System.out.println("went into loop 232");*/
 					hasselected= true; 
+					hascaptured= true; 
 					if (player==0) {
-						has_selected_0= true; 
+						has_selected_0= true;
+						has_captured_0= true;  
 					}
 					else if (player==1) {
 						has_selected_1= true; 
+						has_captured_1= true; 
 					}
 					System.out.println("canSelect = true"); 
 					return true; 
 				}
-				if (hascaptured && hasselected) {
-					/*System.out.println("went into loop 232");*/
+				if (piece==null && validMove(xi, yi, x, y)) {
+					/*System.out.println("went into loop 226");*/
 					hasselected= true; 
+					hascaptured= true; 
 					if (player==0) {
 						has_selected_0= true; 
+						has_captured_0= true; 
 					}
 					else if (player==1) {
 						has_selected_1= true; 
+						has_captured_1= true; 
 					}
+
 					System.out.println("canSelect = true"); 
 					return true; 
 				}
 			}
-			hasselected= false;
+			/*hasselected= false;
 			if (player==0) {
 				has_selected_0= false; 
 			}
 			else if (player==1) {
 				has_selected_1= false; 
-			}
+			}*/
 			System.out.println("canSelect = false"); 
 			System.out.println("I didn't return false for the rest of the loops");
 			return false; 
@@ -423,6 +435,8 @@ public class Board {
 		prevselected= false; 
 		prevselectedpiece= null; 
 		hascaptured= false; 
+		has_captured_1= false;
+		has_captured_0= false; 
 		selectedpiece= null; 
 		prepped_piece_4move= null; 
 		// Basically I'm just setting them all back to their default states, for a clean slate for the next turn 
@@ -483,7 +497,7 @@ public class Board {
 		Piece curr_piece= pieceAt(xi, yi);
 		if (curr_piece.isKing()==false) {
 			if (curr_piece.isFire()) { // Fire 
-				if (Math.abs(xf-xi)==2 && (yf-yi)==2 && pieceAt((xi+xf)/2, yi+1).isFire()==false && pieceAt(xf, yf)==null) {
+				if ((yf-yi)==2 && !pieceAt((xi+xf)/2, (yi+yf)/2).isFire() && pieceAt(xf, yf)==null) {
 						hascaptured= true; 
 						return true;
 					}

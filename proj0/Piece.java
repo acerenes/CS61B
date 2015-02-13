@@ -9,16 +9,9 @@ public class Piece {
 	private Piece oldpiece; 
 	private Piece newpiece;
 	private Piece captured= null; 
+	private boolean isFireKing= false; 
+	private boolean isWaterKing= false; 
 
-	/*public boolean element;
-	public Board board; 
-	public int xpos;
-	public int ypos;
-	public String piecetype;
-	public Piece oldpiece;  
-	public Piece newpiece; 
-	public Piece captured= null;// Declare it up here so has captured can use it as well  
-	// FOR TESTING*/
 
 	/* Constructor for a Piece */
 	public Piece(boolean isFire, Board b, int x, int y, String type) {
@@ -48,10 +41,13 @@ public class Piece {
 	}
 
 	public boolean isKing() {
-		if (piecetype== "king") {
+		if (isFire() && isFireKing) {
 			return true; 
 		}
-		return false;
+		else if (!isFire() && isWaterKing) {
+			return true;
+		}
+		return false; 
 	}
 
 	public boolean isBomb() {
@@ -91,14 +87,6 @@ public class Piece {
 			
 			Piece captured= board.pieceAt(oldx+i, oldy+j); 
 			board.remove(oldx+i, oldy+j);
-			/*if (jumped==null) {
-				oldx= oldx+2*i; 
-				oldy= oldy+2*j;  
-			}*/ // This was assuming had to like check if the move was valid. 
-			/*else if (jumped.element != this.element) {
-				captured= board.remove(oldx+i, oldy+j);*/ // was looking if valid capture 
-				/*oldx= oldx+2*i; 
-				oldy= oldy+2*j; */
 
 			/* Now take care of bomb pieces exploding */
 			if (this.isBomb()) {
@@ -127,8 +115,6 @@ public class Piece {
 				if (y==7) {
 					isFire= true; 
 				}
-				Piece newking= new Piece(isFire, board, x, y, "king"); 
-				board.place(newking, x, y);
 			}
 		}
 	}
@@ -136,12 +122,14 @@ public class Piece {
 	private boolean reachedEnd(Piece p, int y) {
 		if (p.isFire()) {
 			if (y==7) {
+				isFireKing= true; 
 				return true; 
 			}
 			return false; 
 		}
 		else {
 			if (y==0) {
+				isWaterKing= true; 
 				return true;
 			}
 			return false; 
@@ -159,6 +147,6 @@ public class Piece {
 		captured= null; 
 	}
 
-}
 
-/* Thanks to Sreesha Venkat and Karin Goh and Anna-Marie and Jenny for help. */ 
+/* Thanks to Sreesha Venkat and Karin Goh and Anna-Marie and Jenny for help. */
+}
