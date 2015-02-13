@@ -57,11 +57,13 @@ public class Board {
 
 				}
 			System.out.println("board.canEndTurn= " + board.canEndTurn()); 
+			System.out.println("StdDrawPlus.isSpacePressed= " + StdDrawPlus.isSpacePressed()); 
 			if (StdDrawPlus.isSpacePressed() && board.canEndTurn()) {
 				board.endTurn(); // b/c non-static methods- need the .
 				System.out.println("I ended the turn!"); 
 				System.out.println("hasselected= " + board.hasselected); 
 			}
+			System.out.println("StdDrawPlus.isSpacePressed= " + StdDrawPlus.isSpacePressed()); 
 			pieces[(int) x][(int) y]= true; 
 			/*board.updateBoard();
 */			}
@@ -374,7 +376,7 @@ public class Board {
 		}
 		else {
 			piece_array[y][x]= p; 
-			hasmoved= true; 
+			/*hasmoved= true; */
 		}
 
 	}
