@@ -103,14 +103,11 @@ public class Piece {
 			if (this.isBomb()) {
 				int xstart= x-1; 
 				int ystart= y-1;
-				System.out.println("1");
 				while (xstart<=x+1 && xstart>=0 && xstart<=7) {
 					ystart= y-1; // Set back to y-1 because gotta start back at y-1 place
 					while (ystart<=y+1 && ystart>=0 && ystart<=7) {
-						System.out.println("about to check" + xstart +" and " + ystart);
 						Piece gonepiece= board.pieceAt(xstart, ystart);
 						if (gonepiece!= null && !gonepiece.isShield()) {
-							System.out.println("went into loop COOL");
 							board.remove(xstart, ystart);
 						}
 						ystart= ystart+1; 
