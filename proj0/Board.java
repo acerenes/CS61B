@@ -253,6 +253,9 @@ public class Board {
 				int xi= getXPos(prevselectedpiece); 
 				int yi= getYPos(prevselectedpiece); 
 				if (!hasmoved && validMove(xi, yi, x, y)) {
+
+					place(prevselectedpiece, x, y); 
+					prevselectedpiece= pieceAt(x, y); // Doing this in the case of multi captures- pLEASE WORK
 					return true; 
 				}
 				else if (hascaptured && validMove(xi, yi, x, y)) {
