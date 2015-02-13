@@ -237,6 +237,7 @@ public class Board {
 				return true; 
 			}
 			System.out.println("canSelect = false"); 
+			System.out.println("I went into loop 240"); 
 			return false;
 		}
 		else { // Empty square
@@ -278,6 +279,7 @@ public class Board {
 				has_selected_1= false; 
 			}*/
 			System.out.println("canSelect = false"); 
+			System.out.println("I didn't return false for the rest of the loops");
 			return false; 
 		}
 	}
@@ -285,7 +287,7 @@ public class Board {
 	/* MAKE SURE THIS METHOD IS PRIVATE DLIRUGHDSLRIUGHDSLIRUHGLSDIRUGHLISDRUHGLIDSURHGLIDSUHGLISUD OKAY */
 	private boolean validMove(int xi, int yi, int xf, int yf) {
 		/* Make sure not trying to move it out of bounds */
-		if (xf >8 || yf>8) {
+		if (xf >=8 || yf>=8) {
 			return false;
 		}
 		
@@ -294,19 +296,20 @@ public class Board {
 			if (hasmoved) {
 				return false;
 			}
-			hasmoved= true; 
+			/*hasmoved= true; */
 			return single_step(xi, yi, xf, yf); 
 		}
 		/* Single capture */
 		if (Math.abs(xf-xi)==2 && Math.abs(yf-yi)==2) {
-			hascaptured= true; 
+			
 			return single_capture(xi, yi, xf, yf);
 		}
 		/* Multi-capture */
-		if (Math.abs(xf-xi)>=3 && Math.abs(yf-yi)>=3 && Math.abs(xf-xi)==Math.abs(yf-yi) && pieceAt(xf, yf)==null) {
+		/*if (Math.abs(xf-xi)>=3 && Math.abs(yf-yi)>=3 && Math.abs(xf-xi)==Math.abs(yf-yi) && pieceAt(xf, yf)==null) {
 			hascaptured= true; 
 			return multi_capture(xi, yi, xf, yf);
-		}
+		}*/
+		// They only capture once at a time anyway tho
 		else {
 			return false; 
 		}		
@@ -346,6 +349,7 @@ public class Board {
 			/*board.place(xpos, ypos); */ // I don't think you actually move anything if you just prep a piece for movement
 		}
 		else if (selectedpiece==null && prepped_piece_4move!=null) {
+			// Going to move the prepped piece to the empty square
 			int xpos= getXPos(prepped_piece_4move); 
 			int ypos= getYPos(prepped_piece_4move);
 			prepped_piece_4move.move(x, y); 
@@ -480,12 +484,14 @@ public class Board {
 		if (curr_piece.isKing()==false) {
 			if (curr_piece.isFire()) { // Fire 
 				if (Math.abs(xf-xi)==2 && (yf-yi)==2 && pieceAt((xi+xf)/2, yi+1).isFire()==false && pieceAt(xf, yf)==null) {
+						hascaptured= true; 
 						return true;
 					}
 					return false;
 				}
 			else { // Water
 				if (Math.abs(xf-xi)==2 && (yf-yi)== -2 && pieceAt((xi+xf)/2, yi-1).isFire() && pieceAt(xf, yf)==null) {
+					hascaptured= true; 
 					return true;
 				}
 				return false; 
@@ -493,12 +499,14 @@ public class Board {
 		}
 		else { // King can move forward & backward
 			if (pieceAt((xi+xf)/2, (yi+yf)/2).isFire() != curr_piece.isFire() && pieceAt(xf, yf)==null) {
+				hascaptured= true; 
 				return true;
 			}
 			return false;
 		}
 	}
 
+	/* I DON'T THINK I NEED THIS ANYMORE ACTUALLY 
 	private boolean multi_capture(int xi, int yi, int xf, int yf) {
 		Piece curr_piece= pieceAt(xi, yi);
 		if (curr_piece.isKing()==false) {
@@ -557,6 +565,7 @@ public class Board {
 		}
 		return false; // tbh I'm not sure why this is necessary, but java gets mad if I don't have it	
 	}
+	*/
 
 	
 
