@@ -1,16 +1,16 @@
 public class Piece {
 
 	/* Declaring instance variables */
-	private boolean element;
+	/*private boolean element;
 	private Board board; 
 	private int xpos;
 	private int ypos;
 	private String piecetype;
 	private Piece oldpiece; 
 	private Piece newpiece;
-	private Piece captured= null; 
+	private Piece captured= null; */
 
-	/*public boolean element;
+	public boolean element;
 	public Board board; 
 	public int xpos;
 	public int ypos;
@@ -18,7 +18,7 @@ public class Piece {
 	public Piece oldpiece;  
 	public Piece newpiece; 
 	public Piece captured= null;// Declare it up here so has captured can use it as well  
-	// FOR TESTING*/
+	// FOR TESTING
 
 	/* Constructor for a Piece */
 	public Piece(boolean isFire, Board b, int x, int y, String type) {
@@ -73,7 +73,15 @@ public class Piece {
 		int oldy= this.ypos;
 		this.xpos= x;
 		this.ypos= y;
-		board.remove(oldx, oldy); 
+		System.out.println("move");
+
+		if (board==null) {
+			System.out.println("BOARD IS NULL"); 
+		}
+
+		if (board.pieceAt(oldx, oldy)!=null) {
+			board.remove(oldx, oldy); 
+		}
 		board.place(this, x, y); // Place yourself on there if I move you
 		/* I think if you jumped over something, take that piece into a variable, and then remove it */
 		// Only go through this if moved more than 1 space- get the captured piece- possibility of a capture
@@ -105,6 +113,7 @@ public class Piece {
 				board.remove(x+1, y+1); 
 			}
 		}
+
 
 	}
 

@@ -1,7 +1,7 @@
 public class Board {
 
 	private Piece[][] piece_array;
-	private Board board; 
+	//okay so you don't declare private Board board because every class automatically has a field that is itself. So for the rest of the methods BESIDES MAIN use this.
 	private int player= 1; 
 	private boolean has_selected_1= false;
 	private boolean has_selected_0= false; 
@@ -24,20 +24,30 @@ public class Board {
 		StdDrawPlus.setXscale(0, scale);
 		StdDrawPlus.setYscale(0, scale);
 		pieces= new boolean[scale][scale]; 
-		Board board= new Board(false);
+		Board board= new Board(false); // but declare a new board here because like main methods are ~seperate~ from the rest of the class, so in order to like call up a new board, can call it something else (not this)
+		// And so for the rest of the main method, to access stuff from this board that you newly created, have to use board.STUFF not this.STUFF
 		
 		while (true) {
+			System.out.println("1");
 			board.drawBoard(scale); 
+			System.out.println("2");
+
 			if (StdDrawPlus.mousePressed()) {
+				System.out.println("lksdjlfks");
+
 				double x= StdDrawPlus.mouseX(); 
 				double y= StdDrawPlus.mouseY();
+				System.out.println("3");
+				board.select((int) x, (int) y); 
+
 				if (StdDrawPlus.isSpacePressed() && board.canEndTurn()) {
 					board.endTurn(); // b/c non-static methods- need the .
 				}
 				pieces[(int) x][(int) y]= true; 
-			}
+				/*board.updateBoard();
+*/			}
 			StdDrawPlus.show(100); 
-			board.updateBoard(); // updating stuff in while loop. Outside while loop, nothing happens, because the while loop is always true. 
+			/*board.updateBoard();*/ // updating stuff in while loop. Outside while loop, nothing happens, because the while loop is always true. 
 		}
 
 
@@ -47,7 +57,7 @@ public class Board {
 	}
 
 	private void updateBoard() {
-		board.drawBoard(8); 
+		this.drawBoard(8); 
 	}
 
 	public Board(boolean shouldBeEmpty) { // Constructor
@@ -57,22 +67,22 @@ public class Board {
 			for(int i=0; i<8; i= i+1) { // Rows
 				for(int j=0; j<8; j= j+1) { // Columns 
 					if (i==0 && j%2==0) {
-						piece_array[i][j]= new Piece(true, board, j, i, "pawn"); 
+						piece_array[i][j]= new Piece(true, this, j, i, "pawn"); 
 					}
 					else if (i==1 && j%2==1) {
-						piece_array[i][j]= new Piece(true, board, j, i, "shield"); 
+						piece_array[i][j]= new Piece(true, this, j, i, "shield"); 
 					}
 					else if (i==2 && j%2==0) {
-						piece_array[i][j]= new Piece(true, board, j, i, "bomb"); 
+						piece_array[i][j]= new Piece(true, this, j, i, "bomb"); 
 					}
 					else if (i==5 && j%2==1) {
-						piece_array[i][j]= new Piece(false, board, j, i, "bomb");
+						piece_array[i][j]= new Piece(false, this, j, i, "bomb");
 					}
 					else if (i==6 && j%2==0) {
-						piece_array[i][j]= new Piece(false, board, j, i, "shield");
+						piece_array[i][j]= new Piece(false, this, j, i, "shield");
 					}
 					else if (i==7 && j%2==1) {
-						piece_array[i][j]= new Piece(false, board, j, i, "pawn"); 
+						piece_array[i][j]= new Piece(false, this, j, i, "pawn"); 
 					}
 					else {
 						piece_array[i][j]= null; 
@@ -236,8 +246,11 @@ public class Board {
 			int xpos= getXPos(prepped_piece_4move); 
 			int ypos= getYPos(prepped_piece_4move);
 			prepped_piece_4move.move(x, y); 
+
 			/*board.place(x, y); */
 			remove(xpos, ypos); 
+			this.updateBoard();
+
 		}
 		
 		/*if (player==0) {
@@ -261,7 +274,7 @@ public class Board {
 	}
 
 	public Piece remove(int x, int y) {
-		if (x>=8 || y>=8) {
+		if (x>7 || y>7) {
 			System.out.println("Input (" + x + ", " + y + ") is out of bounds.");
 			return null; 
 		}
