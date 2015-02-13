@@ -54,6 +54,7 @@ public class Board {
 				double y= StdDrawPlus.mouseY();
 				if (board.canSelect((int) x, (int) y)) {
 					board.select((int) x, (int) y); 
+
 				}
 
 				if (StdDrawPlus.isSpacePressed() && board.canEndTurn()) {
@@ -202,17 +203,30 @@ public class Board {
 			hasselected= has_selected_1;
 		}
 		if (piece!=null) { // Square w/a piece
+			// for side(), Fire= 0
 			if (piece.side()!= player && hasselected==false) { 
 				/*prevselected= true; */
 				System.out.println("went into loop 206"); 
 				prevselectedpiece= piece; 
-				hasselected= true; 
+				/*hasselected= true; 
+				if (player==0) {
+						has_selected_0= true; 
+					}
+					else if (player==1) {
+						has_selected_1= true; 
+					}*/
 				return true; 
 			}
-			else if (piece.side()== player && hasselected && !hasmoved) {
+			else if (piece.side()!= player && hasselected && !hasmoved) {
 				System.out.println("went into loop 213"); 
 				prevselectedpiece= piece; 
-				hasselected= true; 
+				/*hasselected= true; 
+				if (player==0) {
+						has_selected_0= true; 
+					}
+					else if (player==1) {
+						has_selected_1= true; 
+					}*/
 				return true; 
 			}
 			return false;
@@ -225,16 +239,34 @@ public class Board {
 				int yi= getYPos(prevselectedpiece); 
 				if (piece==null && validMove(xi, yi, x, y)) {
 					System.out.println("went into loop 226");
-					hasselected= true; 
+					/*hasselected= true; 
+					if (player==0) {
+						has_selected_0= true; 
+					}
+					else if (player==1) {
+						has_selected_1= true; 
+					}*/
 					return true; 
 				}
 				if (prevselectedpiece!=null && hascaptured && hasselected) {
 					System.out.println("went into loop 232");
-					hasselected= true; 
+					/*hasselected= true; 
+					if (player==0) {
+						has_selected_0= true; 
+					}
+					else if (player==1) {
+						has_selected_1= true; 
+					}*/
 					return true; 
 				}
 			}
-			hasselected= false;
+			/*hasselected= false;
+			if (player==0) {
+				has_selected_0= false; 
+			}
+			else if (player==1) {
+				has_selected_1= false; 
+			}*/
 			return false; 
 		}
 	}
@@ -248,6 +280,9 @@ public class Board {
 		
 		// Single Step
 		if (Math.abs(xf-xi)==1 && Math.abs((yf-yi))==1) {
+			if (hasmoved) {
+				return false;
+			}
 			return single_step(xi, yi, xf, yf); 
 		}
 		/* Single capture */
