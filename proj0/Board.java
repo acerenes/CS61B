@@ -1,6 +1,6 @@
 public class Board {
 
-	/*private Piece[][] piece_array;
+	private Piece[][] piece_array;
 	//okay so you don't declare private Board board because every class automatically has a field that is itself. So for the rest of the methods BESIDES MAIN use this.
 	private int player= 1; 
 	private boolean has_selected_1= false;
@@ -9,18 +9,18 @@ public class Board {
 	private int xval; 
 	private int yval; 
 	private boolean hasmoved= false; 
-	/*private boolean prevselected= false; */
-	/*private Piece prevselectedpiece= null; 
+	private boolean prevselected= false; 
+	private Piece prevselectedpiece= null; 
 	private boolean hascaptured= false; 
 	private Piece selectedpiece= null;
 	private Piece prepped_piece_4move= null;  
 
-	private static boolean[][] pieces; */
+	private static boolean[][] pieces; 
 
 
 
 	// FOR TESTING
-	public Piece[][] piece_array;
+	/*public Piece[][] piece_array;
 	//okay so you don't declare private Board board because every class automatically has a field that is itself. So for the rest of the methods BESIDES MAIN use this.
 	public int player= 1; 
 	public boolean has_selected_1= false;
@@ -28,15 +28,14 @@ public class Board {
 	public boolean hasselected; 
 	public int xval; 
 	public int yval; 
-	public boolean hasmoved= false; 
+	public boolean hasmoved= false; */
 	/*private boolean prevselected= false; */
-	public Piece prevselectedpiece= null; 
+	/*public Piece prevselectedpiece= null; 
 	public boolean hascaptured= false; 
 	public Piece selectedpiece= null;
 	public Piece prepped_piece_4move= null;  
 
-	public static boolean[][] pieces; 
-
+	public static boolean[][] pieces; */
 
 
 	public static void main(String [] args) {
@@ -53,7 +52,9 @@ public class Board {
 			if (StdDrawPlus.mousePressed()) {
 				double x= StdDrawPlus.mouseX(); 
 				double y= StdDrawPlus.mouseY();
-				board.select((int) x, (int) y); 
+				if (board.canSelect((int) x, (int) y)) {
+					board.select((int) x, (int) y); 
+				}
 
 				if (StdDrawPlus.isSpacePressed() && board.canEndTurn()) {
 					board.endTurn(); // b/c non-static methods- need the .
@@ -203,29 +204,39 @@ public class Board {
 		if (piece!=null) { // Square w/a piece
 			if (piece.side()!= player && hasselected==false) { 
 				/*prevselected= true; */
+				System.out.println("went into loop 206"); 
 				prevselectedpiece= piece; 
+				hasselected= true; 
 				return true; 
 			}
-			else if (piece.side()== player && hasselected && hasmoved== false) {
+			else if (piece.side()== player && hasselected && !hasmoved) {
+				System.out.println("went into loop 213"); 
 				prevselectedpiece= piece; 
+				hasselected= true; 
 				return true; 
 			}
 			return false;
 		}
 		else { // Empty square
 			if (prevselectedpiece!=null) {
+				System.out.println("went into loop 222"); 
+				System.out.println("prevselectedpiece = " + prevselectedpiece); 
 				int xi= getXPos(prevselectedpiece); 
 				int yi= getYPos(prevselectedpiece); 
 				if (piece==null && validMove(xi, yi, x, y)) {
+					System.out.println("went into loop 226");
+					hasselected= true; 
 					return true; 
 				}
 				if (prevselectedpiece!=null && hascaptured && hasselected) {
+					System.out.println("went into loop 232");
+					hasselected= true; 
 					return true; 
 				}
 			}
+			hasselected= false;
+			return false; 
 		}
-		hasselected= false; 
-		return false; // CHANGE 
 	}
 
 	/* MAKE SURE THIS METHOD IS PRIVATE DLIRUGHDSLRIUGHDSLIRUHGLSDIRUGHLISDRUHGLIDSURHGLIDSUHGLISUD OKAY */
@@ -306,6 +317,9 @@ public class Board {
 			has_selected_1= true;
 		}
 		hasselected= true; 
+		System.out.println("hasselected= " + hasselected); 
+		System.out.println("hascaptured= " + hascaptured); 
+		System.out.println("hasmoved= " + hasmoved); 
 	}
 
 	public void place(Piece p, int x, int y) {

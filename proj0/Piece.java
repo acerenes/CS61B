@@ -1,16 +1,16 @@
 public class Piece {
 
 	/* Declaring instance variables */
-	/*private boolean element;
+	private boolean element;
 	private Board board; 
 	private int xpos;
 	private int ypos;
 	private String piecetype;
 	private Piece oldpiece; 
 	private Piece newpiece;
-	private Piece captured= null; */
+	private Piece captured= null; 
 
-	public boolean element;
+	/*public boolean element;
 	public Board board; 
 	public int xpos;
 	public int ypos;
@@ -18,7 +18,7 @@ public class Piece {
 	public Piece oldpiece;  
 	public Piece newpiece; 
 	public Piece captured= null;// Declare it up here so has captured can use it as well  
-	// FOR TESTING
+	// FOR TESTING*/
 
 	/* Constructor for a Piece */
 	public Piece(boolean isFire, Board b, int x, int y, String type) {
@@ -68,7 +68,8 @@ public class Piece {
 		return false; 
 	}
 
-	public void move(int x, int y) { // Assumes the move is valid 
+
+	public void move(int x, int y) { // Only called if move is valid 
 		int oldx= this.xpos;
 		int oldy= this.ypos;
 		this.xpos= x;
@@ -115,10 +116,11 @@ public class Piece {
 					xstart= xstart+1;
 				}
 			}
+			/*if HAVE TO CHECK IF CAN CAPTURE AGAIN*/
 		}
 
 		if (board.pieceAt(x, y) != null) {
-			if (reachedEnd(board.pieceAt(x, y), y)) {
+			if (reachedEnd(board.pieceAt(x, y), y)) { // Yes king
 			/*DURSYGHDLSIRUGHDSLRIUHGDSRLIU HEY WRITE THE WHOLE CROWNING THING AND CHANGING ALSO 
 			IF TIS A KING AND CAN CAPTURE AGAIN, DO THAT*/
 				boolean isFire= false; 
