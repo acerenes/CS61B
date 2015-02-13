@@ -56,12 +56,14 @@ public class Board {
 					board.select((int) x, (int) y); 
 
 				}
-
-				if (StdDrawPlus.isSpacePressed() && board.canEndTurn()) {
-					board.endTurn(); // b/c non-static methods- need the .
-				}
-				pieces[(int) x][(int) y]= true; 
-				/*board.updateBoard();
+			System.out.println("board.canEndTurn= " + board.canEndTurn()); 
+			if (StdDrawPlus.isSpacePressed() && board.canEndTurn()) {
+				board.endTurn(); // b/c non-static methods- need the .
+				System.out.println("I ended the turn!"); 
+				System.out.println("hasselected= " + board.hasselected); 
+			}
+			pieces[(int) x][(int) y]= true; 
+			/*board.updateBoard();
 */			}
 			StdDrawPlus.show(100); 
 			/*board.updateBoard();*/ // updating stuff in while loop. Outside while loop, nothing happens, because the while loop is always true. 
@@ -195,6 +197,7 @@ public class Board {
 	}
 
 	public boolean canSelect(int x, int y) {
+		System.out.println("I am indeed running canSelect"); 
 		Piece piece= piece_array[y][x];
 		if (player==0) {
 			hasselected= has_selected_0;
@@ -215,6 +218,7 @@ public class Board {
 					else if (player==1) {
 						has_selected_1= true; 
 					}*/
+				System.out.println("canSelect = true"); 
 				return true; 
 			}
 			else if (piece.side()!= player && hasselected && !hasmoved) {
@@ -227,8 +231,10 @@ public class Board {
 					else if (player==1) {
 						has_selected_1= true; 
 					}*/
+				System.out.println("canSelect = true"); 
 				return true; 
 			}
+			System.out.println("canSelect = false"); 
 			return false;
 		}
 		else { // Empty square
@@ -246,6 +252,7 @@ public class Board {
 					else if (player==1) {
 						has_selected_1= true; 
 					}*/
+					System.out.println("canSelect = true"); 
 					return true; 
 				}
 				if (prevselectedpiece!=null && hascaptured && hasselected) {
@@ -257,6 +264,7 @@ public class Board {
 					else if (player==1) {
 						has_selected_1= true; 
 					}*/
+					System.out.println("canSelect = true"); 
 					return true; 
 				}
 			}
@@ -267,6 +275,7 @@ public class Board {
 			else if (player==1) {
 				has_selected_1= false; 
 			}*/
+			System.out.println("canSelect = false"); 
 			return false; 
 		}
 	}
@@ -283,6 +292,7 @@ public class Board {
 			if (hasmoved) {
 				return false;
 			}
+			hasmoved= true; 
 			return single_step(xi, yi, xf, yf); 
 		}
 		/* Single capture */
@@ -337,6 +347,7 @@ public class Board {
 			int xpos= getXPos(prepped_piece_4move); 
 			int ypos= getYPos(prepped_piece_4move);
 			prepped_piece_4move.move(x, y); 
+			hasmoved= true; 
 
 			/*board.place(x, y); */
 			remove(xpos, ypos); 
@@ -351,7 +362,7 @@ public class Board {
 		else if (player==1) {
 			has_selected_1= true;
 		}
-		hasselected= true; 
+		/*hasselected= true; */
 		/*System.out.println("hasselected= " + hasselected); 
 		System.out.println("hascaptured= " + hascaptured); 
 		System.out.println("hasmoved= " + hasmoved); */
@@ -397,7 +408,6 @@ public class Board {
 	public void endTurn() {
 		if (player==1) {
 			player=0; 
-
 		}
 		else if (player==0) {
 			player=1; 
