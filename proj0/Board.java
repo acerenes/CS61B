@@ -233,14 +233,14 @@ public class Board {
 		}*/
 		
 		selectedpiece= pieceAt(x, y); 
-		if (selectedpiece!=null) { // square with a piece
+		if (selectedpiece==null && prepped_piece_4move==null) {
+			return; 
+		}
+		else if (selectedpiece!=null) { // square with a piece
 			prepped_piece_4move= selectedpiece; 
 			int xpos= getXPos(selectedpiece); 
 			int ypos= getYPos(selectedpiece); 
 			/*board.place(xpos, ypos); */ // I don't think you actually move anything if you just prep a piece for movement
-		}
-		else if (selectedpiece== null && prepped_piece_4move==null) {
-			return; 
 		}
 		else if (selectedpiece==null && prepped_piece_4move!=null) {
 			int xpos= getXPos(prepped_piece_4move); 
@@ -253,13 +253,14 @@ public class Board {
 
 		}
 		
-		/*if (player==0) {
+		if (player==0) {
 			has_selected_0= true; 
 
 		}
 		else if (player==1) {
 			has_selected_1= true;
-		}*/
+		}
+		hasselected= true; 
 	}
 
 	public void place(Piece p, int x, int y) {
@@ -293,12 +294,11 @@ public class Board {
 
 	public boolean canEndTurn() {
 		if (hasmoved || hascaptured) {
-			endTurn();
 			return true; 
 		}
 		return false; 
-		
 	}
+	
 
 	public void endTurn() {
 		if (player==1) {
