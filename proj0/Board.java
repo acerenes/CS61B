@@ -47,8 +47,8 @@ public class Board {
 		// And so for the rest of the main method, to access stuff from this board that you newly created, have to use board.STUFF not this.STUFF
 		
 		while (true) {
-			board.drawBoard(scale); 
-
+			/*board.drawBoard(scale); */
+			board.updateBoard();
 			if (StdDrawPlus.mousePressed()) {
 				double x= StdDrawPlus.mouseX(); 
 				double y= StdDrawPlus.mouseY();
@@ -56,18 +56,18 @@ public class Board {
 					board.select((int) x, (int) y); 
 
 				}
-			System.out.println("board.canEndTurn= " + board.canEndTurn()); 
-			System.out.println("StdDrawPlus.isSpacePressed= " + StdDrawPlus.isSpacePressed()); 
-			if (StdDrawPlus.isSpacePressed() && board.canEndTurn()) {
-				board.endTurn(); // b/c non-static methods- need the .
-				System.out.println("I ended the turn!"); 
-				System.out.println("hasselected= " + board.hasselected); 
-			}
-			System.out.println("StdDrawPlus.isSpacePressed= " + StdDrawPlus.isSpacePressed()); 
-			pieces[(int) x][(int) y]= true; 
+			
+			/*pieces[(int) x][(int) y]= true;*/
 			/*board.updateBoard();
 */			}
-			StdDrawPlus.show(100); 
+			if (StdDrawPlus.isSpacePressed() ) {
+				System.out.println("Space pressed"); 
+				if (board.canEndTurn()) {
+					board.endTurn(); // b/c non-static methods- need the .
+					System.out.println("ended turn"); 
+				}
+			}
+			StdDrawPlus.show(1); 
 			/*board.updateBoard();*/ // updating stuff in while loop. Outside while loop, nothing happens, because the while loop is always true. 
 		}
 
@@ -352,7 +352,7 @@ public class Board {
 			/*board.place(x, y); */
 			remove(xpos, ypos); 
 			hasmoved= true; 
-			this.updateBoard();
+			/*this.updateBoard();*/
 		}
 		
 		if (player==0) {
