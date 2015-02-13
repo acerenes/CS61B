@@ -206,7 +206,7 @@ public class Board {
 			// for side(), Fire= 0
 			if (piece.side()!= player && hasselected==false) { 
 				/*prevselected= true; */
-				System.out.println("went into loop 206"); 
+				/*System.out.println("went into loop 206");*/ 
 				prevselectedpiece= piece; 
 				/*hasselected= true; 
 				if (player==0) {
@@ -218,7 +218,7 @@ public class Board {
 				return true; 
 			}
 			else if (piece.side()!= player && hasselected && !hasmoved) {
-				System.out.println("went into loop 213"); 
+				/*System.out.println("went into loop 213"); */
 				prevselectedpiece= piece; 
 				/*hasselected= true; 
 				if (player==0) {
@@ -233,12 +233,12 @@ public class Board {
 		}
 		else { // Empty square
 			if (prevselectedpiece!=null) {
-				System.out.println("went into loop 222"); 
-				System.out.println("prevselectedpiece = " + prevselectedpiece); 
+				/*System.out.println("went into loop 222"); 
+				System.out.println("prevselectedpiece = " + prevselectedpiece); */
 				int xi= getXPos(prevselectedpiece); 
 				int yi= getYPos(prevselectedpiece); 
 				if (piece==null && validMove(xi, yi, x, y)) {
-					System.out.println("went into loop 226");
+					/*System.out.println("went into loop 226");*/
 					/*hasselected= true; 
 					if (player==0) {
 						has_selected_0= true; 
@@ -249,7 +249,7 @@ public class Board {
 					return true; 
 				}
 				if (prevselectedpiece!=null && hascaptured && hasselected) {
-					System.out.println("went into loop 232");
+					/*System.out.println("went into loop 232");*/
 					/*hasselected= true; 
 					if (player==0) {
 						has_selected_0= true; 
@@ -352,9 +352,9 @@ public class Board {
 			has_selected_1= true;
 		}
 		hasselected= true; 
-		System.out.println("hasselected= " + hasselected); 
+		/*System.out.println("hasselected= " + hasselected); 
 		System.out.println("hascaptured= " + hascaptured); 
-		System.out.println("hasmoved= " + hasmoved); 
+		System.out.println("hasmoved= " + hasmoved); */
 	}
 
 	public void place(Piece p, int x, int y) {
