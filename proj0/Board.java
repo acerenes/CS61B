@@ -213,26 +213,26 @@ public class Board {
 				/*prevselected= true; */
 				/*System.out.println("went into loop 206");*/ 
 				prevselectedpiece= piece; 
-				/*hasselected= true; 
+				hasselected= true; 
 				if (player==0) {
 						has_selected_0= true; 
 					}
 					else if (player==1) {
 						has_selected_1= true; 
-					}*/
+					}
 				System.out.println("canSelect = true"); 
 				return true; 
 			}
 			else if (piece.side()!= player && hasselected && !hasmoved) {
 				/*System.out.println("went into loop 213"); */
 				prevselectedpiece= piece; 
-				/*hasselected= true; 
+				hasselected= true; 
 				if (player==0) {
 						has_selected_0= true; 
 					}
 					else if (player==1) {
 						has_selected_1= true; 
-					}*/
+					}
 				System.out.println("canSelect = true"); 
 				return true; 
 			}
@@ -248,36 +248,36 @@ public class Board {
 				int yi= getYPos(prevselectedpiece); 
 				if (piece==null && validMove(xi, yi, x, y)) {
 					/*System.out.println("went into loop 226");*/
-					/*hasselected= true; 
+					hasselected= true; 
 					if (player==0) {
 						has_selected_0= true; 
 					}
 					else if (player==1) {
 						has_selected_1= true; 
-					}*/
+					}
 					System.out.println("canSelect = true"); 
 					return true; 
 				}
-				if (prevselectedpiece!=null && hascaptured && hasselected) {
+				if (hascaptured && hasselected) {
 					/*System.out.println("went into loop 232");*/
-					/*hasselected= true; 
+					hasselected= true; 
 					if (player==0) {
 						has_selected_0= true; 
 					}
 					else if (player==1) {
 						has_selected_1= true; 
-					}*/
+					}
 					System.out.println("canSelect = true"); 
 					return true; 
 				}
 			}
-			/*hasselected= false;
+			hasselected= false;
 			if (player==0) {
 				has_selected_0= false; 
 			}
 			else if (player==1) {
 				has_selected_1= false; 
-			}*/
+			}
 			System.out.println("canSelect = false"); 
 			System.out.println("I didn't return false for the rest of the loops");
 			return false; 
@@ -366,7 +366,7 @@ public class Board {
 		else if (player==1) {
 			has_selected_1= true;
 		}
-		/*hasselected= true; */
+		hasselected= true; 
 		/*System.out.println("hasselected= " + hasselected); 
 		System.out.println("hascaptured= " + hascaptured); 
 		System.out.println("hasmoved= " + hasmoved); */
@@ -498,8 +498,9 @@ public class Board {
 			}
 		}
 		else { // King can move forward & backward
-			if (pieceAt((xi+xf)/2, (yi+yf)/2).isFire() != curr_piece.isFire() && pieceAt(xf, yf)==null) {
+			if (pieceAt(((xi+xf)/2), ((yi+yf)/2)).isFire() != curr_piece.isFire() && pieceAt(xf, yf)==null) {
 				hascaptured= true; 
+				System.out.println("The single_capture method is returning true"); 
 				return true;
 			}
 			return false;
