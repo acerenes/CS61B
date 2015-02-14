@@ -24,7 +24,20 @@ public class SortedComparableList {
 
     /** Inserts Comparable c into its correct location in this list. */
     public void insert(Comparable c) {
-        // REPLACE THIS LINE WITH YOUR SOLUTION
+        if (c!=null) {
+          if (c.compareTo(head)< 0) { // c is smaller- go in front
+            tail= new SortedComparableList(head, tail); 
+            head= c; 
+          }
+          else { // go in middle or back
+            SortedComparableList pointer= this; 
+            while (pointer.tail!=null && c.compareTo(pointer.tail.head)>0) { // comparing with next element- c is still greater- keep moving on back
+              pointer= pointer.tail; 
+            } 
+            // Once reached last head or c is not greater than next element. Pointer is still pointing at a head. c should be the head of the new tail. 
+              pointer.tail= new SortedComparableList(c, pointer.tail);
+          }
+        } 
     }
 
     /** Returns the i-th int in this list.
