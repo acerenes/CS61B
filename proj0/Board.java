@@ -1,7 +1,6 @@
 public class Board {
 
 	private Piece[][] piece_array;
-	//okay so you don't declare private Board board because every class automatically has a field that is itself. So for the rest of the methods BESIDES MAIN use this.
 	private int player= 1; 
 	private boolean has_selected_1= false;
 	private boolean has_selected_0= false; 
@@ -22,36 +21,14 @@ public class Board {
 	private static boolean[][] pieces; 
 
 
-
-	// FOR TESTING
-	/*public Piece[][] piece_array;
-	//okay so you don't declare private Board board because every class automatically has a field that is itself. So for the rest of the methods BESIDES MAIN use this.
-	public int player= 1; 
-	public boolean has_selected_1= false;
-	public boolean has_selected_0= false; 
-	public boolean hasselected; 
-	public int xval; 
-	public int yval; 
-	public boolean hasmoved= false; */
-	/*private boolean prevselected= false; */
-	/*public Piece prevselectedpiece= null; 
-	public boolean hascaptured= false; 
-	public Piece selectedpiece= null;
-	public Piece prepped_piece_4move= null;  
-
-	public static boolean[][] pieces; */
-
-
 	public static void main(String [] args) {
 		int scale= 8;
 		StdDrawPlus.setXscale(0, scale);
 		StdDrawPlus.setYscale(0, scale);
 		pieces= new boolean[scale][scale]; 
-		Board board= new Board(false); // but declare a new board here because like main methods are ~seperate~ from the rest of the class, so in order to like call up a new board, can call it something else (not this)
-		// And so for the rest of the main method, to access stuff from this board that you newly created, have to use board.STUFF not this.STUFF
+		Board board= new Board(false); 
 		
 		while (true) {
-			/*board.drawBoard(scale); */
 			board.updateBoard();
 			if (StdDrawPlus.mousePressed()) {
 				double x= StdDrawPlus.mouseX(); 
@@ -60,22 +37,14 @@ public class Board {
 					board.select((int) x, (int) y); 
 
 				}
-			
-			/*pieces[(int) x][(int) y]= true;*/
-			/*board.updateBoard();
-*/			}
+			}
 			if (StdDrawPlus.isSpacePressed() ) {
 				if (board.canEndTurn()) {
-					board.endTurn(); // b/c non-static methods- need the .
+					board.endTurn(); 
 				}
 			}
-			StdDrawPlus.show(100); 
-			/*board.updateBoard();*/ // updating stuff in while loop. Outside while loop, nothing happens, because the while loop is always true. 
+			StdDrawPlus.show(100);
 		}
-
-
-
-		/* board.select(0, 0); */ // SELECT CAN HIGHLIGHT!!!
 		
 	}
 
@@ -86,7 +55,7 @@ public class Board {
 	public Board(boolean shouldBeEmpty) { // Constructor
 		piece_array= new Piece[8][8]; 
 		if (shouldBeEmpty== false) {
-			// Need to put in the default configuration of the board
+			// Default configuration of the board
 			for(int i=0; i<8; i= i+1) { // Rows
 				for(int j=0; j<8; j= j+1) { // Columns 
 					if (i==0 && j%2==0) {
@@ -114,7 +83,6 @@ public class Board {
 				}
 			}
 		}
-
 		else {
 			return; 
 		}
@@ -130,7 +98,7 @@ public class Board {
 				else {
 					StdDrawPlus.setPenColor(StdDrawPlus.RED);
 				}
-				// Now actually fill in the Square color
+				// Fill in the Square color
 				StdDrawPlus.filledSquare(j+0.5, i+0.5, 0.5);
 			}
 		}
@@ -213,44 +181,23 @@ public class Board {
 			hasmoved= has_moved_1; 
 		}
 		if (piece!=null) { // Square w/a piece
-			// Fire returns 0, so have to flip
+			// Side() does 0 for fire, while I made it 1, so have to flip
 			if (piece.side() == player) {
-				System.out.println("canSelect= false 218"); 
 				return false; 
 			}
 			if (piece.side()!= player && !hasselected) { 
-				/*prevselected= true; */
-				/*System.out.println("went into loop 206");*/ 
 				prevselectedpiece= piece; 
-				/*hasselected= true; 
-				if (player==0) {
-						has_selected_0= true; 
-					}
-					else if (player==1) {
-						has_selected_1= true; 
-					}*/
-				System.out.println("canSelect = true 224"); 
 				return true; 
 			}
 			else if (piece.side()!= player && hasselected && !hasmoved) {
-				/*System.out.println("went into loop 213"); */
 				prevselectedpiece= piece; 
-				hasselected= true; 
-				/*if (player==0) {
-						has_selected_0= true; 
-					}
-					else if (player==1) {
-						has_selected_1= true; 
-					}*/
-				System.out.println("canSelect = true 237"); 
+				hasselected= true;
 				return true; 
 			}
-			System.out.println("opponent piece canSelect = false"); 
 			return false;
 		}
-		else { // Empty square
+		else { // Trying to select an empty square
 			if (prevselectedpiece== null) {
-				System.out.println("canSelect= false 253"); 
 				return false; 
 			}
 			if (prevselectedpiece!=null) {
@@ -264,7 +211,6 @@ public class Board {
 					else if (player==1) {
 						has_captured_1= true; 
 					}
-					System.out.println("canSelect = true 255"); 
 					return true; 
 				}
 				if (piece==null && validMove(xi, yi, x, y)) {
@@ -275,18 +221,14 @@ public class Board {
 					else if (player==1) { 
 						has_captured_1= true; 
 					}
-
-					System.out.println("canSelect = true 267"); 
 					return true; 
 				}
 			}
-			System.out.println("empty square canSelect = false 283"); 
-			System.out.println("I didn't return false for the rest of the loops");
 			return false; 
 		}
 	}
 
-	/* MAKE SURE THIS METHOD IS PRIVATE DLIRUGHDSLRIUGHDSLIRUHGLSDIRUGHLISDRUHGLIDSURHGLIDSUHGLISUD OKAY */
+
 	private boolean validMove(int xi, int yi, int xf, int yf) {
 		/* Make sure not trying to move it out of bounds */
 		if (xf >=8 || yf>=8) {
@@ -306,62 +248,30 @@ public class Board {
 			}
 			return single_step(xi, yi, xf, yf); 
 		}
-		/* Single capture */
+		/* Capture */
 		if (Math.abs(xf-xi)==2 && Math.abs(yf-yi)==2) {
-			
 			return single_capture(xi, yi, xf, yf);
 		}
-		/* Multi-capture */
-		/*if (Math.abs(xf-xi)>=3 && Math.abs(yf-yi)>=3 && Math.abs(xf-xi)==Math.abs(yf-yi) && pieceAt(xf, yf)==null) {
-			hascaptured= true; 
-			return multi_capture(xi, yi, xf, yf);
-		}*/
-		// They only capture once at a time anyway tho
 		else {
 			return false; 
 		}		
 	}
 
 	public void select(int x, int y) {
-		/*Piece piece= piece_array[y][x]; 
-		StdDrawPlus.setPenColor(StdDrawPlus.WHITE); 
-		StdDrawPlus.filledSquare(x+0.5, y+0.5, 0.5); 
-		if (piece.isFire() && piece.isBomb()==false && piece.isShield()==false) {
-			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-fire.png", 1, 1); 
-		}
-		else if (piece.isFire() && piece.isShield()== true) {
-			StdDrawPlus.picture(x+0.5, y+0.5, "img/shield-fire.png", 1, 1);
-		}
-		else if (piece.isFire() && piece.isBomb()== true) {
-			StdDrawPlus.picture(x+0.5, y+0.5, "img/bomb-fire.png", 1, 1);
-		}
-		else if (piece.isFire()== false && piece.isBomb()== true) {
-			StdDrawPlus.picture(x+0.5, y+0.5, "img/bomb-water.png", 1, 1);
-		}
-		else if (piece.isFire()== false && piece.isShield()== true) {
-			StdDrawPlus.picture(x+0.5, y+0.5, "img/shield-water.png", 1, 1);
-		}
-		else if (piece.isFire()== false && piece.isBomb()==false && piece.isShield()==false) {
-			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-water.png", 1, 1);
-		}*/
-		
 		selectedpiece= pieceAt(x, y); 
 		if (selectedpiece==null && prepped_piece_4move==null) {
 			return; 
 		}
-		else if (selectedpiece!=null) { // square with a piece
+		else if (selectedpiece!=null) { // Square with a piece
 			prepped_piece_4move= selectedpiece; 
 			int xpos= getXPos(selectedpiece); 
-			int ypos= getYPos(selectedpiece); 
-			/*board.place(xpos, ypos); */ // I don't think you actually move anything if you just prep a piece for movement
+			int ypos= getYPos(selectedpiece);
 		}
 		else if (selectedpiece==null && prepped_piece_4move!=null) {
 			// Going to move the prepped piece to the empty square
 			int xpos= getXPos(prepped_piece_4move); 
 			int ypos= getYPos(prepped_piece_4move);
 			prepped_piece_4move.move(x, y);
-
-			/*board.place(x, y); */
 			remove(xpos, ypos); 
 			hasmoved= true; 
 			if (player==0) {
@@ -370,7 +280,6 @@ public class Board {
 			else if (player==1) {
 				has_moved_1= true; 
 			}
-			/*this.updateBoard();*/
 			if (prepped_piece_4move.hasCaptured()) {
 				hascaptured= true; 
 				if (player==0) {
@@ -449,7 +358,7 @@ public class Board {
 		selectedpiece= null; 
 		prepped_piece_4move.doneCapturing();
 		prepped_piece_4move= null; 
-		// Basically I'm just setting them all back to their default states, for a clean slate for the next turn 
+		// Basically I'm just setting them all back to default, for a clean slate for the next turn 
 		
 	}
 
@@ -529,71 +438,6 @@ public class Board {
 			return false;
 		}
 	}
-
-	/* I DON'T THINK I NEED THIS ANYMORE ACTUALLY 
-	private boolean multi_capture(int xi, int yi, int xf, int yf) {
-		Piece curr_piece= pieceAt(xi, yi);
-		if (curr_piece.isKing()==false) {
-			if (curr_piece.isFire()) { // Fire 
-				if ((yf-yi)>=3 && Math.abs(xf-xi)==(yf-yi)) {
-					int i= (xf-xi)/Math.abs(xf-xi); // -1 or 1
-					while (xi!=xf) { // Supes complicated cause sign- right or left
-						if (pieceAt(xi+i, yi+1).isFire()==false) {
-							xi= xi + 2*i;
-							yi= yi+2;
-							continue; 
-						}
-						else {
-							return false; 
-						}
-					}
-					return true; 
-				}
-				else {
-					return false;
-				}
-			}
-			else { // Water
-				if ((yf-yi)<=-3 && Math.abs(xf-xi)== -(yf-yi)) {
-					int i= (xf-xi)/Math.abs(xf-xi); // -1 or 1
-					while(xi!=xf) { 
-						if (pieceAt(xi+i, yi-1).isFire()) {
-							xi= xi+2*i;
-							yi= yi-2;
-							continue; 
-						}
-						else {
-							return false; 
-						}
-					}
-				}
-				else {
-					return false;
-				}
-			}
-		}
-		else { // King can move back+forward
-			int i= (xf-xi)/Math.abs(xf-xi);
-			int j= (yf-yi)/Math.abs(yf-yi);
-			while(xi!=xf) {
-				if (pieceAt(xi+i, yi+j).isFire() != curr_piece.isFire()) {
-					xi= xi + 2*i; 
-					yi= yi + 2*j;
-					continue; 
-				}
-				else {
-					return false; 
-				}
-			}
-			return true; 
-		}
-		return false; // tbh I'm not sure why this is necessary, but java gets mad if I don't have it	
-	}
-	*/
-
-	
-
-	
 
 	public String winner() {
 		int fire_count= 0; 

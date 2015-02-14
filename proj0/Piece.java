@@ -1,6 +1,5 @@
 public class Piece {
 
-	/* Declaring instance variables */
 	private boolean element;
 	private Board board; 
 	private int xpos;
@@ -13,7 +12,6 @@ public class Piece {
 	private boolean isWaterKing= false; 
 
 
-	/* Constructor for a Piece */
 	public Piece(boolean isFire, Board b, int x, int y, String type) {
 		element= isFire; 
 		board= b;
@@ -78,17 +76,17 @@ public class Piece {
 		if (board.pieceAt(oldx, oldy)!=null) {
 			board.remove(oldx, oldy); 
 		}
-		board.place(this, x, y); // Place yourself on there if I move you
-		/* I think if you jumped over something, take that piece into a variable, and then remove it */
-		// Only go through this if moved more than 1 space- get the captured piece- possibility of a capture
+		board.place(this, x, y); 
+		/* Capture: if you jumped over something, take that piece into a variable, and then remove it */
+		// Only go through this if moved more than 1 space- possibility of a capture
 		if (Math.abs(x-oldx)>=2 && Math.abs(y-oldy)>=2) {
 			int i= (x- oldx)/ Math.abs(x- oldx); 
-			int j= (y- oldy)/ Math.abs(y- oldy); // direction
+			int j= (y- oldy)/ Math.abs(y- oldy); // +/- 1 for direction
 			
 			Piece captured= board.pieceAt(oldx+i, oldy+j); 
 			board.remove(oldx+i, oldy+j);
 
-			/* Now take care of bomb pieces exploding */
+			/* Now bomb pieces exploding */
 			if (this.isBomb()) {
 				int xstart= x-1; 
 				int ystart= y-1;
@@ -104,13 +102,10 @@ public class Piece {
 					xstart= xstart+1;
 				}
 			}
-			/*if HAVE TO CHECK IF CAN CAPTURE AGAIN*/
 		}
 
 		if (board.pieceAt(x, y) != null) {
-			if (reachedEnd(board.pieceAt(x, y), y)) { // Yes king
-			/*DURSYGHDLSIRUGHDSLRIUHGDSRLIU HEY WRITE THE WHOLE CROWNING THING AND CHANGING ALSO 
-			IF TIS A KING AND CAN CAPTURE AGAIN, DO THAT*/
+			if (reachedEnd(board.pieceAt(x, y), y)) { // King
 				boolean isFire= false; 
 				if (y==7) {
 					isFire= true; 
@@ -148,5 +143,5 @@ public class Piece {
 	}
 
 
-/* Thanks to Sreesha Venkat and Karin Goh and Anna-Marie and Jenny for help. */
+/* Thanks to Sreesha Venkat and Karin Goh and AnnaMarie Garlin and Jenny Li for oodles and oodles of help. And food. */
 }
