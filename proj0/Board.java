@@ -218,13 +218,13 @@ public class Board {
 				/*prevselected= true; */
 				/*System.out.println("went into loop 206");*/ 
 				prevselectedpiece= piece; 
-				hasselected= true; 
+				/*hasselected= true; 
 				if (player==0) {
 						has_selected_0= true; 
 					}
 					else if (player==1) {
 						has_selected_1= true; 
-					}
+					}*/
 				System.out.println("canSelect = true"); 
 				return true; 
 			}
@@ -232,12 +232,12 @@ public class Board {
 				/*System.out.println("went into loop 213"); */
 				prevselectedpiece= piece; 
 				hasselected= true; 
-				if (player==0) {
+				/*if (player==0) {
 						has_selected_0= true; 
 					}
 					else if (player==1) {
 						has_selected_1= true; 
-					}
+					}*/
 				System.out.println("canSelect = true"); 
 				return true; 
 			}
@@ -253,14 +253,14 @@ public class Board {
 				int yi= getYPos(prevselectedpiece); 
 				if (hascaptured && hasselected) {
 					/*System.out.println("went into loop 232");*/
-					hasselected= true; 
+					/*hasselected= true; */
 					hascaptured= true; 
 					if (player==0) {
-						has_selected_0= true;
+						/*has_selected_0= true;*/
 						has_captured_0= true;  
 					}
 					else if (player==1) {
-						has_selected_1= true; 
+						/*has_selected_1= true; */
 						has_captured_1= true; 
 					}
 					System.out.println("canSelect = true"); 
@@ -268,14 +268,14 @@ public class Board {
 				}
 				if (piece==null && validMove(xi, yi, x, y)) {
 					/*System.out.println("went into loop 226");*/
-					hasselected= true; 
+					/*hasselected= true; */
 					hascaptured= true; 
 					if (player==0) {
-						has_selected_0= true; 
+						/*has_selected_0= true; */
 						has_captured_0= true; 
 					}
 					else if (player==1) {
-						has_selected_1= true; 
+						/*has_selected_1= true;*/ 
 						has_captured_1= true; 
 					}
 
@@ -364,11 +364,21 @@ public class Board {
 			// Going to move the prepped piece to the empty square
 			int xpos= getXPos(prepped_piece_4move); 
 			int ypos= getYPos(prepped_piece_4move);
-			prepped_piece_4move.move(x, y); 
+			prepped_piece_4move.move(x, y);
+
 			/*board.place(x, y); */
 			remove(xpos, ypos); 
 			hasmoved= true; 
 			/*this.updateBoard();*/
+			if (prepped_piece_4move.hasCaptured()) {
+				hascaptured= true; 
+				if (player==0) {
+					has_captured_0= true; 
+				}
+				else if (player==1) {
+					has_captured_1= true; 
+				}
+			}
 		}
 		
 		if (player==0) {
@@ -439,6 +449,7 @@ public class Board {
 		has_captured_0= false; 
 		selectedpiece= null; 
 		prepped_piece_4move= null; 
+		prepped_piece_4move.doneCapturing(); 
 		// Basically I'm just setting them all back to their default states, for a clean slate for the next turn 
 		
 	}
