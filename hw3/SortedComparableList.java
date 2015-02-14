@@ -129,7 +129,24 @@ public class SortedComparableList {
      *  output list is [ 0 1 0 3 1 0 ].
      **/
     public void squish() {
-        // REPLACE THIS LINE WITH YOUR SOLUTION
+      // Draw it out- in nb
+        if (this==null) {
+          return; 
+        }
+        else if (tail!=null) { // If just 1 item, don't do anything
+          SortedComparableList prev= this; 
+          SortedComparableList curr= tail; // Curr is one behind prev
+          while (curr!= null) {
+            if (prev.head.equals(curr.head)) { 
+              prev.tail= curr.tail; // Skip over curr entirely
+              curr= prev.tail; 
+            }
+            else { // Try the next pair 
+              prev= prev.tail;
+              curr= prev.tail; 
+            } 
+          }
+        }
     }
 
     /** Duplicates each Comparable so that for every original
