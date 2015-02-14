@@ -60,7 +60,16 @@ public class SortedComparableList {
 
     /** Adds every item in THAT to this list. */
     public void extend(SortedComparableList that) {
-        // REPLACE THIS LINE WITH YOUR SOLUTION
+        if (that==null) {
+          return; 
+        }
+        else {
+          SortedComparableList pointer= that; 
+          // I want to iterate through all the values of that, and put them in the correct place in this. Then move on to the next value. Stop if the value is null. 
+          while (pointer!=null)
+            insert(pointer.head); 
+            pointer= pointer.tail;
+        }
     }
 
     /** Returns a list consisting of the elements of L starting from
