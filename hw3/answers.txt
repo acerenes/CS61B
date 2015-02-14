@@ -13,7 +13,7 @@ Q2.
 (d) dynamic
 
 Q3.
-(a) 
-(b) 
-(c) 
-(d) 
+(a) True
+(b) SuperAnimal
+(c) SuperAnimal
+(d) static
