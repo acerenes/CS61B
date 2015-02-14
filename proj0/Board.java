@@ -215,30 +215,29 @@ public class Board {
 		if (piece!=null) { // Square w/a piece
 			// for side(), Fire= 0
 			if (piece.side()!= player && hasselected==false) { 
-
+				/*prevselected= true; */
 				/*System.out.println("went into loop 206");*/ 
 				prevselectedpiece= piece; 
-				/*hasselected= true; */
-				/*if (player==0) {
+				hasselected= true; 
+				if (player==0) {
 						has_selected_0= true; 
 					}
 					else if (player==1) {
 						has_selected_1= true; 
-					}*/
+					}
 				System.out.println("canSelect = true"); 
 				return true; 
 			}
 			else if (piece.side()!= player && hasselected && !hasmoved) {
 				/*System.out.println("went into loop 213"); */
 				prevselectedpiece= piece; 
-				// selecting a different piece now- made a mistake the first time
-				/*hasselected= true; 
+				hasselected= true; 
 				if (player==0) {
 						has_selected_0= true; 
 					}
 					else if (player==1) {
 						has_selected_1= true; 
-					}*/
+					}
 				System.out.println("canSelect = true"); 
 				return true; 
 			}
@@ -252,16 +251,37 @@ public class Board {
 				System.out.println("prevselectedpiece = " + prevselectedpiece); */
 				int xi= getXPos(prevselectedpiece); 
 				int yi= getYPos(prevselectedpiece); 
-				if (!hasmoved && validMove(xi, yi, x, y)) {
+				if (hascaptured && hasselected) {
+					/*System.out.println("went into loop 232");*/
+					hasselected= true; 
+					hascaptured= true; 
+					if (player==0) {
+						has_selected_0= true;
+						has_captured_0= true;  
+					}
+					else if (player==1) {
+						has_selected_1= true; 
+						has_captured_1= true; 
+					}
+					System.out.println("canSelect = true"); 
+					return true; 
+				}
+				if (piece==null && validMove(xi, yi, x, y)) {
+					/*System.out.println("went into loop 226");*/
+					hasselected= true; 
+					hascaptured= true; 
+					if (player==0) {
+						has_selected_0= true; 
+						has_captured_0= true; 
+					}
+					else if (player==1) {
+						has_selected_1= true; 
+						has_captured_1= true; 
+					}
 
-					/*place(prevselectedpiece, x, y); 
-					prevselectedpiece= pieceAt(x, y); // Doing this in the case of multi captures- pLEASE WORK*/
+					System.out.println("canSelect = true"); 
 					return true; 
 				}
-				else if (hascaptured && validMove(xi, yi, x, y)) {
-					return true; 
-				}
-				
 			}
 			/*hasselected= false;
 			if (player==0) {
@@ -308,6 +328,27 @@ public class Board {
 	}
 
 	public void select(int x, int y) {
+		/*Piece piece= piece_array[y][x]; 
+		StdDrawPlus.setPenColor(StdDrawPlus.WHITE); 
+		StdDrawPlus.filledSquare(x+0.5, y+0.5, 0.5); 
+		if (piece.isFire() && piece.isBomb()==false && piece.isShield()==false) {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-fire.png", 1, 1); 
+		}
+		else if (piece.isFire() && piece.isShield()== true) {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/shield-fire.png", 1, 1);
+		}
+		else if (piece.isFire() && piece.isBomb()== true) {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/bomb-fire.png", 1, 1);
+		}
+		else if (piece.isFire()== false && piece.isBomb()== true) {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/bomb-water.png", 1, 1);
+		}
+		else if (piece.isFire()== false && piece.isShield()== true) {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/shield-water.png", 1, 1);
+		}
+		else if (piece.isFire()== false && piece.isBomb()==false && piece.isShield()==false) {
+			StdDrawPlus.picture(x+0.5, y+0.5, "img/pawn-water.png", 1, 1);
+		}*/
 		
 		selectedpiece= pieceAt(x, y); 
 		if (selectedpiece==null && prepped_piece_4move==null) {
@@ -317,14 +358,17 @@ public class Board {
 			prepped_piece_4move= selectedpiece; 
 			int xpos= getXPos(selectedpiece); 
 			int ypos= getYPos(selectedpiece); 
+			/*board.place(xpos, ypos); */ // I don't think you actually move anything if you just prep a piece for movement
 		}
 		else if (selectedpiece==null && prepped_piece_4move!=null) {
 			// Going to move the prepped piece to the empty square
 			int xpos= getXPos(prepped_piece_4move); 
 			int ypos= getYPos(prepped_piece_4move);
 			prepped_piece_4move.move(x, y); 
+			/*board.place(x, y); */
 			remove(xpos, ypos); 
 			hasmoved= true; 
+			/*this.updateBoard();*/
 		}
 		
 		if (player==0) {
@@ -335,6 +379,9 @@ public class Board {
 			has_selected_1= true;
 		}
 		hasselected= true; 
+		/*System.out.println("hasselected= " + hasselected); 
+		System.out.println("hascaptured= " + hascaptured); 
+		System.out.println("hasmoved= " + hasmoved); */
 	}
 
 	public void place(Piece p, int x, int y) {
@@ -343,7 +390,7 @@ public class Board {
 		}
 		else {
 			piece_array[y][x]= p; 
-			hasmoved= true; 
+			/*hasmoved= true; */
 		}
 
 	}
