@@ -63,10 +63,8 @@ public class Board {
 			/*board.updateBoard();
 */			}
 			if (StdDrawPlus.isSpacePressed() ) {
-				System.out.println("Space pressed"); 
 				if (board.canEndTurn()) {
 					board.endTurn(); // b/c non-static methods- need the .
-					System.out.println("ended turn"); 
 				}
 			}
 			StdDrawPlus.show(100); 
@@ -156,7 +154,6 @@ public class Board {
 					}
 				}
 				else if (piece_array[i][j].isFire() && piece_array[i][j].isBomb()) {
-					System.out.println("isKing= " + piece_array[i][j].isKing()); 
 					if (piece_array[i][j].isKing()) {
 						StdDrawPlus.picture(j+0.5, i+0.5, "img/bomb-fire-crowned.png", 1, 1);
 					}
@@ -202,7 +199,6 @@ public class Board {
 	}
 
 	public boolean canSelect(int x, int y) {
-		System.out.println("I am indeed running canSelect"); 
 		Piece piece= piece_array[y][x];
 		if (player==0) {
 			hasselected= has_selected_0;
@@ -213,8 +209,11 @@ public class Board {
 			hascaptured= has_captured_1; 
 		}
 		if (piece!=null) { // Square w/a piece
-			// for side(), Fire= 0
-			if (piece.side()!= player && hasselected==false) { 
+			// Fire returns 0, so have to flip
+			if (piece.side() == player) {
+				return false; 
+			}
+			if (piece.side()!= player && !hasselected) { 
 				/*prevselected= true; */
 				/*System.out.println("went into loop 206");*/ 
 				prevselectedpiece= piece; 
@@ -225,7 +224,7 @@ public class Board {
 					else if (player==1) {
 						has_selected_1= true; 
 					}*/
-				System.out.println("canSelect = true"); 
+				System.out.println("canSelect = true 224"); 
 				return true; 
 			}
 			else if (piece.side()!= player && hasselected && !hasmoved) {
@@ -238,59 +237,44 @@ public class Board {
 					else if (player==1) {
 						has_selected_1= true; 
 					}*/
-				System.out.println("canSelect = true"); 
+				System.out.println("canSelect = true 237"); 
 				return true; 
 			}
-			System.out.println("canSelect = false"); 
-			System.out.println("I went into loop 240"); 
+			System.out.println("opponent piece canSelect = false"); 
 			return false;
 		}
 		else { // Empty square
+			if (prevselectedpiece== null) {
+				return false; 
+			}
 			if (prevselectedpiece!=null) {
-				/*System.out.println("went into loop 222"); 
-				System.out.println("prevselectedpiece = " + prevselectedpiece); */
 				int xi= getXPos(prevselectedpiece); 
 				int yi= getYPos(prevselectedpiece); 
 				if (hascaptured && hasselected) {
-					/*System.out.println("went into loop 232");*/
-					/*hasselected= true; */
 					hascaptured= true; 
 					if (player==0) {
-						/*has_selected_0= true;*/
 						has_captured_0= true;  
 					}
 					else if (player==1) {
-						/*has_selected_1= true; */
 						has_captured_1= true; 
 					}
-					System.out.println("canSelect = true"); 
+					System.out.println("canSelect = true 255"); 
 					return true; 
 				}
 				if (piece==null && validMove(xi, yi, x, y)) {
-					/*System.out.println("went into loop 226");*/
-					/*hasselected= true; */
 					hascaptured= true; 
 					if (player==0) {
-						/*has_selected_0= true; */
 						has_captured_0= true; 
 					}
-					else if (player==1) {
-						/*has_selected_1= true;*/ 
+					else if (player==1) { 
 						has_captured_1= true; 
 					}
 
-					System.out.println("canSelect = true"); 
+					System.out.println("canSelect = true 267"); 
 					return true; 
 				}
 			}
-			/*hasselected= false;
-			if (player==0) {
-				has_selected_0= false; 
-			}
-			else if (player==1) {
-				has_selected_1= false; 
-			}*/
-			System.out.println("canSelect = false"); 
+			System.out.println("empty square canSelect = false"); 
 			System.out.println("I didn't return false for the rest of the loops");
 			return false; 
 		}
@@ -388,10 +372,7 @@ public class Board {
 		else if (player==1) {
 			has_selected_1= true;
 		}
-		hasselected= true; 
-		/*System.out.println("hasselected= " + hasselected); 
-		System.out.println("hascaptured= " + hascaptured); 
-		System.out.println("hasmoved= " + hasmoved); */
+		hasselected= true;
 	}
 
 	public void place(Piece p, int x, int y) {
@@ -400,7 +381,6 @@ public class Board {
 		}
 		else {
 			piece_array[y][x]= p; 
-			/*hasmoved= true; */
 		}
 
 	}
@@ -433,7 +413,7 @@ public class Board {
 
 	public void endTurn() {
 		if (player==1) {
-			player=0; 
+			player= 0; 
 		}
 		else if (player==0) {
 			player=1; 
@@ -524,8 +504,7 @@ public class Board {
 		}
 		else { // King can move forward & backward
 			if (pieceAt(((xi+xf)/2), ((yi+yf)/2)).isFire() != curr_piece.isFire() && pieceAt(xf, yf)==null) {
-				hascaptured= true; 
-				System.out.println("The single_capture method is returning true"); 
+				hascaptured= true;
 				return true;
 			}
 			return false;
