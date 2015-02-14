@@ -23,7 +23,21 @@ public class ApplicableIntList{
 
     /** Inserts int i into its correct location, doesn't handle cycles. */
     public void insert(int i) {
-        // REPLACE THIS LINE WITH YOUR SOLUTION
+        if (this==null) {
+            this= new ApplicableIntList(i, null); 
+        }
+        else if (i< head) { // Place at beginning
+            tail= new ApplicableIntList(head, tail); 
+            head= i; 
+        }
+        else { // Place at middle or end
+            ApplicableIntList pointer= this; 
+            // If bigger than the next element, keep iterating through. Once no longer bigger than next element, or next element= null, put yourself there. 
+            while (i>pointer.tail.head && pointer.tail!=null) {
+                pointer= pointer.tail; 
+            }
+            pointer.tail= new ApplicableIntList(i, pointer.tail); 
+        }
     }
 
     /** Returns the i-th int in this list.
