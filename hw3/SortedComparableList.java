@@ -18,7 +18,8 @@ public class SortedComparableList {
 
     /** A list with null tail, and head = 0. */
     public SortedComparableList(){
-        // REPLACE THIS LINE WITH YOUR SOLUTION
+        this(0, null); 
+        // this= the current object= SortedComparableList
     }
 
     /** Inserts Comparable c into its correct location in this list. */
