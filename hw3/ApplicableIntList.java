@@ -44,7 +44,20 @@ public class ApplicableIntList{
      *  The first element, which is in location 0, is the 0th element.
      *  Assume i takes on the values [0, length of list - 1]. */
     public int get(int i) {
-        // REPLACE THIS LINE WITH YOUR SOLUTION
+        if (this==null) {
+            return null; 
+        }
+        else if (i==0) {
+            return this.head; 
+        }
+        else {
+            ApplicableIntList pointer= this; 
+            while (i!=0 && pointer.tail!=null) {
+                pointer= pointer.tail; 
+                i= i-1; 
+            }
+            return pointer.head; 
+        }
     }
 
     /** Applies the function f to every item in this list. */
