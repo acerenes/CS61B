@@ -107,7 +107,7 @@ public class SortedComparableList {
 
     /** Removes items from L at position len+1 and later. */
     public static void expungeTail(SortedComparableList L, int len) {
-        if (L=null) {
+        if (L==null) {
           return; 
         }
         else if (len==0) {
@@ -160,7 +160,16 @@ public class SortedComparableList {
      *  duplicate.
      **/
     public void twin() {
-        // REPLACE THIS LINE WITH YOUR SOLUTION
+        if (this== null) {
+          return; 
+        }
+        else {
+          SortedComparableList curr= this; 
+          while (curr!=null) {
+            curr.tail= new SortedComparableList(curr.head, curr.tail);
+            curr= curr.tail.tail; 
+          }
+        }
     }
 
     /** Returns NULL if no cycle exists, else returns cycle location. */
