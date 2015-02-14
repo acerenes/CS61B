@@ -9,6 +9,8 @@ public class Board {
 	private int xval; 
 	private int yval; 
 	private boolean hasmoved= false; 
+	private boolean has_moved_0= false; 
+	private boolean has_moved_1= false; 
 	private boolean prevselected= false; 
 	private Piece prevselectedpiece= null; 
 	private boolean has_captured_1= false; 
@@ -203,10 +205,12 @@ public class Board {
 		if (player==0) {
 			hasselected= has_selected_0;
 			hascaptured= has_captured_0;
+			hasmoved= has_moved_0; 
 		}
 		else if (player==1) {
 			hasselected= has_selected_1;
 			hascaptured= has_captured_1; 
+			hasmoved= has_moved_1; 
 		}
 		if (piece!=null) { // Square w/a piece
 			// Fire returns 0, so have to flip
@@ -289,10 +293,15 @@ public class Board {
 		
 		// Single Step
 		if (Math.abs(xf-xi)==1 && Math.abs((yf-yi))==1) {
+			if (player==0) {
+				hasmoved= has_moved_0; 
+			}
+			else if (player==1) {
+				hasmoved= has_moved_1; 
+			}
 			if (hasmoved) {
 				return false;
 			}
-			/*hasmoved= true; */
 			return single_step(xi, yi, xf, yf); 
 		}
 		/* Single capture */
@@ -353,6 +362,12 @@ public class Board {
 			/*board.place(x, y); */
 			remove(xpos, ypos); 
 			hasmoved= true; 
+			if (player==0) {
+				has_moved_0= true; 
+			}
+			else if (player==1) {
+				has_moved_1= true; 
+			}
 			/*this.updateBoard();*/
 			if (prepped_piece_4move.hasCaptured()) {
 				hascaptured= true; 
@@ -422,6 +437,8 @@ public class Board {
 		has_selected_0= false; 
 		hasselected= false; 
 		hasmoved= false; 
+		has_moved_1= false; 
+		has_moved_0= false; 
 		prevselected= false; 
 		prevselectedpiece= null; 
 		hascaptured= false; 
