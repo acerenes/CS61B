@@ -1,10 +1,10 @@
 Q1.
 (a) SuperAnimal
-(b) 
-(c) 
-(d) 
-(e) 
-(f) 
+(b) No
+(c) Ringding
+(d) Yes
+(e) None
+(f) dynamic
 
 Q2.
 (a) 
