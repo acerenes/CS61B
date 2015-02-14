@@ -78,7 +78,20 @@ public class SortedComparableList {
       *
       * This method should NOT modify L. */
     public static SortedComparableList subTail(SortedComparableList L, int start) {
-        return null; // REPLACE THIS LINE WITH YOUR SOLUTION
+        if (L==null || start==0) {
+          return L; 
+        }
+        else {
+          /*// Figure out where start is, and get the list starting from there, with start.head as the head. Just return that list. 
+          // It's just like get, but return the entire list, not just the head. 
+          SortedComparableList partial_list= L; 
+          while (partial_list.tail!=null && start!=0) {
+            partial_list= partial_list.tail; 
+            start= start-1; 
+          }
+          return partial_list; */
+          return subTail(L.tail, start-1); 
+        }
     }
 
     /** Returns the sublist consisting of LEN items from list L,
