@@ -58,7 +58,11 @@ public class TestBoardClass {
 		assertEquals("No one", b.winner()); 
 		Board b= new Board(false);
 		assertEquals(null, b.winner()); 
-		b.remove()
+		b.remove(7, 5); 
+		assertEquals("Fire", b.winner()); 
+		b.remove(7, 1);
+		b.remove(6, 2);
+		assertEquals()
 	}
 
 
