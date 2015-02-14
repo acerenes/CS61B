@@ -44,7 +44,18 @@ public class SortedComparableList {
      *  The first element, which is in location 0, is the 0th element.
      *  Assume i takes on the values [0, length of list - 1]. */
     public Comparable get(int i) {
-        return null; // REPLACE THIS LINE WITH YOUR SOLUTION
+        if (head==null || i==0) {
+          return head; 
+        }
+        else {
+          SortedComparableList pointer= this; 
+          while (pointer.tail!=null && i!=0) {
+            pointer= pointer.tail; 
+            i= i-1; 
+          }
+          return pointer.head; 
+        }
+
     }
 
     /** Adds every item in THAT to this list. */
