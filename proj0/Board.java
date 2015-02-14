@@ -448,8 +448,8 @@ public class Board {
 		has_captured_1= false;
 		has_captured_0= false; 
 		selectedpiece= null; 
+		prepped_piece_4move.doneCapturing();
 		prepped_piece_4move= null; 
-		prepped_piece_4move.doneCapturing(); 
 		// Basically I'm just setting them all back to their default states, for a clean slate for the next turn 
 		
 	}
