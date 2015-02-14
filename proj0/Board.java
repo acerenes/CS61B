@@ -215,6 +215,7 @@ public class Board {
 		if (piece!=null) { // Square w/a piece
 			// Fire returns 0, so have to flip
 			if (piece.side() == player) {
+				System.out.println("canSelect= false 218"); 
 				return false; 
 			}
 			if (piece.side()!= player && !hasselected) { 
@@ -249,6 +250,7 @@ public class Board {
 		}
 		else { // Empty square
 			if (prevselectedpiece== null) {
+				System.out.println("canSelect= false 253"); 
 				return false; 
 			}
 			if (prevselectedpiece!=null) {
@@ -278,7 +280,7 @@ public class Board {
 					return true; 
 				}
 			}
-			System.out.println("empty square canSelect = false"); 
+			System.out.println("empty square canSelect = false 283"); 
 			System.out.println("I didn't return false for the rest of the loops");
 			return false; 
 		}
