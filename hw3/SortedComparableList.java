@@ -82,14 +82,6 @@ public class SortedComparableList {
           return L; 
         }
         else {
-          /*// Figure out where start is, and get the list starting from there, with start.head as the head. Just return that list. 
-          // It's just like get, but return the entire list, not just the head. 
-          SortedComparableList partial_list= L; 
-          while (partial_list.tail!=null && start!=0) {
-            partial_list= partial_list.tail; 
-            start= start-1; 
-          }
-          return partial_list; */
           return subTail(L.tail, start-1); 
         }
     }
@@ -98,10 +90,19 @@ public class SortedComparableList {
      *  beginning with item START (where the first item is 0).
      *
      *  Does not modify the original list elements.
-     *  Assume START and END are >= 0.
+     *  Assume START and len are >= 0.
      */
     public static SortedComparableList sublist(SortedComparableList L, int start, int len) {
-        return null; // REPLACE THIS LINE WITH YOUR SOLUTION
+      if (len==0) {
+        return null; 
+      }
+      else if (start>0) {
+        // Whittle the list down so that its new head is what used to be at position start
+        return sublist(L.tail, start-1, len); 
+      }
+      else {
+        return new SortedComparableList(L.head, sublist(L.tail, 0, len-1)); 
+      }
     }
 
     /** Removes items from L at position len+1 and later. */
