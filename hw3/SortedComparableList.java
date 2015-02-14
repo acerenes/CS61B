@@ -12,7 +12,8 @@ public class SortedComparableList {
 
     /** A list with head HEAD0 and tail TAIL0. */
     public SortedComparableList(Comparable head0, SortedComparableList tail0) {
-        // REPLACE THIS LINE WITH YOUR SOLUTION
+        head= head0; 
+        tail= tail0; 
     }
 
     /** A list with null tail, and head = 0. */
