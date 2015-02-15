@@ -26,6 +26,14 @@ public class Planet {
 		radius= r; 
 	}
 
+	public double mass_value() {
+		return mass; 
+	}
+
+	public double radius_value() {
+		return radius; 
+	}
+
 	public double calcDistance(Planet otherplanet) {
 		double xdist= otherplanet.x - x;
 		double ydist= otherplanet.y -y;
