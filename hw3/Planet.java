@@ -16,13 +16,14 @@ public class Planet {
 	private double radius; 
 
 	// constructor inializes an instance of the Planet class
-	public Planet(double xpos, double ypos, double xVel, double yVel, double m, String image) {
+	public Planet(double xpos, double ypos, double xVel, double yVel, double m, String image, double r) {
 		x= xpos;
 		y= ypos;
 		xVelocity= xVel;
 		yVelocity= yVel;
 		mass= m;
 		img= image;
+		radius= r; 
 	}
 
 	public double calcDistance(Planet otherplanet) {
