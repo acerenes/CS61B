@@ -23,10 +23,7 @@ public class ApplicableIntList{
 
     /** Inserts int i into its correct location, doesn't handle cycles. */
     public void insert(int i) {
-        if (this==null) {
-            this= new ApplicableIntList(i, null); 
-        }
-        else if (i< head) { // Place at beginning
+        if (i< head) { // Place at beginning
             tail= new ApplicableIntList(head, tail); 
             head= i; 
         }
@@ -44,10 +41,7 @@ public class ApplicableIntList{
      *  The first element, which is in location 0, is the 0th element.
      *  Assume i takes on the values [0, length of list - 1]. */
     public int get(int i) {
-        if (this==null) {
-            return null; 
-        }
-        else if (i==0) {
+        if (i==0) {
             return this.head; 
         }
         else {
@@ -63,7 +57,7 @@ public class ApplicableIntList{
     /** Applies the function f to every item in this list. */
     public void apply(IntUnaryFunction f) {
         if (this==null || f==null) {
-            return null; 
+            return; 
         }
         else {
             // First apply the function
@@ -83,7 +77,6 @@ public class ApplicableIntList{
             tail= newlist.tail; 
         }
 
-        }
     }
 
     /** Returns NULL if no cycle exists, else returns cycle location. */
