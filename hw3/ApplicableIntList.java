@@ -62,7 +62,28 @@ public class ApplicableIntList{
 
     /** Applies the function f to every item in this list. */
     public void apply(IntUnaryFunction f) {
-        // REPLACE THIS LINE WITH YOUR SOLUTION
+        if (this==null || f==null) {
+            return null; 
+        }
+        else {
+            // First apply the function
+            ApplicableIntList curr= this; 
+            while (curr!=null) {
+                curr.head= f.apply(curr.head); 
+                curr= curr.tail; 
+            }
+            // Put the list back into ascending order
+            ApplicableIntList newlist= new ApplicableIntList(get(0), null); // just grab the first element for comparison
+            curr= this.tail; 
+            while (curr!=null) {
+                newlist.insert(curr.head); 
+                curr= curr.tail; 
+            }
+            head= newlist.head;
+            tail= newlist.tail; 
+        }
+
+        }
     }
 
     /** Returns NULL if no cycle exists, else returns cycle location. */
