@@ -24,7 +24,7 @@ public class GuitarString {
     }
     
     
-    /* Pluck the guitar string by replacing the buffer with white noise. */
+    /* Pluck the guitar string by replacing the buffer with white noises. */
     public void pluck() {
         // TODO: Dequeue everything in the buffer, and replace it with random numbers
         //       between -0.5 and 0.5. You can get such a number by using:
