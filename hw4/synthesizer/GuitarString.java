@@ -36,13 +36,11 @@ public class GuitarString {
         while (!buffer.isEmpty()) {
             buffer.dequeue(); 
         }
-        // Put in random numbers & make sure no repeats
+        // Put in random numbers 
         while (!buffer.isFull()) {
             double r= Math.random() - 0.5; 
             buffer.enqueue(r); 
         } 
-
-
     }
     
     /* Advance the simulation one time step by performing one iteration of
@@ -54,8 +52,6 @@ public class GuitarString {
         //       Do not call StdAudio.play().
         double dequeued_value= buffer.dequeue(); 
         double enqueued_value= DECAY * 0.5 * (dequeued_value+ buffer.peek());
-        /*System.out.println(dequeued_value);
-        System.out.println(enqueued_value); */
         buffer.enqueue(enqueued_value);  
     }
     
