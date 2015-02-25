@@ -8,6 +8,17 @@ public class ArrayRingBuffer extends AbstractBoundedQueue {
   /* Array for storing the buffer data. */
   private double[] rb;
 
+  private boolean checkRepeats() {
+    for (int i=0; i<rb.length; i= i+1) {
+      for (int j= i+1; j<rb.length; j= j+1) {
+        if (rb[j]==rb[i]) {
+          return false; 
+        }
+      }
+    }
+    return true; 
+  }
+
   /** Create a new ArrayRingBuffer with the given capacity. */
   public ArrayRingBuffer(int capacity) {
     // TODO: Create new array with capacity elements.
