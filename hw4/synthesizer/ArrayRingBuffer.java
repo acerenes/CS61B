@@ -26,7 +26,7 @@ public class ArrayRingBuffer extends AbstractBoundedQueue {
   public void enqueue(double x) {
     // TODO: Enqueue the item. Don't forget to increase fillCount and update last.
     if (this.isFull()) {
-      throw new RuntimeException("Cannot enqueue into a full buffer.");
+      throw new RuntimeException("Ring buffer overflow");
     }
     rb[last]= x; 
     fillCount++;
