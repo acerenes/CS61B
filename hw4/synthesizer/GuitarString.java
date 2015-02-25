@@ -40,8 +40,6 @@ public class GuitarString {
         while (!buffer.isFull()) {
             double r= Math.random() - 0.5; 
             buffer.enqueue(r); 
-            /*if (buffer.checkRepeats()){*/
-
         } 
 
 
@@ -64,9 +62,10 @@ public class GuitarString {
     /* Return the double at the front of the buffer. */
     public double sample() {
         if (buffer.isEmpty()) {
-            return 0; // can't do null 
+            return 0; // Can't do null b/c wants double
         }
         return buffer.peek(); 
+        // Can't do peek just by itself, cause it sometimes throws a RunTimeException, which then stops the whole program
     }
     
 }
