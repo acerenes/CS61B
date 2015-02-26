@@ -41,7 +41,9 @@ public class Plip extends Creature {
      *  that you get this exactly correct.
      */
     public Color color() {
-        g = 63;
+        r = 99; 
+        b = 76; 
+        g = 63 + 96* (int) this.energy(); 
         return color(r, g, b);
     }
 
