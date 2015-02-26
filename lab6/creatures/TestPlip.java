@@ -27,7 +27,7 @@ public class TestPlip {
         p.stay();
         assertEquals(1.90, p.energy(), 0.01);
         p.stay();
-        assertEquals(2.00, p.energy(), 0.01);
+        assertEquals(2.10, p.energy(), 0.01); // Originally this test said it should return 2.00, but I'm pretty sure 1.90 + 0.2= 2.10. 
     }
 
     @Test

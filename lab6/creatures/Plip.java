@@ -62,6 +62,7 @@ public class Plip extends Creature {
 
     /** Plips gain 0.2 energy when staying due to photosynthesis. */
     public void stay() {
+        this.energy= this.energy() + 0.2; 
     }
 
     /** Plips and their offspring each get 50% of the energy, with none
@@ -69,7 +70,8 @@ public class Plip extends Creature {
      *  Plip.
      */
     public Plip replicate() {
-        return this;
+        this.energy= this.energy() / 2; 
+        return new Plip(this.energy()); // Because I already chopped this's energy in half
     }
 
     /** Plips take exactly the following actions based on NEIGHBORS:
