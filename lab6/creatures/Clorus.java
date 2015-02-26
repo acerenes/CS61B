@@ -45,7 +45,15 @@ public class Clorus extends Creature {
 		this.energy= this.energy() - 0.01; 
 	}
 
+	public Clorus replicate() {
+		return new Clorus(); // JUST HERE AS A PLACEHOLDER
+	}
+
 	public void attack(Creature c) {
 		// COME BACK TO THIS ONE ALICE TARNG DLIGUHDRLIGHSLIRGHSLIRUHGSILDRUHGLISDUHGDILSRUGHILSDRUHGILDSRHGSDIHGDLSHGDLSRIHGILDHGILSDHGLIDHGLISHRGLIDUHSGLIHDLIGUHLDISHGLIDSHGLIDRUHGLIHLSIUHILSDHRGLISDHGLIUH 
+	}
+
+	public Action chooseAction(Map<Direction, Occupant> neighbors) {
+		return new Action(Action.ActionType.STAY); // JUST HERE AS A PLACEHOLDER
 	}
 }

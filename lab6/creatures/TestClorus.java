@@ -25,4 +25,9 @@ public class TestClorus {
 		c.stay();
 		assertEquals(1.92, c.energy(), 0); 
 	}
+
+
+	public static void main(String[] args) {
+		System.exit(jh61b.junit.textui.runClasses(TestClorus.class));
+	}
 }
