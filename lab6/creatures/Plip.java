@@ -25,7 +25,7 @@ public class Plip extends Creature {
         r = 0;
         g = 0;
         b = 0;
-        energy = e;
+        energy = e; // Inherited from Creature class
     }
 
     /** creates a plip with energy equal to 1. */
