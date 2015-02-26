@@ -50,7 +50,8 @@ public class Clorus extends Creature {
 	}
 
 	public Clorus replicate() {
-		return new Clorus(); // JUST HERE AS A PLACEHOLDER
+		this.energy = this.energy() / 2;
+		return new Clorus(this.energy()); 
 	}
 	
 

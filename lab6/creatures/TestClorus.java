@@ -35,6 +35,15 @@ public class TestClorus {
 		assertEquals(3, c.energy(), 0); 
 	}
 
+	@Test
+	public void testReplicate() {
+		Clorus c = new Clorus(4);
+		Clorus baby_c = c.replicate();
+		assertEquals(2, c.energy(), 0);
+		assertEquals(2, baby_c.energy(), 0);
+		assertNotSame(c, baby_c); 
+	}
+
 
 	public static void main(String[] args) {
 		System.exit(jh61b.junit.textui.runClasses(TestClorus.class));
