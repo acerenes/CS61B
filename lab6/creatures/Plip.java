@@ -85,6 +85,23 @@ public class Plip extends Creature {
      *  for an example to follow.
      */
     public Action chooseAction(Map<Direction, Occupant> neighbors) {
-        return new Action(Action.ActionType.STAY);
+        List<Direction> empties= getNeighborsOfType(neighbors, "empty"); // getNeighborsofType defined in Creature
+        List<Direction> cloruses= getNeighborsOfType(neighbors, "clorus"); 
+        double moveProbability= 0.5; 
+        if (empties.size() == 0) {
+            return new Action(Action.ActionType.STAY); 
+        }
+        else if (this.energy() >=1) {
+            Direction moveDir= empties.get(0); // Spec didn't specify which empty space, so W/E
+            return new Action(Action.ActionType.REPLICATE, moveDir); 
+        }
+        else if (cloruses.size() > 0) {
+            if (HugLifeUtils.random() < moveProbability) {
+                Direction moveDir = HugLifeUtils.randomEntry(empties); // What I think this is, is that randomEntry will pick a random index of empties, and then return the element at that index. And empties is a list of Directions, so it'll return a Direction.
+                return new Action(Action.ActionType.MOVE, moveDir);
+            }
+        }
+        return new Action(Action.ActionType.STAY); 
+        
     }
 }
