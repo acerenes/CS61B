@@ -26,6 +26,15 @@ public class TestClorus {
 		assertEquals(1.92, c.energy(), 0); 
 	}
 
+	@Test
+	public void testAttack() {
+		Clorus c= new Clorus(); 
+		assertEquals(1, c.energy(), 0); 
+		Plip p= new Plip(2); 
+		c.attack(p); 
+		assertEquals(3, c.energy(), 0); 
+	}
+
 
 	public static void main(String[] args) {
 		System.exit(jh61b.junit.textui.runClasses(TestClorus.class));
