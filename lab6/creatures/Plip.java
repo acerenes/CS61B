@@ -56,6 +56,7 @@ public class Plip extends Creature {
      *  private static final variable. This is not required for this lab.
      */
     public void move() {
+        this.energy= this.energy() - 0.15; 
     }
 
 
