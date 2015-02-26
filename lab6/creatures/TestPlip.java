@@ -70,6 +70,8 @@ public class TestPlip {
         assertEquals(expected2, actual2); 
 
 
+
+
         Plip p4= new Plip(0.3); 
         HashMap<Direction, Occupant> surrounded4= new HashMap<Direction, Occupant>(); 
         surrounded4.put(Direction.TOP, new Impassible()); 
