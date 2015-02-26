@@ -8,3 +8,21 @@ import huglife.Action;
 import huglife.Occupant; 
 import huglife.Impassible;
 import huglife.Empty; 
+
+public class TestClorus {
+
+	@Test
+	public void testBasics() {
+		Clorus c= new Clorus(2); 
+		assertEquals(2, c.energy(), 0);
+		assertEquals(new Color(34, 0, 231), c.color());
+		c.move();
+		assertEquals(1.97, c.energy(), 0);
+		c.move();
+		assertEquals(1.94, c.energy(), 0);
+		c.stay();
+		assertEquals(1.93, c.energy(), 0);
+		c.stay();
+		assertEquals(1.92, c.energy(), 0); 
+	}
+}

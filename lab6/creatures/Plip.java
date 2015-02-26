@@ -21,7 +21,7 @@ public class Plip extends Creature {
 
     /** creates plip with energy equal to E. */
     public Plip(double e) {
-        super("plip");
+        super("plip"); // Basically does name = "plip"
         r = 0;
         g = 0;
         b = 0;
