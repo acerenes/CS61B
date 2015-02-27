@@ -16,8 +16,10 @@ public class TestWordNet {
 
     @Test
     public void testnouns() {
-        Set<String> expected_nouns = new Set<String> {"augmentation", "nasal_decongestant", "change", "action", "actified", "antihistamine", "increase", "descent", "parachuting", "leap", "demotion", "jump"}; 
-        Set<String> actual_nouns = new Set<String>; 
+        String nouns[] = {"augmentation", "nasal_decongestant", "change", "action", "actified", "antihistamine", "increase", "descent", "parachuting", "leap", "demotion", "jump"}; 
+        Set<String> expected_nouns = new HashSet(Arrays.asList(nouns)); 
+        // Thanks to java2s.com for how to create a set without manually adding each element  
+        Set<String> actual_nouns = new Set<String>(); 
         for (String noun : wn.nouns()) {
             actual_nouns.add(noun); 
         }
@@ -26,8 +28,9 @@ public class TestWordNet {
 
     @Test
     public void testhyponyms() {
-        Set<String> expected_hyponyms = new Set<String> {"agumentation", "increase", "leap", "jump"}; 
-        Set<String> actual_hyponyms = new Set<String>; 
+        String hyponyms[] = {"agumentation", "increase", "leap", "jump"}; 
+        Set<String> expected_hyponyms = new HashSet(Arrays.asList(hyponyms));  
+        Set<String> actual_hyponyms = new Set<String>(); 
         for (String hyponym : wn.hyponyms("increase")) {
             actual_hyponyms.add(hyponym); 
         }
@@ -35,7 +38,8 @@ public class TestWordNet {
     }
 
 	public static void main(String[] args) {
-		WordNet wn = new WordNet("./wordnet/synsets11.txt", "./wordnet/hypernyms11.txt");
+        WordNet wn = new WordNet("./wordnet/synsets11.txt", "./wordnet/hypernyms11.txt");
+		
 
         /* The code below should print the following: 
             All nouns:
