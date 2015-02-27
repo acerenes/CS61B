@@ -22,12 +22,18 @@ public class WordNet {
 
 	    synset = new HashSet<String[]>();
 	    File synset_file = new File(synsetFilename);
-	    Scanner synset_scanned = new Scanner(synset_file); 
-	    while (synset_scanned.hasNextLine()) {
-	    	String synset_string = synset_scanned.nextLine();
-	    	String[] synset_arr = synset_string.split(",");
-	    	synset.add(synset_arr); 
-	    }
+	    try {
+	    	Scanner synset_scanned = new Scanner(synset_file);
+	    	while (synset_scanned.hasNextLine()) {
+	    		String synset_string = synset_scanned.nextLine();
+	    		String[] synset_arr = synset_string.split(",");
+	    		synset.add(synset_arr); 
+	    	}
+	    } 
+	    catch (FileNotFoundException ex) {
+	    	System.out.println("The synset file is not valid.");
+	    } 
+	    
 
 		vertices = synset.size(); // # of synsets should be # of vertices
 		digraph = new Digraph(vertices); // Creates new Digraph with hopefully right # vertices
@@ -35,25 +41,30 @@ public class WordNet {
 
 		hyponym = new HashSet<int[]>();
 		File hyponym_file = new File(hyponymFilename); 
-		Scanner hyponym_scanned = new Scanner(File hyponym_file);
-		while (hyponym_scanned.hasNextLine()) {
-			System.out.println("inside while loop");
-			String hyponym_Ints = hyponym_scanned.nextLine();
-			String[] hyponym_Sarray = hyponym_Ints.split(",");
-			int[] hyponym_array = new int[hyponym_Sarray.length];
-			for (int i = 0; i < hyponym_Sarray.length; i = i + 1){
-				try {//create int from string[]
-				System.out.println(hyponym_Sarray[i]);
+		try {
+			Scanner hyponym_scanned = new Scanner(hyponym_file);
+			while (hyponym_scanned.hasNextLine()) {
+				System.out.println("inside while loop");
+				String hyponym_Ints = hyponym_scanned.nextLine();
+				String[] hyponym_Sarray = hyponym_Ints.split(",");
+				int[] hyponym_array = new int[hyponym_Sarray.length];
+				for (int i = 0; i < hyponym_Sarray.length; i = i + 1){
+					try { //create int from string[]
+						System.out.println(hyponym_Sarray[i]);
 
-				int element = Integer.parseInt(hyponym_Sarray[i]);
-				//add to our int[]
-				hyponym_array[i] = element;
-			} catch (NumberFormatException nf) {
-				System.out.println(hyponym_Sarray[i]);
+						int element = Integer.parseInt(hyponym_Sarray[i]);
+						//add to our int[]
+						hyponym_array[i] = element;
+					}
+					catch (NumberFormatException nf) {
+						System.out.println(hyponym_Sarray[i]);
+					}		
+				}
+			 	hyponym.add(hyponym_array);
 			}
-				
-			}
-			hyponym.add(hyponym_array); 
+		}
+		catch (FileNotFoundException ex) {
+			System.out.println("The hyponym file is not valid.");
 		}
 		// hyponym set made; Now iterate through and start mapping
 		Iterator<int[]> iter = hyponym.iterator(); 
