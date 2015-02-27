@@ -18,12 +18,6 @@ public class WordNet {
 		// Synsets are all different- even if 2 different things wanted to use the same synset, would only read it in 1x
 		// The hypernym file also won't, because it maps every synset to like its 5 million more specific babies
 
-		// Okay, so I want to store all of the synsets into a set, right? How do that?
-		/*while (StdIn.isEmpty(synsetFilename)) {
-			String[] synset_string = StdIn.readLine(synsetFilename); // Returns as array of strings
-	        Set<String> synset = new HashSet(Arrays.asList(synset_string)); 
-	    }
-*/
 	    synset = new HashSet<String[]>(); 
 	    In synset_file = new In(synsetFilename); // At this point I'm just copying hw1
 	    while (!synset_file.isEmpty()) {

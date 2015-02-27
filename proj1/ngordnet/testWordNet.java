@@ -21,7 +21,7 @@ public class TestWordNet {
         String nouns[] = {"augmentation", "nasal_decongestant", "change", "action", "actified", "antihistamine", "increase", "descent", "parachuting", "leap", "demotion", "jump"}; 
         Set<String> expected_nouns = new HashSet(Arrays.asList(nouns)); 
         // Thanks to java2s.com for how to create a set without manually adding each element  
-        Set<String> actual_nouns = wn.nouns()); 
+        Set<String> actual_nouns = wn.nouns(); 
         assertEquals(expected_nouns, actual_nouns); 
     }
 
