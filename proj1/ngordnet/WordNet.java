@@ -21,7 +21,8 @@ public class WordNet {
 		// The hypernym file also won't, because it maps every synset to like its 5 million more specific babies
 
 	    synset = new HashSet<String[]>();
-	    Scanner synset_scanned = new Scanner(File synsetFilename); 
+	    File synset_file = new File(synsetFilename);
+	    Scanner synset_scanned = new Scanner(synset_file); 
 	    while (synset_scanned.hasNextLine()) {
 	    	String synset_string = synset_scanned.nextLine();
 	    	String[] synset_arr = synset_string.split(",");
@@ -33,7 +34,8 @@ public class WordNet {
 
 
 		hyponym = new HashSet<int[]>();
-		Scanner hyponym_scanned = new Scanner(File hyponymFilename);
+		File hyponym_file = new File(hyponymFilename); 
+		Scanner hyponym_scanned = new Scanner(File hyponym_file);
 		while (hyponym_scanned.hasNextLine()) {
 			System.out.println("inside while loop");
 			String hyponym_Ints = hyponym_scanned.nextLine();
