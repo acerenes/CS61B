@@ -54,8 +54,28 @@ public class Clorus extends Creature {
 		return new Clorus(this.energy()); 
 	}
 	
-
+	/** Cloruses follow behavior based on neighbors: 
+	  * 1. No empty squares- Clorus STAY
+	  * 2. Otherwise, any Plips seen- Clorus ATTACK one of them randomly
+	  * 3. Otherwise, if Clorus has energy >= 1, REPLICATE to a random empty square. 
+	  * 4. Otherwise, Clorus MOVE. 
+	 **/ 
 	public Action chooseAction(Map<Direction, Occupant> neighbors) {
-		return new Action(Action.ActionType.STAY); // JUST HERE AS A PLACEHOLDER
+		List<Direction> empties = getNeighborsOfType(neighbors, "empty"); 
+		List<Direction> plips = getNeighborsOfType(neighbors, "plip"); 
+		if (empties.size() == 0) {
+			return new Action(Action.ActionType.STAY); 
+		}
+		else if (plips.size() > 0) {
+			Direction moveDir = HugLifeUtils.randomEntry(plips); 
+			return new Action(Action.ActionType.ATTACK, moveDir); 
+		}
+		else if (this.energy() >= 1) {
+			Direction moveDir = HugLifeUtils.randomEntry(empties);
+			return new Action(Action.ActionType.REPLICATE, moveDir);
+		}
+		// Otherwise, there has to be at least one empty square- move to a random empty neigbor
+		Direction moveDir = HugLifeUtils.randomEntry(empties); 
+		return new Action(Action.ActionType.MOVE, moveDir);
 	}
 }
