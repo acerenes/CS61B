@@ -19,10 +19,7 @@ public class TestWordNet {
         String nouns[] = {"augmentation", "nasal_decongestant", "change", "action", "actified", "antihistamine", "increase", "descent", "parachuting", "leap", "demotion", "jump"}; 
         Set<String> expected_nouns = new HashSet(Arrays.asList(nouns)); 
         // Thanks to java2s.com for how to create a set without manually adding each element  
-        Set<String> actual_nouns = new Set<String>(); 
-        for (String noun : wn.nouns()) {
-            actual_nouns.add(noun); 
-        }
+        Set<String> actual_nouns = wn.nouns()); 
         assertEquals(expected_nouns, actual_nouns); 
     }
 
@@ -30,10 +27,7 @@ public class TestWordNet {
     public void testhyponyms() {
         String hyponyms[] = {"agumentation", "increase", "leap", "jump"}; 
         Set<String> expected_hyponyms = new HashSet(Arrays.asList(hyponyms));  
-        Set<String> actual_hyponyms = new Set<String>(); 
-        for (String hyponym : wn.hyponyms("increase")) {
-            actual_hyponyms.add(hyponym); 
-        }
+        Set<String> actual_hyponyms = wn.hyponyms("increase"); 
         assertEquals(expected_hyponyms, actual_hyponyms); 
     }
 
