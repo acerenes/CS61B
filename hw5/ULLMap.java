@@ -8,7 +8,7 @@ import java.util.Set; /* java.util.Set needed only for challenge problem. */
  *  For simplicity, you may assume that nobody ever inserts a null key or value
  *  into your map.
  */ 
-public class ULLMap<Entry> { //FIX ME
+public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
     /** Keys and values are stored in a linked list of Entry objects.
       * This variable stores the first pair in this linked list. You may
       * point this at a sentinel node, or use it as a the actual front item
@@ -19,7 +19,7 @@ public class ULLMap<Entry> { //FIX ME
     private int size = 0;
 
     @Override
-    public <Value> Value get(<Key> key) { //FIX ME
+    public V get(K key) { //FIX ME
     //FILL ME IN
         while (front != null) {
             if (front.key.equals(key)) {
@@ -31,14 +31,14 @@ public class ULLMap<Entry> { //FIX ME
     }
 
     @Override
-    public void put(<Key> key, <Value> val) { //FIX ME
+    public void put(K key, V val) { //FIX ME
     //FILL ME IN
-        front = Entry(key, val, front) // Don't care about order, so stick in front
+        front = new Entry(key, val, front); // Don't care about order, so stick in front
         size = size + 1;
     }
 
     @Override
-    public boolean containsKey(<Key> key) { //FIX ME
+    public boolean containsKey(K key) { //FIX ME
     //FILL ME IN
         while (front != null) {
             if (front.key.equals(key)) {
@@ -66,7 +66,7 @@ public class ULLMap<Entry> { //FIX ME
     
         /** Stores KEY as the key in this key-value pair, VAL as the value, and
          *  NEXT as the next node in the linked list. */
-        public Entry(<Key> k, <Value> v, Entry n) { //FIX ME
+        public Entry(K k, V v, Entry n) { //FIX ME
             key = k;
             val = v;
             next = n;
@@ -74,12 +74,12 @@ public class ULLMap<Entry> { //FIX ME
 
         /** Returns the Entry in this linked list of key-value pairs whose key
          *  is equal to KEY, or null if no such Entry exists. */
-        public Entry get(<Key> k) { //FIX ME
+        public Entry get(K k) { //FIX ME
             //FILL ME IN (using equals, not ==)
             Entry pointer = this; 
             while (pointer != null) {
                 if (pointer.key.equals(k)) {
-                    return pointer
+                    return pointer;
                 }
                 pointer = pointer.next;
             }
@@ -87,9 +87,9 @@ public class ULLMap<Entry> { //FIX ME
         }
 
         /** Stores the key of the key-value pair of this node in the list. */
-        private <Key> key; //FIX ME
+        private K key; //FIX ME
         /** Stores the value of the key-value pair of this node in the list. */
-        private <Value> val; //FIX ME
+        private V val; //FIX ME
         /** Stores the next Entry in the linked list. */
         private Entry next;
     
@@ -98,18 +98,18 @@ public class ULLMap<Entry> { //FIX ME
     /* Methods below are all challenge problems. Will not be graded in any way. 
      * Autograder will not test these. */
     @Override
-    public remove(key) { //FIX ME SO I COMPILE
+    public V remove(K key) { //FIX ME SO I COMPILE
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public remove(key, value) { //FIX ME SO I COMPILE
+    public V remove(K key, V value) { //FIX ME SO I COMPILE
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Set<> keySet() { //FIX ME SO I COMPILE
-        throw new UnsupportedOperationException();
+    public Set<K> keySet() { //FIX ME SO I COMPILE
+        throw new UnsupportedOperationException(); 
     }
 
 
