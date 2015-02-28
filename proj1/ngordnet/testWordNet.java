@@ -20,10 +20,10 @@ public class TestWordNet {
     public void testnouns() {
          WordNet wn = new WordNet("./p1data/wordnet/synsets11.txt", "./p1data/wordnet/hyponyms11.txt");
         String nouns[]= {"augmentation", "nasal_decongestant", "change", "action", "actifed", "antihistamine", "increase", "descent", "parachuting", "leap", "demotion", "jump"}; 
-        Set<String> Expected_nouns = new HashSet<String>(Arrays.asList(nouns)); 
+        Set<String> expected_nouns = new HashSet<String>(Arrays.asList(nouns)); 
         // Thanks to java2s.com for how to create a set without manually adding each element  
-        Set<String> Actual_nouns = wn.nouns();
-        assertTrue(Actual_nouns.equals(Expected_nouns)); 
+        Set<String> actual_nouns = wn.nouns();
+        assertTrue(actual_nouns.equals(expected_nouns)); 
     }
 
     @Test
