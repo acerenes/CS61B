@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Arrays;
-import java.io.*; 
+import java.io.File; 
 
 public class WordNet {
 
@@ -24,17 +24,16 @@ public class WordNet {
 		// The hypernym file also won't, because it maps every synset to like its 5 million more specific babies
 
 	    synset = new HashSet<String[]>();
-	    File synset_file = new File(synsetFilename);
+	    File Synset_file = new File(synsetFilename);
 	    try {
-	    	Scanner synset_scanned = new Scanner(synset_file);
+	    	Scanner synset_scanned = new Scanner(Synset_file);
 	    	while (synset_scanned.hasNextLine()) {
-	    		String synset_string = synset_scanned.nextLine();
-	    		String[] synset_arr = synset_string.split(",");
+	    		String Synset_string = synset_scanned.nextLine();
+	    		String[] Synset_arr = Synset_string.split(",");
 	    		// Okay I see what the problem is. There can be more than 1 word in the second element, seperated by a space. I'm going to try and take the second element and split that again, by space.
-	    		synset.add(synset_arr); 
+	    		synset.add(Synset_arr); 
 	    	}
-	    } 
-	    catch (FileNotFoundException ex) {
+	    } catch (FileNotFoundException ex) {
 	    	System.out.println("The synset file is not valid.");
 	    } 
 	    
