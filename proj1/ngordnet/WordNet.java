@@ -12,6 +12,7 @@ public class WordNet {
 	int vertices; 
 	Set<String[]> synset; 
 	Set<int[]> hyponym;
+	String[] words;
 
 	/** Creates a WordNet using files from synsetFilename and hypernymFilename **/
 	public WordNet(String synsetFilename, String hyponymFilename) {
@@ -80,11 +81,12 @@ public class WordNet {
 		}
 	}
 
+	/* Returns true if noun is a word in some synset */
 	public boolean isNoun(String noun) {
 		Iterator<String[]> syn_iter = this.synset.iterator();
 		while (syn_iter.hasNext()) {
 			String[] syn_array = syn_iter.next();
-			String[] actual_words= syn_array[1].split(" ");
+			actual_words= syn_array[1].split(" ");
 			for (int i = 0; i < actual_words.length; i = i + 1) {
 				System.out.println(actual_words[i]); // TESTING
 				if (actual_words[i].equals(noun)) { 
@@ -96,8 +98,25 @@ public class WordNet {
 		return false; 
 	}
 
+	/* Returns set of all nouns */
+	public Set<String> nouns() {
+		Set<String> all_nouns; 
+		all_nouns = new HashSet<String>(); // lbr I don't even know what I'm doing anymore; just copying my previous code
+		Iterator<String[]> syn_iter = this.synset.iterator();
+		while (syn_iter.hasNext()) {
+			String[] syn_array = syn_iter.next();
+			words = syn_array[1].split(" ");
+			for (int i = 0; i < words.length; i = i + 1) {
+				all_nouns.add(words[i]);
+			}
+		}
+		return all_nouns; 
+	}
+
 
 
 
 
 }
+
+/* Major thanks to dude at office hours whose name I never figured out (his Macbook said Soham but there's no Soham on the CS61B staff page) who spent 2 hours of his life googling weird java errors and explaining how to fix them to me. 
