@@ -12,6 +12,10 @@ public class ULLMapTest {
         ULLMap<String, String> um = new ULLMap<String, String>();
         um.put("Gracias", "Dios Basado");
         assertEquals(um.get("Gracias"), "Dios Basado");
+        assertTrue(um.containsKey("Gracias"));
+        assertEquals(1 ,um.size());
+        um.clear();
+        assertFalse(um.containsKey("Gracias"));
     }
 
     
