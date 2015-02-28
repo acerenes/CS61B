@@ -1,4 +1,5 @@
 package ngordnet; 
+
 import edu.princeton.cs.algs4.Digraph;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,7 +15,7 @@ public class WordNet {
 	Set<String[]> synset; 
 	Set<int[]> hyponym;
 	
-
+	
 	/** Creates a WordNet using files from synsetFilename and hypernymFilename **/
 	public WordNet(String synsetFilename, String hyponymFilename) {
 

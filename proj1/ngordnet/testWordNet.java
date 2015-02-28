@@ -33,46 +33,10 @@ public class TestWordNet {
         String hyponyms[] = {"augmentation", "increase", "leap", "jump"}; 
         Set<String> expected_hyponyms = new HashSet(Arrays.asList(hyponyms));  
         Set<String> actual_hyponyms = wn.hyponyms("increase"); 
-        System.out.println("Expected hyponyms: " + expected_hyponyms); // TESTING
-        System.out.println("Actual hyponyms: " + actual_hyponyms); // TESTING
         assertTrue(actual_hyponyms.equals(expected_hyponyms)); 
     }
 
 	public static void main(String[] args) {
-       
-		
-
-        /* The code below should print the following: 
-            All nouns:
-            augmentation
-            nasal_decongestant
-            change
-            action
-            actifed
-            antihistamine
-            increase
-            descent
-            parachuting
-            leap
-            demotion
-            jump
-        
-        System.out.println("All nouns:");
-        for (String noun : wn.nouns()) {
-            System.out.println(noun);
-        }*/
-
-        /* The code below should print the following: 
-            Hypnoyms of increase:
-            augmentation
-            increase
-            leap
-            jump
-        
-        System.out.println("Hypnoyms of increase:");
-        for (String noun : wn.hyponyms("increase")) {
-            System.out.println(noun);
-        }  */  
 
 		jh61b.junit.textui.runClasses(TestWordNet.class); 
 
