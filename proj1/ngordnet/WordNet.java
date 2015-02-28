@@ -63,8 +63,7 @@ public class WordNet {
 				}
 			 	hyponym.add(hyponym_array);
 			}
-		}
-		catch (FileNotFoundException ex) {
+		} catch (FileNotFoundException ex) {
 			System.out.println("The hyponym file is not valid.");
 		}
 		// hyponym set made; Now iterate through and start mapping
