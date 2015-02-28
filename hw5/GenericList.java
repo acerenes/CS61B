@@ -1,5 +1,6 @@
 /** A linked list class that stores items of type Object. */
 public class GenericList<T> {
+    // I think does <T> because the it's a LIST OF type T. Otherwise, you're just like, declaring the types of the variables and stuff. 
 
     /** Inner class used to represent a single node in this linked list. */
     private class Node {
