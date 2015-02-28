@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Iterator;
 import java.util.Scanner;
+import java.util.Arrays;
 import java.io.*; 
 
 public class WordNet {
@@ -12,7 +13,7 @@ public class WordNet {
 	int vertices; 
 	Set<String[]> synset; 
 	Set<int[]> hyponym;
-	String[] words;
+	
 
 	/** Creates a WordNet using files from synsetFilename and hypernymFilename **/
 	public WordNet(String synsetFilename, String hyponymFilename) {
@@ -97,14 +98,62 @@ public class WordNet {
 		all_nouns = new HashSet<String>(); // lbr I don't even know what I'm doing anymore; just copying my previous code
 		Iterator<String[]> syn_iter = this.synset.iterator();
 		while (syn_iter.hasNext()) {
-			System.out.println("I made it into the while loop!");
 			String[] syn_array = syn_iter.next();
-			words = syn_array[1].split(" ");
+			String[] words = syn_array[1].split(" ");
 			for (int i = 0; i < words.length; i = i + 1) {
 				all_nouns.add(words[i]);
 			}
 		}
 		return all_nouns; 
+	}
+
+
+	/* Returns the set of all hyponyms of word including word itself */
+	public Set<String> hyponyms(String word) {
+		// First figure out all synset IDs of the word
+		// Then take those IDs, and find the, like, rest of the #s in the hyponym file
+		// Put all the words in the matching hyponyms into the set
+		// Then put in word
+		Set<String> all_hyponyms;
+		all_hyponyms = new HashSet<String>();
+		Iterator<String[]> syn_iter = this.synset.iterator();
+		// Figure out where the word occurs
+		while (syn_iter.hasNext()) {
+			String[] syn_array = syn_iter.next();
+			String[] words = syn_array[1].split(" "); 
+			for (int i = 0; i < words.length; i = i + 1) {
+				if (words[i].equals(word)) {
+					// Get the synset ID
+					int syn_ID = Integer.parseInt(syn_array[0]); 
+					// Take the ID and find its hyponym IDs in the hyponym file
+					// FINDING THE SYN_ID IN THE HYPONYM FILE
+					Iterator<int[]> hyp_iter = this.hyponym.iterator();
+					while (hyp_iter.hasNext()) {
+						int[] hyp_array = hyp_iter.next();
+						if (hyp_array[0] == syn_ID) {
+							int[] hyp_IDs = Arrays.copyOfRange(hyp_array, 1, hyp_array.length); // hyp_array[1:]
+							for (int j = 0; j < hyp_IDs.length; j= j + 1) {
+								// Take each of the hyponym IDs, find the entry in the synset, take the words, and store them into the returning set
+								Iterator<String[]> syn_iter_2 = this.synset.iterator(); 
+								while (syn_iter_2.hasNext()) {
+									String[] syn_array_2 = syn_iter_2.next();
+									String[] words_2 = syn_array_2[1].split(" ");
+									int check_syn_ID = Integer.parseInt(syn_array_2[0]);
+									if (check_syn_ID == hyp_IDs[j]) {
+										// Take in the words
+										for (int k = 0; k < words_2.length; k = k + 1) {
+											all_hyponyms.add(words_2[k]);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		all_hyponyms.add(word);
+		return all_hyponyms; 
 	}
 
 
