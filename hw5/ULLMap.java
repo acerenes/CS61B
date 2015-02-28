@@ -62,7 +62,7 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
 
     /** Represents one node in the linked list that stores the key-value pairs
      *  in the dictionary. */
-    private class Entry {
+    private class Entry { // don't do Entry<K, V> because nested non-static class: accesses instance variables&methods of outside
     
         /** Stores KEY as the key in this key-value pair, VAL as the value, and
          *  NEXT as the next node in the linked list. */
