@@ -27,10 +27,8 @@ public class WordNet {
 	    	Scanner synset_scanned = new Scanner(synset_file);
 	    	while (synset_scanned.hasNextLine()) {
 	    		String synset_string = synset_scanned.nextLine();
-	    		System.out.println("The whole string is " + synset_string); // TESTING
 	    		String[] synset_arr = synset_string.split(",");
-	    		// Okay I see what the problem is. There can be more than 1 word in the second element, seperated by a space. I'm going to try and take the second element and split that again, by space. 
-	    		System.out.println("The split string is " + synset_arr[0] + synset_arr[1] + synset_arr[2]); // TESTING
+	    		// Okay I see what the problem is. There can be more than 1 word in the second element, seperated by a space. I'm going to try and take the second element and split that again, by space.
 	    		synset.add(synset_arr); 
 	    	}
 	    } 
@@ -48,20 +46,17 @@ public class WordNet {
 		try {
 			Scanner hyponym_scanned = new Scanner(hyponym_file);
 			while (hyponym_scanned.hasNextLine()) {
-				System.out.println("inside while loop");
 				String hyponym_Ints = hyponym_scanned.nextLine();
 				String[] hyponym_Sarray = hyponym_Ints.split(",");
 				int[] hyponym_array = new int[hyponym_Sarray.length];
 				for (int i = 0; i < hyponym_Sarray.length; i = i + 1){
-					try { //create int from string[]
-						System.out.println(hyponym_Sarray[i]); // TESTING
-
+					try { // Create int from string[]
 						int element = Integer.parseInt(hyponym_Sarray[i]);
-						//add to our int[]
+						// Add to our int[]
 						hyponym_array[i] = element;
 					}
 					catch (NumberFormatException nf) {
-						System.out.println("There is a problem in the hyponym file - an element is not an int."); // 
+						System.out.println("There is a problem in the hyponym file - an element is not an int.");
 					}		
 				}
 			 	hyponym.add(hyponym_array);
@@ -86,11 +81,9 @@ public class WordNet {
 		Iterator<String[]> syn_iter = this.synset.iterator();
 		while (syn_iter.hasNext()) {
 			String[] syn_array = syn_iter.next();
-			actual_words= syn_array[1].split(" ");
+			String[] actual_words= syn_array[1].split(" ");
 			for (int i = 0; i < actual_words.length; i = i + 1) {
-				System.out.println(actual_words[i]); // TESTING
-				if (actual_words[i].equals(noun)) { 
-				// Okay I can't put an array within an array. Somehow I'll parse it here, then...? And if it equals, then good?
+				if (actual_words[i].equals(noun)) {
 					return true; 
 				}
 			}
@@ -104,6 +97,7 @@ public class WordNet {
 		all_nouns = new HashSet<String>(); // lbr I don't even know what I'm doing anymore; just copying my previous code
 		Iterator<String[]> syn_iter = this.synset.iterator();
 		while (syn_iter.hasNext()) {
+			System.out.println("I made it into the while loop!");
 			String[] syn_array = syn_iter.next();
 			words = syn_array[1].split(" ");
 			for (int i = 0; i < words.length; i = i + 1) {
@@ -119,4 +113,4 @@ public class WordNet {
 
 }
 
-/* Major thanks to dude at office hours whose name I never figured out (his Macbook said Soham but there's no Soham on the CS61B staff page) who spent 2 hours of his life googling weird java errors and explaining how to fix them to me. 
+/* Major thanks to dude at office hours whose name I never figured out (his Macbook said Soham but there's no Soham on the CS61B staff page) who spent 2 hours of his life googling weird java errors and explaining how to fix them to me. */
