@@ -6,7 +6,8 @@ import java.util.Set;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Arrays;
-import java.io.File; 
+import java.io.File;
+import java.io.FileNotFoundException; 
 
 public class WordNet {
 
