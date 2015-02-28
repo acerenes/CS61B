@@ -1,5 +1,5 @@
 /** A linked list class that stores items of type Object. */
-public class ObjectList<T> {
+public class GenericList<T> {
 
     /** Inner class used to represent a single node in this linked list. */
     private class Node {
