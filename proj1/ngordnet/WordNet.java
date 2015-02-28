@@ -26,7 +26,10 @@ public class WordNet {
 	    	Scanner synset_scanned = new Scanner(synset_file);
 	    	while (synset_scanned.hasNextLine()) {
 	    		String synset_string = synset_scanned.nextLine();
+	    		System.out.println("The whole string is " + synset_string); // TESTING
 	    		String[] synset_arr = synset_string.split(",");
+	    		// Okay I see what the problem is. There can be more than 1 word in the second element, seperated by a space. I'm going to try and take the second element and split that again, by space. 
+	    		System.out.println("The split string is " + synset_arr[0] + synset_arr[1] + synset_arr[2]); // TESTING
 	    		synset.add(synset_arr); 
 	    	}
 	    } 
@@ -50,14 +53,14 @@ public class WordNet {
 				int[] hyponym_array = new int[hyponym_Sarray.length];
 				for (int i = 0; i < hyponym_Sarray.length; i = i + 1){
 					try { //create int from string[]
-						System.out.println(hyponym_Sarray[i]);
+						System.out.println(hyponym_Sarray[i]); // TESTING
 
 						int element = Integer.parseInt(hyponym_Sarray[i]);
 						//add to our int[]
 						hyponym_array[i] = element;
 					}
 					catch (NumberFormatException nf) {
-						System.out.println(hyponym_Sarray[i]);
+						System.out.println("There is a problem in the hyponym file - an element is not an int."); // 
 					}		
 				}
 			 	hyponym.add(hyponym_array);
@@ -78,11 +81,14 @@ public class WordNet {
 	}
 
 	public boolean isNoun(String noun) {
-		Iterator<String[]> syn_iter = synset.iterator();
+		Iterator<String[]> syn_iter = this.synset.iterator();
 		while (syn_iter.hasNext()) {
 			String[] syn_array = syn_iter.next();
-			for (int i = 0; i < syn_array.length; i = i + 1) {
-				if (syn_array[i] == noun) {
+			String[] actual_words= syn_array[1].split(" ");
+			for (int i = 0; i < actual_words.length; i = i + 1) {
+				System.out.println(actual_words[i]); // TESTING
+				if (actual_words[i].equals(noun)) { 
+				// Okay I can't put an array within an array. Somehow I'll parse it here, then...? And if it equals, then good?
 					return true; 
 				}
 			}
