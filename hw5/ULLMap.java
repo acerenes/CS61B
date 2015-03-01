@@ -1,4 +1,5 @@
 import java.util.Set; /* java.util.Set needed only for challenge problem. */
+import java.util.Iterator; 
 
 /** A data structure that uses a linked list to store pairs of keys and values.
  *  Any key must appear at most once in the dictionary, but values may appear multiple
@@ -110,6 +111,39 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
     @Override
     public Set<K> keySet() { //FIX ME SO I COMPILE
         throw new UnsupportedOperationException(); 
+    }
+
+    public ULLMapIter iterator() {
+        return new ULLMapIter(this);
+    }
+
+
+    private class ULLMapIter implements Iterator {
+
+        private K iter_key; 
+        private Entry iter; 
+
+        public ULLMapIter(ULLMap<K, V> map) {
+            iter = map.front;
+            iter_key = map.front.key; 
+        }
+
+        public boolean hasNext() {
+            return iter != null; 
+        }
+
+        public K next() {
+            K old_key = iter_key;
+            iter = iter.next; 
+            iter_key = iter.key;
+            return old_key;
+        }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+
+
     }
 
 

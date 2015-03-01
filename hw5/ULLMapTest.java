@@ -19,7 +19,7 @@ public class ULLMapTest {
     }
 
     
-    /*@Test
+    @Test
     public void testIterator() {
         ULLMap<Integer, String> um = new ULLMap<Integer, String>();
         um.put(0, "zero");
@@ -27,7 +27,7 @@ public class ULLMapTest {
         um.put(2, "two");
         Iterator<Integer> umi = um.iterator();
         System.out.println(umi.next());
-    }*/
+    }
     
 
     /** Runs tests. */
