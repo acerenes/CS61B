@@ -34,7 +34,21 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
     @Override
     public void put(K key, V val) { //FIX ME
     //FILL ME IN
-        front = new Entry(key, val, front); // Don't care about order, so stick in front
+        System.out.println("I'm attempting to put");
+        if (this.containsKey(key)) {
+            // Find where the key is
+            System.out.println("I am in the if statement");
+            Entry pointer = this.front; 
+            while (pointer.key != key) {
+                pointer = pointer.next;
+                System.out.println("I am in the while loop");
+            }
+            // Found the key- change the value
+            pointer.val = val;
+            return;
+        }
+        System.out.println("I didn't go into the if");
+        this.front = new Entry(key, val, front); // Don't care about order, so stick in front
         size = size + 1;
     }
 
@@ -43,8 +57,9 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
     //FILL ME IN
         while (front != null) {
             if (front.key.equals(key)) {
-                return true;
+                return true; 
             }
+            front = front.next;
         }
         return false; //FIX ME
     }
@@ -59,6 +74,19 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
     //FILL ME IN
         front = null;
     }
+
+    
+
+    /*public ULLMap<V, K> inverse() {
+        ULLMapIter iter = ULLMapIter(this);
+        while (iter.hasNext()) {
+            V value = iter.val;
+            K k = iter.key; // This should change iter as well. 
+            iter.val = k;
+            iter.key = value;
+            V pointless = iter.next(); // I just want to move my iterator; I don't want the key.
+        }
+    }*/
 
 
     /** Represents one node in the linked list that stores the key-value pairs
@@ -113,16 +141,18 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
         throw new UnsupportedOperationException(); 
     }
 
+    
     public ULLMapIter iterator() {
+        System.out.println("I'm in iterator()");
         return new ULLMapIter(this);
     }
-
 
     private class ULLMapIter implements Iterator {
  
         private Entry iter; 
 
         public ULLMapIter(ULLMap<K, V> map) {
+            System.out.println("Constructing an iterator");
             iter = map.front;
         }
 
