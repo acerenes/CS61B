@@ -73,7 +73,7 @@ public class ULLMap<K, V> implements Map61B<K, V>, Iterable<K> { //FIX ME
 
     public static <V, K> ULLMap<V, K> invert(ULLMap<K, V> map) {
         ULLMap<V, K> inversed_map = new ULLMap<V, K>();
-        for (K keys : map) {
+        for (K keys : map) { // map has to be an iterable; and K keys will iterate through the K of map (I think)
             K new_value = keys; // old key
             V new_key = map.get(keys); // old value
             inversed_map.put(new_key, new_value);
