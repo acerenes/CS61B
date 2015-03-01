@@ -26,8 +26,19 @@ public class ULLMapTest {
         um.put(1, "one");
         um.put(2, "two");
         Iterator<Integer> umi = um.iterator();
-        System.out.println(umi.next());
+        assertEquals(2, (double) umi.next(), 0); // Because I put new ones in front, the first key is 2. 
+
     }
+
+
+    /*@Test
+    public void testInverse() {
+        ULLMap<Integer, String> um = new ULLMap<Integer, String>();
+        um.put(0, "zero");
+        um.put(1, "one");
+        um.put(2, "two");
+        Iterator<Integer> umi = um.iterator();
+    }*/
     
 
     /** Runs tests. */

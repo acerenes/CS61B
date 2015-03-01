@@ -119,13 +119,11 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
 
 
     private class ULLMapIter implements Iterator {
-
-        private K iter_key; 
+ 
         private Entry iter; 
 
         public ULLMapIter(ULLMap<K, V> map) {
             iter = map.front;
-            iter_key = map.front.key; 
         }
 
         public boolean hasNext() {
@@ -133,9 +131,8 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
         }
 
         public K next() {
-            K old_key = iter_key;
-            iter = iter.next; 
-            iter_key = iter.key;
+            K old_key = iter.key;
+            iter = iter.next;
             return old_key;
         }
 
