@@ -1,5 +1,6 @@
 import java.util.Set; /* java.util.Set needed only for challenge problem. */
 import java.util.Iterator; 
+import java.lang.Iterable;
 
 /** A data structure that uses a linked list to store pairs of keys and values.
  *  Any key must appear at most once in the dictionary, but values may appear multiple
@@ -9,26 +10,22 @@ import java.util.Iterator;
  *  For simplicity, you may assume that nobody ever inserts a null key or value
  *  into your map.
  */ 
-public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
+public class ULLMap<K, V> implements Map61B<K, V>, Iterable<K> { //FIX ME
     /** Keys and values are stored in a linked list of Entry objects.
       * This variable stores the first pair in this linked list. You may
       * point this at a sentinel node, or use it as a the actual front item
       * of the linked list. 
       */
     private Entry front;
-
     private int size = 0;
 
     @Override
     public V get(K key) { //FIX ME
     //FILL ME IN
-        while (front != null) {
-            if (front.key.equals(key)) {
-                return front.val;
-            }
-            front = front.next; 
+        if (this.containsKey(key)) {
+            return this.front.get(key).val;
         }
-        return null; //FIX ME
+        return null;
     }
 
     @Override
@@ -44,18 +41,19 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
             pointer.val = val;
             return;
         }
-        this.front = new Entry(key, val, front); // Don't care about order, so stick in front
-        size = size + 1;
+        this.front = new Entry(key, val, this.front); // Don't care about order, so stick in front
+        this.size = this.size + 1;
     }
 
     @Override
     public boolean containsKey(K key) { //FIX ME
     //FILL ME IN
-        while (front != null) {
-            if (front.key.equals(key)) {
+        Entry pointer = front; // Using a pointer because the method doesn't take in front, so don't want to actually change front.
+        while (pointer != null) {
+            if (pointer.key.equals(key)) {
                 return true; 
             }
-            front = front.next;
+            pointer = pointer.next;
         }
         return false; //FIX ME
     }
@@ -73,15 +71,16 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
 
     
 
-    /*public ULLMap<V, K> inverse() {
-        ULLMapIter iter = ULLMapIter(this);
-        while (iter.hasNext()) {
-            V value = iter.val;
-            K k = iter.key; // This should change iter as well. 
-            iter.val = k;
-            iter.key = value;
-            V pointless = iter.next(); // I just want to move my iterator; I don't want the key.
+    /*public static <V, K> ULLMap<V, K> invert(ULLMap<K, V> map) {
+        ULLMap<V, K> inversed_map = new ULLMap<V, K>();
+        for (K keys : map) {
+            K new_value = keys; // old key
+            V new_key = map.get(keys); // old value
+            inversed_map.put(new_key, new_value);
+            System.out.println("I put in key " + new_key + " value " + new_value);
+            System.out.println("Inversed size is " + inversed_map.size());
         }
+        return inversed_map;
     }*/
 
 
@@ -142,7 +141,8 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
         return new ULLMapIter(this);
     }
 
-    private class ULLMapIter implements Iterator {
+
+    private class ULLMapIter implements Iterator<K> {
  
         private Entry iter; 
 
