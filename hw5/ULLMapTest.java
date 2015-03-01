@@ -31,14 +31,18 @@ public class ULLMapTest {
     }
 
 
-    /*@Test
+    @Test
     public void testInverse() {
         ULLMap<Integer, String> um = new ULLMap<Integer, String>();
         um.put(0, "zero");
         um.put(1, "one");
         um.put(2, "two");
         Iterator<Integer> umi = um.iterator();
-    }*/
+        umi.invert();
+        assertEquals(3, umi.size());
+        assertTrue(umi.containsKey("zero"));
+        assertEquals(0, umi.get("zero"));
+    }
     
 
     /** Runs tests. */
