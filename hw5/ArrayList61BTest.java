@@ -17,6 +17,18 @@ public class ArrayList61BTest {
 
     }
 
+    @Test
+    public void testAll() {
+        List<Integer> L = new ArrayList61B<Integer>(2);
+        L.add(1);
+        L.add(2);
+        L.add(3);
+        L.add(4);
+        L.add(5);
+        assertEquals(4, (double) L.get(3), 0);
+        assertEquals(5, L.size());
+    }
+
     /** Runs tests. */
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(ArrayList61BTest.class);
