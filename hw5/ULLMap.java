@@ -71,17 +71,15 @@ public class ULLMap<K, V> implements Map61B<K, V>, Iterable<K> { //FIX ME
 
     
 
-    /*public static <V, K> ULLMap<V, K> invert(ULLMap<K, V> map) {
+    public static <V, K> ULLMap<V, K> invert(ULLMap<K, V> map) {
         ULLMap<V, K> inversed_map = new ULLMap<V, K>();
         for (K keys : map) {
             K new_value = keys; // old key
             V new_key = map.get(keys); // old value
             inversed_map.put(new_key, new_value);
-            System.out.println("I put in key " + new_key + " value " + new_value);
-            System.out.println("Inversed size is " + inversed_map.size());
         }
         return inversed_map;
-    }*/
+    }
 
 
     /** Represents one node in the linked list that stores the key-value pairs

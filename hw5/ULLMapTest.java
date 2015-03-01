@@ -33,7 +33,7 @@ public class ULLMapTest {
     }
 
 
-    /*@Test
+    @Test
     public void testInvert() {
         ULLMap<Integer, String> um = new ULLMap<Integer, String>();
         um.put(0, "zero");
@@ -44,7 +44,7 @@ public class ULLMapTest {
         assertEquals(3, inversed_um.size());
         assertTrue(inversed_um.containsKey("zero"));
         assertEquals(0, (double) inversed_um.get("zero"), 0);
-    }*/
+    }
     
 
     /** Runs tests. */
