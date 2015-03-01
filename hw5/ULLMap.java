@@ -34,20 +34,16 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
     @Override
     public void put(K key, V val) { //FIX ME
     //FILL ME IN
-        System.out.println("I'm attempting to put");
         if (this.containsKey(key)) {
             // Find where the key is
-            System.out.println("I am in the if statement");
             Entry pointer = this.front; 
             while (pointer.key != key) {
                 pointer = pointer.next;
-                System.out.println("I am in the while loop");
             }
             // Found the key- change the value
             pointer.val = val;
             return;
         }
-        System.out.println("I didn't go into the if");
         this.front = new Entry(key, val, front); // Don't care about order, so stick in front
         size = size + 1;
     }
@@ -143,7 +139,6 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
 
     
     public ULLMapIter iterator() {
-        System.out.println("I'm in iterator()");
         return new ULLMapIter(this);
     }
 
@@ -152,7 +147,6 @@ public class ULLMap<K, V> implements Map61B<K, V> { //FIX ME
         private Entry iter; 
 
         public ULLMapIter(ULLMap<K, V> map) {
-            System.out.println("Constructing an iterator");
             iter = map.front;
         }
 
