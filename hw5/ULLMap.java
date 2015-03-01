@@ -81,7 +81,6 @@ public class ULLMap<K, V> implements Map61B<K, V>, Iterable<K> { //FIX ME
         return inversed_map;
     }
 
-
     /** Represents one node in the linked list that stores the key-value pairs
      *  in the dictionary. */
     private class Entry { // don't do Entry<K, V> because nested non-static class: accesses instance variables&methods of outside
