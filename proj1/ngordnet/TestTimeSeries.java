@@ -79,6 +79,25 @@ public class TestTimeSeries {
     }
 
 
+    @Test
+    public void testPlus() {
+        TimeSeries<Double> ts = new TimeSeries<Double>();
+        ts.put(1992, 3.6);
+        ts.put(1993, 9.2);
+        ts.put(1994, 15.2);
+        TimeSeries<Integer> ts2 = new TimeSeries<Integer>();
+        ts2.put(1991, 10);
+        ts2.put(1992, -5);
+        ts2.put(1993, 1);
+        TimeSeries<Double> actualsum = new TimeSeries<Double>();
+        actualsum.put(1991, 10.0);
+        actualsum.put(1992, -1.4);
+        actualsum.put(1993, 10.2);
+        actualsum.put(1994, 15.2);
+        assertTrue(actualsum.equals(ts.plus(ts2)));
+    }
+
+
     /*@Test
     public void testYears() {
         TimeSeries<Double> ts = new TimeSeries<Double>();

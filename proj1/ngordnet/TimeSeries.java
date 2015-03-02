@@ -51,8 +51,39 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer,T> {
                 throw new IllegalArgumentException("In method dividedBy, the given argument is missing a key.");
             }
             quotient.put(key, (this.get(key).doubleValue() / ts.get(key).doubleValue()));
+            // Gotta do this weird .doubleValue thing because apparently you can only do basic operations on primitive types or smth .___.
         }
         return quotient;
+    }
+
+
+    /* Returns the sum of this time series with the given ts. */
+    public TimeSeries<Double> plus(TimeSeries<? extends Number> ts) {
+        TimeSeries<Double> sum = new TimeSeries<Double>();
+        double sum1; // Java compiler wasn't happy when I just did double sum1 = stuff + stuff.
+        double sum2;
+        Set<Integer> keys1 = this.keySet();
+        for (Integer key1 : keys1) {
+            if (!ts.containsKey(key1)) {
+                sum1 = this.get(key1).doubleValue() + 0;
+            }
+            else {
+                sum1 = this.get(key1).doubleValue() + ts.get(key1).doubleValue();
+            }
+            sum.put(key1, sum1);
+        }
+        // I think I'll do it 2x - once for this and once for ts, in case of keys that one has that the other doesn't. 
+        Set<Integer> keys2 = ts.keySet();
+        for (Integer key2 : keys2) {
+            if (!this.containsKey(key2)) {
+                sum2 = ts.get(key2).doubleValue() + 0;
+            }
+            else {
+                sum2 = ts.get(key2).doubleValue() + this.get(key2).doubleValue();
+            }
+            sum.put(key2, sum2);
+        }
+        return sum;
     }
 
 
