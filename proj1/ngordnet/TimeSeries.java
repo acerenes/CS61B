@@ -5,7 +5,7 @@ import java.util.Set;
 import java.util.ArrayList;
 
 
-public class TimeSeries<T extends Number> extends TreeMap<Integer,T> {
+public class TimeSeries<T extends Number> extends TreeMap<Integer, T> {
 
 
     // A TimeSeries is just a TreeMap with some extra methods. 
