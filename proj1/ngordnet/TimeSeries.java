@@ -12,7 +12,7 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer,T> {
 
     /* Construct new empty TimeSeries */
     public TimeSeries() {
-        // Just call the TreeMap constructor. 
+        // Just call the TreeMap constructor, because it is, just a TreeMap. 
         new TreeMap();
     }
 
@@ -26,8 +26,17 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer,T> {
             if (key >= startYear && key <= endYear) {
                 put(key, ts.get(key));
             }
+        } 
+    }
+
+
+    /* Creates a copy of ts */
+    public TimeSeries(TimeSeries<T> ts) {
+        new TimeSeries<T>();
+        Set<Integer> keys = ts.keySet();
+        for (Integer key : keys) {
+            put(key, ts.get(key));
         }
-        
     }
 
 

@@ -34,6 +34,19 @@ public class TestTimeSeries {
         assertTrue(ts_cut.equals(test_cut));
     }
 
+
+    @Test 
+    public void testCopier() {
+        TimeSeries<Double> ts = new TimeSeries<Double>();
+        ts.put(1992, 3.6);
+        ts.put(1993, 9.2);
+        ts.put(1994, 15.2);
+        ts.put(1995, 16.1);
+        ts.put(1996, -15.7);
+        TimeSeries<Double> copy = new TimeSeries<Double>(ts);
+        assertTrue(ts.equals(copy));
+    }
+
     /*@Test
     public void testYears() {
         TimeSeries<Double> ts = new TimeSeries<Double>();
