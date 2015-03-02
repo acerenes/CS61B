@@ -1,11 +1,26 @@
 package ngordnet; 
 import org.junit.Test;
 import static org.junit.Assert.*; 
+import java.util.TreeMap;
 
 public class TestTimeSeries {
 
-    @Test
-    public static void testYears() {
+
+    @Test 
+    public void testConstructor() {
+        TreeMap tm = new TreeMap();
+        tm.put(1992, 3.6);
+        tm.put(1993, 9.2);
+        tm.put(1994, 15.2);
+        TimeSeries<Double> ts = new TimeSeries<Double>();
+        ts.put(1992, 3.6);
+        ts.put(1993, 9.2);
+        ts.put(1994, 15.2);
+        assertTrue(tm.equals(ts));
+    }
+
+    /*@Test
+    public void testYears() {
         TimeSeries<Double> ts = new TimeSeries<Double>();
         ts.put(1992, 3.6);
         ts.put(1993, 9.2);
@@ -15,7 +30,7 @@ public class TestTimeSeries {
 
         Collection<Number> years = new ArrayList<String>(Arrays.asList(1992, 1993, 1994, 1995, 1996)); // Thanks to Stackoverflow for this syntax
         assertEquals(years, ts.years());
-    }
+    }*/
 
 
 
