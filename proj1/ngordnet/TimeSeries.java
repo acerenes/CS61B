@@ -91,10 +91,21 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer,T> {
     /* Returns all years for this time series in any order. */
     public Collection<Number> years() {
         Collection<Number> years = new ArrayList<Number>();
+        // Thanks a million to Stackoverflow for getting me around the whole can't instantiate Collection interface thing.
         for (Number key : this.keySet()) {
             years.add((Number) key);
         }
         return years;
+    }
+
+
+    /* Returns all data for this time series in any order. */
+    public Collection<Number> data() {
+        Collection<Number> data = new ArrayList<Number>();
+        for (Integer key : this.keySet()) {
+            data.add(this.get(key));
+        }
+        return data;
     }
 
 

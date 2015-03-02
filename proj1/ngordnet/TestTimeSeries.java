@@ -3,8 +3,7 @@ import org.junit.Test;
 import static org.junit.Assert.*; 
 import java.util.TreeMap;
 import java.util.Collection;
-import java.util.Arrays;
-import java.util.ArrayList;
+
 
 public class TestTimeSeries {
 
@@ -117,7 +116,21 @@ public class TestTimeSeries {
         assertTrue(years.contains(1996));
     }
 
-
+    @Test
+    public void testData() {
+        TimeSeries<Double> ts = new TimeSeries<Double>();
+        ts.put(1992, 3.6);
+        ts.put(1993, 9.2);
+        ts.put(1994, 15.2);
+        ts.put(1995, 16.1);
+        ts.put(1996, -15.7);
+        Collection<Number> data = ts.data();
+        assertTrue(data.contains(3.6));
+        assertTrue(data.contains(9.2));
+        assertTrue(data.contains(15.2));
+        assertTrue(data.contains(16.1));
+        assertTrue(data.contains(-15.7));
+    }
 
     public static void main(String[] args) {
 
