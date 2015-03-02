@@ -9,7 +9,6 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer,T> {
 
     // A TimeSeries is just a TreeMap with some extra methods. 
 
-    private TimeSeries<T> copy; 
 
     /* Construct new empty TimeSeries */
     public TimeSeries() {
@@ -21,11 +20,11 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer,T> {
     /* Creates a copy of ts, but only between startyear & endyear. Inclusive of both end points. */
     public TimeSeries(TimeSeries<T> ts, int startYear, int endYear) {
         // Iterate through ts, get its keys. If its key is between the endpts, grab it+its value and copy it into the new guy.
-        copy = new TimeSeries<T>();
+        new TimeSeries<T>();
         Set<Integer> keys = ts.keySet();
         for (Integer key : keys) {
             if (key >= startYear && key <= endYear) {
-                copy.put(key, ts.get(key));
+                put(key, ts.get(key));
             }
         }
         
