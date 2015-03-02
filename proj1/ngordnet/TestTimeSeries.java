@@ -91,11 +91,13 @@ public class TestTimeSeries {
         ts2.put(1991, 10);
         ts2.put(1992, -5);
         ts2.put(1993, 1);
+        ts2.put(1995, 7);
         TimeSeries<Double> actualsum = new TimeSeries<Double>();
         actualsum.put(1991, 10.0);
         actualsum.put(1992, -1.4);
         actualsum.put(1993, 10.2);
         actualsum.put(1994, 15.2);
+        actualsum.put(1995, 7.0);
         assertTrue(actualsum.equals(ts.plus(ts2)));
     }
 
