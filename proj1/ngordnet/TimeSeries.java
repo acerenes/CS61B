@@ -12,7 +12,7 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer,T> {
 
     /* Construct new empty TimeSeries */
     public TimeSeries() {
-        // Just call the TreeMap constructor, because it is, just a TreeMap. 
+        // Just call the TreeMap constructor, because tis just a TreeMap. 
         new TreeMap();
     }
 
@@ -20,7 +20,7 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer,T> {
     /* Creates a copy of ts, but only between startyear & endyear. Inclusive of both end points. */
     public TimeSeries(TimeSeries<T> ts, int startYear, int endYear) {
         // Iterate through ts, get its keys. If its key is between the endpts, grab it+its value and copy it into the new guy.
-        new TimeSeries<T>();
+        new TimeSeries<T>(); // Constructing new TimeSeries.
         Set<Integer> keys = ts.keySet();
         for (Integer key : keys) {
             if (key >= startYear && key <= endYear) {
@@ -32,7 +32,7 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer,T> {
 
     /* Creates a copy of ts */
     public TimeSeries(TimeSeries<T> ts) {
-        new TimeSeries<T>();
+        new TimeSeries<T>(); // Constructing new TimeSeries.
         Set<Integer> keys = ts.keySet();
         for (Integer key : keys) {
             put(key, ts.get(key));
@@ -40,44 +40,20 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer,T> {
     }
 
 
-    /*// To iterate through a TimeSeries ts, TimeSeries<T> has to be an iterable. 
-    private TimeSeriesIter iterator() {
-        return new TimeSeriesIter(this);
-    }*/
-
-
-    /*private class TimeSeriesIter implements Iterator<Integer> { // Well, TimeSeries is going to iterate over the keys, which are integers, I guess.     
-        private TreeMap<Integer, T> iter;
-        private Set<Integer> keys;
-        private Integer[] keys_array;
-        private int keys_array_pointer;
-
-        private TimeSeriesIter(TimeSeries to_iterate) {
-            iter = to_iterate.map;
-            keys = iter.keySet();
-            keys_array = keys.toArray();
-            keys_array_pointer = 0;
+    /* Returns the quotient of this time series divided by the relevant value in ts. 
+        * If ts is missing a key in this time series, return an IllegalArgumentException. */
+    public TimeSeries<Double> dividedBy (TimeSeries<? extends Number> ts) {
+        // Iterate thrrough this. Get your value and their value, divide. Put into new TimeSeries. 
+        TimeSeries<Double> quotient = new TimeSeries<Double>();
+        Set<Integer> keys = this.keySet();
+        for (Integer key : keys) {
+            if (!ts.containsKey(key)) {
+                throw new IllegalArgumentException("In method dividedBy, the given argument is missing a key.");
+            }
+            quotient.put(key, (this.get(key).doubleValue() / ts.get(key).doubleValue()));
         }
-
-        private boolean hasNext() {
-            return keys_array_pointer < keys_array.length;
-        }
-
-        private Integer next() {
-            Integer old_k = keys_array[keys_array_pointer];
-            keys_array_pointer = keys_array_pointer + 1;
-            return old_k;
-        }
-
-        private void remove() {
-            throw new UnsupportedOperationException("This TimeSeries iterator doesn't do remove.");
-        }
-
-    }*/
-
-
-
-
+        return quotient;
+    }
 
 
 

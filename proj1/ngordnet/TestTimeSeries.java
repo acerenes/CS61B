@@ -47,6 +47,38 @@ public class TestTimeSeries {
         assertTrue(ts.equals(copy));
     }
 
+    @Test
+    public void testDividedBy() {
+        TimeSeries<Double> ts = new TimeSeries<Double>();
+        ts.put(1992, 1.0);
+        ts.put(1993, 2.0);
+        ts.put(1994, 3.0);
+        TimeSeries<Double> test1 = new TimeSeries<Double>();
+        test1.put(1992, 2.0);
+        test1.put(1993, 2.0);
+        test1.put(1994, 1.0);
+        TimeSeries<Double> ans1 = new TimeSeries<Double>();
+        ans1.put(1992, 0.5);
+        ans1.put(1993, 1.0);
+        ans1.put(1994, 3.0);
+        assertTrue(ans1.equals(ts.dividedBy(test1)));
+    } 
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testDividedByError() {
+        TimeSeries<Double> ts = new TimeSeries<Double>();
+        ts.put(1992, 1.0);
+        ts.put(1993, 2.0);
+        ts.put(1994, 3.0);
+        TimeSeries<Double> test2 = new TimeSeries<Double>();
+        test2.put(1992, 2.0);
+        test2.put(1993, 2.0);
+        test2.put(1995, 1.0);
+        ts.dividedBy(test2);
+        // Thanks to StackOverflow for this weird Exception-testing error. 
+    }
+
+
     /*@Test
     public void testYears() {
         TimeSeries<Double> ts = new TimeSeries<Double>();
