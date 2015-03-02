@@ -13,15 +13,14 @@ import java.util.Set;
       * But how deal with tiebreakers? 
         * Alphabetical order - u're b4, you're better.
         * So if =, only add if the key is "smaller" than you. 
- * So if your word is in the map & hasUpdated = false, take it. If not, generate. */
+ * So if your word is in the map & hasUpdated = false, take it. If not, generate. 
+    * Actually I'm going to just update in the put method, and don't need a boolean at all. */
+    
 
 public class YearlyRecord {
 
     Map<String, Integer> count_map;
-    // Won't touch rank_map until start ranking
     Map<String, Integer> rank_map; 
-    // Changes to true when put something NEW in. 
-    boolean hasUpdated = false; 
 
     /* Creates a new empty YearlyRecord. */
     public YearlyRecord() {
@@ -42,13 +41,42 @@ public class YearlyRecord {
                 if (otherCountMap.get(key2) > otherCountMap.get(key)) {
                     rank = rank + 1;
                 }
-                else if (otherCountMap.get(key2) == otherCountMap.get(key) || (key2.compareTo(key) < 0)) {
+                else if (otherCountMap.get(key2) == otherCountMap.get(key) && (key2.compareTo(key) < 0)) {
                     rank = rank + 1;
                 }
             }
             // Figured out rank - put in. 
             rank_map.put(key, rank);
         }
+    }
+
+    /* Records that word occured count times in this year. */
+    public void put(String word, int count) {
+        count_map.put(word, count);
+        // Update rank_map as well. 
+        rank_map.put(word, count);
+        Set<String> keys = rank_map.keySet();
+        for (String key : keys) {
+            // Figure out the rank.
+            int rank = 1; 
+            for (String key2 : keys) {
+                if (rank_map.get(key2) > rank_map.get(key)) {
+                    rank = rank + 1;
+                }
+                else if (rank_map.get(key2) == rank_map.get(key) && (key2.compareTo(key) < 0)) {
+                    rank = rank + 1;
+                }
+            }
+            // Figured out rank - put in. 
+            rank_map.put(key, rank);
+            // This will work b/c map drops its reference - put in new value.
+        }
+    }
+
+
+    /* Returns rank of word; most common word = 1. */
+    public int rank(String word) {
+        return rank_map.get(word);
     }
 
 
