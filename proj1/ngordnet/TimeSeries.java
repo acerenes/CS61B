@@ -2,6 +2,7 @@ package ngordnet;
 import java.util.Collection;
 import java.util.TreeMap;
 import java.util.Set;
+import java.util.ArrayList;
 
 
 public class TimeSeries<T extends Number> extends TreeMap<Integer,T> {
@@ -84,6 +85,16 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer,T> {
             sum.put(key2, sum2);
         }
         return sum;
+    }
+
+
+    /* Returns all years for this time series in any order. */
+    public Collection<Number> years() {
+        Collection<Number> years = new ArrayList<Number>();
+        for (Number key : this.keySet()) {
+            years.add((Number) key);
+        }
+        return years;
     }
 
 

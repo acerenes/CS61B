@@ -2,6 +2,9 @@ package ngordnet;
 import org.junit.Test;
 import static org.junit.Assert.*; 
 import java.util.TreeMap;
+import java.util.Collection;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 public class TestTimeSeries {
 
@@ -98,7 +101,7 @@ public class TestTimeSeries {
     }
 
 
-    /*@Test
+    @Test
     public void testYears() {
         TimeSeries<Double> ts = new TimeSeries<Double>();
         ts.put(1992, 3.6);
@@ -106,10 +109,13 @@ public class TestTimeSeries {
         ts.put(1994, 15.2);
         ts.put(1995, 16.1);
         ts.put(1996, -15.7);
-
-        Collection<Number> years = new ArrayList<String>(Arrays.asList(1992, 1993, 1994, 1995, 1996)); // Thanks to Stackoverflow for this syntax
-        assertEquals(years, ts.years());
-    }*/
+        Collection<Number> years = ts.years();
+        assertTrue(years.contains(1992));
+        assertTrue(years.contains(1993));
+        assertTrue(years.contains(1994));
+        assertTrue(years.contains(1995));
+        assertTrue(years.contains(1996));
+    }
 
 
 
