@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection; 
 
 
 public class TestYearlyRecord {
@@ -77,8 +78,8 @@ public class TestYearlyRecord {
         tester.add("quayside");
         tester.add("merchantman");
         tester.add("surrogate");
-        assertTrue(tester.equals(yr.words()));
-
+        Collection<String> words = yr.words();
+        assertTrue(tester.equals(words));
     }
 
 
