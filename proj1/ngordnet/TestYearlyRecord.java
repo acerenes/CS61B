@@ -34,6 +34,17 @@ public class TestYearlyRecord {
         assertEquals(3, test.rank("quayside"));
     }
 
+    @Test 
+    public void testCount() {
+        YearlyRecord yr = new YearlyRecord();
+        yr.put("quayside", NINETYFIVE);
+        yr.put("surrogate", THREEFORTY);
+        yr.put("merchantman", ONEEIGHTONE);
+        assertEquals(NINETYFIVE, yr.count("quayside"));
+        assertEquals(ONEEIGHTONE, yr.count("merchantman"));
+        assertEquals(THREEFORTY, yr.count("surrogate"));
+    }
+
 
 
 

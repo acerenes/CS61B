@@ -74,6 +74,12 @@ public class YearlyRecord {
     }
 
 
+    /* Returns # times word appeared in this year. */
+    public int count(String word) {
+        return count_map.get(word);
+    }
+
+
     /* Returns rank of word; most common word = 1. */
     public int rank(String word) {
         return rank_map.get(word);
