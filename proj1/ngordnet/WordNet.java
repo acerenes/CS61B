@@ -110,10 +110,13 @@ public class WordNet {
 
 	/* Returns the set of all hyponyms of word including word itself */
 	public Set<String> hyponyms(String word) {
-		// First figure out all synset IDs of the word
-		// Then take those IDs, and find the, like, rest of the #s in the hyponym file
-		// Put all the words in the matching hyponyms into the set
-		// Then put in word
+		// First figure out all synset IDs of the word. 
+		// Then take those IDs, and find the, like, rest of the #s in the hyponym file. 
+		// IT HAS TO BE THE FIRST ONE IN THE HYPONYM FILE.
+		// Also include own synonyms.
+		// Put all the words in the matching hyponyms into the set.
+		// Then put in word.
+
 		Set<String> all_hyponyms;
 		all_hyponyms = new HashSet<String>();
 		Iterator<String[]> syn_iter = this.synset.iterator();
@@ -125,8 +128,22 @@ public class WordNet {
 				if (words[i].equals(word)) {
 					// Get the synset ID
 					int syn_ID = Integer.parseInt(syn_array[0]); 
+					// Get self + synonyms
+					Iterator<String[]> syn_iter_syn = this.synset.iterator(); 
+					while (syn_iter_syn.hasNext()) {
+						String[] syn_array_syn = syn_iter_syn.next();
+						String[] syn_words = syn_array_syn[1].split(" ");
+						int check_syn_ID2 = Integer.parseInt(syn_array_syn[0]);
+						if (check_syn_ID2 == syn_ID) {
+							// Take in the words
+							for (int k = 0; k < syn_words.length; k = k + 1) {
+								all_hyponyms.add(syn_words[k]);
+							}
+						}
+					}
 					// Take the ID and find its hyponym IDs in the hyponym file
 					// FINDING THE SYN_ID IN THE HYPONYM FILE
+					// MUST BE FIRST # IN LINE.
 					Iterator<int[]> hyp_iter = this.hyponym.iterator();
 					while (hyp_iter.hasNext()) {
 						int[] hyp_array = hyp_iter.next();

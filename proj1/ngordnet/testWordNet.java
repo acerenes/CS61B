@@ -31,8 +31,13 @@ public class TestWordNet {
          WordNet wn = new WordNet("./p1data/wordnet/synsets11.txt", "./p1data/wordnet/hyponyms11.txt");
         String hyponyms[] = {"augmentation", "increase", "leap", "jump"}; 
         Set<String> expected_hyponyms = new HashSet(Arrays.asList(hyponyms));  
-        Set<String> actual_hyponyms = wn.hyponyms("increase"); 
+        Set<String> actual_hyponyms = wn.hyponyms("increase");
         assertTrue(actual_hyponyms.equals(expected_hyponyms)); 
+
+        String hyponyms2[] = {"parachuting", "leap", "jump"};
+        Set<String> expected_hyponyms2 = new HashSet(Arrays.asList(hyponyms2));
+        Set<String> actual_hyponyms2 = wn.hyponyms("jump");
+        assertTrue(actual_hyponyms2.equals(expected_hyponyms2));
     }
 
 	public static void main(String[] args) {
