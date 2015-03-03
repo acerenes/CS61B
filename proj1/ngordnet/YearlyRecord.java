@@ -61,6 +61,7 @@ public class YearlyRecord {
     /* Records that word occured count times in this year. */
     public void put(String word, int count) {
         count_map.put(word, count);
+        size = size + 1;
         // Update rank_map as well. 
         rank_map = new HashMap<String, Integer>();
         Set<String> keys = count_map.keySet();
@@ -83,9 +84,9 @@ public class YearlyRecord {
 
 
     /* Returns # words recorded this year. */
-    /*public int size() {
-
-    }*/
+    public int size() {
+        return size; 
+    }
 
 
     /* Returns # times word appeared in this year. */

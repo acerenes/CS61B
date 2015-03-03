@@ -45,14 +45,21 @@ public class TestYearlyRecord {
         assertEquals(THREEFORTY, yr.count("surrogate"));
     }
 
-    /*@Test
+    @Test
     public void testSize() {
-         YearlyRecord yr = new YearlyRecord();
+        YearlyRecord yr = new YearlyRecord();
         yr.put("quayside", NINETYFIVE);
         yr.put("surrogate", THREEFORTY);
         yr.put("merchantman", ONEEIGHTONE);
         assertEquals(3, yr.size());
-    }*/
+
+        HashMap<String, Integer> yrhm = new HashMap<String, Integer>();
+        yrhm.put("quayside", NINETYFIVE);
+        yrhm.put("surrogate", THREEFORTY);
+        yrhm.put("merchantman", ONEEIGHTONE);
+        YearlyRecord yr2 = new YearlyRecord(yrhm);
+        assertEquals(3, yr2.size());
+    }
 
 
 
