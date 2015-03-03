@@ -29,7 +29,7 @@ public class WordNet {
 	    synset = new HashSet<String[]>();
 	    File synsetfile = new File(synsetFilename);
 	    try {
-	    	Scanner synsetscanned = new Scanner(Synset_file);
+	    	Scanner synsetscanned = new Scanner(synsetfile);
 	    	while (synsetscanned.hasNextLine()) {
 	    		String synsetstring = synsetscanned.nextLine();
 	    		String[] synsetarr = synsetstring.split(",");
