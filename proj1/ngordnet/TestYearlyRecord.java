@@ -66,10 +66,6 @@ public class TestYearlyRecord {
 
     @Test 
     public void testWords() {
-        /* Should print: 
-            quayside appeared 95 times.
-            merchantman appeared 181 times.
-            surrogate appeared 340 times. */
         YearlyRecord yr = new YearlyRecord();
         yr.put("quayside", NINETYFIVE);
         yr.put("surrogate", THREEFORTY);
@@ -80,6 +76,21 @@ public class TestYearlyRecord {
         tester.add("surrogate");
         Collection<String> words = yr.words();
         assertTrue(tester.equals(words));
+    }
+
+
+    @Test 
+    public void testCounts() {
+        YearlyRecord yr = new YearlyRecord();
+        yr.put("quayside", NINETYFIVE);
+        yr.put("surrogate", THREEFORTY);
+        yr.put("merchantman", ONEEIGHTONE);
+        List<Number> tester = new ArrayList<Number>();
+        tester.add(NINETYFIVE);
+        tester.add(ONEEIGHTONE);
+        tester.add(THREEFORTY);
+        Collection<Number> counts = yr.counts();
+        assertTrue(tester.equals(counts));
     }
 
 

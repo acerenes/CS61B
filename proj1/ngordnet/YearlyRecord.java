@@ -128,4 +128,23 @@ public class YearlyRecord {
     }
 
 
+    /* Returns all counts in ascending order of count. */
+    public Collection<Number> counts() {
+        List<Number> ascending_count = new ArrayList<Number>();
+        Map<String, Integer> rankedmap = this.rank_map;
+        Map<String, Integer> countmap = this.count_map;
+        Set<String> keys = rankedmap.keySet();
+        int counter = this.size();
+        while (counter >= 1) {
+            for (String key : keys) {
+                if (counter == rankedmap.get(key)) {
+                    ascending_count.add(countmap.get(key));
+                }
+            }
+            counter = counter - 1;
+        }
+        return ascending_count;
+    }
+
+
 }
