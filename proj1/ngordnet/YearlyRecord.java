@@ -21,19 +21,27 @@ public class YearlyRecord {
 
     Map<String, Integer> count_map;
     Map<String, Integer> rank_map; 
+    int size;
 
     /* Creates a new empty YearlyRecord. */
     public YearlyRecord() {
         count_map = new HashMap<String, Integer>();
         rank_map = new HashMap<String, Integer>();
+        size = 0;
     }
 
     /* Creates a YearlyRecord using the given data. */
     public YearlyRecord(HashMap<String, Integer> otherCountMap) {
-        count_map = otherCountMap;
-        // Gotta construct rank_map.
+        // I think you're supposed to create a new object.
+        count_map = new HashMap<String, Integer>();
         rank_map = new HashMap<String, Integer>();
         Set<String> keys = otherCountMap.keySet();
+        // First construct count_map.
+        for (String key : keys) {
+            count_map.put(key, otherCountMap.get(key));
+            size = size + 1;
+        }
+        // Construct rank_map.
         for (String key : keys) {
             // Now figure out the rank.
             int rank = 1; 
@@ -72,6 +80,12 @@ public class YearlyRecord {
             // This will work b/c map drops its reference - put in new value.
         }
     }
+
+
+    /* Returns # words recorded this year. */
+    /*public int size() {
+
+    }*/
 
 
     /* Returns # times word appeared in this year. */

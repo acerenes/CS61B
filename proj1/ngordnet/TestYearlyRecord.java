@@ -45,6 +45,15 @@ public class TestYearlyRecord {
         assertEquals(THREEFORTY, yr.count("surrogate"));
     }
 
+    /*@Test
+    public void testSize() {
+         YearlyRecord yr = new YearlyRecord();
+        yr.put("quayside", NINETYFIVE);
+        yr.put("surrogate", THREEFORTY);
+        yr.put("merchantman", ONEEIGHTONE);
+        assertEquals(3, yr.size());
+    }*/
+
 
 
 
