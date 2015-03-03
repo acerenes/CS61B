@@ -21,19 +21,21 @@ public class WordNet {
 	public WordNet(String synsetFilename, String hyponymFilename) {
 
 		/* Am I going to use a set? I'm pretty sure there won't be duplicates, b/c: 
-			* Synsets all different- even if 2 diff. things wanted to use the same synset, would only read it in 1x.
-			* The hypernym file also won't, b/c maps every synset to its 5 million more specific babies. */
+			* Synsets all diff.
+				* Even if 2 diff. things wanted to use same synset, would only read it in 1x.
+			* Hypernym file also won't. 
+				* Maps every synset to its 5 million more specific babies. */
 
 	    synset = new HashSet<String[]>();
-	    File Synset_file = new File(synsetFilename);
+	    File synsetfile = new File(synsetFilename);
 	    try {
-	    	Scanner synset_scanned = new Scanner(Synset_file);
-	    	while (synset_scanned.hasNextLine()) {
-	    		String Synset_string = synset_scanned.nextLine();
-	    		String[] Synset_arr = Synset_string.split(",");
+	    	Scanner synsetscanned = new Scanner(Synset_file);
+	    	while (synsetscanned.hasNextLine()) {
+	    		String synsetstring = synsetscanned.nextLine();
+	    		String[] synsetarr = synsetstring.split(",");
 	    		// Can have more than 1 word in the second element, seperated by a space. 
 	    		// Going to try & take 2nd element and split that again by space.
-	    		synset.add(Synset_arr); 
+	    		synset.add(synsetarr); 
 	    	}
 	    } catch (FileNotFoundException ex) {
 	    	System.out.println("The synset file is not valid.");
@@ -45,12 +47,12 @@ public class WordNet {
 
 
 		hyponym = new HashSet<int[]>();
-		File hyponym_file = new File(hyponymFilename); 
+		File hyponymfile = new File(hyponymFilename); 
 		try {
-			Scanner hyponym_scanned = new Scanner(hyponym_file);
-			while (hyponym_scanned.hasNextLine()) {
-				String hyponym_Ints = hyponym_scanned.nextLine();
-				String[] hyponym_Sarray = hyponym_Ints.split(",");
+			Scanner hyponymscanned = new Scanner(hyponymfile);
+			while (hyponymscanned.hasNextLine()) {
+				String hyponymints = hyponymscanned.nextLine();
+				String[] hyponym_Sarray = hyponymints.split(",");
 				int[] hyponym_array = new int[hyponym_Sarray.length];
 				for (int i = 0; i < hyponym_Sarray.length; i = i + 1){
 					try { // Create int from string[].
