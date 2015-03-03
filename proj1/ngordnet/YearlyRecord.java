@@ -41,7 +41,7 @@ public class YearlyRecord {
                 if (otherCountMap.get(key2) > otherCountMap.get(key)) {
                     rank = rank + 1;
                 }
-                else if (otherCountMap.get(key2) == otherCountMap.get(key) && (key2.compareTo(key) < 0)) {
+                else if (otherCountMap.get(key2) == otherCountMap.get(key) && (key2.compareTo(key) > 0)) {
                     rank = rank + 1;
                 }
             }
@@ -54,21 +54,24 @@ public class YearlyRecord {
     public void put(String word, int count) {
         count_map.put(word, count);
         // Update rank_map as well. 
-        rank_map.put(word, count);
-        Set<String> keys = rank_map.keySet();
+        rank_map = new HashMap<String, Integer>();
+        Set<String> keys = count_map.keySet();
         for (String key : keys) {
             // Figure out the rank.
             int rank = 1; 
             for (String key2 : keys) {
-                if (rank_map.get(key2) > rank_map.get(key)) {
+                if (count_map.get(key2) > count_map.get(key)) {
                     rank = rank + 1;
+                    System.out.println(word + " I'm going into if");
                 }
-                else if (rank_map.get(key2) == rank_map.get(key) && (key2.compareTo(key) < 0)) {
+                else if (count_map.get(key2) == count_map.get(key) && (key2.compareTo(key) > 0)) {
                     rank = rank + 1;
+                    System.out.println(word + " I'm going into else if");
                 }
             }
             // Figured out rank - put in. 
             rank_map.put(key, rank);
+            System.out.println(word + " my rank is " + rank);
             // This will work b/c map drops its reference - put in new value.
         }
     }

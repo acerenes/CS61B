@@ -5,19 +5,32 @@ import static org.junit.Assert.*;
 
 public class TestYearlyRecord {
 
-    public static final NINETYFIVE = 95;
-    public static final THREEFORTY = 340;
-    public static final ONEEIGHTONE = 181;
+    public static final int NINETYFIVE = 95;
+    public static final int THREEFORTY = 340;
+    public static final int ONEEIGHTONE = 181;
+
 
     @Test
-    public void testrank() {
-        YearRecord yr = new YearlyRecord();
+    public void testEmptyRank() {
+        YearlyRecord yr = new YearlyRecord();
         yr.put("quayside", NINETYFIVE);
         yr.put("surrogate", THREEFORTY);
         yr.put("merchantman", ONEEIGHTONE);
         assertEquals(1, yr.rank("surrogate"));
+        assertEquals(2, yr.rank("merchantman"));
         assertEquals(3, yr.rank("quayside"));
     }
+
+    /*@Test
+    public void testNonEmptyRank() { OMG CHANGE THIS ALICE DLRGDSLRIUGHLDSRIUH
+        YearlyRecord yr = new YearlyRecord();
+        yr.put("quayside", NINETYFIVE);
+        yr.put("surrogate", THREEFORTY);
+        yr.put("merchantman", ONEEIGHTONE);
+        assertEquals(1, yr.rank("surrogate"));
+        assertEquals(2, yr.rank("merchantman"));
+        assertEquals(3, yr.rank("quayside"));
+    }*/
 
 
 
