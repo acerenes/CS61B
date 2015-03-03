@@ -2,6 +2,8 @@ package ngordnet;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.HashMap;
+import java.util.List;
+import java.util.ArrayList;
 
 
 public class TestYearlyRecord {
@@ -59,6 +61,24 @@ public class TestYearlyRecord {
         yrhm.put("merchantman", ONEEIGHTONE);
         YearlyRecord yr2 = new YearlyRecord(yrhm);
         assertEquals(3, yr2.size());
+    }
+
+    @Test 
+    public void testWords() {
+        /* Should print: 
+            quayside appeared 95 times.
+            merchantman appeared 181 times.
+            surrogate appeared 340 times. */
+        YearlyRecord yr = new YearlyRecord();
+        yr.put("quayside", NINETYFIVE);
+        yr.put("surrogate", THREEFORTY);
+        yr.put("merchantman", ONEEIGHTONE);
+        List<String> tester = new ArrayList<String>();
+        tester.add("quayside");
+        tester.add("merchantman");
+        tester.add("surrogate");
+        assertTrue(tester.equals(yr.words()));
+
     }
 
 

@@ -2,6 +2,9 @@ package ngordnet;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
 
 /* Okay I'm thinking 2 maps? 
  * One for word v. count.
@@ -98,6 +101,30 @@ public class YearlyRecord {
     /* Returns rank of word; most common word = 1. */
     public int rank(String word) {
         return rank_map.get(word);
+    }
+
+
+    /* Returns all words in ascending order of count. */
+    public Collection<String> words() {
+        /* What I'm thinking here is:
+            * Size of YearlyRecord = lowest rank.
+            * Maintain a counter that goes from size --> 1.
+            * Iterate through the keys. 
+            * If the value = counter, put the key in the list. 
+            * Update counter. */
+        List<String> ascending_words = new ArrayList<String>();
+        Map<String, Integer> rankedmap = this.rank_map;
+        Set<String> keys = rankedmap.keySet();
+        int counter = this.size();
+        while (counter >= 1) {
+            for (String key : keys) {
+                if (counter == rankedmap.get(key)) {
+                    ascending_words.add(key);
+                }
+            }
+            counter = counter - 1;
+        }
+        return ascending_words;
     }
 
 
