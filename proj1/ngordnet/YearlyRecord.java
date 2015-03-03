@@ -62,16 +62,13 @@ public class YearlyRecord {
             for (String key2 : keys) {
                 if (count_map.get(key2) > count_map.get(key)) {
                     rank = rank + 1;
-                    System.out.println(word + " I'm going into if");
                 }
                 else if (count_map.get(key2) == count_map.get(key) && (key2.compareTo(key) > 0)) {
                     rank = rank + 1;
-                    System.out.println(word + " I'm going into else if");
                 }
             }
             // Figured out rank - put in. 
             rank_map.put(key, rank);
-            System.out.println(word + " my rank is " + rank);
             // This will work b/c map drops its reference - put in new value.
         }
     }
