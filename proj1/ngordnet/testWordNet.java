@@ -38,6 +38,12 @@ public class TestWordNet {
         Set<String> expected_hyponyms2 = new HashSet(Arrays.asList(hyponyms2));
         Set<String> actual_hyponyms2 = wn.hyponyms("jump");
         assertTrue(actual_hyponyms2.equals(expected_hyponyms2));
+
+        WordNet wn2 = new WordNet("./p1data/wordnet/synsets14.txt", "./p1data/wordnet/hyponyms14.txt");
+        String hyponyms3[] = {"alteration", "saltation", "modification", "change", "variation", "increase", "transition", "demotion", "leap", "jump"};
+        Set<String> expected_hyponyms3 = new HashSet(Arrays.asList(hyponyms3));
+        Set<String> actual_hyponyms3 = wn2.hyponyms("change");
+        assertTrue(actual_hyponyms3.equals(expected_hyponyms3));
     }
 
 	public static void main(String[] args) {
