@@ -44,6 +44,14 @@ public class TestNGramMap {
        assertEquals(4375, (double) totalCountHistory.get(1527), 0);
     }
 
+    @Test 
+    public void testCountHistory() {
+        NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
+        TimeSeries<Integer> countHistory = ngm.countHistory("quantity", 1724, 1757);
+        assertEquals(34, countHistory.size());
+        assertEquals(139, (double) countHistory.get(SEVENTEENTHIRTYSIX), 0);
+        assertEquals(1686, (double) countHistory.get(1738), 0);
+    }
 
 
 
