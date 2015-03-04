@@ -35,10 +35,12 @@ public class TestNGramMap {
         assertEquals(139, yr.count("quantity"));
     }
 
-    /*@Test 
+    @Test 
     public void testTotalCountHistory() {
-        
-    }*/
+        NGramMap shortNGM = new NGramMap("./p1data/ngrams/very_short.csv", "./p1data/ngrams/total_counts.csv");
+       TimeSeries<Long> totalCountHistory = ngm.totalCountHistory();
+       assertEquals(8049773, totalCountHistory.get(1736));
+    }
 
 
 
