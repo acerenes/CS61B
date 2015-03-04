@@ -112,7 +112,7 @@ public class YearlyRecord {
                     rank = rank + 1;
                 } else {
                     // You passed them - increase THEIR rank. 
-                        // I don't think I can change it directly with get, so gonna just put new pair in.
+                        // Don't think can change directly with get, so gonna just put new pair in.
                     rankMap.put(key, rankMap.get(key) + 1);
                 }
             }
