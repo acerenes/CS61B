@@ -7,7 +7,6 @@ import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.HashMap;
 import java.util.Collection;
-import java.util.ArrayList;
 
 
 public class NGramMap {
@@ -216,9 +215,44 @@ public class NGramMap {
             double sumFrequency = 0; // Also initialize.
             for (String word : words) {
                 TimeSeries<Double> currTimeSeries = weightHistory(word, startYear, endYear);
-                sumFrequency = sumFrequency + currTimeSeries.get(currYear);
+                if (currTimeSeries.get(currYear) == null) {
+                    // Just in case - don't add anything.
+                    sumFrequency = sumFrequency;
+                } else { 
+                    sumFrequency = sumFrequency + currTimeSeries.get(currYear);
+                }
             }
             summedWeightHist.put(currYear, sumFrequency);
+        }
+        return summedWeightHist;
+    }
+
+
+    /* Returns the summed relative frequencey of all words. */
+    public TimeSeries<Double> summedWeightHistory(Collection<String> words) {
+        // Above with no boundaries. 
+        TimeSeries<Double> summedWeightHist = new TimeSeries();
+        /* Go through one word at a time. 
+            * Go through entire words set, grab year + #. 
+            * For each year, get relative freq + add to prev rel. freq.
+                * First word: if return list doesn't have that year as a key yet:
+                    * Just add relative freq to 0. 
+            * Add year & summned rel. freq. to TimeSeries.
+            * Repeat loop. */
+        for (String word : words) {
+            for (String[] wordData : this.words) {
+                if (wordData[0].equals(word)) {
+                    int currYear = Integer.parseInt(wordData[1]);
+                    TimeSeries<Double> relFreqData = weightHistory(word);
+                    double currFreq = relFreqData.get(currYear);
+                    if (summedWeightHist.containsKey(currYear)) {
+                        currFreq = currFreq + summedWeightHist.get(currYear);
+                        // Summing up if already have data.
+                    }
+                    summedWeightHist.put(currYear, currFreq);
+                    // Should've taken care of all years for this word.
+                }
+            }
         }
         return summedWeightHist;
     }

@@ -88,6 +88,11 @@ public class TestNGramMap {
         System.out.println("summedWeightHistory returns " + sum.get(SEVENTEENTHIRTYSIX));
         System.out.println("NGramMapDemo says it should be about 3.875E-5.");
         assertEquals(34, sum.size());
+
+        TimeSeries<Double> sum2 = ngm.summedWeightHistory(words);
+        System.out.println("Part 2 summedWeightHistory returns " + sum2.get(SEVENTEENTHIRTYSIX));
+        System.out.println("NGramMapDemo says it should be about 3.875E-5.");
+        // I don't know what the size of this collection should be, so no test. Just faith and hope.
     }
 
 
