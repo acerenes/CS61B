@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
+import java.util.HashMap;
 
 
 public class NGramMap {
@@ -73,6 +74,27 @@ public class NGramMap {
             }
         }
         return 0;
+    }
+
+
+    /* Returns a defensive copy of the YearlyRecord of the year. */
+    public YearlyRecord getRecord(int year) {
+        // I think defensive copy just means a COPY, not like, point at same thing.
+        /* YearlyRecord takes in HashMap of word & count.
+            * Find all the words that appear in that year.
+            * Put word + year into HashMap.
+            * Stick HashMap into YearlyRecord constructor. */
+        HashMap<String, Integer> yearRecord = new HashMap<String, Integer>();
+        Iterator<String[]> wordsIterator = this.words.iterator();
+        // Find where the year is. 
+        while (wordsIterator.hasNext()) {
+            String[] wordsArray = wordsIterator.next();
+            int theYear = Integer.parseInt(wordsArray[1]);
+            if (theYear == year) {
+                yearRecord.put(wordsArray[0], Integer.parseInt(wordsArray[2]));
+            }
+        }
+        return new YearlyRecord(yearRecord);
     }
 
 }
