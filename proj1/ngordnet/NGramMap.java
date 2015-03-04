@@ -1,3 +1,11 @@
+package ngordnet;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
+
+
 public class NGramMap {
 
 
