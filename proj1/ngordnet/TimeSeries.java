@@ -51,7 +51,7 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer, T> {
         Set<Integer> keys = this.keySet();
         for (Integer key : keys) {
             if (!ts.containsKey(key)) {
-                throw new IllegalArgumentException("In dividedBy, given argument is missing a key.");
+                throw new IllegalArgumentException("In dividedBy, argument is missing a key.");
             }
             quotient.put(key, (this.get(key).doubleValue() / ts.get(key).doubleValue()));
             // Gotta do this weird .doubleValue thing.
@@ -75,7 +75,7 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer, T> {
             }
             sum.put(key1, sum1);
         }
-        // Do it 2x - once for this and once for ts, in case of keys that one has that the other doesn't. 
+        // Do 2x - for this and for ts, in case of keys that one has that the other doesn't. 
         Set<Integer> keys2 = ts.keySet();
         for (Integer key2 : keys2) {
             if (!this.containsKey(key2)) {
@@ -92,7 +92,7 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer, T> {
     /* Returns all years for this time series in any order. */
     public Collection<Number> years() {
         Collection<Number> years = new ArrayList<Number>();
-        // Thanks Stackoverflow for getting me around the can't instantiate Collection interface thing.
+        // Thanks Stackoverflow for getting around the can't instantiate Collection interface thing.
         for (Number key : this.keySet()) {
             years.add((Number) key);
         }
