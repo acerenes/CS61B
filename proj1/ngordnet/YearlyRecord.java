@@ -22,9 +22,9 @@ import java.util.ArrayList;
 
 public class YearlyRecord {
 
-    Map<String, Integer> countMap;
-    Map<String, Integer> rankMap; 
-    int size;
+    private Map<String, Integer> countMap;
+    private Map<String, Integer> rankMap; 
+    private int size;
 
     /* Creates a new empty YearlyRecord. */
     public YearlyRecord() {
