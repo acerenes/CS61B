@@ -184,8 +184,8 @@ public class WordNet {
         while (synIter2.hasNext()) {
             String[] synArray2 = synIter2.next();
             String[] words2 = synArray2[1].split(" ");
-            int check_synID = Integer.parseInt(synArray2[0]);
-            if (check_synID == synID) {
+            int checkSynID = Integer.parseInt(synArray2[0]);
+            if (checkSynID == synID) {
                 // Found right synset, take in words.
                 for (int k = 0; k < words2.length; k = k + 1) {
                     words.add(words2[k]);
