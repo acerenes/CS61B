@@ -8,13 +8,13 @@ import java.util.Arrays;
 public class TestWordNet {
 
 
-	@Test 
-	public void testisNoun() {
+    @Test 
+    public void testisNoun() {
          WordNet wn = new WordNet("./p1data/wordnet/synsets11.txt", "./p1data/wordnet/hyponyms11.txt");
-		assertTrue(wn.isNoun("jump"));
-		assertTrue(wn.isNoun("leap"));
-		assertTrue(wn.isNoun("nasal_decongestant")); 
-	}
+        assertTrue(wn.isNoun("jump"));
+        assertTrue(wn.isNoun("leap"));
+        assertTrue(wn.isNoun("nasal_decongestant")); 
+    }
 
     @Test
     public void testnouns() {
@@ -46,10 +46,10 @@ public class TestWordNet {
         assertTrue(actual_hyponyms3.equals(expected_hyponyms3));
     }
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		jh61b.junit.textui.runClasses(TestWordNet.class); 
+        jh61b.junit.textui.runClasses(TestWordNet.class); 
 
 
-	}
+    }
 }

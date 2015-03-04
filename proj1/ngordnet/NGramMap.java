@@ -14,7 +14,7 @@ public class NGramMap {
     /* Using sets again. 
         * One set for words, one for counts. */
     Set<String[]> words;
-    Set<Long[]> counts;
+    Set<Number[]> counts;
 
     /* Constructs an NGramMap from wordsFilename & countsFilename. */
     public NGramMap(String wordsFilename, String countsFilename) {
@@ -32,17 +32,17 @@ public class NGramMap {
             System.out.println("The words file is not valid.");
         }
 
-        counts = new HashSet<Long[]>();
+        counts = new HashSet<Number[]>();
         File countsfile = new File(countsFilename);
         try {
             Scanner countsscanned = new Scanner(countsfile);
             while (countsscanned.hasNextLine()) {
                 String countsInts = countsscanned.nextLine();
                 String[] countsStringarray = countsInts.split(",");
-                Long[] countsArray = new Long[countsStringarray.length];
+                Number[] countsArray = new Number[countsStringarray.length];
                 for (int i = 0; i < countsStringarray.length; i = i + 1) {
                     try { // Have to create Number from string[].
-                        Long element = Long.valueOf(countsStringarray[i]).longValue();
+                        Number element = Double.valueOf(countsStringarray[i]).doubleValue();
                         // Then add to int[].
                         countsArray[i] = element;
                     } catch (NumberFormatException nf) {
@@ -108,7 +108,9 @@ public class NGramMap {
         Iterator<Number[]> countIterator = this.counts.iterator();
         while (countIterator.hasNext()) {
             Number[] countArray = countIterator.next();
-            totalCount.put
+            totalCount.put(countArray[0].intValue(), countArray[1].longValue());
         }
+        return totalCount;
+    }
 
 }

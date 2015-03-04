@@ -9,6 +9,7 @@ public class TestNGramMap {
     public static final int ONESEVENFIVE = 175702;
     public static final int SIXNINESEVEN = 697645;
     public static final int TENEIGHT = 108634;
+    public static final int SEVENTEENTHIRTYSIX = 1736;
 
     @Test 
     public void testCountInYear() {
@@ -31,15 +32,16 @@ public class TestNGramMap {
         assertEquals(TENEIGHT, test.count("wandered"));
 
         NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
-        YearlyRecord yr = ngm.getRecord(1736);
+        YearlyRecord yr = ngm.getRecord(SEVENTEENTHIRTYSIX);
         assertEquals(139, yr.count("quantity"));
     }
 
     @Test 
     public void testTotalCountHistory() {
         NGramMap shortNGM = new NGramMap("./p1data/ngrams/very_short.csv", "./p1data/ngrams/total_counts.csv");
-       TimeSeries<Long> totalCountHistory = ngm.totalCountHistory();
-       assertEquals(8049773, totalCountHistory.get(1736));
+       TimeSeries<Long> totalCountHistory = shortNGM.totalCountHistory();
+       assertEquals(8049773, (double) totalCountHistory.get(SEVENTEENTHIRTYSIX), 0);
+       assertEquals(4375, (double) totalCountHistory.get(1527), 0);
     }
 
 
