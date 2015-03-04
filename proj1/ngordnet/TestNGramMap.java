@@ -51,7 +51,13 @@ public class TestNGramMap {
         assertEquals(34, countHistory.size());
         assertEquals(139, (double) countHistory.get(SEVENTEENTHIRTYSIX), 0);
         assertEquals(1686, (double) countHistory.get(1738), 0);
+
+        TimeSeries<Integer> countHistory2 = ngm.countHistory("quantity");
+        assertEquals(400, countHistory2.size());
+        assertEquals(719377, (double) countHistory2.get(2008), 0);
+        assertEquals(1, (double) countHistory2.get(1505), 0);
     }
+
 
 
 

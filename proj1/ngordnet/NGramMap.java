@@ -117,6 +117,7 @@ public class NGramMap {
     /* Provides the history of word between startyear & endyear. */
     public TimeSeries<Integer> countHistory(String word, int startYear, int endYear) {
         /* Find all instances of word. 
+            * Make sure year is within bounds.
             * Grab its year and count, stick in. */
         TimeSeries<Integer> countHist = new TimeSeries();
         Iterator<String[]> histIterator = this.words.iterator();
@@ -128,6 +129,23 @@ public class NGramMap {
                 if (year >= startYear && year <= endYear) {
                     countHist.put(year, count);
                 }
+            }
+        }
+        return countHist;
+    }
+
+
+    /* Provides a defensive copy of the history of word. */
+    public TimeSeries<Integer> countHistory(String word) {
+        // Just like above, but no limits.
+        TimeSeries<Integer> countHist = new TimeSeries();
+        Iterator<String[]> histIterator = this.words.iterator();
+        while (histIterator.hasNext()) {
+            String[] histArray = histIterator.next();
+            if (histArray[0].equals(word)) {
+                int year = Integer.parseInt(histArray[1]);
+                int count = Integer.parseInt(histArray[2]);
+                countHist.put(year, count);
             }
         }
         return countHist;
