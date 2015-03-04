@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.HashMap;
+import java.util.Collection;
+import java.util.ArrayList;
 
 
 public class NGramMap {
@@ -202,6 +204,23 @@ public class NGramMap {
             }
         }
         return weightHist;
+    }
+
+
+    /* Provides the summed relative frequency of all words between startyear & endyear. */
+    public TimeSeries<Double> summedWeightHistory(Collection<String> words, int startYear, int endYear) {
+
+        TimeSeries<Double> summedWeightHist = new TimeSeries();
+        for (int currYear = startYear; currYear <= endYear; currYear = currYear + 1) {
+            // For 1 year. 
+            double sumFrequency = 0; // Also initialize.
+            for (String word : words) {
+                TimeSeries<Double> currTimeSeries = weightHistory(word, startYear, endYear);
+                sumFrequency = sumFrequency + currTimeSeries.get(currYear);
+            }
+            summedWeightHist.put(currYear, sumFrequency);
+        }
+        return summedWeightHist;
     }
 
 }

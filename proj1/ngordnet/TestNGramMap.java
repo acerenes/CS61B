@@ -1,6 +1,7 @@
 package ngordnet;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.util.ArrayList;
 
 
 
@@ -70,10 +71,23 @@ public class TestNGramMap {
         System.out.println("NGramMapDemo says the method should return roughly 1.7267E-5");
         assertEquals(34, weightHistory.size());
 
+
         TimeSeries<Double> weightHistory2 = ngm.weightHistory("quantity");
         System.out.println("Part 2: weightHistory method with no bounds returns " + weightHistory2.get(SEVENTEENTHIRTYSIX));
         System.out.println("NGramMapDemo says the method should return roughly 1.7267E-5.");
         assertEquals(FOURHUNDRED, weightHistory2.size());
+    }
+
+    @Test
+    public void testSummedWeightHistory() {
+        NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
+        ArrayList<String> words = new ArrayList<String>();
+        words.add("quantity");
+        words.add("quality");
+        TimeSeries<Double> sum = ngm.summedWeightHistory(words, SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
+        System.out.println("summedWeightHistory returns " + sum.get(SEVENTEENTHIRTYSIX));
+        System.out.println("NGramMapDemo says it should be about 3.875E-5.");
+        assertEquals(34, sum.size());
     }
 
 
