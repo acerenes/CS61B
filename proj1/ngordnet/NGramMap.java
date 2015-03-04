@@ -179,4 +179,29 @@ public class NGramMap {
         return weightHist;
     }
 
+
+    /* Provides the relative frequency of word. */
+    public TimeSeries<Double> weightHistory(String word) {
+        // Above with no bounds. 
+        TimeSeries<Double> weightHist = new TimeSeries();
+        Iterator<String[]> weightIterator = this.words.iterator();
+        while (weightIterator.hasNext()) {
+            String[] weightArray = weightIterator.next();
+            if (weightArray[0].equals(word)) {
+                int year = Integer.parseInt(weightArray[1]);
+                int count = Integer.parseInt(weightArray[2]);
+                // Find total counts.
+                Iterator<Number[]> totalCountIterator = this.counts.iterator();
+                while (totalCountIterator.hasNext()) {
+                    Number[] totalCountArray = totalCountIterator.next();
+                    if ((totalCountArray[0].intValue()) == year) {
+                        Number totalCount = totalCountArray[1];
+                        weightHist.put(year, Integer.valueOf(count).doubleValue() / totalCount.doubleValue());
+                    }
+                }
+            }
+        }
+        return weightHist;
+    }
+
 }

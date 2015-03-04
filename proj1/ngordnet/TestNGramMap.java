@@ -12,6 +12,7 @@ public class TestNGramMap {
     public static final int SEVENTEENTHIRTYSIX = 1736;
     public static final int SEVENTEENTWENTYFOUR = 1724;
     public static final int SEVENTEENFIFTYSEVEN = 1757;
+    public static final int FOURHUNDRED = 400;
 
 
     @Test 
@@ -56,7 +57,7 @@ public class TestNGramMap {
         assertEquals(1686, (double) countHistory.get(1738), 0);
 
         TimeSeries<Integer> countHistory2 = ngm.countHistory("quantity");
-        assertEquals(400, countHistory2.size());
+        assertEquals(FOURHUNDRED, countHistory2.size());
         assertEquals(719377, (double) countHistory2.get(2008), 0);
         assertEquals(1, (double) countHistory2.get(1505), 0);
     }
@@ -68,6 +69,11 @@ public class TestNGramMap {
         System.out.println("The weightHistory method with bounds returns " + weightHistory.get(SEVENTEENTHIRTYSIX));
         System.out.println("NGramMapDemo says the method should return roughly 1.7267E-5");
         assertEquals(34, weightHistory.size());
+
+        TimeSeries<Double> weightHistory2 = ngm.weightHistory("quantity");
+        System.out.println("Part 2: weightHistory method with no bounds returns " + weightHistory2.get(SEVENTEENTHIRTYSIX));
+        System.out.println("NGramMapDemo says the method should return roughly 1.7267E-5.");
+        assertEquals(FOURHUNDRED, weightHistory2.size());
     }
 
 
