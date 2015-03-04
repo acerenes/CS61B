@@ -98,16 +98,14 @@ public class YearlyRecord {
         }*/
 
         int rank = 1;
-        
         if (rankMap.isEmpty()) {
             rankMap = new HashMap<String, Integer>();
         } else {
-            Set<String> keys = rankMap.keySet();
-            for (String key : keys) {
-                Integer mapValue = countMap.get(key);
-                if (mapValue > count) { // Increase your rank.
+            /*Set<String> keys = rankMap.keySet();*/
+            for (String key : rankMap.keySet()) {
+                if (countMap.get(key) > count) { // Increase your rank.
                     rank = rank + 1;
-                } else if (mapValue == count && word.compareTo(key) > 0) {
+                } else if (countMap.get(key) == count && word.compareTo(key) > 0) {
                     // You're lower alphabetically - increase your rank.
                     rank = rank + 1;
                 } else {
