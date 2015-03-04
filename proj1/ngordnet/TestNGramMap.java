@@ -10,6 +10,9 @@ public class TestNGramMap {
     public static final int SIXNINESEVEN = 697645;
     public static final int TENEIGHT = 108634;
     public static final int SEVENTEENTHIRTYSIX = 1736;
+    public static final int SEVENTEENTWENTYFOUR = 1724;
+    public static final int SEVENTEENFIFTYSEVEN = 1757;
+
 
     @Test 
     public void testCountInYear() {
@@ -47,7 +50,7 @@ public class TestNGramMap {
     @Test 
     public void testCountHistory() {
         NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
-        TimeSeries<Integer> countHistory = ngm.countHistory("quantity", 1724, 1757);
+        TimeSeries<Integer> countHistory = ngm.countHistory("quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
         assertEquals(34, countHistory.size());
         assertEquals(139, (double) countHistory.get(SEVENTEENTHIRTYSIX), 0);
         assertEquals(1686, (double) countHistory.get(1738), 0);
@@ -56,6 +59,15 @@ public class TestNGramMap {
         assertEquals(400, countHistory2.size());
         assertEquals(719377, (double) countHistory2.get(2008), 0);
         assertEquals(1, (double) countHistory2.get(1505), 0);
+    }
+
+    @Test
+    public void testWeightHistory() {
+        NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
+        TimeSeries<Double> weightHistory = ngm.weightHistory("quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
+        System.out.println("The weightHistory method with bounds returns " + weightHistory.get(SEVENTEENTHIRTYSIX));
+        System.out.println("NGramMapDemo says the method should return roughly 1.7267E-5");
+        assertEquals(34, weightHistory.size());
     }
 
 

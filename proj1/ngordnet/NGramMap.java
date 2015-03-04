@@ -151,4 +151,32 @@ public class NGramMap {
         return countHist;
     }
 
+
+    /* Provides the relative frequency of word between startyear and endyear. */
+    public TimeSeries<Double> weightHistory(String word, int startYear, int endYear) {
+        /* So like countHistory with bounds from above.
+            * But divide count by total from counts. */
+        TimeSeries<Double> weightHist = new TimeSeries();
+        Iterator<String[]> weightIterator = this.words.iterator();
+        while (weightIterator.hasNext()) {
+            String[] weightArray = weightIterator.next();
+            if (weightArray[0].equals(word)) {
+                int year = Integer.parseInt(weightArray[1]);
+                int count = Integer.parseInt(weightArray[2]);
+                if (year >= startYear && year <= endYear) {
+                    // Need to find the total counts. 
+                    Iterator<Number[]> totalCountIterator = this.counts.iterator();
+                    while (totalCountIterator.hasNext()) {
+                        Number[] totalCountArray = totalCountIterator.next();
+                        if ((totalCountArray[0].intValue()) == year) {
+                            Number totalCount = totalCountArray[1];
+                            weightHist.put(year, Integer.valueOf(count).doubleValue() / totalCount.doubleValue());
+                        }
+                    }
+                }
+            }
+        }
+        return weightHist;
+    }
+
 }
