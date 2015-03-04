@@ -93,9 +93,15 @@ public class TestNGramMap {
         System.out.println("Part 2 summedWeightHistory returns " + sum2.get(SEVENTEENTHIRTYSIX));
         System.out.println("NGramMapDemo says it should be about 3.875E-5.");
         // I don't know what the size of this collection should be, so no test. Just faith and hope.
+        System.out.println("The size of the unbounded summedWeightHistory is " + sum2.size());
     }
 
-
+    @Test 
+    public void testCodeSpeed() {
+        NGramMap ngmAll = new NGramMap("./p1data/ngrams/all_words.csv", "p1data/ngrams/total_counts.csv");
+        assertEquals(212883, ngmAll.countInYear("deny", 2000));
+        assertEquals(5, ngmAll.countInYear("Art", 1505));
+    }
 
 
     public static void main(String[] args) {
