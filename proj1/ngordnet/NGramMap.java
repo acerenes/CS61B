@@ -8,7 +8,18 @@ public class NGramMap {
 
     /* Constructs an NGramMap from wordsFilename & countsFilename. */
     public NGramMap(String wordsFilename, String countsFilename) {
+        // Similar to WordNet.
+        words = new HashSet<String[]>();
+        File wordsfile = new File(wordsFilename);
+        try {
+            Scanner wordsscanned = new Scanner(wordsfile);
+            while (wordsscanned.hasNextLine()) {
+                String wordsstring = wordsscanned.nextLine();
+                String[] wordsarray = wordsstring.split("\t");
+                words.add(wordsarray);
+            }
+        }
 
-        /
+
     }
 }

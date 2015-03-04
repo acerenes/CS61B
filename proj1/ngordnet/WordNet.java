@@ -32,9 +32,9 @@ public class WordNet {
 	    	Scanner synsetscanned = new Scanner(synsetfile);
 	    	while (synsetscanned.hasNextLine()) {
 	    		String synsetstring = synsetscanned.nextLine();
-	    		String[] synsetarr = synsetstring.split(",");
 	    		// Can have more than 1 word in the second element, seperated by a space. 
 	    		// Going to try & take 2nd element and split that again by space.
+	    		String[] synsetarr = synsetstring.split(",");
 	    		synset.add(synsetarr); 
 	    	}
 	    } catch (FileNotFoundException ex) {
@@ -59,8 +59,7 @@ public class WordNet {
 						int element = Integer.parseInt(hyponym_Sarray[i]);
 						// Add to our int[].
 						hyponym_array[i] = element;
-					}
-					catch (NumberFormatException nf) {
+					} catch (NumberFormatException nf) {
 						System.out.println("There is a problem in the hyponym file - an element is not an int.");
 					}		
 				}
