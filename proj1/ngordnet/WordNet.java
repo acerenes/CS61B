@@ -11,10 +11,10 @@ import java.io.FileNotFoundException;
 
 public class WordNet {
 
-    Digraph digraph; 
-    int vertices; 
-    Set<String[]> synset; 
-    Set<int[]> hyponym;
+    private Digraph digraph; 
+    private int vertices; 
+    private Set<String[]> synset; 
+    private Set<int[]> hyponym;
     
     
     /** Creates a WordNet using files from synsetFilename and hypernymFilename. **/
