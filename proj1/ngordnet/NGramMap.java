@@ -97,4 +97,11 @@ public class NGramMap {
         return new YearlyRecord(yearRecord);
     }
 
+
+    /*/* Returns total # words recorded in all volumes. */
+    /*public TimeSeries<Long> totalCountHistory() {*/
+        // Going to use the counts now.
+        /* Go through the counts
+    }*/
+
 }
