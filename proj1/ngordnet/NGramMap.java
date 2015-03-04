@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Iterator;
 
 
 public class NGramMap {
@@ -12,7 +13,7 @@ public class NGramMap {
     /* Using sets again. 
         * One set for words, one for counts. */
     Set<String[]> words;
-    Set<int[]> counts;
+    Set<Number[]> counts;
 
     /* Constructs an NGramMap from wordsFilename & countsFilename. */
     public NGramMap(String wordsFilename, String countsFilename) {
@@ -30,17 +31,17 @@ public class NGramMap {
             System.out.println("The words file is not valid.");
         }
 
-        counts = new HashSet<int[]>();
+        counts = new HashSet<Number[]>();
         File countsfile = new File(countsFilename);
         try {
             Scanner countsscanned = new Scanner(countsfile);
             while (countsscanned.hasNextLine()) {
                 String countsInts = countsscanned.nextLine();
                 String[] countsStringarray = countsInts.split(",");
-                int[] countsArray = new int[countsStringarray.length];
+                Number[] countsArray = new Number[countsStringarray.length];
                 for (int i = 0; i < countsStringarray.length; i = i + 1) {
-                    try { // Have to create int from string[].
-                        int element = Integer.parseInt(countsStringarray[i]);
+                    try { // Have to create Number from string[].
+                        Number element = Float.valueOf(countsStringarray[i]).floatValue();
                         // Then add to int[].
                         countsArray[i] = element;
                     } catch (NumberFormatException nf) {
@@ -52,7 +53,26 @@ public class NGramMap {
         } catch (FileNotFoundException ex) {
             System.out.println("The counts file is not valid.");
         }
-
-
     }
+
+
+    /* Returns the absolute count of word in the given year.
+        * If word did not appear in given year, return 0. */
+    public int countInYear(String word, int year) {
+        // Just grab 3rd element in words file. 
+        Iterator<String[]> wordsIterator = this.words.iterator();
+        // First figure out where the word + year are.
+        while (wordsIterator.hasNext()) {
+            String[] wordsArray = wordsIterator.next();
+            String theWord = wordsArray[0];
+            int theYear = Integer.parseInt(wordsArray[1]);
+            // Strings have to use .equals for values.
+            if (theWord.equals(word) && theYear == year) {
+                // Got the right line, return 3rd element.
+                return Integer.parseInt(wordsArray[2]);
+            }
+        }
+        return 0;
+    }
+
 }
