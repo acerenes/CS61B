@@ -48,12 +48,13 @@ public class YearlyRecord {
         for (String key : keys) {
             // Now figure out the rank.
             int rank = 1; 
-            for (String key2 : keys) {
+            for (String key2 : keys) { // Other guys.
                 Integer mapValue = otherCountMap.get(key);
                 Integer mapValue2 = otherCountMap.get(key2);
                 if (mapValue2 > mapValue) {
                     rank = rank + 1;
-                } else if (mapValue2 == mapValue && (key2.compareTo(key) > 0)) {
+                } else if (mapValue2 == mapValue && (key.compareTo(key2) > 0)) {
+                    // You are alphabetically lower - increase rank.
                     rank = rank + 1;
                 }
             }
@@ -67,7 +68,19 @@ public class YearlyRecord {
         countMap.put(word, count);
         size = size + 1;
         // Update rankMap as well. 
-        rankMap = new HashMap<String, Integer>();
+
+        /* Okay Alice, you're doing this wrong.
+            * Why are you creating a whole new HashMap?
+            * Why don't you just readjust the ranks & stick it in.
+                * Maybe start out 1.
+                * Iterate through countMap. 
+                * Increase rank accordingly like above.
+                    * If you "passed" them, increase THEIR rank. 
+                * Then you could figure out its rank, and stick it in rankMap. 
+                * And the other guys' ranks should have been increased during your iteration. 
+                * So all good. Hopefully. */
+
+        /*rankMap = new HashMap<String, Integer>();
         Set<String> keys = countMap.keySet();
         for (String key : keys) {
             // Figure out the rank.
@@ -82,7 +95,29 @@ public class YearlyRecord {
             // Figured out rank - put in. 
             rankMap.put(key, rank);
             // This will work b/c map drops its reference - put in new value.
+        }*/
+
+        int rank = 1;
+        
+        if (rankMap.isEmpty()) {
+            rankMap = new HashMap<String, Integer>();
+        } else {
+            Set<String> keys = rankMap.keySet();
+            for (String key : keys) {
+                Integer mapValue = countMap.get(key);
+                if (mapValue > count) { // Increase your rank.
+                    rank = rank + 1;
+                } else if (mapValue == count && word.compareTo(key) > 0) {
+                    // You're lower alphabetically - increase your rank.
+                    rank = rank + 1;
+                } else {
+                    // You passed them - increase THEIR rank. 
+                        // I don't think I can change it directly with get, so gonna just put new pair in.
+                    rankMap.put(key, rankMap.get(key) + 1);
+                }
+            }
         }
+        rankMap.put(word, rank);
     }
 
 
