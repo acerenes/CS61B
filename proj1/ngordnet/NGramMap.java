@@ -14,7 +14,7 @@ public class NGramMap {
     /* Using sets again. 
         * One set for words, one for counts. */
     Set<String[]> words;
-    Set<Number[]> counts;
+    Set<Long[]> counts;
 
     /* Constructs an NGramMap from wordsFilename & countsFilename. */
     public NGramMap(String wordsFilename, String countsFilename) {
@@ -32,17 +32,17 @@ public class NGramMap {
             System.out.println("The words file is not valid.");
         }
 
-        counts = new HashSet<Number[]>();
+        counts = new HashSet<Long[]>();
         File countsfile = new File(countsFilename);
         try {
             Scanner countsscanned = new Scanner(countsfile);
             while (countsscanned.hasNextLine()) {
                 String countsInts = countsscanned.nextLine();
                 String[] countsStringarray = countsInts.split(",");
-                Number[] countsArray = new Number[countsStringarray.length];
+                Long[] countsArray = new Long[countsStringarray.length];
                 for (int i = 0; i < countsStringarray.length; i = i + 1) {
                     try { // Have to create Number from string[].
-                        Number element = Float.valueOf(countsStringarray[i]).floatValue();
+                        Long element = Long.valueOf(countsStringarray[i]).longValue();
                         // Then add to int[].
                         countsArray[i] = element;
                     } catch (NumberFormatException nf) {
@@ -98,10 +98,17 @@ public class NGramMap {
     }
 
 
-    /*/* Returns total # words recorded in all volumes. */
-    /*public TimeSeries<Long> totalCountHistory() {*/
+    /* Returns total # words recorded in all volumes. */
+    public TimeSeries<Long> totalCountHistory() {
         // Going to use the counts now.
-        /* Go through the counts
-    }*/
+         /*Go through the counts.
+            * Grab 1st & 2nd elements, put in TimeSeries.
+                * TimeSeries: year, #. */
+        TimeSeries<Long> totalCount = new TimeSeries();
+        Iterator<Number[]> countIterator = this.counts.iterator();
+        while (countIterator.hasNext()) {
+            Number[] countArray = countIterator.next();
+            totalCount.put
+        }
 
 }
