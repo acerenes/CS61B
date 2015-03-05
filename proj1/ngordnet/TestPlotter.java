@@ -25,7 +25,13 @@ public class TestPlotter {
         ts.put(NINTYFIVE, SIXTEENONE);
         ts.put(NINTYSIX, FIFTEENSEVEN);
         Plotter.plotTS(ts, "Title", "XLabel", "YLabel", "Legend");
-    } 
+    }
+
+    @Test
+    public void testPlotCountHistory() {
+        NGramMap shortNGM = new NGramMap("./p1data/ngrams/very_short.csv", "./p1data/ngrams/total_counts.csv");
+        Plotter.plotCountHistory(shortNGM, "wandered", 2005, 2008);
+    }
 
 
 
