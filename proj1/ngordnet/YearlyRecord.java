@@ -80,22 +80,13 @@ public class YearlyRecord {
                 * And the other guys' ranks should have been increased during your iteration. 
                 * So all good. Hopefully. */
 
-        /*rankMap = new HashMap<String, Integer>();
-        Set<String> keys = countMap.keySet();
-        for (String key : keys) {
-            // Figure out the rank.
-            int rank = 1; 
-            for (String key2 : keys) {
-                if (countMap.get(key2) > countMap.get(key)) {
-                    rank = rank + 1;
-                } else if (countMap.get(key2) == countMap.get(key) && (key2.compareTo(key) > 0)) {
-                    rank = rank + 1;
-                }
-            }
-            // Figured out rank - put in. 
-            rankMap.put(key, rank);
-            // This will work b/c map drops its reference - put in new value.
-        }*/
+
+        /* STILL NOT FAST ENOUGH. 
+            * Somehow sort the keys.
+                * Start from the back and go until find the one that's smaller than you. 
+                * If you're passing other guys, increase their rank. 
+                * Take the guy who's smaller than you, and your rank = their rank + 1. 
+                * I think this may be faster, but I'll leave it for later. */
 
         int rank = 1;
         if (rankMap.isEmpty()) {
