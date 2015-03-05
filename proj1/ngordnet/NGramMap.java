@@ -40,8 +40,8 @@ public class NGramMap {
             while (countsscanned.hasNextLine()) {
                 String countsInts = countsscanned.nextLine();
                 String[] countsStringarray = countsInts.split(",");
-                Number[] countsArray = new Number[countsStringarray.length];
-                for (int i = 0; i < countsStringarray.length; i = i + 1) {
+                Number[] countsArray = new Number[2];
+                for (int i = 0; i < 2; i = i + 1) {
                     try { // Have to create Number from string[].
                         Number element = Double.valueOf(countsStringarray[i]).doubleValue();
                         // Then add to int[].
