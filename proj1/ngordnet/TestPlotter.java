@@ -16,7 +16,7 @@ public class TestPlotter {
     public static final int NINTYSIX = 1996;
     public static final double FIFTEENSEVEN = -15.7;
 
-    @Test 
+    /*@Test 
     public void testPlotTS() {
         TimeSeries<Double> ts = new TimeSeries<Double>();
         ts.put(NINETYTWO, THREEDOTSIX);
@@ -25,7 +25,7 @@ public class TestPlotter {
         ts.put(NINTYFIVE, SIXTEENONE);
         ts.put(NINTYSIX, FIFTEENSEVEN);
         Plotter.plotTS(ts, "Title", "XLabel", "YLabel", "Legend");
-    }
+    }*/
 
     @Test
     public void testPlotCountHistory() {

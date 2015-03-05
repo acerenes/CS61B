@@ -29,5 +29,24 @@ public class Plotter {
     }
 
 
+    /* Creates a plot of the abs word counts for word from startyear to endyear.
+     * Inclusive years. 
+     * Uses ngm as a data source. */
+    public static void plotCountHistory(NGramMap ngm, String word, int startYear, int endYear) {
+        TimeSeries<Integer> countHist = ngm.countHistory(word, startYear, endYear);
+
+        ArrayList<Number> xValues = new ArrayList<Number>();
+        ArrayList<Number> yValues = new ArrayList<Number>();
+        // Have to both be Numbers - java unhappy when I tried to make y Integer.
+
+        for (Number year : countHist.years()) {
+            xValues.add(year);
+            yValues.add(countHist.get(year));
+        }
+        Chart chart = QuickChart.getChart("Absolute Word Counts for " + word, "Year", "Absolute Counts", word, xValues, yValues);
+        new SwingWrapper(chart).displayChart();
+    }
+
+
 
 }
