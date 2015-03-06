@@ -88,23 +88,22 @@ public class YearlyRecord {
                 * Take the guy who's smaller than you, and your rank = their rank + 1. 
                 * I think this may be faster, but I'll leave it for later. */
 
-        int rank = 1;
+        int rank = 1;/*
         if (rankMap.isEmpty()) {
             rankMap = new HashMap<String, Integer>();
-        } else {
+        } else {*/
             /*Set<String> keys = rankMap.keySet();*/
-            for (String key : rankMap.keySet()) {
-                String word = countMap.get(key);
-                if (word > count) { // Increase your rank.
-                    rank = rank + 1;
-                } else if (word == count && word.compareTo(key) > 0) {
-                    // You're lower alphabetically - increase your rank.
-                    rank = rank + 1;
-                } else {
-                    // You passed them - increase THEIR rank. 
-                        // Don't think can change directly with get, so gonna just put new pair in.
-                    rankMap.put(key, rankMap.get(key) + 1);
-                }
+        for (String key : rankMap.keySet()) {
+            Integer comparingCount = countMap.get(key);
+            if (comparingCount > count) { // Increase your rank.
+                rank = rank + 1;
+            } else if (comparingCount == count && word.compareTo(key) > 0) {
+                // You're lower alphabetically - increase your rank.
+                rank = rank + 1;
+            } else {
+                // You passed them - increase THEIR rank. 
+                    // Don't think can change directly with get, so gonna just put new pair in.
+                rankMap.put(key, rankMap.get(key) + 1);
             }
         }
         rankMap.put(word, rank);
