@@ -18,14 +18,14 @@ public class TestNGramMap {
 
     @Test 
     public void testCountInYear() {
-        NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
         assertEquals(139, ngm.countInYear("quantity", 1736));
         assertEquals(0, ngm.countInYear("questioning", 1514));
     }
 
     @Test
     public void testGetRecord() {
-        NGramMap shortNGM = new NGramMap("./p1data/ngrams/very_short.csv", "./p1data/ngrams/total_counts.csv");
+        NGramMap shortNGM = new NGramMap("./ngrams/very_short.csv", "./ngrams/total_counts.csv");
         YearlyRecord jBond = new YearlyRecord();
         jBond.put("airport", ONESEVENFIVE);
         jBond.put("request", SIXNINESEVEN);
@@ -36,14 +36,14 @@ public class TestNGramMap {
         assertEquals(SIXNINESEVEN, test.count("request"));
         assertEquals(TENEIGHT, test.count("wandered"));
 
-        NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
         YearlyRecord yr = ngm.getRecord(SEVENTEENTHIRTYSIX);
         assertEquals(139, yr.count("quantity"));
     }
 
     @Test 
     public void testTotalCountHistory() {
-        NGramMap shortNGM = new NGramMap("./p1data/ngrams/very_short.csv", "./p1data/ngrams/total_counts.csv");
+        NGramMap shortNGM = new NGramMap("./ngrams/very_short.csv", "./ngrams/total_counts.csv");
        TimeSeries<Long> totalCountHistory = shortNGM.totalCountHistory();
        assertEquals(8049773, (double) totalCountHistory.get(SEVENTEENTHIRTYSIX), 0);
        assertEquals(4375, (double) totalCountHistory.get(1527), 0);
@@ -51,7 +51,7 @@ public class TestNGramMap {
 
     @Test 
     public void testCountHistory() {
-        NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
         TimeSeries<Integer> countHistory = ngm.countHistory("quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
         assertEquals(34, countHistory.size());
         assertEquals(139, (double) countHistory.get(SEVENTEENTHIRTYSIX), 0);
@@ -65,7 +65,7 @@ public class TestNGramMap {
 
     @Test
     public void testWeightHistory() {
-        NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
         TimeSeries<Double> weightHistory = ngm.weightHistory("quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
         System.out.println("The weightHistory method with bounds returns " + weightHistory.get(SEVENTEENTHIRTYSIX));
         System.out.println("NGramMapDemo says the method should return roughly 1.7267E-5");
@@ -80,7 +80,7 @@ public class TestNGramMap {
 
     @Test
     public void testSummedWeightHistory() {
-        NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
         ArrayList<String> words = new ArrayList<String>();
         words.add("quantity");
         words.add("quality");
@@ -98,7 +98,7 @@ public class TestNGramMap {
 
     @Test 
     public void testCodeSpeed() {
-        NGramMap ngmAll = new NGramMap("./p1data/ngrams/all_words.csv", "p1data/ngrams/total_counts.csv");
+        NGramMap ngmAll = new NGramMap("./ngrams/all_words.csv", "./ngrams/total_counts.csv");
         assertEquals(212883, ngmAll.countInYear("deny", 2000));
         assertEquals(5, ngmAll.countInYear("Art", 1505));
     }
