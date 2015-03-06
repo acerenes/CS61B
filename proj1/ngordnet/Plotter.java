@@ -65,6 +65,8 @@ public class Plotter {
         new SwingWrapper(chart).displayChart();
     }
 
+    /* Creates a plot of the total normalized count of every word that
+
     
 
 

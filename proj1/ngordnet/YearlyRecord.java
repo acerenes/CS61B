@@ -48,8 +48,8 @@ public class YearlyRecord {
         for (String key : keys) {
             // Now figure out the rank.
             int rank = 1; 
+            Integer mapValue = otherCountMap.get(key);
             for (String key2 : keys) { // Other guys.
-                Integer mapValue = otherCountMap.get(key);
                 Integer mapValue2 = otherCountMap.get(key2);
                 if (mapValue2 > mapValue) {
                     rank = rank + 1;
@@ -94,9 +94,10 @@ public class YearlyRecord {
         } else {
             /*Set<String> keys = rankMap.keySet();*/
             for (String key : rankMap.keySet()) {
-                if (countMap.get(key) > count) { // Increase your rank.
+                String word = countMap.get(key);
+                if (word > count) { // Increase your rank.
                     rank = rank + 1;
-                } else if (countMap.get(key) == count && word.compareTo(key) > 0) {
+                } else if (word == count && word.compareTo(key) > 0) {
                     // You're lower alphabetically - increase your rank.
                     rank = rank + 1;
                 } else {
