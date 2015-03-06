@@ -23,16 +23,38 @@ public class NgordnetUI {
         /* Thanks 100 thousand million for ExampleUI.java. */
         while (true) { // So I guess constant updating.
             System.out.print("> ");
-            String line = StdIn.readLine();
-            String[] rawTokens = line.split(" ");
+            String line = StdIn.readLine(); 
+            String[] rawTokens = line.split(" "); 
             String command = rawTokens[0];
             String [] tokens = new String[rawTokens.length - 1];
-            System.arraycopy(rawTokens, 1, tokens, 0, rawTokens.length - 1); 
+            System.arraycopy(rawTokens, 1, tokens, 0, rawTokens.length - 1);  
             switch (command) {
                 case "quit": 
-                    return;
+                    return; 
                 case "help": 
-                    In in = new In("help.txt");
+                    In inHelp = new In("help.txt"); 
+                    String helpStr = inHelp.readAll(); 
+                    System.out.println(helpStr); 
+                    break;
+                case "range":
+                    try {
+                        int startDate = Integer.parseInt(tokens[0]);
+                        int endDate = Integer.parseInt(tokens[1]);
+                    } catch (NumberFormatException ex) {
+                        System.out.println("range command called incorrectly.");
+                    }
+                    break;
+                case "count":
+                    NGramMap wordCounts = new NGramMap(wordFile, countFile);
+                    String word = tokens[0];
+                    // ^ Should defs work because tokens is a String[].
+                    try {
+                        int year = Integer.parseInt(tokens[1]);
+                        System.out.println(wordCounts.countInYear(word, year));
+                    } catch (NumberFormatException ex) {
+                        System.out.println("count command called incorrectly.");
+                    }
+                    
             }
         }
 
