@@ -146,7 +146,8 @@ public class WordNet {
                     }
                 }
             }
-        } 
+        }
+        allHyponyms.add(word); 
         return allHyponyms; 
     }
 
