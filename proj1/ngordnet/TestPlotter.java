@@ -31,33 +31,33 @@ public class TestPlotter {
 
     @Test
     public void testPlotCountHistory() {
-        NGramMap shortNGM = new NGramMap("./p1data/ngrams/very_short.csv", "./p1data/ngrams/total_counts.csv");
+        NGramMap shortNGM = new NGramMap("./ngrams/very_short.csv", "./ngrams/total_counts.csv");
         Plotter.plotCountHistory(shortNGM, "wandered", 2005, 2008);
     }
 
     @Test 
     public void testPlotWeightHistoryy() { 
-        NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
         Plotter.plotWeightHistory(ngm, "quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
     }
 
     @Test
     public void testPlotCategoryWeights() {
-        NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
-        WordNet wn = new WordNet("./p1data/wordnet/synsets.txt", "./p1data/wordnet/hyponyms.txt");
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
+        WordNet wn = new WordNet("./wordnet/synsets.txt", "./wordnet/hyponyms.txt");
         Plotter.plotCategoryWeights(ngm, wn, "quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
     }
 
     @Test
     public void testPlotCategoryWeights2() {
-        NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
-        WordNet wn = new WordNet("./p1data/wordnet/synsets.txt", "./p1data/wordnet/hyponyms.txt");
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
+        WordNet wn = new WordNet("./wordnet/synsets.txt", "./wordnet/hyponyms.txt");
         Plotter.plotCategoryWeights(ngm, wn, new String[] {"quantity", "quarrel"}, SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
     }
 
     @Test
     public void testPlotAllWords() {
-        NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
         Plotter.plotAllWords(ngm, new String[] {"quantity", "quarrel"}, SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
     }
 
