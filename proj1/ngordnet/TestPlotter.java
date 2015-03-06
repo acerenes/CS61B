@@ -41,12 +41,20 @@ public class TestPlotter {
         Plotter.plotWeightHistory(ngm, "quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
     }*/
 
-    @Test
+    /*@Test
     public void testPlotCategoryWeights() {
         NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
         WordNet wn = new WordNet("./p1data/wordnet/synsets.txt", "./p1data/wordnet/hyponyms.txt");
         Plotter.plotCategoryWeights(ngm, wn, "quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
+    }*/
+
+    @Test
+    public void testPlotCategoryWeights2() {
+        NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
+        WordNet wn = new WordNet("./p1data/wordnet/synsets.txt", "./p1data/wordnet/hyponyms.txt");
+        Plotter.plotCategoryWeights(ngm, wn, ["quantity", "quarrel"], SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
     }
+
 
 
 
