@@ -46,15 +46,15 @@ public class NgordnetUI {
                     break;
                 case "count":
                     NGramMap wordCounts = new NGramMap(wordFile, countFile);
-                    String word = tokens[0];
-                    // ^ Should defs work because tokens is a String[].
                     try {
+                        String word = tokens[0];
                         int year = Integer.parseInt(tokens[1]);
                         System.out.println(wordCounts.countInYear(word, year));
                     } catch (NumberFormatException ex) {
                         System.out.println("count command called incorrectly.");
-                    }
-                    
+                    } catch (ArrayIndexOutOfBoundsException ex) {
+                        System.out.println("count command called incorrectly.");
+                    }  
             }
         }
 
