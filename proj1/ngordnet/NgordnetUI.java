@@ -25,7 +25,15 @@ public class NgordnetUI {
             System.out.print("> ");
             String line = StdIn.readLine();
             String[] rawTokens = line.split(" ");
-            
+            String command = rawTokens[0];
+            String [] tokens = new String[rawTokens.length - 1];
+            System.arraycopy(rawTokens, 1, tokens, 0, rawTokens.length - 1); 
+            switch (command) {
+                case "quit": 
+                    return;
+                case "help": 
+                    In in = new In("help.txt");
+            }
         }
 
     }
