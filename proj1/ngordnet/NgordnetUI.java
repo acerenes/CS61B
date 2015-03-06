@@ -19,7 +19,14 @@ public class NgordnetUI {
                            + wordFile + ", " + countFile + ", " + synsetFile +
                            ", and " + hyponymFile + ".");
 
-        System.out.println("\nFor tips on implementing NgordnetUI, see ExampleUI.java.");
+
+        /* Thanks 100 thousand million for ExampleUI.java. */
+        while (true) { // So I guess constant updating.
+            System.out.print("> ");
+            String line = StdIn.readLine();
+            String[] rawTokens = line.split(" ");
+            
+        }
 
     }
 } 
