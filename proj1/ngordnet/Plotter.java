@@ -94,7 +94,7 @@ public class Plotter {
     public static void plotCategoryWeights(NGramMap ngm, WordNet wn, String[] categoryLabels, 
         int startYear, int endYear) {
 
-        String title = "Total Normalized Counts for Multiple Words and Their Hyponyms";
+        String title = "Total Normalized Counts for Words and Their Hyponyms";
 
         Chart chart = new ChartBuilder().width(800).height(600).title(title).xAxisTitle("Years").yAxisTitle("Total Normalized Counts").build();
 
@@ -107,6 +107,29 @@ public class Plotter {
             for (Number year : totalNormCount.years()) {
                 xValues.add(year);
                 yValues.add(totalNormCount.get(year));
+            }
+            chart.addSeries(legend, xValues, yValues);
+        }
+        new SwingWrapper(chart).displayChart();
+    }
+
+
+    /* Makes a plot showing overlaid individual normalized count for every word in words.
+        * From startyear to endyear using ngm as data source. */
+    public static void plotAllWords(NGramMap ngm, String[] words, int startYear, int endYear) {
+
+        String title = "Normalized Count for Words";
+
+        Chart chart = new ChartBuilder().width(800).height(600).title(title).xAxisTitle("Years").yAxisTitle("Normalized Counts").build();
+
+        for (String word : words) {
+            ArrayList<Number> xValues = new ArrayList<Number>();
+            ArrayList<Number> yValues = new ArrayList<Number>();
+            TimeSeries<Double> normCount = ngm.weightHistory(word);
+            String legend = word;
+            for (Number year : normCount.years()) {
+                xValues.add(year);
+                yValues.add(normCount.get(year));
             }
             chart.addSeries(legend, xValues, yValues);
         }
