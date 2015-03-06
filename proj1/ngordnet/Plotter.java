@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import com.xeiam.xchart.Chart;
 import com.xeiam.xchart.QuickChart;
 import com.xeiam.xchart.SwingWrapper;
+import java.util.Set;
 
 
 public class Plotter {
@@ -80,7 +81,7 @@ public class Plotter {
             yValues.add(totalNormCount.get(year));
         }
 
-        Chart chart = QuickChart.getChart("Total Normalized Count for all hyponyms of " + categoryLabel, "Year", "Total Normalized Counts", categoryLabel, xValues, yValues);
+        Chart chart = QuickChart.getChart("Total Normalized Count for All Hyponyms of " + categoryLabel, "Year", "Total Normalized Counts", categoryLabel, xValues, yValues);
         new SwingWrapper(chart).displayChart();
     }
 
