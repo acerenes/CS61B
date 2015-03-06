@@ -48,5 +48,25 @@ public class Plotter {
     }
 
 
+    /* Creates a plot of the normalized weight counts for word from startyear to endyear.
+        * Uses ngm as a data source. */
+    public static void plotWeightHistory(NGramMap ngm, String word, int startYear, int endYear) {
+        TimeSeries<Double> weightHist = ngm.weightHistory(word, startYear, endYear);
+
+        ArrayList<Number> xValues = new ArrayList<Number>();
+        ArrayList<Number> yValues = new ArrayList<Number>();
+
+        for (Number year : weightHist.years()) {
+            xValues.add(year);
+            yValues.add(weightHist.get(year));
+        }
+
+        Chart chart = QuickChart.getChart("Normalized Weight Counts for " + word, "Year", "Normalized Weight Counts", word, xValues, yValues);
+        new SwingWrapper(chart).displayChart();
+    }
+
+    
+
+
 
 }
