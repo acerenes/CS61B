@@ -18,7 +18,7 @@ public class TestPlotter {
     public static final int SEVENTEENTWENTYFOUR = 1724;
     public static final int SEVENTEENFIFTYSEVEN = 1757;
 
-    /*@Test 
+    @Test 
     public void testPlotTS() {
         TimeSeries<Double> ts = new TimeSeries<Double>();
         ts.put(NINETYTWO, THREEDOTSIX);
@@ -27,33 +27,33 @@ public class TestPlotter {
         ts.put(NINTYFIVE, SIXTEENONE);
         ts.put(NINTYSIX, FIFTEENSEVEN);
         Plotter.plotTS(ts, "Title", "XLabel", "YLabel", "Legend");
-    }*/
+    }
 
-    /*@Test
+    @Test
     public void testPlotCountHistory() {
         NGramMap shortNGM = new NGramMap("./p1data/ngrams/very_short.csv", "./p1data/ngrams/total_counts.csv");
         Plotter.plotCountHistory(shortNGM, "wandered", 2005, 2008);
-    }*/
+    }
 
-    /*@Test 
+    @Test 
     public void testPlotWeightHistoryy() { 
         NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
         Plotter.plotWeightHistory(ngm, "quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
-    }*/
+    }
 
-    /*@Test
+    @Test
     public void testPlotCategoryWeights() {
         NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
         WordNet wn = new WordNet("./p1data/wordnet/synsets.txt", "./p1data/wordnet/hyponyms.txt");
         Plotter.plotCategoryWeights(ngm, wn, "quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
-    }*/
+    }
 
-    /*@Test
+    @Test
     public void testPlotCategoryWeights2() {
         NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
         WordNet wn = new WordNet("./p1data/wordnet/synsets.txt", "./p1data/wordnet/hyponyms.txt");
         Plotter.plotCategoryWeights(ngm, wn, new String[] {"quantity", "quarrel"}, SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
-    }*/
+    }
 
     @Test
     public void testPlotAllWords() {
