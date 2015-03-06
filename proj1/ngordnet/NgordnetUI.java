@@ -3,8 +3,9 @@ import edu.princeton.cs.introcs.StdIn;
 import edu.princeton.cs.introcs.In;
 
 /** Provides a simple user interface for exploring WordNet and NGram data.
- *  @author [yournamehere mcjones]
+ *  @author Alice Tarng 
  */
+
 public class NgordnetUI {
     public static void main(String[] args) {
         In in = new In("./ngordnet/ngordnetui.config");
