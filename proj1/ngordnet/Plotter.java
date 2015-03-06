@@ -4,6 +4,7 @@ import com.xeiam.xchart.Chart;
 import com.xeiam.xchart.QuickChart;
 import com.xeiam.xchart.SwingWrapper;
 import java.util.Set;
+import com.xeiam.xchart.ChartBuilder;
 
 
 public class Plotter {
@@ -68,7 +69,9 @@ public class Plotter {
 
     /* Creates plot of the total normalized count of every word that is a hyponym of categorylabel.
         * From startyear to endyear using ngm and wn as data sources. */
-    public static void plotCategoryWeights(NGramMap ngm, WordNet wn, String categoryLabel, int startYear, int endYear) {
+    public static void plotCategoryWeights(NGramMap ngm, WordNet wn, String categoryLabel, 
+        int startYear, int endYear) {
+
         Set<String> hyponyms = wn.hyponyms(categoryLabel);
         // A set is a collection.
         TimeSeries<Double> totalNormCount = ngm.summedWeightHistory(hyponyms, startYear, endYear);
@@ -82,6 +85,31 @@ public class Plotter {
         }
 
         Chart chart = QuickChart.getChart("Total Normalized Count for All Hyponyms of " + categoryLabel, "Year", "Total Normalized Counts", categoryLabel, xValues, yValues);
+        new SwingWrapper(chart).displayChart();
+    }
+
+
+    /* Creates overlaid category weight plots for each category label in categorylabels.
+        * From startyear to endyear using ngm & wn as data sources. */
+    public static void plotCategoryWeights(NGramMap ngm, WordNet wn, String[] categoryLabels, 
+        int startYear, int endYear) {
+
+        String title = "Total Normalized Counts for Multiple Words and Their Hyponyms";
+
+        Chart chart = new ChartBuilder().width(800).height(600).title(title).xAxisTitle("Years").yAxisTitle("Total Normalized Counts").build();
+
+        for (String catLabel : categoryLabels) {
+            ArrayList<Number> xValues = new ArrayList<Number>();
+            ArrayList<Number> yValues = new ArrayList<Number>();
+            Set<String> hyponyms = wn.hyponyms(catLabel);
+            TimeSeries<Double> totalNormCount = ngm.summedWeightHistory(hyponyms, startYear, endYear);
+            String legend = catLabel;
+            for (Number year : totalNormCount.years()) {
+                xValues.add(year);
+                yValues.add(totalNormCount.get(year));
+            }
+            chart.addSeries(legend, xValues, yValues);
+        }
         new SwingWrapper(chart).displayChart();
     }
 
