@@ -35,11 +35,11 @@ public class TestPlotter {
         Plotter.plotCountHistory(shortNGM, "wandered", 2005, 2008);
     }*/
 
-    @Test 
+    /*@Test 
     public void testPlotWeightHistoryy() { 
         NGramMap ngm = new NGramMap("./p1data/ngrams/words_that_start_with_q.csv", "./p1data/ngrams/total_counts.csv");
         Plotter.plotWeightHistory(ngm, "quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
-    }
+    }*/
 
     @Test
     public void testPlotCategoryWeights() {

@@ -65,7 +65,25 @@ public class Plotter {
         new SwingWrapper(chart).displayChart();
     }
 
-    /* Creates a plot of the total normalized count of every word that
+    /* Creates plot of the total normalized count of every word that is a hyponym of categorylabel.
+        * From startyear to endyear using ngm and wn as data sources. */
+    public static void plotCategoryWeights(NGramMap ngm, WordNet wn, String categoryLabel, int startYear, int endYear) {
+        Set<String> hyponyms = wn.hyponyms(categoryLabel);
+        // A set is a collection.
+        TimeSeries<Double> totalNormCount = ngm.summedWeightHistory(hyponyms, startYear, endYear);
+
+        ArrayList<Number> xValues = new ArrayList<Number>();
+        ArrayList<Number> yValues = new ArrayList<Number>();
+
+        for (Number year : totalNormCount.years()) {
+            xValues.add(year);
+            yValues.add(totalNormCount.get(year));
+        }
+
+        Chart chart = QuickChart.getChart("Total Normalized Count for all hyponyms of " + categoryLabel, "Year", "Total Normalized Counts", categoryLabel, xValues, yValues);
+        new SwingWrapper(chart).displayChart();
+    }
+
 
     
 
