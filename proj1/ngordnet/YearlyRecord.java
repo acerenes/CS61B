@@ -88,7 +88,7 @@ public class YearlyRecord {
                 * Take the guy who's smaller than you, and your rank = their rank + 1. 
                 * I think this may be faster, but I'll leave it for later. */
 
-        int rank = 1;/*
+        int rank = 1; /*
         if (rankMap.isEmpty()) {
             rankMap = new HashMap<String, Integer>();
         } else {*/
