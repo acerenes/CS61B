@@ -10,7 +10,7 @@ public class TestWordNet {
 
     @Test 
     public void testisNoun() {
-         WordNet wn = new WordNet("./p1data/wordnet/synsets11.txt", "./p1data/wordnet/hyponyms11.txt");
+         WordNet wn = new WordNet("./wordnet/synsets11.txt", "./wordnet/hyponyms11.txt");
         assertTrue(wn.isNoun("jump"));
         assertTrue(wn.isNoun("leap"));
         assertTrue(wn.isNoun("nasal_decongestant")); 
@@ -18,7 +18,7 @@ public class TestWordNet {
 
     @Test
     public void testnouns() {
-         WordNet wn = new WordNet("./p1data/wordnet/synsets11.txt", "./p1data/wordnet/hyponyms11.txt");
+         WordNet wn = new WordNet("./wordnet/synsets11.txt", "./wordnet/hyponyms11.txt");
         String nouns[]= {"augmentation", "nasal_decongestant", "change", "action", "actifed", "antihistamine", "increase", "descent", "parachuting", "leap", "demotion", "jump"}; 
         Set<String> expected_nouns = new HashSet<String>(Arrays.asList(nouns)); 
         // Thanks to java2s.com for how to create a set without manually adding each element  
@@ -28,7 +28,7 @@ public class TestWordNet {
 
     @Test
     public void testhyponyms() {
-         WordNet wn = new WordNet("./p1data/wordnet/synsets11.txt", "./p1data/wordnet/hyponyms11.txt");
+         WordNet wn = new WordNet("./wordnet/synsets11.txt", "./wordnet/hyponyms11.txt");
         String hyponyms[] = {"augmentation", "increase", "leap", "jump"}; 
         Set<String> expected_hyponyms = new HashSet(Arrays.asList(hyponyms));  
         Set<String> actual_hyponyms = wn.hyponyms("increase");
@@ -39,7 +39,7 @@ public class TestWordNet {
         Set<String> actual_hyponyms2 = wn.hyponyms("jump");
         assertTrue(actual_hyponyms2.equals(expected_hyponyms2));
 
-        WordNet wn2 = new WordNet("./p1data/wordnet/synsets14.txt", "./p1data/wordnet/hyponyms14.txt");
+        WordNet wn2 = new WordNet("./wordnet/synsets14.txt", "./wordnet/hyponyms14.txt");
         String hyponyms3[] = {"alteration", "saltation", "modification", "change", "variation", "increase", "transition", "demotion", "leap", "jump"};
         Set<String> expected_hyponyms3 = new HashSet(Arrays.asList(hyponyms3));
         Set<String> actual_hyponyms3 = wn2.hyponyms("change");
