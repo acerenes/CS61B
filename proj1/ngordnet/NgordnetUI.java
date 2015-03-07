@@ -50,7 +50,13 @@ public class NgordnetUI {
                         startYear = Integer.parseInt(tokens[0]);
                         endYear = Integer.parseInt(tokens[1]);
                         yearsSet = true;
+                        if (startYear > endYear) {
+                            System.out.println("Start must be less than end.");
+                            yearsSet = false;
+                        }
                     } catch (NumberFormatException ex) {
+                        System.out.println("range command called incorrectly.");
+                    } catch (ArrayIndexOutOfBoundsException ex2) {
                         System.out.println("range command called incorrectly.");
                     }
                     break;
@@ -96,8 +102,10 @@ public class NgordnetUI {
                         System.out.println(error2);
                     }
                     break;
+                default:
+                    System.out.println("Invalid command.");
+                    break;
             }
         }
-
     }
 } 
