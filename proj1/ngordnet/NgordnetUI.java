@@ -7,7 +7,30 @@ import java.util.Set;
  *  @author Alice Tarng 
  */
 
+
 public class NgordnetUI {
+
+    /* Returns max year given a String[] of words. 
+        * For use in the UI, in case range not set. */
+    private int maxYear(String[] testTheseWords) {
+        int max = 0;
+        // Just going to assume won't have negative years. Cause that would be convoluted.
+        for (String currWord : testTheseWords) {
+            for (String[] wordInfo : words) {
+                // Goes through ENTIRE dataset.
+                if (wordInfo[0].equals(currWord)) {
+                    int currYear = Integer.parseInt(wordInfo[1]);
+                    if (currYear > max) {
+                        max = currYear;
+                    }
+                }
+            }
+        }
+        return max;
+    }
+
+
+    
     public static void main(String[] args) {
         In in = new In("./ngordnet/ngordnetui.config");
         System.out.println("Reading ngordnetui.config...");
