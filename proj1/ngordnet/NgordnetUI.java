@@ -36,7 +36,7 @@ public class NgordnetUI {
             String command = rawTokens[0];
             String [] tokens = new String[rawTokens.length - 1];
             System.arraycopy(rawTokens, 1, tokens, 0, rawTokens.length - 1);
-            // Tokens should be the stuff after the command.
+            // Tokens should be the inputs for the command.
             switch (command) {
                 case "quit": 
                     return; 
@@ -82,7 +82,18 @@ public class NgordnetUI {
                     if (yearsSet) {
                         Plotter.plotAllWords(ngm, tokens, startYear, endYear);
                     } else {
-                        System.out.println("Range of years not yet set.");
+                        String error = "Years range not set or history command called incorrectly.";
+                        System.out.println(error);
+                    }
+                    break;
+                case "hypohist":
+                    NGramMap ngm2 = new NGramMap(wordFile, countFile);
+                    WordNet wn = new WordNet(synsetFile, hyponymFile);
+                    if (yearsSet) {
+                        Plotter.plotCategoryWeights(ngm2, wn, tokens, startYear, endYear);
+                    } else {
+                        String error2 = "Years range not set or hypohist command called wrongly.";
+                        System.out.println(error2);
                     }
                     break;
             }
