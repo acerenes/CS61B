@@ -14,7 +14,9 @@ public class TestNGramMap {
     public static final int SEVENTEENTWENTYFOUR = 1724;
     public static final int SEVENTEENFIFTYSEVEN = 1757;
     public static final int FOURHUNDRED = 400;
-
+    public static final int OHSIX = 2006;
+    public static final int OHSEVEN = 2007;
+    public static final int OHEIGHT = 2008;
 
     @Test 
     public void testCountInYear() {
@@ -97,11 +99,24 @@ public class TestNGramMap {
     }
 
 
-    @Test 
+    /*@Test 
     public void testCodeSpeed() {
         NGramMap ngmAll = new NGramMap("./ngrams/all_words.csv", "./ngrams/total_counts.csv");
         assertEquals(212883, ngmAll.countInYear("deny", 2000));
         assertEquals(5, ngmAll.countInYear("Art", 1505));
+    }*/
+
+    @Test
+    public void testProcessedHistory() {
+        NGramMap ngm = new NGramMap("./ngrams/very_short.csv", "./ngrams/total_counts.csv");
+        WordLengthProcessor wlp = new WordLengthProcessor();
+        TimeSeries<Double> processedHist = ngm.processedHistory(OHSIX, OHEIGHT, wlp);
+        System.out.println("Processed History 2006 should be about 7.1145.");
+        System.out.println("Code 2006 returns " + processedHist.get(OHSIX));
+        System.out.println("Processed History 2007 should be about 7.1106.");
+        System.out.println("Code 2007 returns " + processedHist.get(OHSEVEN));
+        System.out.println("Processed History 2008 should be about 7.15007.");
+        System.out.println("Code 2008 returns " + processedHist.get(OHEIGHT));
     }
 
 
