@@ -1,6 +1,7 @@
 package ngordnet;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.Set;
 import java.util.Collection;
 import java.util.List;
@@ -28,16 +29,16 @@ public class YearlyRecord {
 
     /* Creates a new empty YearlyRecord. */
     public YearlyRecord() {
-        countMap = new HashMap<String, Integer>();
-        rankMap = new HashMap<String, Integer>();
+        countMap = new TreeMap<String, Integer>();
+        rankMap = new TreeMap<String, Integer>();
         size = 0;
     }
 
     /* Creates a YearlyRecord using the given data. */
     public YearlyRecord(HashMap<String, Integer> otherCountMap) {
         // I think you're supposed to create a new object.
-        countMap = new HashMap<String, Integer>();
-        rankMap = new HashMap<String, Integer>();
+        countMap = new TreeMap<String, Integer>();
+        rankMap = new TreeMap<String, Integer>();
         Set<String> keys = otherCountMap.keySet();
         // First construct countMap.
         for (String key : keys) {
