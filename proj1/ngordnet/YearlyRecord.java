@@ -77,7 +77,7 @@ public class YearlyRecord {
                 * Take the guy who's smaller than you, and your rank = their rank + 1. 
                 * Maybe this may be faster?, but ain't got time to try right now. Also sorting - I don't think you can sort elements, and writing code that does so will make my put even slower probably. I'll leave it for later. */
 
-
+        // STARTING MODIFICATIONS FOR SPEED
         int rank = 1;
         for (String key : rankMap.keySet()) {
             Integer comparingCount = countMap.get(key);
