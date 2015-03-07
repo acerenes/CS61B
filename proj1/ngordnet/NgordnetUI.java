@@ -10,27 +10,6 @@ import java.util.Set;
 
 public class NgordnetUI {
 
-    /* Returns max year given a String[] of words. 
-        * For use in the UI, in case range not set. */
-    private int maxYear(String[] testTheseWords) {
-        int max = 0;
-        // Just going to assume won't have negative years. Cause that would be convoluted.
-        for (String currWord : testTheseWords) {
-            for (String[] wordInfo : words) {
-                // Goes through ENTIRE dataset.
-                if (wordInfo[0].equals(currWord)) {
-                    int currYear = Integer.parseInt(wordInfo[1]);
-                    if (currYear > max) {
-                        max = currYear;
-                    }
-                }
-            }
-        }
-        return max;
-    }
-
-
-    
     public static void main(String[] args) {
         In in = new In("./ngordnet/ngordnetui.config");
         System.out.println("Reading ngordnetui.config...");
@@ -46,8 +25,9 @@ public class NgordnetUI {
 
         /* Thanks 100 thousand million for ExampleUI.java. */
         boolean yearsSet = false;
-        int startYear;
-        int endYear;
+        int startYear = 0;
+        int endYear = 0; 
+        // ^ Intializing.
         while (true) { // So I guess constant updating.
             System.out.print("> ");
             String line = StdIn.readLine(); 
@@ -98,19 +78,13 @@ public class NgordnetUI {
                     break;
                 case "history":
                     // DON'T FORGET THE YEARS LIMIT.
-                    try {
-                        NGramMap ngm = new NGramMap(wordFile, countFile);
-                        if (yearsSet) {
-                            Plotter.plotAllWords(ngm, tokens, startYear, endYear);
-                        } else {
-                            /* But then what are the year bounds? 
-                                * All the years I guess. 
-                             * But how do I figure out all the years?
-                                * Only idea I have right now is iterate through all the words & their years and find max & min. */
-                        }
-                    } /*catch (ArrayIndexOutOfBoundsException ex) {
-                        System.out.println("history command called incorrectly.");
-                    }*/
+                    NGramMap ngm = new NGramMap(wordFile, countFile);
+                    if (yearsSet) {
+                        Plotter.plotAllWords(ngm, tokens, startYear, endYear);
+                    } else {
+                        System.out.println("Range of years not yet set.");
+                    }
+                    break;
             }
         }
 
