@@ -68,32 +68,17 @@ public class YearlyRecord {
     public void put(String word, int count) {
         countMap.put(word, count);
         size = size + 1;
-        // Update rankMap as well. 
+        // Update rankMap as well.
 
-        /* Okay Alice, you're doing this wrong.
-            * Why are you creating a whole new HashMap?
-            * Why don't you just readjust the ranks & stick it in.
-                * Maybe start out 1.
-                * Iterate through countMap. 
-                * Increase rank accordingly like above.
-                    * If you "passed" them, increase THEIR rank. 
-                * Then you could figure out its rank, and stick it in rankMap. 
-                * And the other guys' ranks should have been increased during your iteration. 
-                * So all good. Hopefully. */
-
-
-        /* UPDATE : STILL NOT FAST ENOUGH. 
-            * Somehow sort the keys.
+        /* STILL NOT FAST ENOUGH. 
+            * Idea: Somehow sort the elements?
                 * Start from the back and go until find the one that's smaller than you. 
-                * If you're passing other guys, increase their rank. 
+                * If you're passing other guys, increase their rank.
                 * Take the guy who's smaller than you, and your rank = their rank + 1. 
-                * I think this may be faster, but I'll leave it for later. */
+                * Maybe this may be faster?, but ain't got time to try right now. Also sorting - I don't think you can sort elements, and writing code that does so will make my put even slower probably. I'll leave it for later. */
 
-        int rank = 1; /*
-        if (rankMap.isEmpty()) {
-            rankMap = new HashMap<String, Integer>();
-        } else {*/
-            /*Set<String> keys = rankMap.keySet();*/
+
+        int rank = 1;
         for (String key : rankMap.keySet()) {
             Integer comparingCount = countMap.get(key);
             if (comparingCount > count) { // Increase your rank.
