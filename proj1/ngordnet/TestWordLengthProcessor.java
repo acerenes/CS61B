@@ -11,7 +11,7 @@ public class TestWordLengthProcessor {
         yr.put("sheep", 100);
         yr.put("dog", 300);
         WordLengthProcessor wlp = new WordLengthProcessor();
-        assertEquals(3.5, wlp.process(yr));
+        assertEquals(3.5, wlp.process(yr), 0);
     }
 
 
