@@ -96,6 +96,7 @@ public class TestNGramMap {
         System.out.println("The size of the unbounded summedWeightHistory is " + sum2.size());
     }
 
+
     @Test 
     public void testCodeSpeed() {
         NGramMap ngmAll = new NGramMap("./ngrams/all_words.csv", "./ngrams/total_counts.csv");
