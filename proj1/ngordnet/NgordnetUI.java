@@ -22,13 +22,18 @@ public class NgordnetUI {
 
 
         /* Thanks 100 thousand million for ExampleUI.java. */
+        boolean yearsSet = false;
+        int startYear;
+        int endYear;
         while (true) { // So I guess constant updating.
             System.out.print("> ");
             String line = StdIn.readLine(); 
             String[] rawTokens = line.split(" "); 
+            // RawTokens is everything user typed.
             String command = rawTokens[0];
             String [] tokens = new String[rawTokens.length - 1];
             System.arraycopy(rawTokens, 1, tokens, 0, rawTokens.length - 1);
+            // Tokens should be the stuff after the command.
             switch (command) {
                 case "quit": 
                     return; 
@@ -39,8 +44,9 @@ public class NgordnetUI {
                     break;
                 case "range":
                     try {
-                        int startDate = Integer.parseInt(tokens[0]);
-                        int endDate = Integer.parseInt(tokens[1]);
+                        startYear = Integer.parseInt(tokens[0]);
+                        endYear = Integer.parseInt(tokens[1]);
+                        yearsSet = true;
                     } catch (NumberFormatException ex) {
                         System.out.println("range command called incorrectly.");
                     }
@@ -66,7 +72,22 @@ public class NgordnetUI {
                     } catch (ArrayIndexOutOfBoundsException ex) {
                         System.out.println("hyponyms command called incorrectly.");
                     }
-                    break; 
+                    break;
+                case "history":
+                    // DON'T FORGET THE YEARS LIMIT.
+                    try {
+                        NGramMap ngm = new NGramMap(wordFile, countFile);
+                        if (yearsSet) {
+                            Plotter.plotAllWords(ngm, tokens, startYear, endYear);
+                        } else {
+                            /* But then what are the year bounds? 
+                                * All the years I guess. 
+                             * But how do I figure out all the years?
+                                * Only idea I have right now is iterate through all the words & their years and find max & min. */
+                        }
+                    } /*catch (ArrayIndexOutOfBoundsException ex) {
+                        System.out.println("history command called incorrectly.");
+                    }*/
             }
         }
 
