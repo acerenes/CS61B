@@ -118,7 +118,7 @@ public class YearlyRecord {
     }
 
 
-    /* Inner class considered to be part of the containing class --> Full access to all privates both ways.
+    /* Inner class considered part of containing class --> Full access to all privates both ways.
         * Access control. */
     private class StringCountComparator implements Comparator<String> {
         @Override
@@ -139,8 +139,7 @@ public class YearlyRecord {
             * Update counter. */
         if (countMap.isEmpty()) {
             return new ArrayList<String>();
-        }
-        else if (isRanked) {
+        } else if (isRanked) {
             List<String> ascendingWords = new ArrayList<String>();
             Map<String, Integer> rankedmap = this.rankMap;
             Set<String> keys = rankedmap.keySet();
@@ -166,8 +165,7 @@ public class YearlyRecord {
     public Collection<Number> counts() {
         if (countMap.isEmpty()) {
             return new ArrayList<Number>();
-        }
-        else if (isRanked) {
+        } else if (isRanked) {
             List<Number> ascendingCount = new ArrayList<Number>();
             Map<String, Integer> rankedmap = this.rankMap;
             Map<String, Integer> countmap = this.countMap;
