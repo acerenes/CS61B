@@ -128,8 +128,10 @@ public class Plotter {
             TimeSeries<Double> normCount = ngm.weightHistory(word);
             String legend = word;
             for (Number year : normCount.years()) {
-                xValues.add(year);
-                yValues.add(normCount.get(year));
+                if (year.intValue() >= startYear && year.intValue() <= endYear) {
+                    xValues.add(year);
+                    yValues.add(normCount.get(year));
+                }
             }
             chart.addSeries(legend, xValues, yValues);
         }
