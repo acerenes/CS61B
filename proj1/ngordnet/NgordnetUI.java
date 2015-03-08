@@ -2,6 +2,11 @@ package ngordnet;
 import edu.princeton.cs.introcs.StdIn;
 import edu.princeton.cs.introcs.In;
 import java.util.Set;
+import com.xeiam.xchart.Chart;
+import com.xeiam.xchart.QuickChart;
+import com.xeiam.xchart.SwingWrapper;
+import com.xeiam.xchart.ChartBuilder;
+import java.util.ArrayList;
 
 /** Provides a simple user interface for exploring WordNet and NGram data.
  *  @author Alice Tarng 
@@ -102,10 +107,49 @@ public class NgordnetUI {
                         System.out.println(error2);
                     }
                     break;
+                case "wordlength":
+                    NGramMap ngm3 = new NGramMap(wordFile, countFile);
+                    if (yearsSet) {
+                        plotWordLength(ngm3, startYear, endYear);
+                    } else {
+                        plotWordLength(ngm3);
+                    }
                 default:
                     System.out.println("Invalid command.");
                     break;
             }
         }
+    }
+
+    /* Plots average word length with bounded years. */
+    private static void plotWordLength(NGramMap ngm, int startYear, int endYear) {
+        TimeSeries<Double> wordLengthData = ngm.processedHistory(startYear, endYear, new WordLengthProcessor());
+
+        ArrayList<Number> xValues = new ArrayList<Number>();
+        ArrayList<Number> yValues = new ArrayList<Number>();
+
+        for (Number year : wordLengthData.years()) {
+            xValues.add(year);
+            yValues.add(wordLengthData.get(year));
+        }
+
+        Chart chart = QuickChart.getChart("Average Word Length during Years", "Year", "Length", "Average Word Length", xValues, yValues);
+        new SwingWrapper(chart).displayChart();
+    }
+
+    /* Plots average word length from all years. */
+    private static void plotWordLength(NGramMap ngm) {
+        TimeSeries<Double> wordLengthData = ngm.processedHistory(new WordLengthProcessor());
+
+        ArrayList<Number> xValues = new ArrayList<Number>();
+        ArrayList<Number> yValues = new ArrayList<Number>();
+
+        for (Number year : wordLengthData.years()) {
+            xValues.add(year);
+            yValues.add(wordLengthData.get(year));
+        }
+
+        Chart chart = QuickChart.getChart("Average Word Length of All Years", "Year", "Length", "Average Word Length", xValues, yValues);
+        new SwingWrapper(chart).displayChart();
     }
 } 
