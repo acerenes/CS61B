@@ -270,12 +270,35 @@ public class NGramMap {
         TimeSeries<Double> processedHist = new TimeSeries<Double>();
         while (endYear >= startYear) {
             YearlyRecord yr = this.getRecord(endYear);
-            WordLengthProcessor wlp = new WordLengthProcessor();
-            double avgLength = wlp.process(yr);
+            double avgLength = yrp.process(yr);
             processedHist.put(endYear, avgLength);
             endYear = endYear - 1;
         }
         return processedHist;
+    }
+
+
+    /*  Provides processed history of all words ever as processed by yrp. */
+    public TimeSeries<Double> processedHistory(YearlyRecordProcessor yrp) {
+        TimeSeries<Double> processedHist = new TimeSeries<Double>();
+        for (int year : this.allYears()) {
+            YearlyRecord yr = this.getRecord(year);
+            double avgLength = yrp.process(yr);
+            processedHist.put(year, avgLength);
+        }
+        return processedHist;
+    }
+
+
+    /* Returns all years of the words. */
+    private Set<Integer> allYears() {
+        Set<Integer> allYears = new HashSet<Integer>();
+        // Grab 2nd element, stick in. */
+        for (String[] wordsArray : words) {
+            int year = Integer.parseInt(wordsArray[1]);
+            allYears.add(year);
+        }
+        return allYears;
     }
 
 }
