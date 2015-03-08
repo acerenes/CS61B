@@ -18,7 +18,7 @@ public class TestNGramMap {
     public static final int OHSEVEN = 2007;
     public static final int OHEIGHT = 2008;
 
-    @Test 
+    /*@Test 
     public void testCountInYear() {
         NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
         assertEquals(139, ngm.countInYear("quantity", 1736));
@@ -96,7 +96,7 @@ public class TestNGramMap {
         System.out.println("NGramMapDemo says it should be about 3.875E-5.");
         // I don't know what the size of this collection should be, so no test. Just faith and hope.
         System.out.println("The size of the unbounded summedWeightHistory is " + sum2.size());
-    }
+    }*/
 
 
     /*@Test 

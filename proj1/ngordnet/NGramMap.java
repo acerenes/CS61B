@@ -257,4 +257,25 @@ public class NGramMap {
         return summedWeightHist;
     }
 
+
+    /* Provides processed history of all words between startyear and endyear as processed by yrp. */
+    public TimeSeries<Double> processedHistory(int startYear, int endYear, YearlyRecordProcessor yrp) {
+        /* TimeSeries only have year then data. 
+            * So for one year, calculate data, put into TimeSeries. 
+            * But wlp needs a YearlyRecord. */
+        if (endYear < startYear) {
+            System.out.println("endYear must be greater than startYear.");
+            return new TimeSeries<Double>();
+        }
+        TimeSeries<Double> processedHist = new TimeSeries<Double>();
+        while (endYear >= startYear) {
+            YearlyRecord yr = this.getRecord(endYear);
+            WordLengthProcessor wlp = new WordLengthProcessor();
+            double avgLength = wlp.process(yr);
+            processedHist.put(endYear, avgLength);
+            endYear = endYear - 1;
+        }
+        return processedHist;
+    }
+
 }
