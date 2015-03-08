@@ -65,6 +65,7 @@ public class YearlyRecord {
             // Figured out rank - put in. 
             rankMap.put(key, rank);
         }
+        isRanked = true;
     }
 
     /* Records that word occured count times in this year. */
