@@ -114,6 +114,21 @@ public class NgordnetUI {
                     } else {
                         plotWordLength(ngm3);
                     }
+                    break;
+                case "zipf":
+                    try {
+                        int year = Integer.parseInt(tokens[0]);
+                        NGramMap ngm4 = new NGramMap(wordFile, countFile); 
+                        plotZipfLog(ngm4, year);
+
+                    } catch (NumberFormatException ex) {
+                        System.out.println("zipf command called incorrectly.");
+                    } catch (ArrayIndexOutOfBoundsException ex) {
+                        System.out.println("zipf command called incorrectly.");
+                    } catch (IllegalArgumentException ex) {
+                        System.out.println("zipf command called incorrectly.");
+                    }
+                    break;
                 default:
                     System.out.println("Invalid command.");
                     break;
@@ -150,6 +165,34 @@ public class NgordnetUI {
         }
 
         Chart chart = QuickChart.getChart("Average Word Length of All Years", "Year", "Length", "Average Word Length", xValues, yValues);
+        new SwingWrapper(chart).displayChart();
+    }
+
+
+    /* Plots Zipf's Law (count v. rank) on log-log scale. */
+    private static void plotZipfLog(NGramMap ngm, int year) {
+        YearlyRecord yr = ngm.getRecord(year);
+        // YearlyRecord is word, count.
+
+        ArrayList<Number> xValues = new ArrayList<Number>();
+        ArrayList<Number> yValues = new ArrayList<Number>();
+
+        for (String word : yr.words()) {
+            xValues.add(yr.rank(word));
+            yValues.add(yr.count(word));
+        }
+
+        String title = "Zipf's Law on Log-Log Scale for " + year;
+        String ylabel = "Count (log)";
+        String xlabel = "Rank (log)";
+        String legend = Integer.toString(year);
+
+        Chart chart = new ChartBuilder().width(800).height(600).title(title).xAxisTitle(xlabel).yAxisTitle(ylabel).build();
+
+        chart.getStyleManager().setYAxisLogarithmic(true);
+        chart.getStyleManager().setXAxisLogarithmic(true);
+        chart.addSeries(legend, xValues, yValues);
+
         new SwingWrapper(chart).displayChart();
     }
 } 
