@@ -19,8 +19,8 @@ import java.util.Arrays;
       * But how deal with tiebreakers? 
         * Alphabetical order - u're b4, you're better.
         * So if =, only add if the key is "smaller" than you. 
- * So if your word is in the map & hasUpdated = false, take it. If not, generate. 
-    * Actually I'm going to just update in the put method, and don't need a boolean at all. */
+ * So if your word is in the map & hasRanked = true, take it. If not, generate. 
+    * The whole cached boolean makes it fast. */
     
 
 public class YearlyRecord {
@@ -71,9 +71,6 @@ public class YearlyRecord {
     public void put(String word, int count) {
         countMap.put(word, count);
         size = size + 1;
-
-        // STARTING MODIFICATIONS FOR SPEED
-
         /* Don't need to update the rank ALL THE TIME.
             * Just do it when needed - rank is called. */
         isRanked = false;
@@ -97,28 +94,10 @@ public class YearlyRecord {
         if (isRanked) {
             return rankMap.get(word);
         }
-        /*for (String key : countMap.keySet()) {
-            int rank = 1;
-            Integer comparingCount = countMap.get(key);
-            for (String compKey : countMap.keySet()) {
-                Integer currCount = countMap.get(compKey);
-                if (comparingCount < currCount) { // Increase your rank.
-                    rank = rank + 1;
-                } else if (comparingCount == currCount && key.compareTo(compKey) > 0) {
-                    // You're lower alphabetically - increase your rank.
-                    rank = rank + 1;
-                }
-            }
-            rankMap.put(key, rank);
-        }
-        isRanked = true;
-        return rankMap.get(word);*/
-        
-
         this.buildRankMap();
         return rankMap.get(word);
-
     }
+
 
     /* Helper fxn to build rankMap. */
     private void buildRankMap() {
@@ -141,7 +120,6 @@ public class YearlyRecord {
     /* Inner class considered to be part of the containing class --> Full access to all privates both ways.
         * Access control. */
     private class StringCountComparator implements Comparator<String> {
-
         @Override
         public int compare(String word1, String word2) {
             // Sort words by descending order of count. 
