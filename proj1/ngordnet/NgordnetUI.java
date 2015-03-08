@@ -33,6 +33,10 @@ public class NgordnetUI {
         int startYear = 0;
         int endYear = 0; 
         // ^ Intializing.
+        NGramMap ngm = new NGramMap(wordFile, countFile);
+        WordNet wn = new WordNet(synsetFile, hyponymFile);
+
+        
         while (true) { // So I guess constant updating.
             System.out.print("> ");
             String line = StdIn.readLine(); 
@@ -42,8 +46,6 @@ public class NgordnetUI {
             String [] tokens = new String[rawTokens.length - 1];
             System.arraycopy(rawTokens, 1, tokens, 0, rawTokens.length - 1);
             // Tokens should be the inputs for the command.
-            NGramMap ngm = new NGramMap(wordFile, countFile);
-            WordNet wn = new WordNet(synsetFile, hyponymFile);
 
             switch (command) {
                 case "quit": 
@@ -210,4 +212,6 @@ public class NgordnetUI {
 
         new SwingWrapper(chart).displayChart();
     }
+
+
 } 
