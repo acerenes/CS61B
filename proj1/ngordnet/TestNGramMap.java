@@ -117,6 +117,22 @@ public class TestNGramMap {
         System.out.println("Code 2007 returns " + processedHist.get(OHSEVEN));
         System.out.println("Processed History 2008 should be about 7.15007.");
         System.out.println("Code 2008 returns " + processedHist.get(OHEIGHT));
+        System.out.println("THIS WAS A TEST THAT USED PRINT CHECK ABOVE STUFF ALICE.");
+    }
+
+    @Test
+    public void testProcessedHistory2() {
+        NGramMap ngm = new NGramMap("./ngrams/very_short.csv", "./ngrams/total_counts.csv");
+        WordLengthProcessor wlp = new WordLengthProcessor();
+        TimeSeries<Double> processedHist = ngm.processedHistory(wlp);
+        System.out.println("Processed History 2006 should be about 7.1145.");
+        System.out.println("Code 2006 returns " + processedHist.get(OHSIX));
+        System.out.println("Processed History 2007 should be about 7.1106.");
+        System.out.println("Code 2007 returns " + processedHist.get(OHSEVEN));
+        System.out.println("Processed History 2008 should be about 7.15007.");
+        System.out.println("Code 2008 returns " + processedHist.get(OHEIGHT));
+        System.out.println("THIS WAS A TEST THAT USED PRINT CHECK ABOVE STUFF ALICE.");
+        assertEquals(8, processedHist.get(2005)); 
     }
 
 
