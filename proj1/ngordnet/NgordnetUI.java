@@ -42,6 +42,9 @@ public class NgordnetUI {
             String [] tokens = new String[rawTokens.length - 1];
             System.arraycopy(rawTokens, 1, tokens, 0, rawTokens.length - 1);
             // Tokens should be the inputs for the command.
+            NGramMap ngm = new NGramMap(wordFile, countFile);
+            WordNet wn = new WordNet(synsetFile, hyponymFile);
+
             switch (command) {
                 case "quit": 
                     return; 
@@ -66,11 +69,10 @@ public class NgordnetUI {
                     }
                     break;
                 case "count":
-                    NGramMap wordCounts = new NGramMap(wordFile, countFile);
                     try {
                         String word = tokens[0];
                         int year = Integer.parseInt(tokens[1]);
-                        System.out.println(wordCounts.countInYear(word, year));
+                        System.out.println(ngm.countInYear(word, year));
                     } catch (NumberFormatException ex) {
                         System.out.println("count command called incorrectly.");
                     } catch (ArrayIndexOutOfBoundsException ex) {
@@ -80,8 +82,7 @@ public class NgordnetUI {
                 case "hyponyms":
                     try {
                         String word = tokens[0];
-                        WordNet wordHyponyms = new WordNet(synsetFile, hyponymFile);
-                        Set<String> hyponyms = wordHyponyms.hyponyms(word);
+                        Set<String> hyponyms = wn.hyponyms(word);
                         System.out.println(hyponyms);
                     } catch (ArrayIndexOutOfBoundsException ex) {
                         System.out.println("hyponyms command called incorrectly.");
@@ -89,44 +90,58 @@ public class NgordnetUI {
                     break;
                 case "history":
                     // DON'T FORGET THE YEARS LIMIT.
-                    NGramMap ngm = new NGramMap(wordFile, countFile);
-                    if (yearsSet) {
-                        Plotter.plotAllWords(ngm, tokens, startYear, endYear);
+                    if (tokens.length == 0) {
+                        System.out.println("history command called incorrectly");
                     } else {
-                        String error = "Years range not set or history command called incorrectly.";
-                        System.out.println(error);
+                        try {
+                            if (yearsSet) {
+                                Plotter.plotAllWords(ngm, tokens, startYear, endYear);
+                            } else {
+                                String error = "Years range not set or history command called incorrectly.";
+                                System.out.println(error);
+                            }
+                        } catch (IllegalArgumentException ex) {
+                            System.out.println("Word not found in data or year range invalid.");
+                        }
                     }
                     break;
                 case "hypohist":
-                    NGramMap ngm2 = new NGramMap(wordFile, countFile);
-                    WordNet wn = new WordNet(synsetFile, hyponymFile);
-                    if (yearsSet) {
-                        Plotter.plotCategoryWeights(ngm2, wn, tokens, startYear, endYear);
+                    if (tokens.length == 0) {
+                        System.out.println("history command called incorrectly");
                     } else {
-                        String error2 = "Years range not set or hypohist command called wrongly.";
-                        System.out.println(error2);
+                        try {
+                            if (yearsSet) {
+                                Plotter.plotCategoryWeights(ngm, wn, tokens, startYear, endYear);
+                            } else {
+                                String error2 = "Years range not set or hypohist command called wrongly.";
+                                System.out.println(error2);
+                            }
+                        } catch (IllegalArgumentException ex) {
+                            System.out.println("hypohist command called incorrectly.");
+                        }
                     }
                     break;
                 case "wordlength":
-                    NGramMap ngm3 = new NGramMap(wordFile, countFile);
                     if (yearsSet) {
-                        plotWordLength(ngm3, startYear, endYear);
+                        plotWordLength(ngm, startYear, endYear);
                     } else {
-                        plotWordLength(ngm3);
+                        plotWordLength(ngm);
                     }
                     break;
                 case "zipf":
-                    try {
-                        int year = Integer.parseInt(tokens[0]);
-                        NGramMap ngm4 = new NGramMap(wordFile, countFile); 
-                        plotZipfLog(ngm4, year);
-
-                    } catch (NumberFormatException ex) {
-                        System.out.println("zipf command called incorrectly.");
-                    } catch (ArrayIndexOutOfBoundsException ex) {
-                        System.out.println("zipf command called incorrectly.");
-                    } catch (IllegalArgumentException ex) {
-                        System.out.println("zipf command called incorrectly.");
+                    if (tokens.length == 0) {
+                        System.out.println("history command called incorrectly");
+                    } else {
+                        try {
+                            int year = Integer.parseInt(tokens[0]);
+                            plotZipfLog(ngm, year);
+                        } catch (NumberFormatException ex) {
+                            System.out.println("zipf command called incorrectly.");
+                        } catch (ArrayIndexOutOfBoundsException ex) {
+                            System.out.println("zipf command called incorrectly.");
+                        } catch (IllegalArgumentException ex) {
+                            System.out.println("zipf command called incorrectly.");
+                        }
                     }
                     break;
                 default:
