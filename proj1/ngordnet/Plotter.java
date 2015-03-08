@@ -42,8 +42,10 @@ public class Plotter {
         // Have to both be Numbers - java unhappy when I tried to make y Integer.
 
         for (Number year : countHist.years()) {
-            xValues.add(year);
-            yValues.add(countHist.get(year));
+            if (year.intValue() >= startYear && year.intValue() <= endYear) {
+                xValues.add(year);
+                yValues.add(countHist.get(year));
+            }
         }
         Chart chart = QuickChart.getChart("Absolute Word Counts for " + word, "Year", "Absolute Counts", word, xValues, yValues);
         new SwingWrapper(chart).displayChart();
@@ -59,8 +61,10 @@ public class Plotter {
         ArrayList<Number> yValues = new ArrayList<Number>();
 
         for (Number year : weightHist.years()) {
-            xValues.add(year);
-            yValues.add(weightHist.get(year));
+            if (year.intValue() >= startYear && year.intValue() <= endYear) {
+                xValues.add(year);
+                yValues.add(weightHist.get(year));
+            }
         }
 
         Chart chart = QuickChart.getChart("Normalized Weight Counts for " + word, "Year", "Normalized Weight Counts", word, xValues, yValues);
@@ -80,8 +84,10 @@ public class Plotter {
         ArrayList<Number> yValues = new ArrayList<Number>();
 
         for (Number year : totalNormCount.years()) {
-            xValues.add(year);
-            yValues.add(totalNormCount.get(year));
+            if (year.intValue() >= startYear && year.intValue() <= endYear) {
+                xValues.add(year);
+                yValues.add(totalNormCount.get(year));
+            }
         }
 
         Chart chart = QuickChart.getChart("Total Normalized Count for All Hyponyms of " + categoryLabel, "Year", "Total Normalized Counts", categoryLabel, xValues, yValues);
@@ -105,8 +111,10 @@ public class Plotter {
             TimeSeries<Double> totalNormCount = ngm.summedWeightHistory(hyponyms, startYear, endYear);
             String legend = catLabel;
             for (Number year : totalNormCount.years()) {
-                xValues.add(year);
-                yValues.add(totalNormCount.get(year));
+                if (year.intValue() >= startYear && year.intValue() <= endYear) {
+                    xValues.add(year);
+                    yValues.add(totalNormCount.get(year));
+                }
             }
             chart.addSeries(legend, xValues, yValues);
         }
