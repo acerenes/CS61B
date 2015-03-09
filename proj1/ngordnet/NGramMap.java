@@ -14,20 +14,20 @@ public class NGramMap {
 
     /* Using sets again. 
         * One set for words, one for counts. */
-    Set<String[]> words;
+    Set<String[]> wordsSet;
     Set<Number[]> counts;
 
     /* Constructs an NGramMap from wordsFilename & countsFilename. */
     public NGramMap(String wordsFilename, String countsFilename) {
         // Similar to WordNet.
-        words = new HashSet<String[]>();
+        wordsSet = new HashSet<String[]>();
         File wordsfile = new File(wordsFilename);
         try {
             Scanner wordsscanned = new Scanner(wordsfile);
             while (wordsscanned.hasNextLine()) {
                 String wordsstring = wordsscanned.nextLine();
                 String[] wordsarray = wordsstring.split("\t");
-                words.add(wordsarray);
+                wordsSet.add(wordsarray);
             }
         } catch (FileNotFoundException ex) {
             System.out.println("The words file is not valid.");
@@ -47,7 +47,7 @@ public class NGramMap {
                         // Then add to int[].
                         countsArray[i] = element;
                     } catch (NumberFormatException nf) {
-                        System.out.println("There is a problem in the counts file - an element is not an int.");
+                        System.out.println("Problem in counts file - an element is not an int.");
                     }
                 }
                 counts.add(countsArray);
@@ -62,7 +62,7 @@ public class NGramMap {
         * If word did not appear in given year, return 0. */
     public int countInYear(String word, int year) {
         // Just grab 3rd element in words file. 
-        Iterator<String[]> wordsIterator = this.words.iterator();
+        Iterator<String[]> wordsIterator = this.wordsSet.iterator();
         // First figure out where the word + year are.
         while (wordsIterator.hasNext()) {
             String[] wordsArray = wordsIterator.next();
@@ -86,7 +86,7 @@ public class NGramMap {
             * Put word + year into HashMap.
             * Stick HashMap into YearlyRecord constructor. */
         HashMap<String, Integer> yearRecord = new HashMap<String, Integer>();
-        Iterator<String[]> wordsIterator = this.words.iterator();
+        Iterator<String[]> wordsIterator = this.wordsSet.iterator();
         // Find where the year is. 
         while (wordsIterator.hasNext()) {
             String[] wordsArray = wordsIterator.next();
@@ -121,7 +121,7 @@ public class NGramMap {
             * Make sure year is within bounds (inclusive).
             * Grab its year and count, stick in. */
         TimeSeries<Integer> countHist = new TimeSeries();
-        Iterator<String[]> histIterator = this.words.iterator();
+        Iterator<String[]> histIterator = this.wordsSet.iterator();
         while (histIterator.hasNext()) {
             String[] histArray = histIterator.next();
             if (histArray[0].equals(word)) {
@@ -140,7 +140,7 @@ public class NGramMap {
     public TimeSeries<Integer> countHistory(String word) {
         // Just like above, but no limits.
         TimeSeries<Integer> countHist = new TimeSeries();
-        Iterator<String[]> histIterator = this.words.iterator();
+        Iterator<String[]> histIterator = this.wordsSet.iterator();
         while (histIterator.hasNext()) {
             String[] histArray = histIterator.next();
             if (histArray[0].equals(word)) {
@@ -158,7 +158,7 @@ public class NGramMap {
         /* So like countHistory with bounds from above.
             * But divide count by total from counts. */
         TimeSeries<Double> weightHist = new TimeSeries();
-        Iterator<String[]> weightIterator = this.words.iterator();
+        Iterator<String[]> weightIterator = this.wordsSet.iterator();
         while (weightIterator.hasNext()) {
             String[] weightArray = weightIterator.next();
             if (weightArray[0].equals(word)) {
@@ -171,7 +171,8 @@ public class NGramMap {
                         Number[] totalCountArray = totalCountIterator.next();
                         if ((totalCountArray[0].intValue()) == year) {
                             Number totalCount = totalCountArray[1];
-                            weightHist.put(year, Integer.valueOf(count).doubleValue() / totalCount.doubleValue());
+                            double countDouble = Integer.valueOf(count).doubleValue();
+                            weightHist.put(year, countDouble / totalCount.doubleValue());
                         }
                     }
                 }
@@ -185,7 +186,7 @@ public class NGramMap {
     public TimeSeries<Double> weightHistory(String word) {
         // Above with no bounds. 
         TimeSeries<Double> weightHist = new TimeSeries();
-        Iterator<String[]> weightIterator = this.words.iterator();
+        Iterator<String[]> weightIterator = this.wordsSet.iterator();
         while (weightIterator.hasNext()) {
             String[] weightArray = weightIterator.next();
             if (weightArray[0].equals(word)) {
@@ -197,7 +198,8 @@ public class NGramMap {
                     Number[] totalCountArray = totalCountIterator.next();
                     if ((totalCountArray[0].intValue()) == year) {
                         Number totalCount = totalCountArray[1];
-                        weightHist.put(year, Integer.valueOf(count).doubleValue() / totalCount.doubleValue());
+                        double countDouble = Integer.valueOf(count).doubleValue();
+                        weightHist.put(year, countDouble / totalCount.doubleValue());
                     }
                 }
             }
@@ -207,14 +209,14 @@ public class NGramMap {
 
 
     /* Provides the summed relative frequency of all words between startyear & endyear. */
-    public TimeSeries<Double> summedWeightHistory(Collection<String> words, int startYear, int endYear) {
+    public TimeSeries<Double> summedWeightHistory(Collection<String> words, int start, int end) {
 
         TimeSeries<Double> summedWeightHist = new TimeSeries();
-        for (int currYear = startYear; currYear <= endYear; currYear = currYear + 1) {
+        for (int currYear = start; currYear <= end; currYear = currYear + 1) {
             // For 1 year. 
             double sumFrequency = 0; // Also initialize.
             for (String word : words) {
-                TimeSeries<Double> currTimeSeries = weightHistory(word, startYear, endYear);
+                TimeSeries<Double> currTimeSeries = weightHistory(word, start, end);
                 if (currTimeSeries.get(currYear) == null) {
                     // Just in case - don't add anything.
                     sumFrequency = sumFrequency;
@@ -240,7 +242,7 @@ public class NGramMap {
             * Add year & summned rel. freq. to TimeSeries.
             * Repeat loop. */
         for (String word : words) {
-            for (String[] wordData : this.words) {
+            for (String[] wordData : this.wordsSet) {
                 if (wordData[0].equals(word)) {
                     int currYear = Integer.parseInt(wordData[1]);
                     TimeSeries<Double> relFreqData = weightHistory(word);
@@ -259,20 +261,20 @@ public class NGramMap {
 
 
     /* Provides processed history of all words between startyear and endyear as processed by yrp. */
-    public TimeSeries<Double> processedHistory(int startYear, int endYear, YearlyRecordProcessor yrp) {
+    public TimeSeries<Double> processedHistory(int start, int end, YearlyRecordProcessor yrp) {
         /* TimeSeries only have year then data. 
             * So for one year, calculate data, put into TimeSeries. 
             * But wlp needs a YearlyRecord. */
-        if (endYear < startYear) {
+        if (end < start) {
             System.out.println("endYear must be greater than startYear.");
             return new TimeSeries<Double>();
         }
         TimeSeries<Double> processedHist = new TimeSeries<Double>();
-        while (endYear >= startYear) {
-            YearlyRecord yr = this.getRecord(endYear);
+        while (end >= start) {
+            YearlyRecord yr = this.getRecord(end);
             double avgLength = yrp.process(yr);
-            processedHist.put(endYear, avgLength);
-            endYear = endYear - 1;
+            processedHist.put(end, avgLength);
+            end = end - 1;
         }
         return processedHist;
     }
@@ -294,7 +296,7 @@ public class NGramMap {
     private Set<Integer> allYears() {
         Set<Integer> allYears = new HashSet<Integer>();
         // Grab 2nd element, stick in. */
-        for (String[] wordsArray : words) {
+        for (String[] wordsArray : wordsSet) {
             int year = Integer.parseInt(wordsArray[1]);
             allYears.add(year);
         }
@@ -302,3 +304,5 @@ public class NGramMap {
     }
 
 }
+
+/* I had to change some method signatures because too long - style checker got mad. */
