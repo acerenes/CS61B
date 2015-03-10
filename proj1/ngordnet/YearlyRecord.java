@@ -86,14 +86,18 @@ public class YearlyRecord {
 
     /* Returns # times word appeared in this year. */
     public int count(String word) {
-        if countMap.containsKey(word):
+        if (countMap.containsKey(word)) {
             return countMap.get(word);
-        return 0
+        }
+        return 0;
     }
 
 
     /* Returns rank of word; most common word = 1. */
     public int rank(String word) {
+        if (!countMap.containsKey(word)) {
+            return 0;
+        } 
         if (isRanked) {
             return rankMap.get(word);
         }
