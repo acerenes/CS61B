@@ -209,14 +209,15 @@ public class NGramMap {
 
 
     /* Provides the summed relative frequency of all words between startyear & endyear. */
-    public TimeSeries<Double> summedWeightHistory(Collection<String> words, int start, int end) {
+    public TimeSeries<Double> summedWeightHistory(Collection<String> words, 
+        int startYear, int endYear) {
 
         TimeSeries<Double> summedWeightHist = new TimeSeries();
-        for (int currYear = start; currYear <= end; currYear = currYear + 1) {
+        for (int currYear = startYear; currYear <= endYear; currYear = currYear + 1) {
             // For 1 year. 
             double sumFrequency = 0; // Also initialize.
             for (String word : words) {
-                TimeSeries<Double> currTimeSeries = weightHistory(word, start, end);
+                TimeSeries<Double> currTimeSeries = weightHistory(word, startYear, endYear);
                 if (currTimeSeries.get(currYear) == null) {
                     // Just in case - don't add anything.
                     sumFrequency = sumFrequency;
@@ -261,20 +262,21 @@ public class NGramMap {
 
 
     /* Provides processed history of all words between startyear and endyear as processed by yrp. */
-    public TimeSeries<Double> processedHistory(int start, int end, YearlyRecordProcessor yrp) {
+    public TimeSeries<Double> processedHistory(int startYear, int endYear,
+     YearlyRecordProcessor yrp) {
         /* TimeSeries only have year then data. 
             * So for one year, calculate data, put into TimeSeries. 
             * But wlp needs a YearlyRecord. */
-        if (end < start) {
+        if (endYear < startYear) {
             System.out.println("endYear must be greater than startYear.");
             return new TimeSeries<Double>();
         }
         TimeSeries<Double> processedHist = new TimeSeries<Double>();
-        while (end >= start) {
-            YearlyRecord yr = this.getRecord(end);
+        while (endYear >= startYear) {
+            YearlyRecord yr = this.getRecord(endYear);
             double avgLength = yrp.process(yr);
-            processedHist.put(end, avgLength);
-            end = end - 1;
+            processedHist.put(endYear, avgLength);
+            endYear = endYear - 1;
         }
         return processedHist;
     }
