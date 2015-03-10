@@ -20,7 +20,7 @@ public class WordNet {
     /** Creates a WordNet using files from synsetFilename and hypernymFilename. **/
     public WordNet(String synsetFilename, String hyponymFilename) {
 
-        /* Am I going to use a set? I'm pretty sure there won't be duplicates, b/c: 
+        /* Going to use a set? I'm pretty sure there won't be duplicates, b/c: 
             * Synsets all diff.
                 * Even if 2 diff. things wanted to use same synset, would only read it in 1x.
             * Hypernym file also won't. 
