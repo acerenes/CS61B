@@ -15,10 +15,7 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer, T> {
 
     /* Creates a copy of ts, but only between startyear & endyear. Inclusive of both end points. */
     public TimeSeries(TimeSeries<T> ts, int startYear, int endYear) {
-        /* Iterate through ts.
-            * Get its keys. 
-            * If key is btwn endpts, grab it+its value and copy into the new guy. */
-        new TimeSeries<T>(); // Constructing new TimeSeries.
+        new TimeSeries();
         Set<Integer> keys = ts.keySet();
         for (Integer key : keys) {
             if (key >= startYear && key <= endYear) {
@@ -30,7 +27,7 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer, T> {
 
     /* Creates a copy of ts */
     public TimeSeries(TimeSeries<T> ts) {
-        new TimeSeries<T>(); // Constructing new TimeSeries.
+        new TimeSeries<T>(); 
         Set<Integer> keys = ts.keySet();
         for (Integer key : keys) {
             put(key, ts.get(key));
@@ -41,7 +38,6 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer, T> {
     /* Returns the quotient of this time series divided by the relevant value in ts. 
         * If ts is missing a key in this time series, return an IllegalArgumentException. */
     public TimeSeries<Double> dividedBy(TimeSeries<? extends Number> ts) {
-        // Iterate thrrough this. Get your value and their value, divide. Put into new TimeSeries. 
         TimeSeries<Double> quotient = new TimeSeries<Double>();
         Set<Integer> keys = this.keySet();
         for (Integer key : keys) {
@@ -49,8 +45,6 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer, T> {
                 throw new IllegalArgumentException("In dividedBy, argument is missing a key.");
             }
             quotient.put(key, (this.get(key).doubleValue() / ts.get(key).doubleValue()));
-            // Gotta do this weird .doubleValue thing.
-            // Apparently can only do basic operations on primitive types or smth .___.
         }
         return quotient;
     }
@@ -59,7 +53,7 @@ public class TimeSeries<T extends Number> extends TreeMap<Integer, T> {
     /* Returns the sum of this time series with the given ts. */
     public TimeSeries<Double> plus(TimeSeries<? extends Number> ts) {
         TimeSeries<Double> sum = new TimeSeries<Double>();
-        double sum1; // Java compiler wasn't happy when I just did double sum1 = stuff + stuff.
+        double sum1; 
         double sum2;
         Set<Integer> keys1 = this.keySet();
         for (Integer key1 : keys1) {
