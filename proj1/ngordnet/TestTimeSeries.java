@@ -19,6 +19,7 @@ public class TestTimeSeries {
     public static final double NEGFIFTEENSEVEN = -15.7;
     public static final int NINETYONE = 1991;
     public static final double NEGONEPTFOUR = -1.4;
+    public static final double TENPTTWO = 10.2;
 
     @Test 
     public void testConstructor() {
@@ -41,11 +42,11 @@ public class TestTimeSeries {
         ts.put(NINETYFOUR, FIFTEENTWO);
         ts.put(NINETYFIVE, SIXTEENONE);
         ts.put(NINETYSIX, NEGFIFTEENSEVEN);
-        TimeSeries<Double> ts_cut = new TimeSeries<Double>();
-        ts_cut.put(NINETYTHREE, NINEDOTTWO);
-        ts_cut.put(NINETYFOUR, FIFTEENTWO);
-        TimeSeries<Double> test_cut = new TimeSeries<Double>(ts, NINETYTHREE, NINETYFOUR);
-        assertTrue(ts_cut.equals(test_cut));
+        TimeSeries<Double> tsCut = new TimeSeries<Double>();
+        tsCut.put(NINETYTHREE, NINEDOTTWO);
+        tsCut.put(NINETYFOUR, FIFTEENTWO);
+        TimeSeries<Double> testCut = new TimeSeries<Double>(ts, NINETYTHREE, NINETYFOUR);
+        assertTrue(tsCut.equals(testCut));
     }
 
 
@@ -107,7 +108,7 @@ public class TestTimeSeries {
         TimeSeries<Double> actualsum = new TimeSeries<Double>();
         actualsum.put(NINETYONE, 10.0);
         actualsum.put(NINETYTWO, NEGONEPTFOUR);
-        actualsum.put(NINETYTHREE, 10.2);
+        actualsum.put(NINETYTHREE, TENPTTWO);
         actualsum.put(NINETYFOUR, FIFTEENTWO);
         actualsum.put(NINETYFIVE, 7.0);
         assertTrue(actualsum.equals(ts.plus(ts2)));
