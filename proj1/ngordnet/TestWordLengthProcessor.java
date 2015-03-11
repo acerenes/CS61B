@@ -5,17 +5,21 @@ import static org.junit.Assert.*;
 
 public class TestWordLengthProcessor {
 
+    public static final int ONEHUNDRED = 100;
+    public static final int THREEHUNDRED = 300;
+    public static final double THREEPTFIVE = 3.5;
+
     @Test 
     public void testProcess() {
         YearlyRecord yr = new YearlyRecord();
-        yr.put("sheep", 100);
-        yr.put("dog", 300);
+        yr.put("sheep", ONEHUNDRED);
+        yr.put("dog", THREEHUNDRED);
         WordLengthProcessor wlp = new WordLengthProcessor();
-        assertEquals(3.5, wlp.process(yr), 0);
+        assertEquals(THREEPTFIVE, wlp.process(yr), 0);
     }
 
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestWordLengthProcessor.class);
     }
 }
