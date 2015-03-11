@@ -17,8 +17,8 @@ public class Plotter {
     public static void plotTS(TimeSeries<? extends Number> ts, String title, 
         String xlabel, String ylabel, String legend) {
         /* TimeSeries are year to "data". 
-            * I'm doing year on x, data on y. */
-        // THANK GOODNESS FOR XCHARTDEMO
+            * Year on x, data on y. */
+        // Merci beaucoup à XchartDemo.
         ArrayList<Number> xValues = new ArrayList<Number>();
         ArrayList<Number> yValues = new ArrayList<Number>();
 
@@ -27,10 +27,8 @@ public class Plotter {
             yValues.add(ts.get(year));
         }
 
-        // Create chart.
         Chart chart = QuickChart.getChart(title, xlabel, ylabel, legend, xValues, yValues);
 
-        // Show it.
         new SwingWrapper(chart).displayChart();
     }
 
@@ -43,7 +41,6 @@ public class Plotter {
 
         ArrayList<Number> xValues = new ArrayList<Number>();
         ArrayList<Number> yValues = new ArrayList<Number>();
-        // Have to both be Numbers - java unhappy when I tried to make y Integer.
 
         for (Number year : countHist.years()) {
             if (year.intValue() >= startYear && year.intValue() <= endYear) {
@@ -83,7 +80,6 @@ public class Plotter {
         int startYear, int endYear) {
 
         Set<String> hyponyms = wn.hyponyms(categoryLabel);
-        // A set is a collection.
         TimeSeries<Double> totalNormCount = ngm.summedWeightHistory(hyponyms, startYear, endYear);
 
         ArrayList<Number> xValues = new ArrayList<Number>();

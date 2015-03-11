@@ -14,7 +14,7 @@ public class TestPlotter {
     public static final int NINTYFIVE = 1995;
     public static final double SIXTEENONE = 16.1;
     public static final int NINTYSIX = 1996;
-    public static final double FIFTEENSEVEN = -15.7;
+    public static final double NEGFIFTEENSEVEN = -15.7;
     public static final int SEVENTEENTWENTYFOUR = 1724;
     public static final int SEVENTEENFIFTYSEVEN = 1757;
     public static final int OHFIVE = 2005;
@@ -27,7 +27,7 @@ public class TestPlotter {
         ts.put(NINETYTHREE, NINEDOTTWO);
         ts.put(NINETYFOUR, FIFTEENTWO);
         ts.put(NINTYFIVE, SIXTEENONE);
-        ts.put(NINTYSIX, FIFTEENSEVEN);
+        ts.put(NINTYSIX, NEGFIFTEENSEVEN);
         Plotter.plotTS(ts, "Title", "XLabel", "YLabel", "Legend");
     }
 
