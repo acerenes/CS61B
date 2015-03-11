@@ -96,8 +96,8 @@ public class Plotter {
             }
         }
 
-        Chart chart = QuickChart.getChart("Total Normalized Count for All Hyponyms of " + 
-            categoryLabel, "Year", "Total Normalized Counts", categoryLabel, xValues, yValues);
+        Chart chart = QuickChart.getChart("Total Normalized Count for All Hyponyms of " 
+            + categoryLabel, "Year", "Total Normalized Counts", categoryLabel, xValues, yValues);
         new SwingWrapper(chart).displayChart();
     }
 
