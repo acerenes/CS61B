@@ -12,8 +12,8 @@ import java.util.Collection;
 public class NGramMap {
 
 
-    Set<String[]> wordsSet;
-    Set<Number[]> counts;
+    private Set<String[]> wordsSet;
+    private Set<Number[]> counts;
 
     /* Constructs an NGramMap from wordsFilename & countsFilename. */
     public NGramMap(String wordsFilename, String countsFilename) {
