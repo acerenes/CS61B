@@ -17,6 +17,8 @@ public class TestPlotter {
     public static final double FIFTEENSEVEN = -15.7;
     public static final int SEVENTEENTWENTYFOUR = 1724;
     public static final int SEVENTEENFIFTYSEVEN = 1757;
+    public static final int OHFIVE = 2005;
+    public static final int OHEIGHT = 2008;
 
     @Test 
     public void testPlotTS() {
@@ -32,33 +34,39 @@ public class TestPlotter {
     @Test
     public void testPlotCountHistory() {
         NGramMap shortNGM = new NGramMap("./ngrams/very_short.csv", "./ngrams/total_counts.csv");
-        Plotter.plotCountHistory(shortNGM, "wandered", 2005, 2008);
+        Plotter.plotCountHistory(shortNGM, "wandered", OHFIVE, OHEIGHT);
     }
 
     @Test 
     public void testPlotWeightHistoryy() { 
-        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", 
+            "./ngrams/total_counts.csv");
         Plotter.plotWeightHistory(ngm, "quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
     }
 
     @Test
     public void testPlotCategoryWeights() {
-        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", 
+            "./ngrams/total_counts.csv");
         WordNet wn = new WordNet("./wordnet/synsets.txt", "./wordnet/hyponyms.txt");
         Plotter.plotCategoryWeights(ngm, wn, "quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
     }
 
     @Test
     public void testPlotCategoryWeights2() {
-        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", 
+            "./ngrams/total_counts.csv");
         WordNet wn = new WordNet("./wordnet/synsets.txt", "./wordnet/hyponyms.txt");
-        Plotter.plotCategoryWeights(ngm, wn, new String[] {"quantity", "quarrel"}, SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
+        Plotter.plotCategoryWeights(ngm, wn, new String[] {"quantity", "quarrel"}, 
+            SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
     }
 
     @Test
     public void testPlotAllWords() {
-        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
-        Plotter.plotAllWords(ngm, new String[] {"quantity", "quarrel"}, SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", 
+            "./ngrams/total_counts.csv");
+        Plotter.plotAllWords(ngm, new String[] {"quantity", "quarrel"}, 
+            SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
     }
 
 
