@@ -46,6 +46,14 @@ public class TestWordNet {
         Set<String> expectedHyponyms3 = new HashSet(Arrays.asList(hyponyms3));
         Set<String> actualHyponyms3 = wn2.hyponyms("change");
         assertTrue(actualHyponyms3.equals(expectedHyponyms3));
+
+        String[] hyponyms4 = {"event", "happening", "occurrence", "occurrent", "natural_event", 
+            "change", "alteration", "modification", "transition", "increase", "jump", 
+            "leap", "saltation", "act", "human_action", "human_activity", 
+            "action", "demotion", "variation", "adjustment", "conversion", "mutation"};
+        Set<String> expectedHyponyms4 = new HashSet(Arrays.asList(hyponyms4));
+        Set<String> actualHyponyms4 = wn2.hyponyms("event");
+        assertTrue(actualHyponyms4.equals(expectedHyponyms4));
     }
 
     public static void main(String[] args) {
