@@ -8,25 +8,12 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Arrays;
-
-/* Okay I'm thinking 2 maps? 
- * One for word v. count.
- * Can have a size instance variable.
- * Then rank, something with an loop like Dis 6.3.1, create new map.  
-   * But how to do the actual ranking? 
-    * Maybe iterate through all the keys. 
-      * If you pass one that is more common than you, plus 1. (Start at 1.)
-      * But how deal with tiebreakers? 
-        * Alphabetical order - u're b4, you're better.
-        * So if =, only add if the key is "smaller" than you. 
- * So if your word is in the map & hasRanked = true, take it. If not, generate. 
-    * The whole cached boolean makes it fast. */
     
 
 public class YearlyRecord {
 
-    private Map<String, Integer> countMap;
-    private Map<String, Integer> rankMap; 
+    private Map<String, Integer> countMap; // Word v. count.
+    private Map<String, Integer> rankMap;  // Word v. rank.
     private int size;
     private boolean isRanked = false;
 
@@ -39,7 +26,6 @@ public class YearlyRecord {
 
     /* Creates a YearlyRecord using the given data. */
     public YearlyRecord(HashMap<String, Integer> otherCountMap) {
-        // I think you're supposed to create a new object.
         countMap = new TreeMap<String, Integer>();
         rankMap = new TreeMap<String, Integer>();
         Set<String> keys = otherCountMap.keySet();
@@ -48,7 +34,7 @@ public class YearlyRecord {
             countMap.put(key, otherCountMap.get(key));
             size = size + 1;
         }
-        // Construct rankMap.
+        /*// Construct rankMap.
         for (String key : keys) {
             // Now figure out the rank.
             int rank = 1; 
@@ -64,7 +50,8 @@ public class YearlyRecord {
             }
             // Figured out rank - put in. 
             rankMap.put(key, rank);
-        }
+        }*/
+        buildRankMap();
         isRanked = true;
     }
 
