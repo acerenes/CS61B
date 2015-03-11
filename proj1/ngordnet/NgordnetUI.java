@@ -30,7 +30,7 @@ public class NgordnetUI {
                            + ", and " + hyponymFile + ".");
         boolean yearsSet = false;
         int startYear = 0;
-        int endYear = 0; // Initializing.
+        int endYear = 0; 
         NGramMap ngm = new NGramMap(wordFile, countFile);
         WordNet wn = new WordNet(synsetFile, hyponymFile);
         while (true) { 
@@ -246,7 +246,5 @@ public class NgordnetUI {
 } 
 
 /* Thanks 100 thousand million for ExampleUI.java. 
-    * Sorry main method is super squished; had to be under 80 lines.
-    * Used to catch each individual type of exception, but too many lines - 1 big RunTimeException.
-    * Thanks Stylechecker. */
+    * Sorry main method is super squished; had to be under 80 lines. */
 
