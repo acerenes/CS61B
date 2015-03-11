@@ -34,23 +34,7 @@ public class YearlyRecord {
             countMap.put(key, otherCountMap.get(key));
             size = size + 1;
         }
-        /*// Construct rankMap.
-        for (String key : keys) {
-            // Now figure out the rank.
-            int rank = 1; 
-            Integer mapValue = otherCountMap.get(key);
-            for (String key2 : keys) { // Other guys.
-                Integer mapValue2 = otherCountMap.get(key2);
-                if (mapValue2 > mapValue) {
-                    rank = rank + 1;
-                } else if (mapValue2 == mapValue && (key.compareTo(key2) > 0)) {
-                    // You are alphabetically lower - increase rank.
-                    rank = rank + 1;
-                }
-            }
-            // Figured out rank - put in. 
-            rankMap.put(key, rank);
-        }*/
+        // Construct rankMap.
         buildRankMap();
         isRanked = true;
     }
