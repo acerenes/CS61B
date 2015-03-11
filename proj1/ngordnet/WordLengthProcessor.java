@@ -4,20 +4,10 @@ import java.util.Collection;
 public class WordLengthProcessor implements YearlyRecordProcessor {
 
     public double process(YearlyRecord yearlyRecord) {
-        /* 
-        YearlyRecord yr = new YearlyRecord();
-        yr.put("sheep", 100);
-        yr.put("dog", 300);
-        WordLengthProcessor wlp = new WordLengthProcessor();
 
-        Since sheep appears 100 times and has length 5.
-        And dog appears 300 tiems and has length 3.
-        The average length in this year was 3.5. 
-        */
-
-        /* So it's sum(count * length) / (total counts). */
+        /* sum(count * length) / (total counts). */
         Collection<String> allWords = yearlyRecord.words();
-        // Going to use long b/c seems to hold largest possible #s.
+        // Using long b/c seems to hold largest possible #s.
         long totalSum = 0; // Initializing.
         long totalCounts = 0;
         /*long overflows = 0;*/
