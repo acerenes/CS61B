@@ -13,6 +13,12 @@ public class TestTimeSeries {
     public static final double NINEDOTTWO = 9.2;
     public static final int NINETYFOUR = 1994;
     public static final double FIFTEENTWO = 15.2;
+    public static final int NINETYFIVE = 1995;
+    public static final double SIXTEENONE = 16.1;
+    public static final int NINETYSIX = 1996;
+    public static final double NEGFIFTEENSEVEN = -15.7;
+    public static final int NINETYONE = 1991;
+    public static final double NEGONEPTFOUR = -1.4;
 
     @Test 
     public void testConstructor() {
@@ -33,8 +39,8 @@ public class TestTimeSeries {
         ts.put(NINETYTWO, THREEDOTSIX);
         ts.put(NINETYTHREE, NINEDOTTWO);
         ts.put(NINETYFOUR, FIFTEENTWO);
-        ts.put(1995, 16.1);
-        ts.put(1996, -15.7);
+        ts.put(NINETYFIVE, SIXTEENONE);
+        ts.put(NINETYSIX, NEGFIFTEENSEVEN);
         TimeSeries<Double> ts_cut = new TimeSeries<Double>();
         ts_cut.put(NINETYTHREE, NINEDOTTWO);
         ts_cut.put(NINETYFOUR, FIFTEENTWO);
@@ -49,8 +55,8 @@ public class TestTimeSeries {
         ts.put(NINETYTWO, THREEDOTSIX);
         ts.put(NINETYTHREE, NINEDOTTWO);
         ts.put(NINETYFOUR, FIFTEENTWO);
-        ts.put(1995, 16.1);
-        ts.put(1996, -15.7);
+        ts.put(NINETYFIVE, SIXTEENONE);
+        ts.put(NINETYSIX, NEGFIFTEENSEVEN);
         TimeSeries<Double> copy = new TimeSeries<Double>(ts);
         assertTrue(ts.equals(copy));
     }
@@ -81,7 +87,7 @@ public class TestTimeSeries {
         TimeSeries<Double> test2 = new TimeSeries<Double>();
         test2.put(NINETYTWO, 2.0);
         test2.put(NINETYTHREE, 2.0);
-        test2.put(1995, 1.0);
+        test2.put(NINETYFIVE, 1.0);
         ts.dividedBy(test2);
         // Thanks to StackOverflow for this weird Exception-testing error. 
     }
@@ -94,16 +100,16 @@ public class TestTimeSeries {
         ts.put(NINETYTHREE, NINEDOTTWO);
         ts.put(NINETYFOUR, FIFTEENTWO);
         TimeSeries<Integer> ts2 = new TimeSeries<Integer>();
-        ts2.put(1991, 10);
+        ts2.put(NINETYONE, 10);
         ts2.put(NINETYTWO, -5);
         ts2.put(NINETYTHREE, 1);
-        ts2.put(1995, 7);
+        ts2.put(NINETYFIVE, 7);
         TimeSeries<Double> actualsum = new TimeSeries<Double>();
-        actualsum.put(1991, 10.0);
-        actualsum.put(NINETYTWO, -1.4);
+        actualsum.put(NINETYONE, 10.0);
+        actualsum.put(NINETYTWO, NEGONEPTFOUR);
         actualsum.put(NINETYTHREE, 10.2);
         actualsum.put(NINETYFOUR, FIFTEENTWO);
-        actualsum.put(1995, 7.0);
+        actualsum.put(NINETYFIVE, 7.0);
         assertTrue(actualsum.equals(ts.plus(ts2)));
     }
 
@@ -114,14 +120,14 @@ public class TestTimeSeries {
         ts.put(NINETYTWO, THREEDOTSIX);
         ts.put(NINETYTHREE, NINEDOTTWO);
         ts.put(NINETYFOUR, FIFTEENTWO);
-        ts.put(1995, 16.1);
-        ts.put(1996, -15.7);
+        ts.put(NINETYFIVE, SIXTEENONE);
+        ts.put(NINETYSIX, NEGFIFTEENSEVEN);
         Collection<Number> years = ts.years();
         assertTrue(years.contains(NINETYTWO));
         assertTrue(years.contains(NINETYTHREE));
         assertTrue(years.contains(NINETYFOUR));
-        assertTrue(years.contains(1995));
-        assertTrue(years.contains(1996));
+        assertTrue(years.contains(NINETYFIVE));
+        assertTrue(years.contains(NINETYSIX));
     }
 
     @Test
@@ -130,14 +136,14 @@ public class TestTimeSeries {
         ts.put(NINETYTWO, THREEDOTSIX);
         ts.put(NINETYTHREE, NINEDOTTWO);
         ts.put(NINETYFOUR, FIFTEENTWO);
-        ts.put(1995, 16.1);
-        ts.put(1996, -15.7);
+        ts.put(NINETYFIVE, SIXTEENONE);
+        ts.put(NINETYSIX, NEGFIFTEENSEVEN);
         Collection<Number> data = ts.data();
         assertTrue(data.contains(THREEDOTSIX));
         assertTrue(data.contains(NINEDOTTWO));
         assertTrue(data.contains(FIFTEENTWO));
-        assertTrue(data.contains(16.1));
-        assertTrue(data.contains(-15.7));
+        assertTrue(data.contains(SIXTEENONE));
+        assertTrue(data.contains(NEGFIFTEENSEVEN));
     }
 
     public static void main(String[] args) {
