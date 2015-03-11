@@ -9,9 +9,13 @@ import com.xeiam.xchart.ChartBuilder;
 
 public class Plotter {
 
+    private static final int EIGHTHUNDRED = 800;
+    private static final int SIXHUNDRED = 600;
+
     /* Creates a plot of TimeSeries ts.
      * Labels graph with title, xlabel, ylabel, legend. */
-    public static void plotTS(TimeSeries<? extends Number> ts, String title, String xlabel, String ylabel, String legend) {
+    public static void plotTS(TimeSeries<? extends Number> ts, String title, 
+        String xlabel, String ylabel, String legend) {
         /* TimeSeries are year to "data". 
             * I'm doing year on x, data on y. */
         // THANK GOODNESS FOR XCHARTDEMO
@@ -47,7 +51,8 @@ public class Plotter {
                 yValues.add(countHist.get(year));
             }
         }
-        Chart chart = QuickChart.getChart("Absolute Word Counts for " + word, "Year", "Absolute Counts", word, xValues, yValues);
+        Chart chart = QuickChart.getChart("Absolute Word Counts for " + word, 
+            "Year", "Absolute Counts", word, xValues, yValues);
         new SwingWrapper(chart).displayChart();
     }
 
@@ -67,7 +72,8 @@ public class Plotter {
             }
         }
 
-        Chart chart = QuickChart.getChart("Normalized Weight Counts for " + word, "Year", "Normalized Weight Counts", word, xValues, yValues);
+        Chart chart = QuickChart.getChart("Normalized Weight Counts for " + word, 
+            "Year", "Normalized Weight Counts", word, xValues, yValues);
         new SwingWrapper(chart).displayChart();
     }
 
@@ -90,7 +96,8 @@ public class Plotter {
             }
         }
 
-        Chart chart = QuickChart.getChart("Total Normalized Count for All Hyponyms of " + categoryLabel, "Year", "Total Normalized Counts", categoryLabel, xValues, yValues);
+        Chart chart = QuickChart.getChart("Total Normalized Count for All Hyponyms of " + 
+            categoryLabel, "Year", "Total Normalized Counts", categoryLabel, xValues, yValues);
         new SwingWrapper(chart).displayChart();
     }
 
@@ -102,13 +109,15 @@ public class Plotter {
 
         String title = "Total Normalized Counts for Words and Their Hyponyms";
 
-        Chart chart = new ChartBuilder().width(800).height(600).title(title).xAxisTitle("Years").yAxisTitle("Total Normalized Counts").build();
+        Chart chart = new ChartBuilder().width(EIGHTHUNDRED).height(SIXHUNDRED).title(title).
+            xAxisTitle("Years").yAxisTitle("Total Normalized Counts").build();
 
         for (String catLabel : categoryLabels) {
             ArrayList<Number> xValues = new ArrayList<Number>();
             ArrayList<Number> yValues = new ArrayList<Number>();
             Set<String> hyponyms = wn.hyponyms(catLabel);
-            TimeSeries<Double> totalNormCount = ngm.summedWeightHistory(hyponyms, startYear, endYear);
+            TimeSeries<Double> totalNormCount = ngm.summedWeightHistory(hyponyms, 
+                startYear, endYear);
             String legend = catLabel;
             for (Number year : totalNormCount.years()) {
                 if (year.intValue() >= startYear && year.intValue() <= endYear) {
@@ -128,7 +137,8 @@ public class Plotter {
 
         String title = "Normalized Count for Words";
 
-        Chart chart = new ChartBuilder().width(800).height(600).title(title).xAxisTitle("Years").yAxisTitle("Normalized Counts").build();
+        Chart chart = new ChartBuilder().width(EIGHTHUNDRED).height(SIXHUNDRED).title(title).
+            xAxisTitle("Years").yAxisTitle("Normalized Counts").build();
 
         for (String word : words) {
             ArrayList<Number> xValues = new ArrayList<Number>();
