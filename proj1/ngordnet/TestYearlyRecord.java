@@ -97,7 +97,7 @@ public class TestYearlyRecord {
 
 
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestYearlyRecord.class);
     }
 }
