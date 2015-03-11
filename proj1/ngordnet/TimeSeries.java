@@ -7,14 +7,9 @@ import java.util.ArrayList;
 
 public class TimeSeries<T extends Number> extends TreeMap<Integer, T> {
 
-
-    // A TimeSeries is just a TreeMap with some extra methods. 
-
-
     /* Construct new empty TimeSeries */
     public TimeSeries() {
-        // Just call the TreeMap constructor, because tis just a TreeMap. 
-        new TreeMap();
+        super();
     }
 
 
