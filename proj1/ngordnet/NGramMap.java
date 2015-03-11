@@ -263,7 +263,7 @@ public class NGramMap {
 
     /* Provides processed history of all words between startyear and endyear as processed by yrp. */
     public TimeSeries<Double> processedHistory(int startYear, int endYear,
-     YearlyRecordProcessor yrp) {
+        YearlyRecordProcessor yrp) {
         /* TimeSeries only have year then data. 
             * So for one year, calculate data, put into TimeSeries. 
             * But wlp needs a YearlyRecord. */
