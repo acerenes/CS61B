@@ -71,7 +71,6 @@ public class TestPlotter {
 
 
 
-
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestPlotter.class);
     }
