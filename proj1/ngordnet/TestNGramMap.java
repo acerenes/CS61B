@@ -68,8 +68,10 @@ public class TestNGramMap {
 
     @Test 
     public void testCountHistory() {
-        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
-        TimeSeries<Integer> countHistory = ngm.countHistory("quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", 
+            "./ngrams/total_counts.csv");
+        TimeSeries<Integer> countHistory = ngm.countHistory("quantity", 
+            SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
         assertEquals(THIRTYFOUR, countHistory.size());
         assertEquals(ONETHREENINE, (double) countHistory.get(SEVENTEENTHIRTYSIX), 0);
         assertEquals(SIXTEENEIGHTYSIX, (double) countHistory.get(SEVENTEENTHIRTYEIGHT), 0);
@@ -82,26 +84,32 @@ public class TestNGramMap {
 
     @Test
     public void testWeightHistory() {
-        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
-        TimeSeries<Double> weightHistory = ngm.weightHistory("quantity", SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
-        System.out.println("The weightHistory method with bounds returns " + weightHistory.get(SEVENTEENTHIRTYSIX));
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", 
+            "./ngrams/total_counts.csv");
+        TimeSeries<Double> weightHistory = ngm.weightHistory("quantity", 
+            SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
+        System.out.println("The weightHistory method with bounds returns " 
+            + weightHistory.get(SEVENTEENTHIRTYSIX));
         System.out.println("NGramMapDemo says the method should return roughly 1.7267E-5");
         assertEquals(THIRTYFOUR, weightHistory.size());
 
 
         TimeSeries<Double> weightHistory2 = ngm.weightHistory("quantity");
-        System.out.println("Part 2: weightHistory method with no bounds returns " + weightHistory2.get(SEVENTEENTHIRTYSIX));
+        System.out.println("Part 2: weightHistory method with no bounds returns " 
+            + weightHistory2.get(SEVENTEENTHIRTYSIX));
         System.out.println("NGramMapDemo says the method should return roughly 1.7267E-5.");
         assertEquals(FOURHUNDRED, weightHistory2.size());
     }
 
     @Test
     public void testSummedWeightHistory() {
-        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", "./ngrams/total_counts.csv");
+        NGramMap ngm = new NGramMap("./ngrams/words_that_start_with_q.csv", 
+            "./ngrams/total_counts.csv");
         ArrayList<String> words = new ArrayList<String>();
         words.add("quantity");
         words.add("quality");
-        TimeSeries<Double> sum = ngm.summedWeightHistory(words, SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
+        TimeSeries<Double> sum = ngm.summedWeightHistory(words, 
+            SEVENTEENTWENTYFOUR, SEVENTEENFIFTYSEVEN);
         System.out.println("summedWeightHistory returns " + sum.get(SEVENTEENTHIRTYSIX));
         System.out.println("NGramMapDemo says it should be about 3.875E-5.");
         assertEquals(THIRTYFOUR, sum.size());
