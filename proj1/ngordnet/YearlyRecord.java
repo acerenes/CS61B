@@ -35,7 +35,7 @@ public class YearlyRecord {
             size = size + 1;
         }
         // Construct rankMap.
-        buildRankMap();
+        this.buildRankMap();
         isRanked = true;
     }
 
@@ -43,8 +43,6 @@ public class YearlyRecord {
     public void put(String word, int count) {
         countMap.put(word, count);
         size = size + 1;
-        /* Don't need to update the rank ALL THE TIME.
-            * Just do it when needed - rank is called. */
         isRanked = false;
     }
 
