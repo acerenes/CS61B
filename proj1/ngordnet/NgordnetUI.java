@@ -22,8 +22,9 @@ public class NgordnetUI {
         String synsetFile = in.readString();
         String hyponymFile = in.readString();
         System.out.println("\nBased on ngordnetui.config, using the following: "
-                           + wordFile + ", " + countFile + ", " + synsetFile +
-                           ", and " + hyponymFile + ".");
+                           + wordFile + ", " + countFile + ", " 
+                           + synsetFile 
+                           + ", and " + hyponymFile + ".");
         boolean yearsSet = false;
         int startYear = 0;
         int endYear = 0; // Initializing.
@@ -51,7 +52,9 @@ public class NgordnetUI {
                             System.out.println("Start must be less than end.");
                             yearsSet = false;
                         }
-                    } catch (RuntimeException ex) {
+                    } catch (NumberFormatException ex) {
+                        System.out.println("range command called incorrectly.");
+                    } catch (ArrayIndexOutOfBoundsException ex2) {
                         System.out.println("range command called incorrectly.");
                     }
                     break;
@@ -65,15 +68,7 @@ public class NgordnetUI {
                     historyCommand(tokens, wn, ngm, startYear, endYear, yearsSet);
                     break;
                 case "hypohist":
-                    if (tokens.length == 0 || !yearsSet) {
-                        System.out.println("hypohist command called incorrectly");
-                    } else {
-                        try {
-                            Plotter.plotCategoryWeights(ngm, wn, tokens, startYear, endYear); 
-                        } catch (IllegalArgumentException ex) {
-                            System.out.println("hypohist command called incorrectly.");
-                        }
-                    }
+                    hypohistCommand(tokens, wn, ngm, startYear, endYear, yearsSet);
                     break;
                 case "wordlength":
                     if (yearsSet) {
@@ -83,16 +78,7 @@ public class NgordnetUI {
                     }
                     break;
                 case "zipf":
-                    if (tokens.length == 0) {
-                        System.out.println("history command called incorrectly");
-                    } else {
-                        try {
-                            int year = Integer.parseInt(tokens[0]);
-                            plotZipfLog(ngm, year);
-                        } catch (RuntimeException ex) {
-                            System.out.println("zipf command called incorrectly.");
-                        }
-                    }
+                    zipfCommand(tokens, wn, ngm);
                     break;
                 default:
                     System.out.println("Invalid command.");
@@ -146,6 +132,43 @@ public class NgordnetUI {
                 }
             } catch (IllegalArgumentException ex) {
                 System.out.println("Word not found in data or year range invalid.");
+            }
+        }
+    }
+
+    /* Method for hypohist command. */
+    private static void hypohistCommand(String[] tokens, WordNet wn, NGramMap ngm, 
+        int startYear, int endYear, boolean yearsSet) {
+        if (tokens.length == 0) {
+            System.out.println("history command called incorrectly");
+        } else {
+            try {
+                if (yearsSet) {
+                    Plotter.plotCategoryWeights(ngm, wn, tokens, startYear, endYear);
+                } else {
+                    String error2 = "Years range not set or hypohist command called wrongly.";
+                    System.out.println(error2);
+                }
+            } catch (IllegalArgumentException ex) {
+                System.out.println("hypohist command called incorrectly.");
+            }
+        }
+    }
+
+    /* Method for zipf command. */
+    private static void zipfCommand(String[] tokens, WordNet wn, NGramMap ngm) {
+        if (tokens.length == 0) {
+            System.out.println("history command called incorrectly");
+        } else {
+            try {
+                int year = Integer.parseInt(tokens[0]);
+                plotZipfLog(ngm, year);
+            } catch (NumberFormatException ex) {
+                System.out.println("zipf command called incorrectly.");
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                System.out.println("zipf command called incorrectly.");
+            } catch (IllegalArgumentException ex) {
+                System.out.println("zipf command called incorrectly.");
             }
         }
     }
