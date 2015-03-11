@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set; 
 import java.util.Arrays;
 
-public class TestWordNet {
+public class TestWordNet { 
 
 
     @Test 
@@ -22,7 +22,7 @@ public class TestWordNet {
         String[] nouns = {"augmentation", "nasal_decongestant", "change", "action", "actifed", 
             "antihistamine", "increase", "descent", "parachuting", "leap", "demotion", "jump"}; 
         Set<String> expectedNouns = new HashSet<String>(Arrays.asList(nouns)); 
-        // Thanks to java2s.com for how to create a set without manually adding each element  
+        // Thanks to java2s.com for how to create a set without manually adding each element  LIDUGHFLIDSU
         Set<String> actualNouns = wn.nouns();
         assertTrue(actualNouns.equals(expectedNouns)); 
     }

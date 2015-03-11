@@ -1,0 +1,18 @@
+Q1:
+a) Fox() has nothing in it. For CONSTRUCTORS: if don't use super at all, implicit call to super(). So it'll call Animal(). 
+b) No because foxes are animals. 
+c) Speak is a non-static method, so execution depends on DYNAMIC type. f0's dynamic type is Fox, so it'll call fox's speak method. 
+d) Yes because a0 is an Animal; you can't make that have a static type of Fox. 
+e) None. Causes an error. 
+
+Q2:
+a) Compile-time b/c not all animals are foxes. 
+b) Speak is a non-static method, so run depends on its DYNAMIC type. So it'll call Fox's speak. 
+c) Speak= non-static, will call a1's DYNAMIC type= Fox's speak. 
+d) Speak= non-static, will call DYNAMIC type. 
+
+Q3: 
+a) The Fox() constructor with 1 argument has the call to super() in its code. So. Yeah. You called it. 
+b) a3.name- name is a variable, and it was overridden in Fox's code. So hiden variables depend on STATIC type. 
+c) Same idea as above, depends on a3's static type= Animal. 
+d) Shadowed fields (hidden variables?) & overriden STATIC methods based on STATIC type. 
