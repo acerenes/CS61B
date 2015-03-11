@@ -27,7 +27,6 @@ public class NgordnetUI {
                            + wordFile + ", " + countFile + ", " + synsetFile +
                            ", and " + hyponymFile + ".");
 
-
         /* Thanks 100 thousand million for ExampleUI.java. */
         boolean yearsSet = false;
         int startYear = 0;
