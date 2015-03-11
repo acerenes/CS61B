@@ -11,11 +11,17 @@ import edu.princeton.cs.introcs.Stopwatch;
  */
 public class YearlyRecordTimeTest {
 
+    private static final int NINTYSEVEN = 97;
+    private static final int ONETWOTHREE = 123;
+    private static final int FIFTY = 50;
+    private static final int ONEMILLION = 100000;
+    private static final int TENTHOUSAND = 10000;
+
     /** Stright from: http://www.baeldung.com/java-random-string. Returns
       * a random string. */
     public static String randomString() {
-        int leftLimit = 97; // letter 'a'
-        int rightLimit = 123; // letter 'z' + 1
+        int leftLimit = NINTYSEVEN; // letter 'a'
+        int rightLimit = ONETWOTHREE; // letter 'z' + 1
         int targetStringLength = 10;
         StringBuilder buffer = new StringBuilder(targetStringLength);
         for (int i = 0; i < targetStringLength; i++) {
@@ -33,7 +39,7 @@ public class YearlyRecordTimeTest {
             String rs = randomString();
             /* Each random string has a random count of between 0 and 49. 
              * May include multiple strings with same count. */
-            yr.put(rs, StdRandom.uniform(50));
+            yr.put(rs, StdRandom.uniform(FIFTY));
         }        
     }
 
@@ -42,7 +48,7 @@ public class YearlyRecordTimeTest {
      * Pass this on submit/proj1 for 0.1 bonus points. */
     @Test(timeout = 1000)
     public void testPut100000() {
-        testPutHelper(100000);
+        testPutHelper(ONEMILLION);
     }
 
     /* Tests to see if you can insert 1000 strings in less than a second. */
@@ -80,7 +86,7 @@ public class YearlyRecordTimeTest {
 
     /** Tests to see if your rank() function is independent of YearlyRecord size. 
       * Must pass for full credit. */
-    @Test(timeout = 10000)
+    @Test(timeout = TENTHOUSAND)
     public void testRankCalls() {
         int maxTimeInSeconds = 2;
         int numWordsToPut = 1;
