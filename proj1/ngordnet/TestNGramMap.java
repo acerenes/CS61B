@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 
-
 public class TestNGramMap {
 
     public static final int ONESEVENFIVE = 175702;
