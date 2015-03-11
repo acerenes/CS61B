@@ -15,6 +15,9 @@ import java.util.ArrayList;
 
 public class NgordnetUI {
 
+    private static final int EIGHTHUNDRED = 800;
+    private static final int SIXHUNDRED = 600;
+
     public static void main(String[] args) {
         In in = new In("./ngordnet/ngordnetui.config");
         String wordFile = in.readString();
@@ -176,7 +179,8 @@ public class NgordnetUI {
 
     /* Plots average word length with bounded years. */
     private static void plotWordLength(NGramMap ngm, int startYear, int endYear) {
-        TimeSeries<Double> wordLengthData = ngm.processedHistory(startYear, endYear, new WordLengthProcessor());
+        TimeSeries<Double> wordLengthData = ngm.processedHistory(startYear, endYear, 
+            new WordLengthProcessor());
 
         ArrayList<Number> xValues = new ArrayList<Number>();
         ArrayList<Number> yValues = new ArrayList<Number>();
@@ -186,7 +190,8 @@ public class NgordnetUI {
             yValues.add(wordLengthData.get(year));
         }
 
-        Chart chart = QuickChart.getChart("Average Word Length during Years", "Year", "Length", "Average Word Length", xValues, yValues);
+        Chart chart = QuickChart.getChart("Average Word Length during Years", 
+            "Year", "Length", "Average Word Length", xValues, yValues);
         new SwingWrapper(chart).displayChart();
     }
 
@@ -202,7 +207,8 @@ public class NgordnetUI {
             yValues.add(wordLengthData.get(year));
         }
 
-        Chart chart = QuickChart.getChart("Average Word Length of All Years", "Year", "Length", "Average Word Length", xValues, yValues);
+        Chart chart = QuickChart.getChart("Average Word Length of All Years", 
+            "Year", "Length", "Average Word Length", xValues, yValues);
         new SwingWrapper(chart).displayChart();
     }
 
@@ -225,7 +231,8 @@ public class NgordnetUI {
         String xlabel = "Rank (log)";
         String legend = Integer.toString(year);
 
-        Chart chart = new ChartBuilder().width(800).height(600).title(title).xAxisTitle(xlabel).yAxisTitle(ylabel).build();
+        Chart chart = new ChartBuilder().width(EIGHTHUNDRED).height(SIXHUNDRED).title(title)
+            .xAxisTitle(xlabel).yAxisTitle(ylabel).build();
 
         chart.getStyleManager().setYAxisLogarithmic(true);
         chart.getStyleManager().setXAxisLogarithmic(true);
