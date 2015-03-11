@@ -36,7 +36,6 @@ public class YearlyRecord {
         }
         // Construct rankMap.
         this.buildRankMap();
-        isRanked = true;
     }
 
     /* Records that word occured count times in this year. */
@@ -78,10 +77,9 @@ public class YearlyRecord {
     /* Helper fxn to build rankMap. */
     private void buildRankMap() {
         if (!isRanked) {
-            /* Build rankMap. */
             /* Dump entires of countMap to array. */
             String[] wordsArray = countMap.keySet().toArray(new String[0]);
-            // ^ B/c just toArray returns Object[]. Thx to StackOverflow for the trick.*/
+            // ^ B/c just toArray returns Object[]. Thx to StackOverflow for the trick.
             Arrays.sort(wordsArray, new StringCountComparator());
             ArrayList<String> wordsArrayList = new ArrayList<String>(Arrays.asList(wordsArray));
             for (String word2 : wordsArrayList) {
@@ -93,8 +91,7 @@ public class YearlyRecord {
     }
 
 
-    /* Inner class considered part of containing class --> Full access to all privates both ways.
-        * Access control. */
+
     private class StringCountComparator implements Comparator<String> {
         @Override
         public int compare(String word1, String word2) {
@@ -129,8 +126,7 @@ public class YearlyRecord {
             }
             return ascendingWords;
         }
-
-        // Build the rankMap.
+        // Else: build the rankMap.
         this.buildRankMap();
         return this.words();
     }
@@ -156,7 +152,7 @@ public class YearlyRecord {
             }
             return ascendingCount;
         }
-        // Build the rankMap.
+        // Else: build the rankMap.
         this.buildRankMap();
         return this.counts();
     }
