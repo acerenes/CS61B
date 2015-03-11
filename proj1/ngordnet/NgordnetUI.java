@@ -17,8 +17,6 @@ public class NgordnetUI {
 
     public static void main(String[] args) {
         In in = new In("./ngordnet/ngordnetui.config");
-        System.out.println("Reading ngordnetui.config...");
-
         String wordFile = in.readString();
         String countFile = in.readString();
         String synsetFile = in.readString();
@@ -26,33 +24,23 @@ public class NgordnetUI {
         System.out.println("\nBased on ngordnetui.config, using the following: "
                            + wordFile + ", " + countFile + ", " + synsetFile +
                            ", and " + hyponymFile + ".");
-
-        /* Thanks 100 thousand million for ExampleUI.java. */
         boolean yearsSet = false;
         int startYear = 0;
-        int endYear = 0; 
-        // ^ Intializing.
+        int endYear = 0; // Initializing.
         NGramMap ngm = new NGramMap(wordFile, countFile);
         WordNet wn = new WordNet(synsetFile, hyponymFile);
-
-        
-        while (true) { // So I guess constant updating.
+        while (true) { 
             System.out.print("> ");
             String line = StdIn.readLine(); 
             String[] rawTokens = line.split(" "); 
-            // RawTokens is everything user typed.
             String command = rawTokens[0];
-            String [] tokens = new String[rawTokens.length - 1];
-            System.arraycopy(rawTokens, 1, tokens, 0, rawTokens.length - 1);
-            // Tokens should be the inputs for the command.
-
+            String[] tokens = new String[rawTokens.length - 1]; // Tokens = command inputs.
+            System.arraycopy(rawTokens, 1, tokens, 0, rawTokens.length - 1); 
             switch (command) {
                 case "quit": 
                     return; 
                 case "help": 
-                    In inHelp = new In("./ngordnet/help.txt"); 
-                    String helpStr = inHelp.readAll(); 
-                    System.out.println(helpStr); 
+                    helpCommand(); 
                     break;
                 case "range":
                     try {
@@ -63,60 +51,25 @@ public class NgordnetUI {
                             System.out.println("Start must be less than end.");
                             yearsSet = false;
                         }
-                    } catch (NumberFormatException ex) {
-                        System.out.println("range command called incorrectly.");
-                    } catch (ArrayIndexOutOfBoundsException ex2) {
+                    } catch (RuntimeException ex) {
                         System.out.println("range command called incorrectly.");
                     }
                     break;
                 case "count":
-                    try {
-                        String word = tokens[0];
-                        int year = Integer.parseInt(tokens[1]);
-                        System.out.println(ngm.countInYear(word, year));
-                    } catch (NumberFormatException ex) {
-                        System.out.println("count command called incorrectly.");
-                    } catch (ArrayIndexOutOfBoundsException ex) {
-                        System.out.println("count command called incorrectly.");
-                    }
+                    countCommand(tokens, ngm);
                     break;
                 case "hyponyms":
-                    try {
-                        String word = tokens[0];
-                        Set<String> hyponyms = wn.hyponyms(word);
-                        System.out.println(hyponyms);
-                    } catch (ArrayIndexOutOfBoundsException ex) {
-                        System.out.println("hyponyms command called incorrectly.");
-                    }
+                    hyponymsCommand(tokens, wn);
                     break;
                 case "history":
-                    // DON'T FORGET THE YEARS LIMIT.
-                    if (tokens.length == 0) {
-                        System.out.println("history command called incorrectly");
-                    } else {
-                        try {
-                            if (yearsSet) {
-                                Plotter.plotAllWords(ngm, tokens, startYear, endYear);
-                            } else {
-                                String error = "Years range not set or history command called incorrectly.";
-                                System.out.println(error);
-                            }
-                        } catch (IllegalArgumentException ex) {
-                            System.out.println("Word not found in data or year range invalid.");
-                        }
-                    }
+                    historyCommand(tokens, wn, ngm, startYear, endYear, yearsSet);
                     break;
                 case "hypohist":
-                    if (tokens.length == 0) {
-                        System.out.println("history command called incorrectly");
+                    if (tokens.length == 0 || !yearsSet) {
+                        System.out.println("hypohist command called incorrectly");
                     } else {
                         try {
-                            if (yearsSet) {
-                                Plotter.plotCategoryWeights(ngm, wn, tokens, startYear, endYear);
-                            } else {
-                                String error2 = "Years range not set or hypohist command called wrongly.";
-                                System.out.println(error2);
-                            }
+                            Plotter.plotCategoryWeights(ngm, wn, tokens, startYear, endYear); 
                         } catch (IllegalArgumentException ex) {
                             System.out.println("hypohist command called incorrectly.");
                         }
@@ -136,11 +89,7 @@ public class NgordnetUI {
                         try {
                             int year = Integer.parseInt(tokens[0]);
                             plotZipfLog(ngm, year);
-                        } catch (NumberFormatException ex) {
-                            System.out.println("zipf command called incorrectly.");
-                        } catch (ArrayIndexOutOfBoundsException ex) {
-                            System.out.println("zipf command called incorrectly.");
-                        } catch (IllegalArgumentException ex) {
+                        } catch (RuntimeException ex) {
                             System.out.println("zipf command called incorrectly.");
                         }
                     }
@@ -151,6 +100,56 @@ public class NgordnetUI {
             }
         }
     }
+
+    /* Method for help command. */
+    private static void helpCommand() {
+        In inHelp = new In("./ngordnet/help.txt");
+        System.out.println(inHelp.readAll()); 
+    }
+
+    /* Method for count command. */
+    private static void countCommand(String[] tokens, NGramMap ngm) {
+        try {
+            String word = tokens[0];
+            int year = Integer.parseInt(tokens[1]);
+            System.out.println(ngm.countInYear(word, year));
+        } catch (NumberFormatException ex) {
+            System.out.println("count command called incorrectly.");
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            System.out.println("count command called incorrectly.");
+        }
+    }
+
+    /* Method for hyponyms command. */
+    private static void hyponymsCommand(String[] tokens, WordNet wn) {
+        try {
+            String word = tokens[0];
+            Set<String> hyponyms = wn.hyponyms(word);
+            System.out.println(hyponyms);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            System.out.println("hyponyms command called incorrectly.");
+        }
+    }
+
+    /* Method for history command. */
+    private static void historyCommand(String[] tokens, WordNet wn, NGramMap ngm, 
+        int startYear, int endYear, boolean yearsSet) {
+        if (tokens.length == 0) {
+            System.out.println("history command called incorrectly");
+        } else {
+            try {
+                if (yearsSet) {
+                    Plotter.plotAllWords(ngm, tokens, startYear, endYear);
+                } else {
+                    String error = "Years range not set or history command called incorrectly.";
+                    System.out.println(error);
+                }
+            } catch (IllegalArgumentException ex) {
+                System.out.println("Word not found in data or year range invalid.");
+            }
+        }
+    }
+
 
     /* Plots average word length with bounded years. */
     private static void plotWordLength(NGramMap ngm, int startYear, int endYear) {
@@ -213,4 +212,11 @@ public class NgordnetUI {
     }
 
 
+
 } 
+
+/* Thanks 100 thousand million for ExampleUI.java. 
+    * Sorry main method is super squished; had to be under 80 lines.
+    * Used to catch each individual type of exception, but too many lines - 1 big RunTimeException.
+    * Thanks Stylechecker. */
+
