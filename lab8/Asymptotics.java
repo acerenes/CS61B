@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.lang.Math;
 
 /** Class for testing the running times of various functions on
  *  different inputs. Usage:
@@ -43,8 +44,8 @@ public class Asymptotics {
 
     public static void function1(long n) {
         ArrayList<Integer> a = new ArrayList<Integer>();
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < i; j++) {
+        for (int i = 0; i < n; i++) { // Worstcase go through n times.
+            for (int j = 0; j < i; j++) { // 0 + 1 + 2 + .. + n
                 a.add(0);
                 a.clear();
             }
@@ -56,8 +57,8 @@ public class Asymptotics {
         int j = 0;
         for (int i = 0; i < n; i++){
             for (; j < i; j++) {
-                a.add(0);
-                a.clear();
+                a.add(0); // Amortized constant time.
+                a.clear(); // Linear time?
             }
         }
     }
@@ -76,7 +77,22 @@ public class Asymptotics {
     /** Fill in the body of this function so that its running time is
      *  n^(1/2) and so that it returns true if and only if n is prime. */
     public static boolean function4(long n) {
-	return false; //FIX ME
+        // Check square root?
+        // Factors come in pairs.
+        double newN = (double) n;
+        double sqrt = Math.sqrt(newN);
+        // 1 doesn't count as a factor.
+        for (double i = 2; i < sqrt; i = i + 1) {
+            if (newN % i == 0) {
+                return false;
+            }
+        }
+        if (sqrt % 1 == 0) {
+            // Checks if n is perfect square.
+            return false;
+        }
+        // ^ Constant operation, so should be fine.
+	   return true; 
     }
 
     /** Fill in the body of this function so that its best case running
