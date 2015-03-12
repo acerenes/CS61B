@@ -5,8 +5,10 @@ function3: Theta(__N^3__)
 
 Data:
                n         time
-function1:
-
+function1:   10,000     0.237 s
+            20,000      0.9 s
+            50,000       5.957 s
+            100,000     23.03 s
 
 
 
@@ -22,7 +24,7 @@ function3:
 
 Experimentally determined running time, assuming runtime is of the form ~aN^b:
 
-function1: ~__N^__
+function1: ~_(4.095 * 10^-9)_N^_1.95_
 function2: ~__N^__
 function3: ~__N^__
 
