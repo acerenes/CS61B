@@ -7,6 +7,7 @@ import com.xeiam.xchart.QuickChart;
 import com.xeiam.xchart.SwingWrapper;
 import com.xeiam.xchart.ChartBuilder;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /** Provides a simple user interface for exploring WordNet and NGram data.
  *  @author Alice Tarng 
@@ -130,13 +131,58 @@ public class NgordnetUI {
                 if (yearsSet) {
                     Plotter.plotAllWords(ngm, tokens, startYear, endYear);
                 } else {
-                    String error = "Years range not set or history command called incorrectly.";
-                    System.out.println(error);
+                    // Should just plot from start to end.
+                    // But how do I get ALL THE YEARS? 
+                    Set<Integer> allYears = allYears(ngm, tokens);
+                    int maxYear = maxYear(allYears);
+                    int minYear = minYear(allYears);
+                    /*String error = "Years range not set or history command called incorrectly.";
+                    System.out.println(error);*/
+                    Plotter.plotAllWords(ngm, tokens, minYear, maxYear);
                 }
             } catch (IllegalArgumentException ex) {
                 System.out.println("Word not found in data or year range invalid.");
+            } catch (ArrayIndexOutOfBoundsException ex2) {
+                System.out.println("Word not found in data or year range invalid.");
             }
         }
+    }
+
+    /* Finds all years of an array of words. */
+    private static Set<Integer> allYears(NGramMap ngm, String[] words) {
+        Set<Integer> allYears = new HashSet<Integer>();
+        for (String wordToExamine : words) {
+            TimeSeries<Integer> countHist = ngm.countHistory(wordToExamine);
+            Set<Integer> wordYears = countHist.keySet();
+            for (Integer oneYear : wordYears) {
+                allYears.add(oneYear);
+            }
+        }
+        return allYears;
+    }
+
+    /* Finds max year of a set of years. */
+    private static int maxYear(Set<Integer> years) {
+        int max = 0;
+        for (Integer year : years) {
+            if (year > max) {
+                max = year;
+            }
+        }
+        return max;
+    }
+
+    /* Finds min year of a set of years. */
+    private static int minYear(Set<Integer> years) {
+        Integer[] yearsArray = years.toArray(new Integer[0]);
+        // I just need an element of years to compare against.
+        int min = yearsArray[0]; // Just take the 1st one whatever.
+        for (Integer year : years) {
+            if (year < min) {
+                min = year;
+            }
+        }
+        return min;
     }
 
     /* Method for hypohist command. */
@@ -149,10 +195,14 @@ public class NgordnetUI {
                 if (yearsSet) {
                     Plotter.plotCategoryWeights(ngm, wn, tokens, startYear, endYear);
                 } else {
-                    String error2 = "Years range not set or hypohist command called wrongly.";
-                    System.out.println(error2);
+                    Set<Integer> allYears = allYears(ngm, tokens);
+                    int maxYear = maxYear(allYears);
+                    int minYear = minYear(allYears);
+                    Plotter.plotCategoryWeights(ngm, wn, tokens, minYear, maxYear);
                 }
             } catch (IllegalArgumentException ex) {
+                System.out.println("hypohist command called incorrectly.");
+            } catch (ArrayIndexOutOfBoundsException ex2) {
                 System.out.println("hypohist command called incorrectly.");
             }
         }
