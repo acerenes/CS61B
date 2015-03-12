@@ -222,7 +222,6 @@ public class NGramMap {
 
     /* Returns the summed relative frequencey of all words. */
     public TimeSeries<Double> summedWeightHistory(Collection<String> words) {
-
         TimeSeries<Double> summedWeightHist = new TimeSeries();
         /* Go through one word at a time. 
             * Go through entire words set, grab year + #. 
