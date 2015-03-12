@@ -172,7 +172,7 @@ public class NgordnetUI {
     /* Finds min year of a set of years. */
     private static int minYear(Set<Integer> years) {
         Integer[] yearsArray = years.toArray(new Integer[0]);
-        // I just need an element of years to compare against.
+        // Just need an element of years to compare against.
         int min = yearsArray[0]; // Just take the 1st one whatever.
         for (Integer year : years) {
             if (year < min) {
