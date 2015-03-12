@@ -10,7 +10,7 @@ public class WordLengthProcessor implements YearlyRecordProcessor {
             * Doing this b/c want to avoid overflow problems. */
         Collection<String> allWords = yearlyRecord.words();
         double avgLength = 0; // Initializing
-        long totalCounts = 0;
+        double totalCounts = 0;
         // Going to find totalCounts first, so can use it for distributive magic.
         for (String word : allWords) {
             int wordCount = yearlyRecord.count(word);
@@ -25,7 +25,7 @@ public class WordLengthProcessor implements YearlyRecordProcessor {
         for (String word2 : allWords) {
             int length = word2.length();
             int wordCount = yearlyRecord.count(word2);
-            avgLength = avgLength + ((double) (wordCount * length) / (double) totalCounts);
+            avgLength = avgLength + ((double) (wordCount * length) / totalCounts);
         }
 
         return avgLength;
