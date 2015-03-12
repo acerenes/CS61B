@@ -1,5 +1,5 @@
 1. Estimated running times (in big-theta notation):
-function1: Theta(____)
+function1: Theta(__N^2__)
 function2: Theta(____)
 function3: Theta(____)
 
