@@ -11,7 +11,7 @@ public class WordLengthProcessor implements YearlyRecordProcessor {
         Collection<String> allWords = yearlyRecord.words();
         double avgLength = 0; // Initializing
         double totalCounts = 0;
-        // Going to find totalCounts first, so can use it for distributive magic.
+        // Find totalCounts first, so can use it for distributive magic.
         for (String word : allWords) {
             int wordCount = yearlyRecord.count(word);
             totalCounts = totalCounts + wordCount;
