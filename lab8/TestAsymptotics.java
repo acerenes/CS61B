@@ -14,6 +14,6 @@ public class TestAsymptotics {
 
 
     public static void main(String[] args) {
-        jh61b.junit.textui.runClasses(TestYearlyRecord.class);
+        jh61b.junit.textui.runClasses(TestAsymptotics.class);
     }
 }
