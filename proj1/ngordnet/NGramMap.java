@@ -40,7 +40,7 @@ public class NGramMap {
                 Number[] countsArray = new Number[2];
                 for (int i = 0; i < 2; i = i + 1) {
                     try { 
-                        // Have to create Number from string[].
+                        // Create a Number from string[].
                         Number element = Double.valueOf(countsStringarray[i]).doubleValue();
                         countsArray[i] = element;
                     } catch (NumberFormatException nf) {
