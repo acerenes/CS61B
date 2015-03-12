@@ -131,13 +131,10 @@ public class NgordnetUI {
                 if (yearsSet) {
                     Plotter.plotAllWords(ngm, tokens, startYear, endYear);
                 } else {
-                    // Should just plot from start to end.
-                    // But how do I get ALL THE YEARS? 
+                    // Plot all the years.
                     Set<Integer> allYears = allYears(ngm, tokens);
                     int maxYear = maxYear(allYears);
                     int minYear = minYear(allYears);
-                    /*String error = "Years range not set or history command called incorrectly.";
-                    System.out.println(error);*/
                     Plotter.plotAllWords(ngm, tokens, minYear, maxYear);
                 }
             } catch (IllegalArgumentException ex) {
