@@ -4,7 +4,12 @@ import static org.junit.Assert.*;
 public class TestAsymptotics {
 
     @Test
-    public void 
+    public void testFunction4() {
+        long prime = 997;
+        long notprime = 10000;
+        assertTrue(Asymptotics.function4(prime));
+        assertFalse(Asymptotics.function4(notprime));
+    }
 
 
 
