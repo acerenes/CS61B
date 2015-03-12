@@ -98,7 +98,7 @@ public class Asymptotics {
     /** Fill in the body of this function so that its best case running
      *  time is log(n) and its worst case running time is n. */
     public static void function5(long n) {
-        long counter = 1000000;
+        long counter = 1000000000;
         // Do it 1000000000000 times, so runtime should be scaled by 1000000000000.
         long newN = Math.abs(n); 
         long changingN = newN;
