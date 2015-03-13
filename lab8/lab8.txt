@@ -128,4 +128,10 @@ Data:             n               time
 
 Experimentally determined running time: O(__N^1.4967_) (approximately O(N^1.5))
 
+/* My guess for why it's N^1.5:
+    * According to my professional fantastic graph/line-drawing skills, it's kinda like summing n-i^2 for each iteration of the outerloop.
+    * So then, the only, like, important, contributing stuff is for the smaller is, like i <= sqrt(n), kinda?
+    * So then it's kinda like sqrt(n) * (n - stuff), which is like n^1.5. Maybe. Yeah?
+*/
+
 
