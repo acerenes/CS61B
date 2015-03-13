@@ -103,6 +103,9 @@ Insertion sort with linked list:    625         0.104 s
                                     5000       59.862 s
 
 
+/* My guess in why the run times are so different is that ArrayList is an array, so it's really easy to like boop in and remove all the things.
+Whereas for linked lists, ya gotta like follow all the pointers, along this winding path, and that takes time.
+Maybe? Yeah? */
 
 
 
@@ -111,7 +114,7 @@ Experimentally determined running time:
 Insertion sort with array:        O(_N^3.088__) (approximately O(N^3))
 Insertion sort with linked list:  O(_N^3.152__) (approximately O(N^3))
 
-5. Initial guess: O(___)
+5. Initial guess: O(__N^2_)
 
 Data:             n               time
 
