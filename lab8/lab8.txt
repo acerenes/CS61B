@@ -117,10 +117,15 @@ Insertion sort with linked list:  O(_N^3.152__) (approximately O(N^3))
 5. Initial guess: O(__N^2_)
 
 Data:             n               time
+                 5000            0.004 s
+                50,000           0.007 s
+                 10^6            0.25 s
+                2 * 10^6         0.722 s
+                4 * 10^6         2.08 s
+                8 * 10^6         5.886 s
+                1.6 * 10^7       16.61 s                        
 
 
-
-
-Experimentally determined running time: O(___)
+Experimentally determined running time: O(__N^1.4967_) (approximately O(N^1.5))
 
 
