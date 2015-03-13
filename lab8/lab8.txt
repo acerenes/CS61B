@@ -51,9 +51,10 @@ function5 (best case):      500            0.871 s
 
 
 
-
-
-function5 (worst case):    
+function5 (worst case):     63             4.689 s
+                            125            7.092 s
+                            251           12.161 s
+                            501           21.961 s
 
 
 
