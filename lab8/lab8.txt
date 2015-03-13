@@ -44,14 +44,17 @@ function4:                2147483647       0.002 s
 
 
 
-function5 (best case):      500           1.749 s
-                           10,000         1.752 s
-                           100,000        1.756 s
-                            10^9          1.774 s
+function5 (best case):      500            0.871 s
+                          100,000          1.932 s
+                           10^9            4.129 s
+                          2 * 10^9         4.313 s
 
 
 
-function5 (worst case):
+
+
+function5 (worst case):    
+
 
 
 
