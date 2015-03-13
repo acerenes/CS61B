@@ -88,12 +88,19 @@ HashSet: O(N^0.8779) (approximately O(N))
 
 4. Data:
                                        n         time
-Insertion sort with array list:
+Insertion sort with array list:      5000       0.03 s
+                                    25,000      0.397 s
+                                    50,000      1.802 s
+                                    100,000     8.871 s
+                                    200,000    75.436 s    
 
 
-
-
-Insertion sort with linked list:
+Insertion sort with linked list:    625         0.104 s
+                                    1000       0.415 s
+                                    1250       0.806 s
+                                    2000       3.355 s
+                                    2500       6.736 s    
+                                    5000       59.862 s
 
 
 
@@ -101,8 +108,8 @@ Insertion sort with linked list:
 
 Experimentally determined running time:
 
-Insertion sort with array:        O(___)
-Insertion sort with linked list:  O(___)
+Insertion sort with array:        O(_N^3.088__) (approximately O(N^3))
+Insertion sort with linked list:  O(_N^3.152__) (approximately O(N^3))
 
 5. Initial guess: O(___)
 
