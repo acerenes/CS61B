@@ -20,16 +20,15 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         }
     }
 
+    @Override
     public V get(K key) {
         return get(this.root, key);
     }
-
     private static V get(Node start, K key) {
         if (start == null) {
             return null;
         }
         int cmp = key.compareTo(start.key);
-        
         if (cmp < 0) { // Need to go smaller. 
             return get(start.left, key);
         }
@@ -42,5 +41,13 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     }
 
+    @Override
+    public void put(K key, V value) {
+        SOMEETHTHININIGNIGNING HERREEEEEE
+    }
+    private 
 
-} 
+
+}
+
+/* So much millions of thanks to the Algs book. */
