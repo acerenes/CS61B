@@ -25,7 +25,7 @@ public class TestBST {
 
     @Test
     public void testPrintInOrder() {
-        BBSTMap<Integer, String> um = new BSTMap<Integer, String>();
+        BSTMap<Integer, String> um = new BSTMap<Integer, String>();
         um.put(14, "Fourteen");
         um.put(-5, "Negative Five");
         um.put(1, "One");
