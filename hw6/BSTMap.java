@@ -3,6 +3,7 @@ import java.util.Set;
 public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     private Node root;
+    // Making Nodes do all the work.
 
 
     private class Node {
@@ -29,6 +30,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     public V get(K key) {
         return get(this.root, key);
     }
+
     private V get(Node start, K key) {
         if (start == null) {
             return null;
@@ -46,6 +48,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
     }
 
+
     @Override
     public void put(K key, V value) {
         if (key == null) {
@@ -53,6 +56,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         }
         this.root = put(this.root, key, value);
     }
+
     private Node put(Node start, K key, V value) {
         // I think you have to return the new "root".
         if (start == null) {
@@ -89,18 +93,37 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
 
 
+    @Override
+    public boolean containsKey(K key) {
+        return containsKey(this.root, key);
+    }
+
+    private boolean containsKey(Node start, K key) {
+        if (start == null) {
+            return false;
+        }
+        int cmp = key.compareTo(start.key);
+        if (cmp < 0) {
+            return containsKey(start.left, key);
+        }
+        else if (cmp > 0) {
+            return containsKey(start.right, key);
+        }
+        else {
+            // Found it!
+            return true;
+        }
+    }
+
+
+
     
     @Override
     public void clear() {
-        throw new UnsupportedOperationException();
+        this.root = null;
     }
 
-    @Override
-    public boolean containsKey(K key) {
-        throw new UnsupportedOperationException();
-    }
-
-
+    
     
 
 
