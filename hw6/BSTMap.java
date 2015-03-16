@@ -123,6 +123,27 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         this.root = null;
     }
 
+
+
+    public void printInOrder() {
+        printInOrder(this.root);
+        
+    }
+    private void printInOrder(Node start) {
+        if (start != null) {
+            printInOrder(start.left);
+            // Once all left stuff is done: 
+            System.out.println(start.key + " : " + start.value);
+            printInOrder(start.right);
+            // Then go back up the level.
+        }
+        /* It's good to draw a pic for this. 
+            * Go down left all the way. 
+            * Once the left branch is null, the function won't do anything.
+            * So like, go back up a level. 
+            * Print out your stuff, print out right stuff. 
+            * And just keep going back up the levels. */
+    }
     
     
 
