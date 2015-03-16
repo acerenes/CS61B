@@ -1,0 +1,36 @@
+Strings are of length 10. 
+
+
+InsertRandomSpeedTest: 
+# Strings          ULLMap              BSTMap            Java's TreeMap
+  1000             0.02 s              0.02 s                 0.00 s
+  5000             0.13 s              0.01 s                 0.01 s
+ 10,000            0.54 s              0.01 s                 0.01 s
+ 20,000            2.55 s              0.02 s                 0.02 s
+ 40,000              X                 0.04 s                 0.05 s
+ 100,000             X                 0.16 s                 0.13 s
+ 200,000             X                 0.35 s                 0.23 s
+ 500,000             X                 0.84 s                 1.05 s
+1,000,000            X                 1.85 s                 2.17 s
+2,000,000            X                 5.49 s                 3.64 s
+5,000,000            X                22.66 s                15.73 s
+10,000,000           X                51.13 s                45.29 s
+
+
+
+
+
+InsertInOrderSpeedTest:
+  1000              0.03 s              0.04 s                0.01 s
+  5000              0.26 s              0.30 s                0.03 s
+ 10,000             1.18 s              1.06 s                0.01 s
+ 20,000             7.13 s              5.88 s                0.02 s
+ 40,000               X                   X                   0.04 s
+ 100,000              X                   X                   0.21 s
+ 200,000              X                   X                   0.22 s
+ 1,000,000            X                   X                   1.48 s
+ 10,000,000           X                   X                   37.15 s
+
+Previously, for the RandomSpeedTest, my BSTMap was pretty on par with Java's TreeMap. But during the InOrderSpeedTest, my BSTMap suddenly became more like the "naive" ULLMap, while Java's TreeMap strolled along nonchalantly, like nothing had changed. (If anything, it became even faster). 
+I believe the reason for this is that when things are inserted randomly, it takes average logN time each (according to lecture 22). But when things are inserted in order, the BST becomes supes unbalanced, all spindly and leaning to one side (here, right). So then when we put in the next thing, and thus, have to search for stuff, we have to traverse this suuuuuuper long path all the way down, and we get none of the benefits of the BST like before, when we could half the path length using right or left. 
+Java's TreeMap probably does some fancy thing that keeps it from being spindly. Probably that weird red-black BST thing. Java, stop making me feel inferior. 
