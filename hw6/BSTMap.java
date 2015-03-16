@@ -135,7 +135,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             // Once all left stuff is done: 
             System.out.println(start.key + " : " + start.value);
             printInOrder(start.right);
-            // Then go back up the level.
+            // Then go back up the level, to the frame you never finished.
         }
         /* It's good to draw a pic for this. 
             * Go down left all the way. 
@@ -143,6 +143,8 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             * So like, go back up a level. 
             * Print out your stuff, print out right stuff. 
             * And just keep going back up the levels. */
+
+        /* Thanks to StackOverflow for the idea. */
     }
     
     
