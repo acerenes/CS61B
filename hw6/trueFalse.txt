@@ -3,6 +3,6 @@
 3 F Good-case scenario: the tree is bushy - it'll take log time. So it's not in BigOmega - can't be in BigTheta.
 4 T Worst-case scenario, ya got a super splindly tree. You'll have to traverse the whole thing, this super long line, with no chopping off parts - linear. 
 5 T Yeah sure why not. If you're in O(N), O(N^2) is even more encompassing. You'll fit right in. 
-6 F Because 4lnN?????? YEAH??? I DUNNNNOOOO
+6 F Because 4lnN?????? YEAH??? I DUNNNNOOO
 7 T Best case scenario, even if key C is at the root (which would take constant time), finding key K = C! will require traversing through, and that would take WAIT YOU'RE LOOKING AS YOU DOUBLE IN THE INPUT THERE'S NO DOUBLING OF INPUT HERE
 8 O(N^2) Looking for the node whose size = z, yeah? So worst case scenario, you have a SUPER LEFT-LEANING BST. And you want to find the last node. Ya gotta go all the way down. But #Nodes method takes linear time. So N, and then you do the recurse. So you recurse N times, and each time, you take N time in that if. N^2????
