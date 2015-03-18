@@ -144,7 +144,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
             * Print out your stuff, print out right stuff. 
             * And just keep going back up the levels. */
 
-        /* Thanks to StackOverflow for the idea. */
+        /* Thanks StackOverflow for the idea. */
     }
     
     
