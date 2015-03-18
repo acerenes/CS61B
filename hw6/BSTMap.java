@@ -14,10 +14,10 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         private Node right;
         private int size;
 
-        private Node(K key, V value, int size) {
-            this.key = key;
-            this.value = value;
-            this.size = size;
+        private Node(K k, V val, int num) {
+            this.key = k;
+            this.value = val;
+            this.size = num;
         }
     }
 
@@ -38,11 +38,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         int cmp = key.compareTo(start.key);
         if (cmp < 0) { // Need to go smaller. 
             return get(start.left, key);
-        }
-        else if (cmp > 0) { // Need to go bigger.
+        } else if (cmp > 0) { // Need to go bigger.
             return get(start.right, key);
-        }
-        else { // Found it.
+        } else { // Found it.
             return start.value;
         }
 
@@ -66,11 +64,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         if (cmp < 0) {
             // Move left.
             start.left = put(start.left, key, value);
-        }
-        else if (cmp > 0) {
+        } else if (cmp > 0) {
             start.right = put(start.right, key, value);
-        }
-        else {
+        } else {
             // Update the node.
             start.value = value;
         }
@@ -105,11 +101,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         int cmp = key.compareTo(start.key);
         if (cmp < 0) {
             return containsKey(start.left, key);
-        }
-        else if (cmp > 0) {
+        } else if (cmp > 0) {
             return containsKey(start.right, key);
-        }
-        else {
+        } else {
             // Found it!
             return true;
         }
