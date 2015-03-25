@@ -34,7 +34,8 @@ public class Card {
 
     @Override
     public int hashCode() {
-        // YOUR CODE HERE (this is possible in one concise line)
-        return 0;
+        return (this.suit * 31) + this.number;
+        /* Definitely valid I believe. 
+        Also should never collide because the 31 step shouldn't be covered by any #. */
     }
 }
