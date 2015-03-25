@@ -154,8 +154,7 @@ public class Nana {
 
     // Is hashCodeF() a valid hash for Nana? Return "yes" or "no"
     public static final String isValidHashF() {
-        return "no"; 
-        /* Still spitting random values all over the place. */
+        return "yes";
     }
 
     /**************************************************************/
