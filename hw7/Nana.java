@@ -81,7 +81,8 @@ public class Nana {
 
     // Is hashCodeA() a perfect hash for Nana? Return "yes" or "no"
     public static final String isPerfectHashA() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "no"; 
+        /* I'm thinking cause even if 2 Nanas were the same, you might not get same hashCode. */ 
     }
 
     // Is hashCodeB() a perfect hash for Nana? Return "yes" or "no"
