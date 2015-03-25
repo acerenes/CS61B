@@ -95,7 +95,9 @@ public class Nana {
 
     // Is hashCodeC() a perfect hash for Nana? Return "yes" or "no"
     public static final String isPerfectHashC() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "yes"; 
+        /* I don't think you can get the same hashCode with diff. nums.
+            * 17 can't cross the distance of a 101 multiple. */
     }
 
     // Is hashCodeD() a perfect hash for Nana? Return "yes" or "no"
