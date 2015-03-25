@@ -36,7 +36,11 @@ public class Bin15 {
     
     @Override
     public boolean equals(Object o) {
-        return false; // YOUR CODE HERE
+        if ((o != null) && (this != null) && (o instanceof Bin15)) {
+            Bin15 other = (Bin15) o;
+            return (this.myBinStr).equals(other.myBinStr);
+        }
+        return false;
     }
     
     @Override
