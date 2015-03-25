@@ -108,12 +108,14 @@ public class Nana {
 
     // Is hashCodeE() a perfect hash for Nana? Return "yes" or "no"
     public static final String isPerfectHashE() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "no"; 
+        /* 2 Nana's not guaranteed same hashCode with random fxn. */
     }
 
     // Is hashCodeF() a perfect hash for Nana? Return "yes" or "no"
     public static final String isPerfectHashF() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "no"; 
+        /* 2 Nana's still not guaranteed same hashCode with random. */
     }
 
     /**************************************************************/
