@@ -9,8 +9,8 @@ public class Nana {
         System.out.println("Oh nana, what's myNum?");
         // The below is potentially useless test code.
                 
-        /*
-          Nana weeyana = new Nana(83);
+        
+        /*Nana weeyana = new Nana(83);
           System.out.println("A: " + weeyana.hashCodeA());
           System.out.println("B: " + weeyana.hashCodeB());
           System.out.println("C: " + weeyana.hashCodeC());
@@ -87,7 +87,10 @@ public class Nana {
 
     // Is hashCodeB() a perfect hash for Nana? Return "yes" or "no"
     public static final String isPerfectHashB() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "yes"; 
+        /* 2 Nana's equal if myNums the same value. 
+            * HashCode will be same if myNum same, aka Nana's same.
+            * HashCode will be diff if myNum diff, aka Nana's diff. */
     }
 
     // Is hashCodeC() a perfect hash for Nana? Return "yes" or "no"
