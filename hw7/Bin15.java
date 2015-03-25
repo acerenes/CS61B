@@ -45,7 +45,16 @@ public class Bin15 {
     
     @Override
     public int hashCode() {
-        return -1; // YOUR CODE HERE
+        // Turn it into its int value?
+        int intVal = 0; // Initialize.
+        for (int i = 0; i < 15; i = i + 1) {
+            char num = (this.myBinStr).charAt(i);
+            intVal = intVal << 1;
+            if (num == '1') {
+                intVal = intVal + 1;
+            }
+        }
+        return intVal;
     }
 
     /* DO THIS LAST, AFTER IMPLEMENTING EVERYTHING
