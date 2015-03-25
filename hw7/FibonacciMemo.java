@@ -23,9 +23,21 @@ public class FibonacciMemo {
      * @param n
      * @return The nth fibonacci number
      */
+
+    private static HashMap<Integer, Integer> fibNums = new HashMap<Integer, Integer>();
+    /* They said to make it static, so I did. 
+    I'm assuming because fib #s are the same everywhere, so want 1 map for all runnings of fib? */
+
     public static int fibMemo(int n) {
-        // YOUR CODE HERE
-        return 0;
+        if (n <= 1) { // Base Case
+            fibNums.put(n, n);
+            return n;
+        } else if (fibNums.containsKey((Integer) n)) {
+            return fibNums.get((Integer) n);
+        }
+        int returnFib = fibMemo(n - 1) + fibMemo(n - 2);
+        fibNums.put((Integer) n, returnFib);
+        return returnFib;
     }
 
     /**
@@ -34,8 +46,8 @@ public class FibonacciMemo {
      * as the 47th Fibonacci number?
      */
     public static String why47() {
-        String answer = "potatoes";
-        answer += ", " + answer + " and tapioca";
+        String answer = "Overflow - ints can only go up to around 2 billion.";
+        /*answer += ", " + answer + " and tapioca";*/
         return answer;
     }
 
