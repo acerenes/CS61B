@@ -123,32 +123,39 @@ public class Nana {
 
     // Is hashCodeA() a valid hash for Nana? Return "yes" or "no"
     public static final String isValidHashA() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "no"; 
+        /* A will give you random #s all over the place. */ 
     }
 
     // Is hashCodeB() a valid hash for Nana? Return "yes" or "no"
     public static final String isValidHashB() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "yes"; 
+        /* Equal Nana's = equal myNums = equal hashCode values. */ 
     }
 
     // Is hashCodeC() a valid hash for Nana? Return "yes" or "no"
     public static final String isValidHashC() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "yes"; // Same reasoning as above.  
     }
 
     // Is hashCodeD() a valid hash for Nana? Return "yes" or "no"
     public static final String isValidHashD() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "yes"; 
+        /* I mean, I guess, yeah. 
+            * Equal Nana's will definitely have the same hashCode value. 
+            * I mean, because everyone has the same hashCode value. */
     }
 
     // Is hashCodeE() a valid hash for Nana? Return "yes" or "no"
     public static final String isValidHashE() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "no"; 
+        /* Spitting random values all over the place. */
     }
 
     // Is hashCodeF() a valid hash for Nana? Return "yes" or "no"
     public static final String isValidHashF() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "no"; 
+        /* Still spitting random values all over the place. */
     }
 
     /**************************************************************/
