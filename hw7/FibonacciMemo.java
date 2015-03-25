@@ -46,7 +46,7 @@ public class FibonacciMemo {
      * as the 47th Fibonacci number?
      */
     public static String why47() {
-        String answer = "There is integer overflow - ints can only go up to around 2 billion.";
+        String answer = "There is integer overflow - ints can only go up to around 2 billion. Anything larger, it'll wrap back around to negatives. ";
         /*answer += ", " + answer + " and tapioca";*/
         return answer;
     }
