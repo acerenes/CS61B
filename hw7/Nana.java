@@ -102,7 +102,8 @@ public class Nana {
 
     // Is hashCodeD() a perfect hash for Nana? Return "yes" or "no"
     public static final String isPerfectHashD() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "no"; 
+        /* It's like an infinity to 1 mapping, not a 1 to 1. Everyone is 17. */
     }
 
     // Is hashCodeE() a perfect hash for Nana? Return "yes" or "no"
