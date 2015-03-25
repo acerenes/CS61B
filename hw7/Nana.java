@@ -95,9 +95,9 @@ public class Nana {
 
     // Is hashCodeC() a perfect hash for Nana? Return "yes" or "no"
     public static final String isPerfectHashC() {
-        return "yes"; 
-        /* I don't think you can get the same hashCode with diff. nums.
-            * 17 can't cross the distance of a 101 multiple. */
+        return "no"; 
+        /* If two Nana myNums are negatives of each other, they'll have the same hashCode.
+            * The Nana's won't be equal, but their hashCode will be. */
     }
 
     // Is hashCodeD() a perfect hash for Nana? Return "yes" or "no"
@@ -162,18 +162,23 @@ public class Nana {
     /************************ Question #1.3 ***********************/
 
     public static final String worst2Best() {
-        return "A, B, C, D"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "A, D, C, B";  
     }
 
     /**************************************************************/
     /************************ Question #1.4 ************************/
 
     public static final String thereWasCollision() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "yes"; 
+        /* Because hashCodeF just does abs of myNum, so Drake & Rihanna have the same hashCode. */ 
     }
 
     public static final String canGetDrake() {
-        return "maybe"; // REPLACE THIS LINE WITH YOUR ANSWER 
+        return "yes"; 
+        /* I guess yeah?
+        If you can get Rihanna, should be able to get Drake. 
+        Even though they have the same container, they're prbly stored like a list?
+        Anyway, should still be able to get to Drake. */
     }
 
 } // End Nana.java
