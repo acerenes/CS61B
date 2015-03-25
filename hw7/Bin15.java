@@ -64,7 +64,11 @@ public class Bin15 {
     in the method followUpAnswer(). 
     */
     public static final int followUpAnswer() {
-        return 42; // YOUR CODE HERE. THIS MAY OR MAY NOT BE CORRECT.
+        return 32; 
+        /* There are around 4.295 * 10^9 unique ints. 
+        How many unique strings of some length that <= that 4 billion tho? GUESS AND CHECK. 
+            * 2^42 is 4.39 * 10^12. Too much. 
+            * 2^30 = 1.07 * 10^9. Too low. */
     }
     
     public static void main(String[] args) {
