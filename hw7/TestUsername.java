@@ -42,6 +42,19 @@ public class TestUsername {
         assertFalse(user1.equals(user3));
     }
 
+    @Test
+    public void testHashCode() {
+        Username user1 = new Username("abc");
+        Username user2 = new Username("abc");
+        int hash1 = user1.hashCode();
+        int hash2 = user2.hashCode();
+        assertTrue(hash1 == hash2);
+
+        Username user3 = new Username("abd");
+        int hash3 = user3.hashCode();
+        assertFalse(hash1 == hash3);
+    }
+
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestUsername.class);
     }
