@@ -6,15 +6,20 @@ public class UsernameBank {
     // Instance variables (remember, they should be private!)
     private Map<String, String> userToMail;
     private Map<String, String> mailToUser;
-    private Map<String, String> badEmails;
-    private Map<String, String> badUsers;
+    private Map<String, String> originalUserCase; // Values are original case.
+    private Map<String, Integer> badEmails;
+    private Map<String, Integer> badUsers;
+    /*private Map<String, String> badUsersOriginalCase;*/
 
     /* Initializes all necessary inner data. */
     public UsernameBank() {
         userToMail = new HashMap<String, String>();
-        mailToUser = new HashMap<String, String>(); 
-        badEmails = new HashMap<String, String>();
-        badUsers = new HashMap<String, String>();
+        mailToUser = new HashMap<String, String>();
+        originalUserCase = new HashMap<String, String>();
+        badEmails = new HashMap<String, Integer>();
+        badUsers = new HashMap<String, Integer>();
+        /*badUsersOriginalCase = new HashMap<String, String>();*/
+        // All hold user in lower case except original usercase.
     }
 
     Map<String, String> getUsersAndMails() {
@@ -27,11 +32,12 @@ public class UsernameBank {
             throw new NullPointerException("Username / email cannot be null.");
         } else if (!isValidUsername(username)) {
             new Username(username); // Should throw the exception.
-        } else if (userToMail.containsKey(username)) {
+        } else if (userToMail.containsKey(username.toLowerCase())) {
             throw new IllegalArgumentException("This username is already taken.");
         } else {
-            userToMail.put(username, email);
-            mailToUser.put(email, username);
+            originalUserCase.put(username.toLowerCase(), username);
+            userToMail.put(username.toLowerCase(), email);
+            mailToUser.put(email, username.toLowerCase());
         }
     }
 
@@ -45,8 +51,21 @@ public class UsernameBank {
     }
 
     public String getEmail(String username) {
-        // YOUR CODE HERE
-        return null;
+        if (username == null) {
+            throw new NullPointerException("Username cannot be null.");
+        } else if ((!isValidUsername(username)) || (!userToMail.containsKey(username.toLowerCase())))  {
+            if (!badUsers.containsKey(username.toLowerCase())) {
+                // First time in.
+                badUsers.put(username.toLowerCase(), 1);
+                /*badUsersOriginalCase.put(username.toLowerCase(), username);*/
+            } else {
+                int prevCount = badUsers.get(username.toLowerCase());
+                badUsers.put(username.toLowerCase(), prevCount + 1);
+            }
+            return null;
+        } else {
+            return userToMail.get(username.toLowerCase());
+        }
     }
 
     public String getUsername(String userEmail)  {
