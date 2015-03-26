@@ -95,14 +95,22 @@ public class UsernameBank {
     }
 
     public String suggestUsername() {
-        // YOUR CODE HERE
+        // Try 50 times. 
+        for (int i = 1; i <= 50; i = i + 1) {
+            String potentialUsername = (new Username()).usernameString();
+            if (!userToMail.containsKey(potentialUsername.toLowerCase())) {
+                return potentialUsername;
+            }
+        }
         return null;
     }
 
     // The answer is somewhere in between 3 and 1000.
     public static final int followUp() {
-        // YOUR CODE HERE
-        return 0;
+        // Usernames are case insensitive though, oui? 
+        // But you have 26 + 10 digits. 
+        // 36^smth <= 4.295 * 10^9
+        return 6;
     }
 
     // Optional, suggested method. Use or delete as you prefer.
