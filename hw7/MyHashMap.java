@@ -7,8 +7,8 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     int numBuckets;
     float reqLoad;
     int numMappings;
+    boolean needToExpand;
     boolean needToRehash;
-
 
     private class Entry {
 
@@ -23,7 +23,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
         @Override
         public int hashCode() {
-            return this.key.hashCode();
+            return Math.abs(this.key.hashCode());
         }
     }
 
@@ -64,7 +64,27 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     public V get(K key) {
-        throw new UnsupportedOperationException();
+        if (needToRehash || needToExpand) {
+            // Figure out how many buckets needed, then rehash.
+            if (needToExpand) {
+                numBuckets = (int) (numMappings / reqLoad) + 1; // +1 in case int round down.
+            }
+            rehashing(this.numBuckets);
+            needToExpand = needExpand();
+        }
+        int lookingIndex = index(key);
+        if (!indexExists(lookingIndex)) {
+            return null;
+        } else {
+            Entry pointer = map.get(lookingIndex);
+            while (pointer != null) {
+                if (pointer.key == key) {
+                    return pointer.value;
+                }
+                pointer = pointer.next;
+            }
+            return null; 
+        }
     }
     
     /* I think this returns # elements mapped. */
@@ -72,27 +92,74 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         return this.numMappings;
     }
 
-    
-    public void put(K key, V value) {
-        Entry info = new Entry(key, value);
-        int entryHashCode = info.hashCode();
-        int index = Math.abs(entryHashCode % numBuckets);
-        if (index >= map.size() || map.get(index) == null) {
-            // No one's here, go right in. 
-            map.add(index, info);
-        } else {
-            // Gotta attach to end of link list. 
-            Entry pointer = map.get(index);
-            while (pointer.next != null) {
-                pointer = pointer.next;
-            }
-            pointer.next = info;
-        }
-        numMappings = numMappings + 1;
+    private int index(K key) {
+        int newHashCode = Math.abs(key.hashCode());
+        int lookingIndex = newHashCode % numBuckets;
+        return lookingIndex;
+    }
+
+    private int index(Entry element) {
+        int hashCode = element.hashCode();
+        int returnindex = hashCode % numBuckets;
+        return returnindex;
+    }
+
+    private boolean needExpand() {
         float currLoad = (float) this.size() / this.map.size();
         if (currLoad >= reqLoad) {
-            needToRehash = true;
+            return true;
         }
+        return false;
+    }
+
+    private boolean indexExists(int index) {
+        if (index >= map.size() || map.get(index) == null) {
+            // No one's here.
+            return false;
+        }
+        return true;
+    }
+
+    private void rehashing(int newNumBuckets) {
+        // First create copy of old map to iterate over.
+        ArrayList<Entry> oldMap = new ArrayList<Entry>(map.size());
+        for (Entry oldElement : oldMap) {
+            oldMap.add(oldElement);
+        } 
+
+        map.ensureCapacity(newNumBuckets);
+        for (Entry element : oldMap) {
+            int newIndex = index(element);
+            putArrayList(element, newIndex);
+        }
+        needToRehash = false;
+    }
+
+    private void putArrayList(Entry element, int indexToPut) {
+        if (!indexExists(indexToPut)) {
+            // No one's here, go right in. 
+            map.add(indexToPut, element);
+        } else {
+            // Gotta attach to end of link list. 
+            Entry pointer = map.get(indexToPut);
+            while (pointer.next != null) {
+                if (pointer.key == element.key) {
+                    pointer.value = element.value;
+                    return;
+                }
+                pointer = pointer.next;
+            }
+            pointer.next = element;
+        }
+    }
+
+
+    public void put(K key, V value) {
+        Entry info = new Entry(key, value);
+        int index = index(info);
+        putArrayList(info, index);
+        numMappings = numMappings + 1;
+        needToRehash = true;
     }
 
     

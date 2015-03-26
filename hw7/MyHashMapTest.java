@@ -10,6 +10,7 @@ public class MyHashMapTest {
         map.put("two", 2);
         map.put("three", 3);
         assertEquals(3, map.size());
+        assertEquals(3, map.get("three"), 0);
     }
 
     public static void main(String[] args) {
