@@ -85,8 +85,13 @@ public class Username {
 
     @Override
     public int hashCode() { 
-        // YOUR CODE HERE
-        return 0;
+        int hashVal = 0; // Initialize. 
+        for (int i = 0; i < this.user.length(); i = i + 1) {
+            char c = (this.user).charAt(i);
+            hashVal = hashVal << 5; // 5 b/c why not. Should be far enough, and int has enuf bits.
+            hashVal = hashVal + ((int) c);
+        }
+        return hashVal;
     }
 
     public static void main(String[] args) {
