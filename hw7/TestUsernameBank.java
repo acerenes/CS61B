@@ -50,6 +50,17 @@ public class TestUsernameBank {
         assertEquals("Aat", bank.getUsername("at@berkeley.edu"));
     }
 
+    @Test
+    public void testGetBadEmails() {
+        UsernameBank bank = new UsernameBank();
+        bank.generateUsername("Aat", "at@berkeley.edu");
+        bank.getUsername("444@berkeley.edu");
+        bank.getUsername("444@berkeley.edu");
+        bank.getUsername("444@berkeley.edu");
+        Map<String, Integer> badEmails = bank.getBadEmails();
+        assertEquals(3, badEmails.get("444@berkeley.edu"));
+    }
+
 
 
     public static void main(String[] args) {
