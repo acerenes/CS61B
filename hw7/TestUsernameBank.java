@@ -13,13 +13,13 @@ public class TestUsernameBank {
     @Test (expected = NullPointerException.class)
     public void testNullGenerateUsername() {
         UsernameBank bank2 = new UsernameBank();
-        bank.generateUsername(null, "at@berkeley.edu");
+        bank2.generateUsername(null, "at@berkeley.edu");
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void testBadGenerateUsername() {
         UsernameBank bank3 = new UsernameBank();
-        bank.generateUsername("aaat", "at@berkeley.edu");
+        bank3.generateUsername("aaat", "at@berkeley.edu");
     }
 
 
