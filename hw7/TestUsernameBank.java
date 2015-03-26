@@ -3,7 +3,24 @@ import static org.junit.Assert.*;
 
 public class TestUsernameBank {
 
+    @Test
+    public void testGoodGenerateUsername() {
+        UsernameBank bank = new UsernameBank();
+        bank.generateUsername("aat", "at@berkeley.edu");
+        assertEquals("at@berkeley.edu", (bank.getUsersAndMails()).get("aat"));
+    }
 
+    @Test (expected = NullPointerException.class)
+    public void testNullGenerateUsername() {
+        UsernameBank bank2 = new UsernameBank();
+        bank.generateUsername(null, "at@berkeley.edu");
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void testBadGenerateUsername() {
+        UsernameBank bank3 = new UsernameBank();
+        bank.generateUsername("aaat", "at@berkeley.edu");
+    }
 
 
 
