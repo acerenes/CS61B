@@ -95,7 +95,7 @@ public class UsernameBank {
     }
 
     public String suggestUsername() {
-        // Try 50 times. 
+        // Try 24000 times. 
         for (int i = 1; i <= 24000; i = i + 1) {
             String potentialUsername = (new Username()).usernameString();
             if (!userToMail.containsKey(potentialUsername.toLowerCase())) {
