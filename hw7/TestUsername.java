@@ -30,6 +30,18 @@ public class TestUsername {
         System.out.println((new Username("Aa4")).usernameString());
     }
 
+
+
+    @Test
+    public void testEquals() {
+        Username user1 = new Username("abc");
+        Username user2 = new Username("abc");
+        assertTrue(user1.equals(user2));
+
+        Username user3 = new Username("abd");
+        assertFalse(user1.equals(user3));
+    }
+
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(TestUsername.class);
     }
