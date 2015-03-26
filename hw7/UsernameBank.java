@@ -87,8 +87,7 @@ public class UsernameBank {
     }
 
     public Map<String, Integer> getBadEmails() {
-        // YOUR CODE HERE
-        return null;
+        return badEmails;
     }
 
     public Map<String, Integer> getBadUsernames() {

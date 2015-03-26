@@ -1,5 +1,6 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.util.Map;
 
 public class TestUsernameBank {
 
@@ -58,7 +59,7 @@ public class TestUsernameBank {
         bank.getUsername("444@berkeley.edu");
         bank.getUsername("444@berkeley.edu");
         Map<String, Integer> badEmails = bank.getBadEmails();
-        assertEquals(3, badEmails.get("444@berkeley.edu"));
+        assertEquals(3, badEmails.get("444@berkeley.edu"), 0);
     }
 
 
