@@ -16,18 +16,18 @@ public class TestUsername {
 
     @Test (expected = IllegalArgumentException.class)
     public void testBadLength() {
-        Username badLengthUser = new Username(AA44);
+        Username badLengthUser = new Username("AA44");
     }
 
     @Test (expected = IllegalArgumentException.class)
     public void testBadChars() {
-        Username badCharsUser = new Username(A@3);
+        Username badCharsUser = new Username("A$3");
     }
 
     @Test
     public void testGoodUsername() {
         System.out.println("Make sure below printed = Aa4");
-        System.out.println((new Username(Aa4)).usernameString());
+        System.out.println((new Username("Aa4")).usernameString());
     }
 
     public static void main(String[] args) {

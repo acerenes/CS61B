@@ -17,10 +17,10 @@ public class Username {
         }
     }
 
-    /*String usernameString() {
+    String usernameString() {
         // For testing purposes - MUST COMMENT OUT LATER
         return this.user;
-    }*/
+    }
 
     private String chooseNumOrChar() {
         // If true, char.
@@ -57,8 +57,21 @@ public class Username {
         return (char) (65 + generateRandomInt());
     }
 
+
+
+
+
     public Username(String reqName) {
-        // YOUR CODE HERE
+        if (reqName == null) {
+            throw new NullPointerException("Requested username is null!");
+        } else if ((reqName.length() < 2) || (reqName.length() > 3)) {
+            throw new IllegalArgumentException("Requested username incorrect length.");
+        } else if (!reqName.matches("\\p{Alnum}*")) {
+            // Apparently just 1 slash is escape. 
+            throw new IllegalArgumentException("Username contains not alphanumerical characters.");
+        } else {
+            this.user = reqName;
+        }
     }
 
     @Override
