@@ -8,6 +8,7 @@ public class Username {
     private String user;
     private Random rand = new Random();
 
+    /* Generates a random, valid username. */
     public Username() {
         user = chooseNumOrChar();
         user = user + chooseNumOrChar();
