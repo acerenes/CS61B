@@ -91,8 +91,7 @@ public class UsernameBank {
     }
 
     public Map<String, Integer> getBadUsernames() {
-        // YOUR CODE HERE
-        return null;
+        return badUsers;
     }
 
     public String suggestUsername() {
