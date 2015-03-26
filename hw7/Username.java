@@ -19,7 +19,6 @@ public class Username {
     }
 
     String usernameString() {
-        // For testing purposes - MUST COMMENT OUT LATER
         return this.user;
     }
 
