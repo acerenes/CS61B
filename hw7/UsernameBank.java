@@ -69,8 +69,21 @@ public class UsernameBank {
     }
 
     public String getUsername(String userEmail)  {
-        // YOUR CODE HERE
-        return null;
+        if (userEmail == null) {
+            throw new NullPointerException("Email cannot be null.");
+        } else if (!mailToUser.containsKey(userEmail)) {
+            if (!badEmails.containsKey(userEmail)) {
+                // First time in. 
+                badEmails.put(userEmail, 1);
+            } else {
+                int prevCount = badEmails.get(userEmail);
+                badEmails.put(userEmail, prevCount + 1);
+            }
+            return null;
+        } else {
+            String allLower = mailToUser.get(userEmail);
+            return originalUserCase.get(allLower); 
+        }
     }
 
     public Map<String, Integer> getBadEmails() {
