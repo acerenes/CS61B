@@ -36,6 +36,20 @@ public class TestUsernameBank {
         bank.getEmail(null);
     }
 
+    @Test (expected = NullPointerException.class)
+    public void testNullGetUsername() {
+        UsernameBank bank = new UsernameBank();
+        bank.generateUsername("aat", "at@berkeley.edu");
+        bank.getUsername(null);
+    }
+
+    @Test
+    public void testGoodGetUsername() {
+        UsernameBank bank = new UsernameBank();
+        bank.generateUsername("Aat", "at@berkeley.edu");
+        assertEquals("Aat", bank.getUsername("at@berkeley.edu"));
+    }
+
 
 
     public static void main(String[] args) {
