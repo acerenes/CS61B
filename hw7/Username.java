@@ -76,7 +76,10 @@ public class Username {
 
     @Override
     public boolean equals(Object o) {
-        // YOUR CODE HERE
+        if ((this != null) && (o != null) && (o instanceof Username)) {
+            Username other = (Username) o;
+            return (this.user).equals(other.user);
+        }
         return false;
     }
 
