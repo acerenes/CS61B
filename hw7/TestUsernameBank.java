@@ -22,6 +22,20 @@ public class TestUsernameBank {
         bank3.generateUsername("aaat", "at@berkeley.edu");
     }
 
+    @Test
+    public void testGoodGetEmail() {
+        UsernameBank bank = new UsernameBank();
+        bank.generateUsername("aat", "at@berkeley.edu");
+        assertEquals("at@berkeley.edu", bank.getEmail("aat"));
+    }
+
+    @Test (expected = NullPointerException.class)
+    public void testNullGetEmail() {
+        UsernameBank bank = new UsernameBank();
+        bank.generateUsername("aat", "at@berkeley.edu");
+        bank.getEmail(null);
+    }
+
 
 
     public static void main(String[] args) {
