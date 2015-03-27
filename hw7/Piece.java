@@ -76,7 +76,7 @@ public class Piece {
             return 0;
         }
         int returnHash = Math.abs(this.type.hashCode());
-        returnHash = returnHash << 1;
+        returnHash = returnHash << 6;
         if (this.side) {
             returnHash = returnHash + 1;
         }
