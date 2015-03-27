@@ -94,7 +94,7 @@ public class Piece {
 
         // For x. 
         returnHash = returnHash + x;
-        returnHash = returnHash << 1;
+        returnHash = returnHash << 3;
         // For y.
         returnHash = returnHash + y;
         /*// For type.
