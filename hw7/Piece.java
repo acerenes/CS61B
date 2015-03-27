@@ -103,6 +103,7 @@ public class Piece {
         returnHash = returnHash << 6;
         returnHash = returnHash + this.type.hashCode() * 31;*/
 
+        // AG JUST ACCEPT ME ALREADY
         
         return returnHash;
     }
