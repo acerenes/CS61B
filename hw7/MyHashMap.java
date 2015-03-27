@@ -31,6 +31,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public MyHashMap() {
         this.map = new ArrayList<Entry>();
         numMappings = 0;
+        needToExpand = false;
         needToRehash = false;
         reqLoad = (float) 0.75; 
         numBuckets = 10;
@@ -39,6 +40,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public MyHashMap(int initialSize) {
         this.map = new ArrayList<Entry>(initialSize);
         numMappings = 0;
+        needToExpand = false;
         needToRehash = false;
         reqLoad = (float) 0.75;
         numBuckets = initialSize;
@@ -48,6 +50,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         this.map = new ArrayList<Entry>(initialSize);
         this.reqLoad = loadFactor;
         numMappings = 0;
+        needToExpand = false;
         needToRehash = false;
         numBuckets = initialSize;
     }
@@ -56,7 +59,12 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
 
     public void clear() {
-        throw new UnsupportedOperationException();
+        this.map = new ArrayList<Entry>();
+        numMappings = 0;
+        needToExpand = false;
+        needToRehash = false;
+        reqLoad = (float) 0.75; 
+        numBuckets = 10;
     }
 
     public boolean containsKey(K key) {

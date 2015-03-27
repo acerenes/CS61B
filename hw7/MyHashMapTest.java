@@ -13,6 +13,16 @@ public class MyHashMapTest {
         assertEquals(3, map.get("three"), 0);
     }
 
+    @Test
+    public void testClear() {
+        MyHashMap<String, Integer> map = new MyHashMap(1);
+        map.put("one", 1);
+        map.put("two", 2);
+        map.put("three", 3);
+        map.clear();
+        assertEquals(0, map.size());
+    }
+
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(MyHashMapTest.class);
     }
