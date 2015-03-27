@@ -102,6 +102,9 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     public V get(K key) {
+        if (!this.containsKey(key)) {
+            return null;
+        }
         if (needToExpand) {
             // Figure out how many buckets needed, then rehash.
             this.numBuckets = ((int) (this.numMappings / reqLoad)) + 1; // +1 in case int round down.
