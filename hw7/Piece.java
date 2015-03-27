@@ -75,8 +75,8 @@ public class Piece {
         if (this == null) {
             return 0;
         }
-        int returnHash = Math.abs(this.type.hashCode());
-        returnHash = returnHash << 6;
+        int returnHash = 0;
+        
         if (this.side) {
             returnHash = returnHash + 1;
         }
@@ -97,9 +97,9 @@ public class Piece {
         returnHash = returnHash << 3;
         // For y.
         returnHash = returnHash + y;
-        /*// For type.
-        returnHash = returnHash << 6;
-        returnHash = returnHash + this.type.hashCode() * 31;*/
+        returnHash = returnHash << 3;
+        // For type.
+        returnHash = returnHash + this.type.hashCode();
 
         // AG JUST ACCEPT ME ALREADY
         
