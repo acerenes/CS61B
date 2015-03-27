@@ -104,24 +104,23 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public V get(K key) {
         if (needToExpand) {
             // Figure out how many buckets needed, then rehash.
-            numBuckets = ((int) (numMappings / reqLoad)) + 1; // +1 in case int round down.
+            this.numBuckets = ((int) (this.numMappings / reqLoad)) + 1; // +1 in case int round down.
             rehashing(this.numBuckets);
-            needToExpand = false;
+            /*needToExpand = false;*/
             /*needToRehash = false;*/
         }
         int lookingIndex = index(key);
         if (!indexExists(lookingIndex)) {
             return null;
-        } else {
-            Entry pointer = map.get(lookingIndex);
-            while (pointer != null) {
-                if (pointer.key == key) {
-                    return pointer.value;
-                }
-                pointer = pointer.next;
-            }
-            return null; 
         }
+        Entry pointer = map.get(lookingIndex);
+        while (pointer != null) {
+            if (pointer.key == key) {
+                return pointer.value;
+            }
+            pointer = pointer.next;
+        }
+        return null; 
     }
     
     /* I think this returns # elements mapped. */
@@ -180,6 +179,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
             newMap.set(newIndex, element);
         }
         this.map = newMap;
+        needToExpand = false;
         /*needToRehash = false;*/
     }
 
@@ -189,15 +189,22 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
             map.set(indexToPut, element);
         } else {
             // Gotta attach to end of link list. 
-            Entry pointer = map.get(indexToPut);
-            while (pointer.next != null) {
-                if (pointer.key == element.key) {
-                    pointer.value = element.value;
+            Entry prev = map.get(indexToPut);
+            Entry curr = prev.next;
+            if (prev.key == element.key) {
+                map.set(indexToPut, element);
+                map.get(indexToPut).next = curr;
+                return;
+            }
+            while (curr != null) {
+                if (curr.key == element.key) {
+                    curr.value = element.value;
                     return;
                 }
-                pointer = pointer.next;
+                prev = prev.next;
+                curr = curr.next;
             }
-            pointer.next = element;
+            prev.next = element;
         }
     }
 

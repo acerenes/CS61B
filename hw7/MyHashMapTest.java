@@ -62,7 +62,7 @@ public class MyHashMapTest {
 
     @Test
     public void testGet() {
-        MyHashMap<String, Integer> map = new MyHashMap(1);
+        MyHashMap<String, Integer> map = new MyHashMap(1000);
         map.put("one", 1);
         map.put("two", 2);
         map.put("three", 3);
@@ -70,10 +70,24 @@ public class MyHashMapTest {
         map.put("six", 6);
         map.put("harry potter", 7);
         map.put("three", 33);
+        map.put("WHHYYYYYYYY", 2312);
+        assertEquals(2312, map.get("WHHYYYYYYYY"), 0);
         assertEquals(6, map.get("six"), 0);
         assertEquals(7, map.get("harry potter"), 0);
         assertEquals(33, map.get("three"), 0);
         assertEquals(null, map.get("four"));
+    }
+
+
+    @Test
+    public void testContainsKey() {
+        MyHashMap<Integer, String> map = new MyHashMap(2);
+        map.put(1, "one");
+        map.put(2, "two");
+        map.put(3, "three");
+        assertTrue(map.containsKey(1));
+        assertTrue(map.containsKey(3));
+        assertFalse(map.containsKey(33));
     }
 
     public static void main(String[] args) {
