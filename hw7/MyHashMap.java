@@ -237,7 +237,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
             if (prev.key == key) {
                 V removedValue = prev.value;
                 map.set(index, curr);
-                /*numMappings = numMappings - 1;*/
+                numMappings = numMappings - 1;
                 keys.remove(key);
                 return removedValue;
             } else { 
@@ -245,7 +245,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
                     if (curr.key == key) {
                         V removedValue = curr.value;
                         prev.next = curr.next;
-                        /*numMappings = numMappings - 1;*/
+                        numMappings = numMappings - 1;
                         keys.remove(key);
                         return removedValue; 
                     }
