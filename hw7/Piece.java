@@ -93,12 +93,12 @@ public class Piece {
 
         // For x. 
         returnHash = returnHash + x;
-        returnHash = returnHash << 5;
+        returnHash = returnHash << 3;
         // For y.
         returnHash = returnHash + y;
-        returnHash = returnHash << 5;
+        returnHash = returnHash << 3;
         // For type.
-        returnHash = returnHash + this.type.hashCode();
+        returnHash = returnHash + Math.abs(this.type.hashCode());
 
         // AG JUST ACCEPT ME ALREADY
         
