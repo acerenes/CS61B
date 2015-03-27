@@ -72,6 +72,9 @@ public class Piece {
 
     @Override
     public int hashCode() {
+        if (this == null) {
+            return 0;
+        }
         int returnHash = 0;
         if (this.side) {
             returnHash = returnHash + 1;
@@ -88,10 +91,10 @@ public class Piece {
         returnHash = returnHash << 1;
         returnHash = returnHash + x;
         // For y.
-        returnHash = returnHash << 4;
+        returnHash = returnHash << 5;
         returnHash = returnHash + y;
         // For type. 
-        returnHash = returnHash << 4;
+        returnHash = returnHash << 5;
         returnHash = returnHash + this.type.hashCode();
         return returnHash;
     }
