@@ -79,17 +79,17 @@ public class Piece {
         if (this.side) {
             returnHash = returnHash + 1;
         }
-        returnHash = returnHash << 1;
+        returnHash = returnHash << 2;
 
         if (this.isKing) {
             returnHash = returnHash + 1;
         }
-        returnHash = returnHash << 1;
+        returnHash = returnHash << 2;
 
         if (this.hasCaptured) {  
             returnHash = returnHash + 1; 
         }
-        returnHash = returnHash << 1;
+        returnHash = returnHash << 2;
 
         // For x. 
         returnHash = returnHash + x;
