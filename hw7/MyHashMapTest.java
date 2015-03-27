@@ -98,7 +98,7 @@ public class MyHashMapTest {
         map.put(3, "three");
         assertEquals(3, map.size());
         assertEquals("two", map.remove(2));
-        assertEquals(3, map.size());
+        assertEquals(2, map.size());
     }
 
     public static void main(String[] args) {
