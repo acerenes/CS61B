@@ -46,6 +46,7 @@ public class Board {
         int returnHash = 0;
         for (int i = 0; i < this.pieces.length; i = i + 1) {
             for (int j = 0; j < this.pieces[i].length; j = j + 1) {
+                returnHash = returnHash << 1;
                 returnHash = returnHash + this.pieces[i][j].hashCode();
             }
         }
