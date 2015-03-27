@@ -76,7 +76,6 @@ public class Piece {
             return 0;
         }
         int returnHash = 0;
-        
         if (this.side) {
             returnHash = returnHash + 1;
         }
@@ -94,10 +93,10 @@ public class Piece {
 
         // For x. 
         returnHash = returnHash + x;
-        returnHash = returnHash << 3;
+        returnHash = returnHash << 5;
         // For y.
         returnHash = returnHash + y;
-        returnHash = returnHash << 3;
+        returnHash = returnHash << 5;
         // For type.
         returnHash = returnHash + this.type.hashCode();
 
