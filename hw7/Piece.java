@@ -76,27 +76,26 @@ public class Piece {
             return 0;
         }
         int returnHash = 0;
-        if (this.side) {
-            returnHash = returnHash << 3;
-            returnHash = returnHash + 1;
-        }
-        if (this.isKing) {
-            returnHash = returnHash << 3;
-            returnHash = returnHash + 1;
-        }
-        if (this.hasCaptured) {
-            returnHash = returnHash << 3;
-            returnHash = returnHash + 1;
-        }
+        // For type.
+        returnHash = returnHash + this.type.hashCode();
         // For x. 
-        returnHash = returnHash << 3;
+        returnHash = returnHash << 10;
         returnHash = returnHash + x;
         // For y.
         returnHash = returnHash << 10;
         returnHash = returnHash + y;
-        // For type. 
-        returnHash = returnHash << 10;
-        returnHash = returnHash + this.type.hashCode();
+        if (this.side) {
+            returnHash = returnHash << 4;
+            returnHash = returnHash + 1;
+        }
+        if (this.isKing) {
+            returnHash = returnHash << 4;
+            returnHash = returnHash + 1;
+        }
+        if (this.hasCaptured) {
+            returnHash = returnHash << 4;
+            returnHash = returnHash + 1;
+        }
         return returnHash;
     }
 
