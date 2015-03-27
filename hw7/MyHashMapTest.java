@@ -90,6 +90,17 @@ public class MyHashMapTest {
         assertFalse(map.containsKey(33));
     }
 
+    @Test
+    public void testSize() {
+        MyHashMap<Integer, String> map = new MyHashMap(2);
+        map.put(1, "one");
+        map.put(2, "two");
+        map.put(3, "three");
+        assertEquals(3, map.size());
+        assertEquals("two", map.remove(2));
+        assertEquals(3, map.size());
+    }
+
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(MyHashMapTest.class);
     }

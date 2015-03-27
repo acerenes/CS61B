@@ -193,6 +193,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         if (!indexExists(indexToPut)) {
             // No one's here, go right in. 
             map.set(indexToPut, element);
+            numMappings = numMappings + 1;
         } else {
             // Gotta attach to end of link list. 
             Entry prev = map.get(indexToPut);
@@ -211,15 +212,18 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
                 curr = curr.next;
             }
             prev.next = element;
+            numMappings = numMappings + 1;
         }
     }
 
 
     public void put(K key, V value) {
+        if (key == null || value == null) {
+            return;
+        }
         Entry info = new Entry(key, value);
         int index = index(info);
         putArrayList(info, index);
-        numMappings = numMappings + 1;
         /*needToRehash = true;*/
         keys.add(key);
     }
