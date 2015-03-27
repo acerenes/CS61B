@@ -75,8 +75,9 @@ public class Piece {
         if (this == null) {
             return 0;
         }
-        int returnHash = 0;
+        int returnHash = this.type.hashCode();
         if (this.side) {
+            returnHash = returnHash << 6;
             returnHash = returnHash + 1;
         }
         if (this.isKing) {
@@ -93,9 +94,9 @@ public class Piece {
         // For y.
         returnHash = returnHash << 6;
         returnHash = returnHash + y;
-        // For type.
+        /*// For type.
         returnHash = returnHash << 6;
-        returnHash = returnHash + this.type.hashCode() * 31;
+        returnHash = returnHash + this.type.hashCode() * 31;*/
         
         return returnHash;
     }
