@@ -107,10 +107,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         if (needToRehash || needToExpand) {
             // Figure out how many buckets needed, then rehash.
             if (needToExpand) {
-                numBuckets = (int) (numMappings / reqLoad) + 1; // +1 in case int round down.
+                numBuckets = ((int) (numMappings / reqLoad)) + 1; // +1 in case int round down.
             }
             rehashing(this.numBuckets);
-            needToExpand = needExpand();
+            needToExpand = false;
+            needToRehash = false;
         }
         int lookingIndex = index(key);
         if (!indexExists(lookingIndex)) {
@@ -155,6 +156,11 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private boolean indexExists(int index) {
         if (index >= map.size() || map.get(index) == null) {
             // No one's here.
+            /*if (index >= map.size()) {
+                System.out.println("Line 161");
+            } else {
+                System.out.println("Line 163");
+            }*/
             return false;
         }
         return true;
@@ -184,7 +190,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private void putArrayList(Entry element, int indexToPut) {
         if (!indexExists(indexToPut)) {
             // No one's here, go right in. 
-            map.add(indexToPut, element);
+            map.set(indexToPut, element);
         } else {
             // Gotta attach to end of link list. 
             Entry pointer = map.get(indexToPut);

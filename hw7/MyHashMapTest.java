@@ -60,6 +60,19 @@ public class MyHashMapTest {
         assertTrue(testSet.equals(map.keySet()));
     }
 
+    @Test
+    public void testGet() {
+        MyHashMap<String, Integer> map = new MyHashMap(1);
+        map.put("one", 1);
+        map.put("two", 2);
+        map.put("three", 3);
+        map.put("five", 5);
+        map.put("six", 6);
+        assertEquals(3, map.get("three"), 0);
+        assertEquals(6, map.get("six"), 0);
+        assertEquals(null, map.get("four"));
+    }
+
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(MyHashMapTest.class);
     }
