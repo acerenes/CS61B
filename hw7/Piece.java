@@ -76,25 +76,25 @@ public class Piece {
             return 0;
         }
         int returnHash = Math.abs(this.type.hashCode());
-        returnHash = returnHash << 6;
+        returnHash = returnHash << 1;
         if (this.side) {
             returnHash = returnHash + 1;
         }
-        returnHash = returnHash << 6;
+        returnHash = returnHash << 1;
 
         if (this.isKing) {
             returnHash = returnHash + 1;
         }
-        returnHash = returnHash << 6;
+        returnHash = returnHash << 1;
 
         if (this.hasCaptured) {  
             returnHash = returnHash + 1; 
         }
-        returnHash = returnHash << 6;
+        returnHash = returnHash << 1;
 
         // For x. 
         returnHash = returnHash + x;
-        returnHash = returnHash << 6;
+        returnHash = returnHash << 1;
         // For y.
         returnHash = returnHash + y;
         /*// For type.
