@@ -1,5 +1,6 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.util.HashSet;
 
 public class MyHashMapTest {
 
@@ -44,6 +45,19 @@ public class MyHashMapTest {
         assertEquals(null, map.remove("one", 2));
         assertTrue(map.containsKey("one"));
 
+    }
+
+    @Test
+    public void testKeySet() {
+        MyHashMap<String, Integer> map = new MyHashMap(1);
+        map.put("one", 1);
+        map.put("two", 2);
+        map.put("three", 3);
+        HashSet<String> testSet = new HashSet<String>();
+        testSet.add("one");
+        testSet.add("two");
+        testSet.add("three");
+        assertTrue(testSet.equals(map.keySet()));
     }
 
     public static void main(String[] args) {

@@ -1,14 +1,16 @@
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.HashSet;
 
 public class MyHashMap<K, V> implements Map61B<K, V> {
 
-    ArrayList<Entry> map;
-    int numBuckets;
-    float reqLoad;
-    int numMappings;
-    boolean needToExpand;
-    boolean needToRehash;
+    private ArrayList<Entry> map;
+    private int numBuckets;
+    private float reqLoad;
+    private int numMappings;
+    private boolean needToExpand;
+    private boolean needToRehash;
+    private Set<K> keys = new HashSet<K>();
 
     private class Entry {
 
@@ -75,6 +77,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         for (int i = 0; i < numBuckets; i = i + 1) {
             map.add(i, null);
         }
+        keys.clear();
     }
 
     public boolean containsKey(K key) {
@@ -203,6 +206,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         putArrayList(info, index);
         numMappings = numMappings + 1;
         needToRehash = true;
+        keys.add(key);
     }
 
     
@@ -215,6 +219,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
                 V removedValue = prev.value;
                 map.set(index, curr);
                 numMappings = numMappings - 1;
+                keys.remove(key);
                 return removedValue;
             } else { 
                 while (prev != null) {
@@ -222,6 +227,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
                         V removedValue = curr.value;
                         prev.next = curr.next;
                         numMappings = numMappings - 1;
+                        keys.remove(key);
                         return removedValue; 
                     }
                 }
@@ -242,6 +248,6 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     public Set<K> keySet() {
-        throw new UnsupportedOperationException();
+        return this.keys;
     }
 }
