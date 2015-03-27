@@ -91,10 +91,10 @@ public class Piece {
         returnHash = returnHash << 6;
         returnHash = returnHash + x;
         // For y.
-        returnHash = returnHash << 6;
+        returnHash = returnHash << 7;
         returnHash = returnHash + y;
         // For type.
-        returnHash = returnHash << 6;
+        returnHash = returnHash << 7;
         returnHash = returnHash + this.type.hashCode();
         
         return returnHash;
