@@ -22,11 +22,30 @@ public class Board {
 
 	@Override
 	public boolean equals(Object o) {
-        return true; // YOUR CODE HERE
+        if ((this != null) && (o != null) && (o instanceof Board)) {
+            Board other = (Board) o;
+            if ((this.isFireTurn == other.isFireTurn) && (this.SIZE == other.SIZE)) {
+                for (int i = 0; i < this.pieces.length; i = i + 1) {
+                    for (int j = 0; j < this.pieces[i].length; j = j + 1) {
+                        if (this.pieces[i][j] != other.pieces[i][j]) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
 	}
 
     @Override
     public int hashCode() {
-        return 6; // YOUR CODE HERE
+        int returnHash = 0;
+        for (int i = 0; i < this.pieces.length; i = i + 1) {
+            for (int j = 0; j < this.pieces[i].length; j = j + 1) {
+                returnHash = returnHash + this.pieces[i][j].hashCode();
+            }
+        }
+        return returnHash;
     }
 }

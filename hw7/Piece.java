@@ -61,12 +61,39 @@ public class Piece {
 
     @Override
     public boolean equals(Object o) {
-        return false; // YOUR CODE HERE
+        if ((this != null) && (o != null) && (o instanceof Piece)) {
+            Piece other = (Piece) o;
+            if ((this.side == other.side) && (this.type == other.type) && (this.isKing == other.isKing) && (this.hasCaptured == other.hasCaptured) && (this.x == other.x) && (this.y == other.y)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public int hashCode() {
-        return 5; // YOUR CODE HERE
+        int returnHash = 0;
+        if (this.side) {
+            returnHash = returnHash + 1;
+        }
+        if (this.isKing) {
+            returnHash = returnHash << 1;
+            returnHash = returnHash + 1;
+        }
+        if (this.hasCaptured) {
+            returnHash = returnHash << 1;
+            returnHash = returnHash + 1;
+        }
+        // For x. 
+        returnHash = returnHash << 1;
+        returnHash = returnHash + x;
+        // For y.
+        returnHash = returnHash << 4;
+        returnHash = returnHash + y;
+        // For type. 
+        returnHash = returnHash << 4;
+        returnHash = returnHash + this.type.hashCode();
+        return returnHash;
     }
 
     public static void main(String[] args) {
