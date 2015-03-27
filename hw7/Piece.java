@@ -95,8 +95,7 @@ public class Piece {
         returnHash = returnHash + y;
         // For type.
         returnHash = returnHash << 6;
-        returnHash = returnHash + this.type.hashCode();
-        returnHash = returnHash * 3;
+        returnHash = returnHash + this.type.hashCode() * 31;
         
         return returnHash;
     }
