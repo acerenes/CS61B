@@ -81,6 +81,9 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     public boolean containsKey(K key) {
+        if (key == null) {
+            return false;
+        }
         if (needToExpand) {
             // Figure out how many buckets needed, then rehash.
             numBuckets = (int) (numMappings / reqLoad) + 1; // +1 in case int round down.
