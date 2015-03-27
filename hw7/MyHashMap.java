@@ -191,7 +191,27 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 
     
     public V remove(K key) {
-        throw new UnsupportedOperationException();
+        if (containsKey(key)) {
+            int index = index(key);
+            Entry prev = map.get(index);
+            Entry curr = prev.next;
+            if (prev.key == key) {
+                V removedValue = prev.value;
+                map.set(index, curr);
+                numMappings = numMappings - 1;
+                return removedValue;
+            } else { 
+                while (prev != null) {
+                    if (curr.key == key) {
+                        V removedValue = curr.value;
+                        prev.next = curr.next;
+                        numMappings = numMappings - 1;
+                        return removedValue; 
+                    }
+                }
+            }
+        } 
+        return null;
     }
 
     public V remove(K key, V value) {
