@@ -89,7 +89,7 @@ public class Piece {
         }
         // For x. 
         returnHash = returnHash * 31;
-        returnHash = returnHash + x;
+        returnHash = returnHash | x;
         // For y.
         returnHash = returnHash * 37;
         returnHash = returnHash + y;
