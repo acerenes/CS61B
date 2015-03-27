@@ -9,7 +9,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private float reqLoad;
     private int numMappings;
     private boolean needToExpand;
-    private boolean needToRehash;
+    /*private boolean needToRehash;*/
     private Set<K> keys = new HashSet<K>();
 
     private class Entry {
@@ -34,7 +34,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         this.map = new ArrayList<Entry>();
         numMappings = 0;
         needToExpand = false;
-        needToRehash = false;
+        /*needToRehash = false;*/
         reqLoad = (float) 0.75; 
         numBuckets = 10;
         for (int i = 0; i < numBuckets; i = i + 1) {
@@ -46,7 +46,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         this.map = new ArrayList<Entry>(initialSize);
         numMappings = 0;
         needToExpand = false;
-        needToRehash = false;
+        /*needToRehash = false;*/
         reqLoad = (float) 0.75;
         numBuckets = initialSize;
         for (int i = 0; i < numBuckets; i = i + 1) {
@@ -59,7 +59,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         this.reqLoad = loadFactor;
         numMappings = 0;
         needToExpand = false;
-        needToRehash = false;
+        /*needToRehash = false;*/
         numBuckets = initialSize;
         for (int i = 0; i < numBuckets; i = i + 1) {
             map.add(i, null);
@@ -71,7 +71,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         this.map = new ArrayList<Entry>();
         numMappings = 0;
         needToExpand = false;
-        needToRehash = false;
+        /*needToRehash = false;*/
         reqLoad = (float) 0.75; 
         numBuckets = 10;
         for (int i = 0; i < numBuckets; i = i + 1) {
@@ -81,11 +81,9 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     public boolean containsKey(K key) {
-        if (needToRehash || needToExpand) {
+        if (needToExpand) {
             // Figure out how many buckets needed, then rehash.
-            if (needToExpand) {
-                numBuckets = (int) (numMappings / reqLoad) + 1; // +1 in case int round down.
-            }
+            numBuckets = (int) (numMappings / reqLoad) + 1; // +1 in case int round down.
             rehashing(this.numBuckets);
             needToExpand = needExpand();
         }
@@ -104,14 +102,12 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     public V get(K key) {
-        if (needToRehash || needToExpand) {
+        if (needToExpand) {
             // Figure out how many buckets needed, then rehash.
-            if (needToExpand) {
-                numBuckets = ((int) (numMappings / reqLoad)) + 1; // +1 in case int round down.
-            }
+            numBuckets = ((int) (numMappings / reqLoad)) + 1; // +1 in case int round down.
             rehashing(this.numBuckets);
             needToExpand = false;
-            needToRehash = false;
+            /*needToRehash = false;*/
         }
         int lookingIndex = index(key);
         if (!indexExists(lookingIndex)) {
@@ -184,7 +180,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
             newMap.set(newIndex, element);
         }
         this.map = newMap;
-        needToRehash = false;
+        /*needToRehash = false;*/
     }
 
     private void putArrayList(Entry element, int indexToPut) {
@@ -211,7 +207,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         int index = index(info);
         putArrayList(info, index);
         numMappings = numMappings + 1;
-        needToRehash = true;
+        /*needToRehash = true;*/
         keys.add(key);
     }
 
@@ -224,7 +220,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
             if (prev.key == key) {
                 V removedValue = prev.value;
                 map.set(index, curr);
-                numMappings = numMappings - 1;
+                /*numMappings = numMappings - 1;*/
                 keys.remove(key);
                 return removedValue;
             } else { 
@@ -232,7 +228,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
                     if (curr.key == key) {
                         V removedValue = curr.value;
                         prev.next = curr.next;
-                        numMappings = numMappings - 1;
+                        /*numMappings = numMappings - 1;*/
                         keys.remove(key);
                         return removedValue; 
                     }

@@ -68,8 +68,11 @@ public class MyHashMapTest {
         map.put("three", 3);
         map.put("five", 5);
         map.put("six", 6);
-        assertEquals(3, map.get("three"), 0);
+        map.put("harry potter", 7);
+        map.put("three", 33);
         assertEquals(6, map.get("six"), 0);
+        assertEquals(7, map.get("harry potter"), 0);
+        assertEquals(33, map.get("three"), 0);
         assertEquals(null, map.get("four"));
     }
 
