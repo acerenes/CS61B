@@ -14,11 +14,13 @@ public class MyHashMapTest {
     }
 
     @Test
-    public void testClear() {
+    public void testClearing() {
         MyHashMap<String, Integer> map = new MyHashMap(1);
         map.put("one", 1);
         map.put("two", 2);
         map.put("three", 3);
+        assertTrue(map.containsKey("three"));
+        assertFalse(map.containsKey("four"));
         map.clear();
         assertEquals(0, map.size());
     }

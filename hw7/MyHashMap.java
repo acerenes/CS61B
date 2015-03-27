@@ -68,7 +68,26 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     public boolean containsKey(K key) {
-        throw new UnsupportedOperationException();
+        if (needToRehash || needToExpand) {
+            // Figure out how many buckets needed, then rehash.
+            if (needToExpand) {
+                numBuckets = (int) (numMappings / reqLoad) + 1; // +1 in case int round down.
+            }
+            rehashing(this.numBuckets);
+            needToExpand = needExpand();
+        }
+        int index = index(key);
+        if (!indexExists(index)) {
+            return false;
+        }
+        Entry pointer = map.get(index);
+        while (pointer != null) {
+            if (pointer.key == key) {
+                return true;
+            }
+            pointer = pointer.next;
+        }
+        return false;
     }
 
     public V get(K key) {
