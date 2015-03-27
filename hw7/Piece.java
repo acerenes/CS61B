@@ -80,21 +80,21 @@ public class Piece {
             returnHash = returnHash + 1;
         }
         if (this.isKing) {
-            returnHash = returnHash * 31;
+            returnHash = returnHash * 3;
             returnHash = returnHash + 1;
         }
         if (this.hasCaptured) {
-            returnHash = returnHash * 31;
+            returnHash = returnHash * 13;
             returnHash = returnHash + 1;
         }
         // For x. 
         returnHash = returnHash * 31;
         returnHash = returnHash + x;
         // For y.
-        returnHash = returnHash * 31;
+        returnHash = returnHash * 37;
         returnHash = returnHash + y;
         // For type. 
-        returnHash = returnHash * 31;
+        returnHash = returnHash * 961;
         returnHash = returnHash + this.type.hashCode();
         return returnHash;
     }
