@@ -97,6 +97,8 @@ public class Piece {
         /*// For type.
         returnHash = returnHash << 6;
         returnHash = returnHash + this.type.hashCode() * 31;*/
+
+        // COMMENTS B/C AG HATES ME
         
         return returnHash;
     }
