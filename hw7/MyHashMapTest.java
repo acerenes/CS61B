@@ -35,6 +35,17 @@ public class MyHashMapTest {
         assertFalse(map.containsKey("one"));
     }
 
+    @Test
+    public void testSpecialRemove() {
+        MyHashMap<String, Integer> map = new MyHashMap(1);
+        map.put("one", 1);
+        map.put("two", 2);
+        map.put("three", 3);
+        assertEquals(null, map.remove("one", 2));
+        assertTrue(map.containsKey("one"));
+
+    }
+
     public static void main(String[] args) {
         jh61b.junit.textui.runClasses(MyHashMapTest.class);
     }

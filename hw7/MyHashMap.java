@@ -35,6 +35,9 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         needToRehash = false;
         reqLoad = (float) 0.75; 
         numBuckets = 10;
+        for (int i = 0; i < numBuckets; i = i + 1) {
+            map.add(i, null);
+        }
     }
 
     public MyHashMap(int initialSize) {
@@ -44,6 +47,9 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         needToRehash = false;
         reqLoad = (float) 0.75;
         numBuckets = initialSize;
+        for (int i = 0; i < numBuckets; i = i + 1) {
+            map.add(i, null);
+        }
     }
 
     public MyHashMap(int initialSize, float loadFactor) {
@@ -53,9 +59,10 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         needToExpand = false;
         needToRehash = false;
         numBuckets = initialSize;
+        for (int i = 0; i < numBuckets; i = i + 1) {
+            map.add(i, null);
+        }
     }
-
-
 
 
     public void clear() {
@@ -65,6 +72,9 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         needToRehash = false;
         reqLoad = (float) 0.75; 
         numBuckets = 10;
+        for (int i = 0; i < numBuckets; i = i + 1) {
+            map.add(i, null);
+        }
     }
 
     public boolean containsKey(K key) {
@@ -150,15 +160,21 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     private void rehashing(int newNumBuckets) {
         // First create copy of old map to iterate over.
         ArrayList<Entry> oldMap = new ArrayList<Entry>(map.size());
-        for (Entry oldElement : oldMap) {
-            oldMap.add(oldElement);
+        for (Entry oldElement : map) {
+            if (oldElement != null) {
+                oldMap.add(oldElement);
+            }
         } 
-
-        map.ensureCapacity(newNumBuckets);
+        ArrayList<Entry> newMap = new ArrayList<Entry>(newNumBuckets);
+        for (int i = 0; i < newNumBuckets; i = i + 1) {
+            newMap.add(i, null);
+        }
+        /*map.ensureCapacity(newNumBuckets);*/
         for (Entry element : oldMap) {
             int newIndex = index(element);
-            putArrayList(element, newIndex);
+            newMap.set(newIndex, element);
         }
+        this.map = newMap;
         needToRehash = false;
     }
 
@@ -215,7 +231,14 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     }
 
     public V remove(K key, V value) {
-        throw new UnsupportedOperationException();
+        if (containsKey(key)) {
+            if (get(key) != value) {
+                return null;
+            }
+            return remove(key);
+        }
+        return null; // This key doesn't exist.
+
     }
 
     public Set<K> keySet() {
