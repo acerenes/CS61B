@@ -77,7 +77,7 @@ public class Piece {
         }
         int returnHash = 0;
         if (this.side) {
-            returnHash = returnHash << 2;
+            returnHash = returnHash << 3;
             returnHash = returnHash + 1;
         }
         if (this.isKing) {
