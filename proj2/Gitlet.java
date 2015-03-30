@@ -243,44 +243,8 @@ public class Gitlet {
 
 
     public static void main(String[] args) {
-        System.out.println("Went into main method");
-        // Using BufferedReader, thx to alvinalexander.com.
-        /*try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
-            System.out.println("Did the BufferedReader");
-            String line = br.readLine();
-            System.out.println("Did the readline");
-            String[] rawTokens = line.split(" ");
-            System.out.println("Did the line splitting");
-            String command = rawTokens[0]; // I HOPE B/C YOU HAVE JAVA AND GITLET IN FRONT THIS MAY NEED TO CHANGE OKAY ALICE. 
-            // Update: I think 2 was blowing up. Trying 0 now. 
-            System.out.println("Got the command");
-
-            switch (command) {
-                case "init":
-                    // What would I do w/o StackOverflow. 
-                    System.out.println("Got into init case");
-                    File f = new File(".gitlet/");
-                    if (f.exists() && f.isDirectory()) {
-                        // Already a thing exists in the current directory.
-                        String one = "A gitlet version control system ";
-                        String two = "already exists in the current directory.";
-                        System.out.println(one + two); // Darn character limit.
-                    } else {
-                        System.out.println(".gitlet doesn't exist- good");
-                        initialize(f);
-                    }
-                    break;
-                case "add":
-
-            }
-        } catch (IOException ex) {
-            System.out.println("Exception thrown");
-            System.out.println("Could not read command line input.");
-            System.exit(1);
-        }*/
-
-        String command = null;
+        
+        String command = null; // Initialize, else java mad. 
         if (args.length > 0) {
             command = args[0];
         } else {
@@ -291,7 +255,6 @@ public class Gitlet {
         switch (command) {
             case "init":
                 // What would I do w/o StackOverflow. 
-                System.out.println("Got into init case");
                 File f = new File(".gitlet/");
                 if (f.exists() && f.isDirectory()) {
                     // Already a thing exists in the current directory.
@@ -299,7 +262,6 @@ public class Gitlet {
                     String two = "already exists in the current directory.";
                     System.out.println(one + two); // Darn character limit.
                 } else {
-                    System.out.println(".gitlet doesn't exist- good");
                     initialize(f);
                 }
                 break;
@@ -308,9 +270,7 @@ public class Gitlet {
 
 
     private static void initialize(File newGitlet) {
-        /*File newGitlet = new File(".gitlet/");*/
         newGitlet.mkdir(); // Make new gitlet directory.
-        System.out.println("Should've created newGitlet directory");
 
         /* Make WorldState.ser. */
         // Thanks to Japheth and mkyong.com for the major help. HOPE THIS WORKS.
