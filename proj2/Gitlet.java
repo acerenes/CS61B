@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.io.IOException;
+import java.lang.ClassNotFoundException;
 
 public class Gitlet {
 
@@ -118,11 +120,17 @@ public class Gitlet {
             // Thanks a million to mkyong.com. Hope this works.
             if (!isRoot) {
                 // You create a CommitWrapper when you make a commit - in main method of Gitlet. So you're in the working directory. 
-                FileInputStream fin = new FileInputStream("./.gitlet/WorldState.ser");
-                ObjectInputStream ois = new ObjectInputStream(fin);
-                WorldState worldState = (WorldState) ois.readObject();
-                ois.close();
-                parentCommit = worldState.getCurrCommit(); // Shouldn't have updated yet.
+                try {
+                    FileInputStream fin = new FileInputStream(".gitlet/WorldState.ser");
+                    ObjectInputStream ois = new ObjectInputStream(fin); // These two - IOException.
+                    WorldState worldState = (WorldState) ois.readObject(); // ClassNotFoundException.
+                    ois.close();
+                    parentCommit = worldState.getCurrCommit(); // Shouldn't have updated yet.
+                } catch (IOException | ClassNotFoundException ex) {
+                    System.out.println("Exception in creating Commit Wrapper.");
+                    System.exit(1);
+                    // This shouldn't happen - WorldState should be the first thing created. 
+                }
             } else {
                 // It's for commit 0, has no parent.
                 parentCommit = null;
@@ -135,62 +143,78 @@ public class Gitlet {
             // Take all the parent's remembered files.
             if (!isRoot) {
                 // Only has a parent if it's not the root. 
-                String parentFolderLocation = "./.gitlet/snapshots/" + parentCommit + "/CommitWrapper.ser";
-                FileInputStream finParent = new FileInputStream(parentFolderLocation);
-                ObjectInputStream oisParent = new ObjectInputStream(finParent);
-                CommitWrapper parent = (CommitWrapper) oisParent.readObject();
-                oisParent.close();
-                // According to StackOverflow, b/c String & Integer are immutable, I can do this:
-                this.storedFiles = new HashMap<String, Integer>(parent.storedFiles);
+                try {
+                    String parentFolderLocation = ".gitlet/snapshots/" + parentCommit + "/CommitWrapper.ser";
+                    FileInputStream finParent = new FileInputStream(parentFolderLocation);
+                    ObjectInputStream oisParent = new ObjectInputStream(finParent);
+                    CommitWrapper parent = (CommitWrapper) oisParent.readObject();
+                    oisParent.close();
+
+                    // According to StackOverflow, b/c String & Integer are immutable, I can do this:
+                    this.storedFiles = new HashMap<String, Integer>(parent.storedFiles);
+                } catch (IOException | ClassNotFoundException ex2) {
+                    System.out.println("Exception in CommitWrapper - couldn't get parent's commitWrapper.");
+                    System.exit(1);
+                }
+                
 
                 // Commit 0, the root, contains no files. 
+                try {
+                    FileInputStream finStaging = new FileInputStream(".gitlet/Staging.ser");
+                    ObjectInputStream oisStaging = new ObjectInputStream(finStaging);
+                    Staging stage = (Staging) oisStaging.readObject();
+                    oisStaging.close();
 
-                FileInputStream finStaging = new FileInputStream("./.gitlet/Staging.ser");
-                ObjectInputStream oisStaging = new ObjectInputStream(finStaging);
-                Staging stage = (Staging) oisStaging.readObject();
-                oisStaging.close();
-
-                // Take out the stuff in filesToRemove.
-                if (!stage.filesToRemove.isEmpty()) {
-                    for (String fRemove : stage.filesToRemove) {
-                        if (stage.filesToAdd.contains(fRemove)) {
-                            // Unstage it. 
-                            stage.removeFile(fRemove);
-                        } else {
-                            // Do not inherit it. 
-                            this.storedFiles.remove(fRemove);
+                    // Take out the stuff in filesToRemove.
+                    if (!stage.filesToRemove.isEmpty()) {
+                        for (String fRemove : stage.filesToRemove) {
+                            if (stage.filesToAdd.contains(fRemove)) {
+                                // Unstage it. 
+                                stage.removeFile(fRemove);
+                            } else {
+                                // Do not inherit it. 
+                                this.storedFiles.remove(fRemove);
+                            }
                         }
                     }
-                }
 
-                // Then take the working directory versions of filesToAdd, stick in folder.
+                    // Then take the working directory versions of filesToAdd, stick in folder.
                 
-                if (!stage.filesToAdd.isEmpty()) {
-                    // If there are files to add to the actual folder. 
-                    for (String f : stage.filesToAdd) {
-                        // Create the space in the folder first.
-                        String newFileLocation = "./.gitlet/snapshots/" + this.commitID + "/" + f;
-                        File newFile = new File(newFileLocation);
-                        newFile.createNewFile();
-                        // Now copy it over - thanks to examples.javacodegeeks.com.
-                        FileChannel inputChannel = null;
-                        FileChannel outputChannel = null;
-                        try {
-                            inputChannel = new FileInputStream("./" + f).getChannel();
-                            outputChannel = new FileOutputStream(newFileLocation).getChannel();
-                            outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
-                        } finally {
-                            inputChannel.close();
-                            outputChannel.close();
-                        }
+                    if (!stage.filesToAdd.isEmpty()) {
+                        // If there are files to add to the actual folder. 
+                        for (String f : stage.filesToAdd) {
+                            // Create the space in the folder first.
+                            String newFileLocation = ".gitlet/snapshots/" + this.commitID + "/" + f;
+                            File newFile = new File(newFileLocation);
+                            newFile.createNewFile();
+                            // Now copy it over - thanks to examples.javacodegeeks.com.
+                            FileChannel inputChannel = null;
+                            FileChannel outputChannel = null;
+                            try {
+                                inputChannel = new FileInputStream(f).getChannel();
+                                outputChannel = new FileOutputStream(newFileLocation).getChannel();
+                                outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+                            } finally {
+                                inputChannel.close();
+                                outputChannel.close();
+                            }
 
-                        /* Now update the map. */
-                        this.storedFiles.put(f, this.commitID);
+                            /* Now update the map. */
+                            this.storedFiles.put(f, this.commitID);
+                        }
                     }
+      
+                    // Empty Staging.ser.
+                    stage.emptyStagingInfo();
+
+                } catch (IOException | ClassNotFoundException ex3) {
+                    System.out.println("Exception in CommitWrapper - couldn't get staging info.");
+                    System.exit(1);
                 }
-  
-                // Empty Staging.ser.
-                stage.emptyStagingInfo();
+
+                
+
+                
             }
 
         }
@@ -219,64 +243,125 @@ public class Gitlet {
 
 
     public static void main(String[] args) {
+        System.out.println("Went into main method");
         // Using BufferedReader, thx to alvinalexander.com.
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
-        String line = br.readLine();
-        String[] rawTokens = line.split(" ");
-        String command = rawTokens[2]; // I HOPE B/C YOU HAVE JAVA AND GITLET IN FRONT THIS MAY NEED TO CHANGE OKAY ALICE. 
+        /*try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
+            System.out.println("Did the BufferedReader");
+            String line = br.readLine();
+            System.out.println("Did the readline");
+            String[] rawTokens = line.split(" ");
+            System.out.println("Did the line splitting");
+            String command = rawTokens[0]; // I HOPE B/C YOU HAVE JAVA AND GITLET IN FRONT THIS MAY NEED TO CHANGE OKAY ALICE. 
+            // Update: I think 2 was blowing up. Trying 0 now. 
+            System.out.println("Got the command");
+
+            switch (command) {
+                case "init":
+                    // What would I do w/o StackOverflow. 
+                    System.out.println("Got into init case");
+                    File f = new File(".gitlet/");
+                    if (f.exists() && f.isDirectory()) {
+                        // Already a thing exists in the current directory.
+                        String one = "A gitlet version control system ";
+                        String two = "already exists in the current directory.";
+                        System.out.println(one + two); // Darn character limit.
+                    } else {
+                        System.out.println(".gitlet doesn't exist- good");
+                        initialize(f);
+                    }
+                    break;
+                case "add":
+
+            }
+        } catch (IOException ex) {
+            System.out.println("Exception thrown");
+            System.out.println("Could not read command line input.");
+            System.exit(1);
+        }*/
+
+        String command = null;
+        if (args.length > 0) {
+            command = args[0];
+        } else {
+            System.out.println("No command given.");
+            return;
+        }
 
         switch (command) {
             case "init":
                 // What would I do w/o StackOverflow. 
-                File f = new File("./.gitlet");
+                System.out.println("Got into init case");
+                File f = new File(".gitlet/");
                 if (f.exists() && f.isDirectory()) {
                     // Already a thing exists in the current directory.
                     String one = "A gitlet version control system ";
                     String two = "already exists in the current directory.";
                     System.out.println(one + two); // Darn character limit.
                 } else {
-                    initialize();
+                    System.out.println(".gitlet doesn't exist- good");
+                    initialize(f);
                 }
-            case "add":
-
+                break;
         }
     }
 
 
-    private static void initialize() {
-        File newGitlet = new File("./.gitlet");
+    private static void initialize(File newGitlet) {
+        /*File newGitlet = new File(".gitlet/");*/
         newGitlet.mkdir(); // Make new gitlet directory.
+        System.out.println("Should've created newGitlet directory");
 
         /* Make WorldState.ser. */
         // Thanks to Japheth and mkyong.com for the major help. HOPE THIS WORKS.
         WorldState worldState = new WorldState();
-        FileOutputStream foutWorldState = new FileOutputStream("./.gitlet/WorldState.ser");
-        ObjectOutputStream oosWorldState = new ObjectOutputStream(foutWorldState);
-        oosWorldState.writeObject(worldState);
-        oosWorldState.close();
+        try {
+            FileOutputStream foutWorldState = new FileOutputStream(".gitlet/WorldState.ser");
+            ObjectOutputStream oosWorldState = new ObjectOutputStream(foutWorldState);
+            oosWorldState.writeObject(worldState);
+            oosWorldState.close();
+        } catch (IOException ex) {
+            System.out.println("Initialize - could not write WorldState.ser");
+            System.exit(1);
+        }
 
         /* Make Staging.ser. */
         Staging stagingInfo = new Staging();
-        FileOutputStream foutStaging = new FileOutputStream("./.gitlet/Staging.ser");
-        ObjectOutputStream oosStaging = new ObjectOutputStream(foutStaging);
-        oosStaging.writeObject(stagingInfo);
-        oosStaging.close();
+        try {
+            FileOutputStream foutStaging = new FileOutputStream(".gitlet/Staging.ser");
+            ObjectOutputStream oosStaging = new ObjectOutputStream(foutStaging);
+            oosStaging.writeObject(stagingInfo);
+            oosStaging.close();
+        } catch (IOException ex2) {
+            System.out.println("Initialize - could not write Staging.ser");
+            System.exit(1);
+        }
 
         /* Make Snapshots folder. */
-        File newSnapshots = new File("./.gitlet/snapshots");
+        File newSnapshots = new File(".gitlet/snapshots");
         newSnapshots.mkdir();
 
         /* Now make Commit0 in snapshots folder. */
-        File commit0 = new File("./.gitlet/snapshots/0");
+        File commit0 = new File(".gitlet/snapshots/0");
         commit0.mkdir();
-        String zeroSerWrapper = "./.gitlet/snapshots/0/CommitWrapper.ser";
+        String zeroSerWrapper = ".gitlet/snapshots/0/CommitWrapper.ser";
         File zeroFileSerWrapper = new File(zeroSerWrapper);
-        zeroFileSerWrapper.createNewFile();
+        try {
+            zeroFileSerWrapper.createNewFile();
+        } catch (IOException ex3) {
+            System.out.println("Initialize - could not create CommitWrapper file.");
+            System.exit(1);
+        }
 
-        CommitWrapper commitInfo = new CommitWrapper(0);
-        FileOutputStream foutCommitting = new FileOutputStream("./.gitlet/snapshots/0/CommitWrapper.ser");
-        ObjectOutputStream oosCommitting = new ObjectOutputStream(foutCommitting);
-        oosCommitting.writeObject(commitInfo);
-        oosCommitting.close();
+        try {
+            CommitWrapper commitInfo = new CommitWrapper(0);
+            FileOutputStream foutCommitting = new FileOutputStream(".gitlet/snapshots/0/CommitWrapper.ser");
+            ObjectOutputStream oosCommitting = new ObjectOutputStream(foutCommitting);
+            oosCommitting.writeObject(commitInfo);
+            oosCommitting.close();
+        } catch (IOException ex4) {
+            System.out.println("Initialize - could not write CommitWrapper object.");
+            System.exit(1);
+        }
     }
 }
