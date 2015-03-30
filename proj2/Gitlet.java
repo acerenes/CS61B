@@ -24,8 +24,10 @@ public class Gitlet {
         private int currCommit;
         private int numCommits;
         private String currBranch;
-        private HashMap<String, Integer> branchHeads; // Branch name to head ID #. 
-        private HashMap<String, Integer> commitsByMessage; // Commit message to ID #. 
+        private HashMap<String, Integer> branchHeads; 
+        // --^ Branch name to head ID #. 
+        private HashMap<String, Integer> commitsByMessage; 
+        // --^ Commit message to ID #. 
 
         private WorldState() {
             // Probably only create a new WorldState at very beginning.
@@ -98,8 +100,10 @@ public class Gitlet {
 
         private Integer commitID;
         private String commitTime;
-        private boolean isRoot; // If true, no parent.
-        private Integer parentCommit; // So I can use null for commit 0.
+        private boolean isRoot; 
+        // --^ If true, no parent.
+        private Integer parentCommit; 
+        // --^ So I can use null for commit 0.
         private HashMap<String, Integer> storedFiles;
 
         private CommitWrapper(Integer commitNum) {
@@ -122,10 +126,13 @@ public class Gitlet {
                 // You create a CommitWrapper when you make a commit - in main method of Gitlet. So you're in the working directory. 
                 try {
                     FileInputStream fin = new FileInputStream(".gitlet/WorldState.ser");
-                    ObjectInputStream ois = new ObjectInputStream(fin); // These two - IOException.
-                    WorldState worldState = (WorldState) ois.readObject(); // ClassNotFoundException.
+                    ObjectInputStream ois = new ObjectInputStream(fin); 
+                    // --^ These two - IOException.
+                    WorldState worldState = (WorldState) ois.readObject(); 
+                    // --^ ClassNotFoundException.
                     ois.close();
-                    parentCommit = worldState.getCurrCommit(); // Shouldn't have updated yet.
+                    parentCommit = worldState.getCurrCommit(); 
+                    // Shouldn't have updated yet.
                 } catch (IOException | ClassNotFoundException ex) {
                     System.out.println("Exception in creating Commit Wrapper.");
                     System.exit(1);
@@ -244,7 +251,8 @@ public class Gitlet {
 
     public static void main(String[] args) {
         
-        String command = null; // Initialize, else java mad. 
+        String command = null; 
+        // --^ Initialize, else java mad. 
         if (args.length > 0) {
             command = args[0];
         } else {
@@ -260,7 +268,8 @@ public class Gitlet {
                     // Already a thing exists in the current directory.
                     String one = "A gitlet version control system ";
                     String two = "already exists in the current directory.";
-                    System.out.println(one + two); // Darn character limit.
+                    System.out.println(one + two); 
+                    // Darn character limit.
                 } else {
                     initialize(f);
                 }
@@ -270,7 +279,8 @@ public class Gitlet {
 
 
     private static void initialize(File newGitlet) {
-        newGitlet.mkdir(); // Make new gitlet directory.
+        // Make new gitlet directory.
+        newGitlet.mkdir(); 
 
         /* Make WorldState.ser. */
         // Thanks to Japheth and mkyong.com for the major help. HOPE THIS WORKS.
