@@ -251,8 +251,7 @@ public class Gitlet {
 
     public static void main(String[] args) {
         
-        String command = null; 
-        // --^ Initialize, else java mad. 
+        String command = null; // --^ Initialize, else java mad. 
         if (args.length > 0) {
             command = args[0];
         } else {
@@ -273,6 +272,19 @@ public class Gitlet {
                 } else {
                     initialize(f);
                 }
+                break;
+
+            case "add" :
+                // Can only add 1 file at a time.
+                // Command line arguments split on space, I believe.
+                String addFile = null;
+                if (args.length > 1) {
+                    addFile = args[1];
+                } else {
+                    System.out.println("No file stated to add.");
+                    return;
+                }
+                add(addFile);
                 break;
         }
     }
@@ -331,6 +343,28 @@ public class Gitlet {
             oosCommitting.close();
         } catch (IOException ex4) {
             System.out.println("Initialize - could not write CommitWrapper object.");
+            System.exit(1);
+        }
+    }
+
+    private static void add(String fileName) {
+        // Have to add the string to Staging.ser - should be it.
+        try {
+            FileInputStream fin = new FileInputStream(".gitlet/Staging.ser");
+            ObjectInputStream ois = new ObjectInputStream(fin);
+            Staging stagingInfo = (Staging) ois.readObject();
+            ois.close();
+
+            stagingInfo.addFile(fileName);
+            
+            // Saving it back. 
+            FileOutputStream fout = new FileOutputStream(".gitlet/Staging.ser");
+            ObjectOutputStream oos = new ObjectOutputStream(fout);
+            oos.writeObject(stagingInfo);
+            oos.close();
+
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Exception in add.");
             System.exit(1);
         }
     }
