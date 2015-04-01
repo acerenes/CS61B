@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 import java.io.IOException;
 import java.lang.ClassNotFoundException;
+import java.io.DataInputStream;
 
 public class Gitlet {
 
@@ -93,9 +94,17 @@ public class Gitlet {
             filesToRemove.clear();
         }
 
-        /* For testing. */
+
         private boolean addContains(String file) {
             return this.filesToAdd.contains(file);
+        }
+
+        private boolean removeContains(String file) {
+            return this.filesToRemove.contains(file);
+        }
+
+        private void removeFromRemove(String file) {
+            this.filesToRemove.remove(file);
         }
     }
 
@@ -248,6 +257,10 @@ public class Gitlet {
             return this.storedFiles;
         }
 
+        private boolean isTracking(String file) {
+            return this.storedFiles.containsKey(file);
+        }
+
         /* I don't know if CommitWrappers need to be able to do other stuff. FOR LATER I GUESS. */
     }
 
@@ -279,7 +292,7 @@ public class Gitlet {
                 }
                 break;
 
-            case "add" :
+            case "add":
                 // Can only add 1 file at a time.
                 // Command line arguments split on space, I believe.
                 String addFile = null;
@@ -291,6 +304,22 @@ public class Gitlet {
                 }
                 add(addFile);
                 break;
+
+            case "commit":
+                // Create new commit folder.
+
+                /* In World State: 
+                // Move head pointer. 
+                // Update branchHeads. 
+                // Update numCommits.
+                // Update commitsByMessage. FIGURE OUT THESE MESSAGE THINGYS. */
+
+                // Grab all inherited files first.
+                // Then look at Staging.ser: remove files, add files, update the map. 
+
+                // Write the commitWrapper. 
+
+                // If no files WAIT LGIUHDSLIRGHDSRLIGHDSLIGUHDSLIUGHDSLIUHGDLISHGLDISHGLDISHGILDSUHGSDILUFGHDILSUGHDLSIUHGDSLIGHDILSGHSDLGHDSLIGHDLSIUGHLDSIUGHLDSIUGHDSLIURHGLDSIURGHLSDIUGHDLSIUGHDSLIUGHDSLIUGHDSLIHGL
         }
     }
 
@@ -354,12 +383,30 @@ public class Gitlet {
 
     private static void add(String fileName) {
         // Have to add the string to Staging.ser - should be it.
-        try {
-            FileInputStream fin = new FileInputStream(".gitlet/Staging.ser");
-            ObjectInputStream ois = new ObjectInputStream(fin);
-            Staging stagingInfo = (Staging) ois.readObject();
-            ois.close();
 
+        // File does not exist:
+        if (!(new File(fileName).exists())) {
+            System.out.println("File does not exist.");
+            return;
+        }
+
+        // So here on, guaranteed file exists. 
+        try {
+
+            /* File not been modified since last commit: */
+                // IF IT HASN'T PREVIOUSLY BEEN TRACKED, IT'S OKAY 
+            if (lastCommitTracks(fileName) && (!modifiedSinceLastCommit(fileName))) {
+                System.out.println("File has not been modified since the last commit.");
+                return;
+            }
+
+            // Unmark if marked for removal.
+            Staging stagingInfo = getStaging();
+            if (stagingInfo.removeContains(fileName)) {
+                stagingInfo.removeFromRemove(fileName);
+            }
+
+            /* Add the string to Staging.ser. */
             stagingInfo.addFile(fileName);
             
             // Saving it back. 
@@ -367,7 +414,6 @@ public class Gitlet {
             ObjectOutputStream oos = new ObjectOutputStream(fout);
             oos.writeObject(stagingInfo);
             oos.close();
-
 
 
             /* A test. */
@@ -381,5 +427,78 @@ public class Gitlet {
             System.out.println("Exception in add.");
             System.exit(1);
         }
+    }
+
+    private static boolean lastCommitTracks(String fileName) {
+        // Assumes file exists.
+        CommitWrapper commitInfo = lastCommitWrapper();
+        return commitInfo.isTracking(fileName);
+    }
+
+    private static Integer lastCommit() {
+        try {
+            FileInputStream fin = new FileInputStream(".gitlet/WorldState.ser");
+            ObjectInputStream ois = new ObjectInputStream(fin);
+            WorldState worldState = (WorldState) ois.readObject();
+            ois.close();
+
+            return worldState.getCurrCommit();
+
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("WorldState.ser could not be read.");
+            System.exit(1);
+        }
+        return null;
+    }
+
+    private static CommitWrapper lastCommitWrapper() {
+        int currCommit = lastCommit();
+
+        // Go into the folder, pull out its CommitWrapper. 
+        try {
+            FileInputStream fin2 = new FileInputStream(".gitlet/snapshots/" + currCommit + "/CommitWrapper.ser");
+            ObjectInputStream ois2 = new ObjectInputStream(fin2);
+            CommitWrapper commitInfo = (CommitWrapper) ois2.readObject();
+            ois2.close();
+
+            return commitInfo;
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Last commit wrapper could not be read.");
+            System.exit(1);
+        }
+        return null;
+    }
+
+    /* Assuming last commit does track it!!!!! */
+    private static boolean modifiedSinceLastCommit(String fileName) {
+        CommitWrapper lastCommit = lastCommitWrapper();
+
+        FileInputStream currFile = new FileInputStream(fileName);
+        DataInputStream currData = new DataInputStream(currFile);
+        Byte curr = currData.readByte();
+
+        // Figure out where the last modified file is. 
+        HashMap<String, Integer> fileLocationInfo = lastCommit.getStoredFiles();
+        int folderNum = fileLocationInfo.get(fileName);
+        String filePath = ".gitlet/snapshots/" + folderNum + "/" + fileName;
+
+        // Now read it in. 
+        FileInputStream lastCommitFile = new FileInputStream(filePath);
+        DataInputStream lastCommitData = new DataInputStream(lastCommitFile);
+        Byte last = lastCommitData.readByte();
+
+        // Now compare. 
+        return curr.equals(last);
+    }
+
+
+
+    /* Return Staging object. */
+    private static Staging getStaging() {
+        FileInputStream fin = new FileInputStream(".gitlet/Staging.ser");
+        ObjectInputStream ois = new ObjectInputStream(fin);
+        Staging staging = (Staging) ois.readObject();
+        ois.close();
+        return staging;
     }
 }
