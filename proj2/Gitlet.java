@@ -470,35 +470,47 @@ public class Gitlet {
     }
 
     /* Assuming last commit does track it!!!!! */
-    private static boolean modifiedSinceLastCommit(String fileName) {
+    private static Boolean modifiedSinceLastCommit(String fileName) {
         CommitWrapper lastCommit = lastCommitWrapper();
+        try {
+            FileInputStream currFile = new FileInputStream(fileName);
+            DataInputStream currData = new DataInputStream(currFile);
+            Byte curr = currData.readByte();
 
-        FileInputStream currFile = new FileInputStream(fileName);
-        DataInputStream currData = new DataInputStream(currFile);
-        Byte curr = currData.readByte();
+            // Figure out where the last modified file is. 
+            HashMap<String, Integer> fileLocationInfo = lastCommit.getStoredFiles();
+            int folderNum = fileLocationInfo.get(fileName);
+            String filePath = ".gitlet/snapshots/" + folderNum + "/" + fileName;
 
-        // Figure out where the last modified file is. 
-        HashMap<String, Integer> fileLocationInfo = lastCommit.getStoredFiles();
-        int folderNum = fileLocationInfo.get(fileName);
-        String filePath = ".gitlet/snapshots/" + folderNum + "/" + fileName;
+            // Now read it in. 
+            FileInputStream lastCommitFile = new FileInputStream(filePath);
+            DataInputStream lastCommitData = new DataInputStream(lastCommitFile);
+            Byte last = lastCommitData.readByte();
 
-        // Now read it in. 
-        FileInputStream lastCommitFile = new FileInputStream(filePath);
-        DataInputStream lastCommitData = new DataInputStream(lastCommitFile);
-        Byte last = lastCommitData.readByte();
+            // Now compare. 
+            return curr.equals(last);
 
-        // Now compare. 
-        return curr.equals(last);
+        } catch (IOException ex) {
+            System.out.println("Commit - files could not be read and compared.");
+            System.exit(1);
+        }
+        return null;
     }
 
 
 
     /* Return Staging object. */
     private static Staging getStaging() {
-        FileInputStream fin = new FileInputStream(".gitlet/Staging.ser");
-        ObjectInputStream ois = new ObjectInputStream(fin);
-        Staging staging = (Staging) ois.readObject();
-        ois.close();
-        return staging;
+        try {
+            FileInputStream fin = new FileInputStream(".gitlet/Staging.ser");
+            ObjectInputStream ois = new ObjectInputStream(fin);
+            Staging staging = (Staging) ois.readObject();
+            ois.close();
+            return staging;
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Could not read in Staging.ser.");
+            System.exit(1);
+        }
+        return null;
     }
 }
