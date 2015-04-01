@@ -92,6 +92,11 @@ public class Gitlet {
             filesToAdd.clear();
             filesToRemove.clear();
         }
+
+        /* For testing. */
+        private boolean addContains(String file) {
+            return this.filesToAdd.contains(file);
+        }
     }
 
 
@@ -362,6 +367,15 @@ public class Gitlet {
             ObjectOutputStream oos = new ObjectOutputStream(fout);
             oos.writeObject(stagingInfo);
             oos.close();
+
+
+
+            /* A test. */
+            FileInputStream fin2 = new FileInputStream(".gitlet/Staging.ser");
+            ObjectInputStream ois2 = new ObjectInputStream(fin2);
+            Staging stagingInfo2 = (Staging) ois2.readObject();
+            ois2.close();
+            System.out.println("Wug.txt has been added: " + stagingInfo2.addContains("wug.txt"));
 
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Exception in add.");
