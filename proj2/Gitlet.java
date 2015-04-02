@@ -30,6 +30,8 @@ public class Gitlet {
         private HashMap<String, Integer> commitsByMessage; 
         // --^ Commit message to ID #. 
 
+        private static final long serialVersionUID = 1L; // Apparently do this because force the version number, so won't InvalidClassException when try to deseriazlie it.
+
         private WorldState() {
             // Probably only create a new WorldState at very beginning.
             currCommit = 0;
@@ -75,6 +77,8 @@ public class Gitlet {
         private Set<String> filesToAdd;
         private Set<String> filesToRemove;
 
+        private static final long serialVersionUID = 2L;
+
         private Staging() {
             // Only gonna create a new Staging at very beginning, I think. 
             filesToAdd = new HashSet<String>();
@@ -118,7 +122,9 @@ public class Gitlet {
         // --^ If true, no parent.
         private Integer parentCommit; 
         // --^ So I can use null for commit 0.
-        private HashMap<String, Integer> storedFiles;
+        private HashMap<String, Integer> storedFiles = new HashMap<String, Integer>(); // To avoid null pointing. 
+
+        private static final long serialVersionUID = 3L;
 
         private CommitWrapper(Integer commitNum) {
             // Thanks to StackOverflow for showing me how to get the time.
@@ -257,7 +263,7 @@ public class Gitlet {
             return this.storedFiles;
         }
 
-        private boolean isTracking(String file) {
+        public boolean isTracking(String file) {
             return this.storedFiles.containsKey(file);
         }
 
@@ -427,11 +433,13 @@ public class Gitlet {
             System.out.println("Exception in add.");
             System.exit(1);
         }
+
     }
 
     private static boolean lastCommitTracks(String fileName) {
         // Assumes file exists.
         CommitWrapper commitInfo = lastCommitWrapper();
+        System.out.println("Line 442 created commitWrapper");
         return commitInfo.isTracking(fileName);
     }
 
@@ -446,6 +454,7 @@ public class Gitlet {
 
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println("WorldState.ser could not be read.");
+            ex.printStackTrace();
             System.exit(1);
         }
         return null;
@@ -456,13 +465,19 @@ public class Gitlet {
 
         // Go into the folder, pull out its CommitWrapper. 
         try {
+            System.out.println(".gitlet/snapshots/" + currCommit + "/CommitWrapper.ser");
             FileInputStream fin2 = new FileInputStream(".gitlet/snapshots/" + currCommit + "/CommitWrapper.ser");
+            System.out.println("462 - Found file");
             ObjectInputStream ois2 = new ObjectInputStream(fin2);
+            System.out.println("464 - new ObjectInputStream");
             CommitWrapper commitInfo = (CommitWrapper) ois2.readObject();
+            System.out.println("466 - read in object");
             ois2.close();
+            System.out.println("468 - closed it.");
 
             return commitInfo;
         } catch (IOException | ClassNotFoundException ex) {
+            System.out.println(ex);
             System.out.println("Last commit wrapper could not be read.");
             System.exit(1);
         }
