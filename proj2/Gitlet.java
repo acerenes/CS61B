@@ -16,6 +16,7 @@ import java.util.TimeZone;
 import java.io.IOException;
 import java.lang.ClassNotFoundException;
 import java.io.DataInputStream;
+import java.util.ArrayList;
 
 public class Gitlet {
 
@@ -315,16 +316,18 @@ public class Gitlet {
                         String filePath = createFileExistence(commitID, file);
 
                         // Copy it over - thanks to examples.javacodegeeks.com.
-                        FileChannel inputChannel = null;
-                        FileChannel outputChannel = null;
+                        /*FileChannel inputChannel = null;
+                        FileChannel outputChannel = null;*/
                         try {
-                            inputChannel = new FileInputStream(file).getChannel();
-                            outputChannel = new FileOutputStream(filePath).getChannel();
+                            FileChannel inputChannel = new FileInputStream(file).getChannel();
+                            FileChannel outputChannel = new FileOutputStream(filePath).getChannel();
                             outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
-                        } finally {
                             inputChannel.close();
                             outputChannel.close();
-                        }
+                        } catch (IOException ex) {
+                            System.out.println("Could not copy files to commit folder.");
+                            System.exit(1);
+                        } 
 
                         // Update map. 
                         storedFiles.put(file, commitID);
@@ -334,9 +337,14 @@ public class Gitlet {
         }
 
         private String createFileExistence(int commitID, String file) {
-            String fileLocation = ".gitlet/snapshots/" + commitID + "/" + f;
+            String fileLocation = ".gitlet/snapshots/" + commitID + "/" + file;
             File newFile = new File(fileLocation);
-            newFile.createNewFile();
+            try {
+                newFile.createNewFile();
+            } catch (IOException ex) {
+                System.out.println("Could not create file space in commit folders.");
+                System.exit(1);
+            }
             return fileLocation;
         }
 
