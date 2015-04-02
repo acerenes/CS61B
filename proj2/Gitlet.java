@@ -400,7 +400,7 @@ public class Gitlet {
         try {
 
             /* File not been modified since last commit: */
-                // IF IT HASN'T PREVIOUSLY BEEN TRACKED, IT'S OKAY 
+                // IF IT HASN'T PREVIOUSLY BEEN TRACKED, IT'S OKAY
             if (lastCommitTracks(fileName) && (!modifiedSinceLastCommit(fileName))) {
                 System.out.println("File has not been modified since the last commit.");
                 return;
@@ -422,12 +422,12 @@ public class Gitlet {
             oos.close();
 
 
-            /* A test. */
+            /* A test.  - COMMENT OUT LATER ALICE. */
             FileInputStream fin2 = new FileInputStream(".gitlet/Staging.ser");
             ObjectInputStream ois2 = new ObjectInputStream(fin2);
             Staging stagingInfo2 = (Staging) ois2.readObject();
             ois2.close();
-            System.out.println("Wug.txt has been added: " + stagingInfo2.addContains("wug.txt"));
+            System.out.println(fileName + " has been added: " + stagingInfo2.addContains(fileName));
 
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Exception in add.");
@@ -439,7 +439,6 @@ public class Gitlet {
     private static boolean lastCommitTracks(String fileName) {
         // Assumes file exists.
         CommitWrapper commitInfo = lastCommitWrapper();
-        System.out.println("Line 442 created commitWrapper");
         return commitInfo.isTracking(fileName);
     }
 
@@ -465,15 +464,11 @@ public class Gitlet {
 
         // Go into the folder, pull out its CommitWrapper. 
         try {
-            System.out.println(".gitlet/snapshots/" + currCommit + "/CommitWrapper.ser");
+            /*System.out.println(".gitlet/snapshots/" + currCommit + "/CommitWrapper.ser");*/
             FileInputStream fin2 = new FileInputStream(".gitlet/snapshots/" + currCommit + "/CommitWrapper.ser");
-            System.out.println("462 - Found file");
             ObjectInputStream ois2 = new ObjectInputStream(fin2);
-            System.out.println("464 - new ObjectInputStream");
             CommitWrapper commitInfo = (CommitWrapper) ois2.readObject();
-            System.out.println("466 - read in object");
             ois2.close();
-            System.out.println("468 - closed it.");
 
             return commitInfo;
         } catch (IOException | ClassNotFoundException ex) {
@@ -503,6 +498,7 @@ public class Gitlet {
             Byte last = lastCommitData.readByte();
 
             // Now compare. 
+            System.out.println("Modified: " + curr.equals(last));
             return curr.equals(last);
 
         } catch (IOException ex) {
