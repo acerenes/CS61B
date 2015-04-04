@@ -351,6 +351,7 @@ public class Gitlet {
                 newFile.createNewFile();
             } catch (IOException ex) {
                 System.out.println("Could not create file space in commit folders.");
+                ex.printStackTrace();
                 System.exit(1);
             }
             return fileLocation;
@@ -498,7 +499,7 @@ public class Gitlet {
                 log();
                 break;
             case "global-log":
-                
+
 
                
         }
