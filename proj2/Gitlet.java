@@ -164,6 +164,7 @@ public class Gitlet {
 
         private Integer commitID;
         private String commitTime;
+        private String commitMessage;
         private boolean isRoot; 
         // --^ If true, no parent.
         private Integer parentCommit; 
@@ -174,7 +175,8 @@ public class Gitlet {
 
 
         /* Fixed constructor. The blood is the remnants of the mess. */
-        private CommitWrapper(Integer commitNum) {
+        private CommitWrapper(Integer commitNum, String message) {
+            this.commitMessage = message;
 
             commitID = commitNum;
             if (commitNum == 0) {
@@ -412,6 +414,10 @@ public class Gitlet {
             return this.commitTime;
         }
 
+        public String getCommitMessage() {
+            return this.commitMessage;
+        }
+
         public Integer getParentCommit() {
             return this.parentCommit;
         }
@@ -488,11 +494,49 @@ public class Gitlet {
                 }
                 remove(removeFile);
                 break;
+            case "log":
+                
+                // Most recent one comes first. 
 
                 
+                log();
+                break;
 
                
         }
+    }
+
+    private static void log() {
+        // Starts at current head pointer. 
+        int currHead = lastCommit();
+        String commitIDLine = "Commit " + currHead + ".";
+        CommitWrapper currCommitWrapper = commitWrapper(currHead);
+        String timeLine = currCommitWrapper.getCommitTime();
+        String message = currCommitWrapper.getCommitMessage();
+        printing(commitIDLine, timeLine, message);
+
+        // THEN GO TILL THE END.
+        Integer parentID = currCommitWrapper.getParentCommit();
+        while (parentID != null) {
+            commitIDLine = "Commit " + parentID + ".";
+            currCommitWrapper = commitWrapper(parentID);
+            timeLine = currCommitWrapper.getCommitTime();
+            message = currCommitWrapper.getCommitMessage();
+            printing(commitIDLine, timeLine, message);
+
+            parentID = currCommitWrapper.getParentCommit();
+        }
+
+    }
+
+
+    private static void printing(String commitID, String time, String message) {
+        // Display commit ID, time, and message. Don't forget the ==== seperation & empty line in between.
+        System.out.println("====");
+        System.out.println(commitID);
+        System.out.println(time);
+        System.out.println(message);
+        System.out.println();
     }
 
 
@@ -520,7 +564,7 @@ public class Gitlet {
         createCommitWrapperLocation(commitID);
 
         // DO ALL THE WRITING OF THE COMMIT WRAPPER YO. 
-        writeCommitWrapperToFile(commitID);
+        writeCommitWrapperToFile(commitID, commitMessage);
         
         /* Put the files into the commit folder - INCLUDED IN CREATION OF WRAPPER NO WORRIES. */
 
@@ -549,7 +593,9 @@ public class Gitlet {
 
 
         /* This is a test - commitWrapper.ser. */
-        try {
+
+
+        /*try {
             FileInputStream fin = new FileInputStream(".gitlet/snapshots/" + commitID + "/CommitWrapper.ser");
             ObjectInputStream ois = new ObjectInputStream(fin);
             CommitWrapper check = (CommitWrapper) ois.readObject();
@@ -581,7 +627,7 @@ public class Gitlet {
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Testing commit went wrong.");
             System.exit(1);
-        }
+        }*/
     }
 
 
@@ -641,11 +687,13 @@ public class Gitlet {
             System.out.println("Initialize - could not write CommitWrapper object.");
             System.exit(1);
         }*/
-        writeCommitWrapperToFile(0);
+        writeCommitWrapperToFile(0, "initial commit");
 
 
         /* Test. */ 
-        try {
+
+
+        /*try {
             FileInputStream fin = new FileInputStream(".gitlet/snapshots/0/CommitWrapper.ser");
             ObjectInputStream ois = new ObjectInputStream(fin);
             CommitWrapper initialCommit = (CommitWrapper) ois.readObject();
@@ -662,7 +710,7 @@ public class Gitlet {
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Testing initial went wrong.");
             System.exit(1);
-        }
+        }*/
 
     }
 
@@ -759,11 +807,14 @@ public class Gitlet {
 
     private static CommitWrapper lastCommitWrapper() {
         int currCommit = lastCommit();
+        return commitWrapper(currCommit);
+    }
 
+    private static CommitWrapper commitWrapper(int commitID) {
         // Go into the folder, pull out its CommitWrapper. 
         try {
             /*System.out.println(".gitlet/snapshots/" + currCommit + "/CommitWrapper.ser");*/
-            FileInputStream fin2 = new FileInputStream(".gitlet/snapshots/" + currCommit + "/CommitWrapper.ser");
+            FileInputStream fin2 = new FileInputStream(".gitlet/snapshots/" + commitID + "/CommitWrapper.ser");
             ObjectInputStream ois2 = new ObjectInputStream(fin2);
             CommitWrapper commitInfo = (CommitWrapper) ois2.readObject();
             ois2.close();
@@ -771,7 +822,7 @@ public class Gitlet {
             return commitInfo;
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println(ex);
-            System.out.println("Last commit wrapper could not be read.");
+            System.out.println("Commit wrapper could not be read.");
             System.exit(1);
         }
         return null;
@@ -913,8 +964,8 @@ public class Gitlet {
         }
     }
 
-    private static void writeCommitWrapperToFile(int commitID) {
-        CommitWrapper commitWrapper = new CommitWrapper(commitID);
+    private static void writeCommitWrapperToFile(int commitID, String message) {
+        CommitWrapper commitWrapper = new CommitWrapper(commitID, message);
         String fileLocation = ".gitlet/snapshots/" + commitID + "/CommitWrapper.ser";
         try {
             FileOutputStream fout = new FileOutputStream(fileLocation);
