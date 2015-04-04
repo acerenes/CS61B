@@ -495,12 +495,10 @@ public class Gitlet {
                 remove(removeFile);
                 break;
             case "log":
-                
-                // Most recent one comes first. 
-
-                
                 log();
                 break;
+            case "global-log":
+                
 
                
         }
