@@ -478,15 +478,32 @@ public class Gitlet {
                 }
                 commit(commitMessage);
                 break;
-
+            case "remove":
+                // Mark file for removal - will not be inherited.
+                // If file was staged, unstage it.
                 
-
                 
+                String removeFile = null;
+                if (args.length > 1) {
+                    removeFile = args[1];
+                } else {
+                    System.out.println("No file stated to remove.");
+                    return;
+                }
+                remove(removeFile);
+                break;
 
                 
 
                
         }
+    }
+
+    private static void remove(String fileName) {
+        /* If file neither added nor included in previous commit, print error. */
+        /*if (!lastCommitTracks(fileName) && YOUWEREHERE)*/
+        return;
+
     }
 
     private static void commit(String commitMessage) {
@@ -658,6 +675,8 @@ public class Gitlet {
 
     }
 
+    
+
     private static void add(String fileName) {
         // Have to add the string to Staging.ser - should be it.
 
@@ -770,7 +789,7 @@ public class Gitlet {
 
             // Now compare. 
             System.out.println("Modified: " + !curr.equals(last));
-            return curr.equals(last);
+            return !curr.equals(last);
 
         } catch (IOException ex) {
             System.out.println("Commit - files could not be read and compared.");
@@ -807,6 +826,13 @@ public class Gitlet {
             System.out.println("Could not write back Staging.ser.");
             System.exit(1);
         }
+    }
+
+    /* Has this particular file been added? */
+    private boolean hasAdded(String fileName) {
+        Staging staging = getStaging();
+        Set<String> addFiles = staging.getFilesToAdd();
+        return true; // COME BACK HERE 
     }
 
     /* Is there stuff to be added in Staging? */
