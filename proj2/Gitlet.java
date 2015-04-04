@@ -479,10 +479,6 @@ public class Gitlet {
                 commit(commitMessage);
                 break;
             case "remove":
-                // Mark file for removal - will not be inherited.
-                // If file was staged, unstage it.
-                
-                
                 String removeFile = null;
                 if (args.length > 1) {
                     removeFile = args[1];
@@ -499,12 +495,7 @@ public class Gitlet {
         }
     }
 
-    private static void remove(String fileName) {
-        /* If file neither added nor included in previous commit, print error. */
-        /*if (!lastCommitTracks(fileName) && YOUWEREHERE)*/
-        return;
 
-    }
 
     private static void commit(String commitMessage) {
         /* If no files staged or marked for removal, abort. */
@@ -726,6 +717,23 @@ public class Gitlet {
 
     }
 
+    private static void remove(String fileName) {
+        /* If file neither added nor included in previous commit, print error. */
+        if (!lastCommitTracks(fileName) && !hasAdded(fileName)) {
+            System.out.println("No reason to remove the file.");
+            return;
+        }
+
+        // Mark file for removal - will not be inherited.
+        markToRemove(fileName);
+
+        // If file was staged, unstage it.
+        if (hasAdded(fileName)) {
+            unstage(fileName);
+        }        
+        
+    }
+
     private static boolean lastCommitTracks(String fileName) {
         // Assumes file exists.
         CommitWrapper commitInfo = lastCommitWrapper();
@@ -828,11 +836,26 @@ public class Gitlet {
         }
     }
 
+    /* Unstages a file. */ 
+    private static void unstage(String fileName) {
+        Staging stage = getStaging();
+        stage.removeFromAdd(fileName);
+        writeBackStaging(stage);
+    }
+
+    /* Marks file as to be removed. */
+    private static void markToRemove(String fileName) {
+        Staging stage = getStaging();
+        stage.removeFile(fileName);
+        // Don't forget to rewrite Staging.ser back.
+        writeBackStaging(stage);
+    }
+
     /* Has this particular file been added? */
-    private boolean hasAdded(String fileName) {
+    private static boolean hasAdded(String fileName) {
         Staging staging = getStaging();
         Set<String> addFiles = staging.getFilesToAdd();
-        return true; // COME BACK HERE 
+        return addFiles.contains(fileName); 
     }
 
     /* Is there stuff to be added in Staging? */
