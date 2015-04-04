@@ -87,6 +87,12 @@ public class Gitlet {
             // DOESN'T SWITCH TO NEW BRANCH.
             branchHeads.put(newBranchName, currCommit);
         }
+
+        private HashMap<String, Integer> getBranchHeads() {
+            return this.branchHeads;
+        }
+
+        
     }
 
 
@@ -547,6 +553,23 @@ public class Gitlet {
             for (String file : checkStoredFiles.keySet()) {
                 System.out.println("Tracking " + file + " in ID " + checkStoredFiles.get(file));
             }
+
+            // Make sure Staging.ser is emptied. 
+            FileInputStream finStaging = new FileInputStream(".gitlet/Staging.ser");
+            ObjectInputStream oisStaging = new ObjectInputStream(finStaging);
+            Staging emptyStage = (Staging) oisStaging.readObject();
+            oisStaging.close();
+            System.out.println("Files to add is empty: " + emptyStage.getFilesToAdd().isEmpty());
+
+            // Make sure WorldState is good. 
+            FileInputStream finWorld = new FileInputStream(".gitlet/WorldState.ser");
+            ObjectInputStream oisWorld = new ObjectInputStream(finWorld);
+            WorldState currWorld = (WorldState) oisWorld.readObject();
+            oisWorld.close();
+            System.out.println("Head pointer: " + currWorld.getCurrCommit());
+            HashMap<String, Integer> branchHeads = currWorld.getBranchHeads();
+            System.out.println("Branch head of master: " + branchHeads.get("master"));
+            
         } catch (IOException | ClassNotFoundException ex) {
             System.out.println("Testing commit went wrong.");
             System.exit(1);
@@ -746,7 +769,7 @@ public class Gitlet {
             Byte last = lastCommitData.readByte();
 
             // Now compare. 
-            System.out.println("Modified: " + curr.equals(last));
+            System.out.println("Modified: " + !curr.equals(last));
             return curr.equals(last);
 
         } catch (IOException ex) {
