@@ -162,7 +162,7 @@ public class Gitlet {
         // --^ If true, no parent.
         private Integer parentCommit; 
         // --^ So I can use null for commit 0.
-        private HashMap<String, Integer> storedFiles = new HashMap<String, Integer>(); // To avoid null pointing. 
+        private HashMap<String, Integer> storedFiles; 
 
         private static final long serialVersionUID = 3L;
 
@@ -375,7 +375,7 @@ public class Gitlet {
                 CommitWrapper parentCommitWrapper = lastCommitWrapper();
                 return new HashMap<String, Integer>(parentCommitWrapper.getStoredFiles());
             }
-            return null;
+            return new HashMap<String, Integer>();
         } 
 
         private String calculateCommitTime() {
@@ -531,6 +531,26 @@ public class Gitlet {
         worldState.updateCommitMessages(commitMessage, commitID);
         // Now write worldState back into its .ser file. 
         writeBackWorldState(worldState);
+
+
+
+        /* This is a test - commitWrapper.ser. */
+        try {
+            FileInputStream fin = new FileInputStream(".gitlet/snapshots/" + commitID + "/CommitWrapper.ser");
+            ObjectInputStream ois = new ObjectInputStream(fin);
+            CommitWrapper check = (CommitWrapper) ois.readObject();
+            ois.close();
+            System.out.println("Time of Commit " + commitID + ": " + check.getCommitTime());
+            System.out.println("Parent of Commit " + commitID + ": " + check.getParentCommit());
+
+            HashMap<String, Integer> checkStoredFiles = check.getStoredFiles();
+            for (String file : checkStoredFiles.keySet()) {
+                System.out.println("Tracking " + file + " in ID " + checkStoredFiles.get(file));
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Testing commit went wrong.");
+            System.exit(1);
+        }
     }
 
 
@@ -591,6 +611,28 @@ public class Gitlet {
             System.exit(1);
         }*/
         writeCommitWrapperToFile(0);
+
+
+        /* Test. */ 
+        try {
+            FileInputStream fin = new FileInputStream(".gitlet/snapshots/0/CommitWrapper.ser");
+            ObjectInputStream ois = new ObjectInputStream(fin);
+            CommitWrapper initialCommit = (CommitWrapper) ois.readObject();
+            ois.close();
+            System.out.println("Commit 0 time: " + initialCommit.getCommitTime());
+            System.out.println("Commit 0 parent: " + initialCommit.getParentCommit());
+
+            HashMap<String, Integer> storedFiles = initialCommit.getStoredFiles();
+            if (storedFiles.isEmpty()) {
+                System.out.println("Good, no stored files in initial commit.");
+            } else {
+                System.out.println("BAD THERE SHOULD BE NO STORED FILES IN INITIAL COMMIT.");
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Testing initial went wrong.");
+            System.exit(1);
+        }
+
     }
 
     private static void add(String fileName) {
