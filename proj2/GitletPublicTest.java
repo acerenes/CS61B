@@ -76,7 +76,6 @@ public class GitletPublicTest {
      * Tests that checking out a file name will restore the version of the file
      * from the previous commit. Involves init, add, commit, and checkout.
      */
-
     @Test
     public void testBasicCheckout() {
         String wugFileName = TESTING_DIR + "wug.txt";
@@ -94,7 +93,6 @@ public class GitletPublicTest {
      * Tests that log prints out commit messages in the right order. Involves
      * init, add, commit, and log.
      */
-
     @Test
     public void testBasicLog() {
         gitlet("init");
@@ -124,11 +122,10 @@ public class GitletPublicTest {
      * arguments, which are packaged into a String[].
      */
     private static String gitlet(String... args) {
-        PrintStream originalOut = System.out;
-        InputStream originalIn = System.in;
+        /*PrintStream originalOut = System.out;
+        InputStream originalIn = System.in;*/
         ByteArrayOutputStream printingResults = new ByteArrayOutputStream();
         try {
-
             /*
              * Below we change System.out, so that when you call
              * System.out.println(), it won't print to the screen, but will
@@ -153,14 +150,10 @@ public class GitletPublicTest {
              * Restores System.out and System.in (So you can print normally and
              * take user input normally again).
              */
-            System.setOut(originalOut);
-            System.setIn(originalIn);
+            /*System.setOut(originalOut);
+            System.setIn(originalIn);*/
         }
         return printingResults.toString();
-    }
-
-    public static void main(String[] args) {
-        System.exit(jh61b.junit.textui.runClasses(GitletPublicTest.class)); 
     }
 
     /**
@@ -238,5 +231,9 @@ public class GitletPublicTest {
             messages[i] = logLines[3];
         }
         return messages;
+    }
+
+    public static void main(String[] args) {
+        System.exit(jh61b.junit.textui.runClasses(GitletPublicTest.class)); 
     }
 }
