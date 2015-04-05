@@ -507,9 +507,27 @@ public class Gitlet {
                 log();
                 break;
             case "global-log":
+                globalLog();
+                break; 
 
+                 
 
                
+        }
+    }
+
+    /* Print ALL commits EVER. */
+    private static void globalLog() {
+        // The best way I think to do this is go 0, 1, 2, 3....till numCommits. 
+            // numCommits starts at 0, so don't need to -1.
+        WorldState world = getWorldState();
+        Integer numCommits = world.getNumCommits();
+        for (int i = 0; i <= numCommits; i = i + 1) {
+            String commitIDLine = "Commit " + i + ".";
+            CommitWrapper currCommitWrapper = commitWrapper(i);
+            String timeLine = currCommitWrapper.getCommitTime();
+            String message = currCommitWrapper.getCommitMessage();
+            printing(commitIDLine, timeLine, message);
         }
     }
 
