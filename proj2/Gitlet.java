@@ -93,6 +93,10 @@ public class Gitlet {
             return this.branchHeads;
         }
 
+        private HashMap<String, ArrayList<Integer>> getCommitsByMessage() {
+            return this.commitsByMessage;
+        }
+
         
     }
 
@@ -509,12 +513,39 @@ public class Gitlet {
             case "global-log":
                 globalLog();
                 break; 
+            case "find":
+                String findMessage = null;
+                if (args.length > 1) {
+                    findMessage = args[1];
+                } else {
+                    System.out.println("Must request message to find.");
+                    return;
+                }
+                find(findMessage);
+                break;
 
                  
 
                
         }
     }
+
+    /* Print out IDs with this commit message. */
+    private static void find(String message) {
+        WorldState world = getWorldState();
+        HashMap<String, ArrayList<Integer>> commitsByMessage = world.getCommitsByMessage();
+        if (commitsByMessage.containsKey(message)) {
+            ArrayList<Integer> commits = commitsByMessage.get(message);
+            for (Integer id : commits) {
+                System.out.println(id);
+            }
+            
+        } else {
+            System.out.println("Found no commit with that message.");
+        } 
+    }
+
+
 
     /* Print ALL commits EVER. */
     private static void globalLog() {
