@@ -93,6 +93,10 @@ public class Gitlet {
             return this.branchHeads;
         }
 
+        private String getCurrBranch() {
+            return this.currBranch;
+        }
+
         private HashMap<String, ArrayList<Integer>> getCommitsByMessage() {
             return this.commitsByMessage;
         }
@@ -523,12 +527,63 @@ public class Gitlet {
                 }
                 find(findMessage);
                 break;
-
+            case "status":
+                
+                
+                status();
+                break;
                  
 
                
         }
     }
+
+    private static void status() {
+        printBranches();
+        // Displays what files have been staged or marked for removal.
+        printStagedFiles();
+        printRemovalFiles();
+
+
+    }
+
+    /* Displays what branches currently exist, and marks current branch with *. */
+    private static void printBranches() {
+        WorldState world = getWorldState();
+        Set<String> branches = world.getBranchHeads().keySet();
+        String currBranch = world.getCurrBranch();
+        System.out.println("=== Branches ===");
+        for (String branchName : branches) {
+            if (branchName == currBranch) {
+                System.out.println("*" + branchName);
+            } else {
+                System.out.println(branchName);
+            }
+        }
+        System.out.println();
+    }
+
+    private static void printStagedFiles() {
+        Staging stage = getStaging();
+        Set<String> addedFiles = stage.getFilesToAdd();
+        System.out.println("=== Staged Files ===");
+        for (String file : addedFiles) {
+            System.out.println(file);
+        }
+        System.out.println();
+    }
+
+    private static void printRemovalFiles() {
+        Staging stage = getStaging();
+        Set<String> removalFiles = stage.getFilesToRemove();
+        System.out.println("=== Files Marked for Removal ===");
+        for (String file : removalFiles) {
+            System.out.println(file);
+        }
+        System.out.println();
+    }
+
+
 
     /* Print out IDs with this commit message. */
     private static void find(String message) {
@@ -539,7 +594,7 @@ public class Gitlet {
             for (Integer id : commits) {
                 System.out.println(id);
             }
-            
+
         } else {
             System.out.println("Found no commit with that message.");
         } 
