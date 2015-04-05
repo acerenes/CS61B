@@ -122,8 +122,8 @@ public class GitletPublicTest {
      * arguments, which are packaged into a String[].
      */
     private static String gitlet(String... args) {
-        /*PrintStream originalOut = System.out;
-        InputStream originalIn = System.in;*/
+        PrintStream originalOut = System.out;
+        InputStream originalIn = System.in;
         ByteArrayOutputStream printingResults = new ByteArrayOutputStream();
         try {
             /*
@@ -150,8 +150,8 @@ public class GitletPublicTest {
              * Restores System.out and System.in (So you can print normally and
              * take user input normally again).
              */
-            /*System.setOut(originalOut);
-            System.setIn(originalIn);*/
+            System.setOut(originalOut);
+            System.setIn(originalIn);
         }
         return printingResults.toString();
     }

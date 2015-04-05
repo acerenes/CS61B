@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.lang.ClassNotFoundException;
 import java.io.DataInputStream;
 import java.util.ArrayList;
+import java.io.FileWriter;
 
 public class Gitlet {
 
@@ -320,6 +321,9 @@ public class Gitlet {
                 if (stage.hasFilesToAdd()) {
                     for (String file : stage.getFilesToAdd()) {
 
+                        System.out.println("Trying to add this file: " + file);
+
+
                         // Create space in folder first.
                         String filePath = createFileExistence(commitID, file);
 
@@ -345,10 +349,14 @@ public class Gitlet {
         }
 
         private String createFileExistence(int commitID, String file) {
+            // Okay, the thing is, the file might be in some crazy weird folder. 
+            // Create weird directories to maintain this file name.
+            // Stack overflow, HOPE THIS WORKS.
             String fileLocation = ".gitlet/snapshots/" + commitID + "/" + file;
             File newFile = new File(fileLocation);
             try {
-                newFile.createNewFile();
+                newFile.getParentFile().mkdirs();
+                FileWriter writer = new FileWriter(newFile);
             } catch (IOException ex) {
                 System.out.println("Could not create file space in commit folders.");
                 ex.printStackTrace();
