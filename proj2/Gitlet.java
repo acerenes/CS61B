@@ -18,6 +18,14 @@ import java.lang.ClassNotFoundException;
 import java.io.DataInputStream;
 import java.util.ArrayList;
 import java.io.FileWriter;
+import java.io.Console;
+import java.nio.file.Paths;
+import java.nio.file.Path;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
+import java.util.Scanner;
 
 public class Gitlet {
 
@@ -56,6 +64,10 @@ public class Gitlet {
 
         public Integer getNumCommits() {
             return this.numCommits;
+        }
+
+        private void updateCurrBranch(String newBranch) {
+            this.currBranch = newBranch;
         }
 
 
@@ -528,13 +540,125 @@ public class Gitlet {
                 find(findMessage);
                 break;
             case "status":
-                
-                
                 status();
+                break;
+            case "checkout":
+                // Thanks to homeandlearn.co.uk for user input stuff. 
+                Scanner userInput = new Scanner(System.in);
+                System.out.println("Warning: The command you entered may alter the files in your working directory. Uncommitted changes may be lost. Are you sure you want to continue? (yes/no)");
+                String input = userInput.next();
+                if (input.equals("yes")) {
+                    if (args.length > 1) {
+                        if (args.length > 2) {
+                            // Case 2. 
+                            try {
+                                int commitID = Integer.parseInt(args[1]);
+                                String fileName = args[2];
+                                checkoutCommit(commitID, fileName);
+                            } catch (NumberFormatException ex) {
+                                // Commit id must be int. 
+                               System.out.println("No commit with that id exists.");
+                               return; 
+                            }
+                        } else {
+                            // Case 1 or 3.
+                            checkoutFileOrBranch(args[1]);
+                        }
+                    } else {
+                        System.out.println("Must input something to checkout.");
+                        return;
+                    }
+                } else {
+                    // They said no, do not continue.
+                    return;
+                }
                 break;
                  
 
                
+        }
+    }
+
+    private static void checkoutCommit(int commitID, String fileName) {
+
+        WorldState world = getWorldState();
+        int numCommits = world.getNumCommits();
+        if (commitID < 0 || commitID > numCommits) {
+            // No commit with given ID exists. 
+            System.out.println("No commit with that id exists.");
+            return;
+        }
+
+        CommitWrapper commitInfo = commitWrapper(commitID);
+        HashMap<String, Integer> storedFiles = commitInfo.getStoredFiles();
+        if (storedFiles.containsKey(fileName)) {
+            int commitNum = storedFiles.get(fileName);
+            overwriteWorkingDirectoryFile(commitNum, fileName);
+        } else {
+            // File does not exist in the commit. 
+            System.out.println("File does not exist in that commit.");
+            return;
+        }
+    }
+
+    private static void checkoutFileOrBranch(String thingToCheckout) {
+        // Branch > File. 
+
+        WorldState world = getWorldState();
+        HashMap<String, Integer> branches = world.getBranchHeads();
+        if (branches.keySet().contains(thingToCheckout)) {
+            // It's a branch. 
+
+            // Check if branch is current branch - error.
+            if (thingToCheckout == world.getCurrBranch()) {
+                System.out.println("No need to checkout the current branch.");
+                return;
+            }
+            // 3: Restores all files in working directory to their versions in the commit at the head of the given branch.
+
+            int branchHead = branches.get(thingToCheckout);
+            CommitWrapper commitInfo = commitWrapper(branchHead);
+            HashMap<String, Integer> storedFiles = commitInfo.getStoredFiles();
+
+            for (String file : storedFiles.keySet()) {
+                int commitID = storedFiles.get(file);
+                overwriteWorkingDirectoryFile(commitID, file);
+            }
+
+            // Given branch now current branch. 
+            world.updateCurrBranch(thingToCheckout);
+
+        } else {
+            // It's a file. 
+
+            // 1: Restores the file to its state at the commit at the head of current branch. 
+
+            String currBranch = world.getCurrBranch();
+            if (branches.containsKey(thingToCheckout)) {
+                int branchHead2 = branches.get(currBranch);
+                CommitWrapper commitInfo2 = commitWrapper(branchHead2);
+                HashMap<String, Integer> storedFiles2 = commitInfo2.getStoredFiles();
+
+                int commitID2 = storedFiles2.get(thingToCheckout);
+                overwriteWorkingDirectoryFile(commitID2, thingToCheckout);
+            } else {
+                // File does not exist in the previous commit OR No branch with that name exists.
+                System.out.println("File does not exist in the most recent commit, or no such branch exists.");
+                return;
+            }
+        }
+    }
+
+    private static void overwriteWorkingDirectoryFile(int commitID, String fileName) {
+        String inCommitFile = ".gitlet/snapshots/" + commitID + "/" + fileName;
+        Path inCommit = Paths.get(inCommitFile);
+        Path workingDirectory = Paths.get(fileName);
+        try {
+            System.out.println("Trying to copy from " + commitID + " to working directory");
+            Files.copy(inCommit, workingDirectory, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ex) {
+            System.out.println("Could not replace working directory file.");
+            System.exit(1);
         }
     }
 
@@ -942,27 +1066,55 @@ public class Gitlet {
     /* Assuming last commit does track it!!!!! */
     private static Boolean modifiedSinceLastCommit(String fileName) {
         CommitWrapper lastCommit = lastCommitWrapper();
+        /*FileInputStream currFile = new FileInputStream(fileName);
+        DataInputStream currData = new DataInputStream(currFile);
+        System.out.println("currFile: " + fileName);
+        Byte curr = currData.readByte();*/
+
+        /*Path currFile = Paths.get(fileName);
+        byte[] curr = Files.readAllBytes(currFile);*/
+
+        // Figure out where the last modified file is. 
+        HashMap<String, Integer> fileLocationInfo = lastCommit.getStoredFiles();
+        int folderNum = fileLocationInfo.get(fileName);
+        String filePath = ".gitlet/snapshots/" + folderNum + "/" + fileName;
+        System.out.println("Last commit is ID " + folderNum);
+
+        // Now read it in. 
+        /*FileInputStream lastCommitFile = new FileInputStream(filePath);
+        DataInputStream lastCommitData = new DataInputStream(lastCommitFile);
+        System.out.println("last commit file path: " + filePath);
+        Byte last = lastCommitData.readByte();*/
+
+        /*Path lastCommitFile = Paths.get(filePath);
+        byte[] last = Files.readAllBytes(lastCommitFile);*/
+
+        // Now compare. 
+        System.out.println("Modified: " + !filesEqual(fileName, filePath));
+        return !filesEqual(fileName, filePath);
+    }
+
+    /* Thanks to java2s.com and Apache, I believe. */
+    private static Boolean filesEqual(String path1, String path2) {
         try {
-            FileInputStream currFile = new FileInputStream(fileName);
-            DataInputStream currData = new DataInputStream(currFile);
-            Byte curr = currData.readByte();
+            FileInputStream f1 = new FileInputStream(path1);
+            BufferedReader file1 = new BufferedReader(new InputStreamReader(f1, "UTF-8"));
 
-            // Figure out where the last modified file is. 
-            HashMap<String, Integer> fileLocationInfo = lastCommit.getStoredFiles();
-            int folderNum = fileLocationInfo.get(fileName);
-            String filePath = ".gitlet/snapshots/" + folderNum + "/" + fileName;
+            FileInputStream f2 = new FileInputStream(path2);
+            BufferedReader file2 = new BufferedReader(new InputStreamReader(f2, "UTF-8"));
 
-            // Now read it in. 
-            FileInputStream lastCommitFile = new FileInputStream(filePath);
-            DataInputStream lastCommitData = new DataInputStream(lastCommitFile);
-            Byte last = lastCommitData.readByte();
-
-            // Now compare. 
-            System.out.println("Modified: " + !curr.equals(last));
-            return !curr.equals(last);
-
+            int ch = file1.read();
+            while (-1 != ch) {
+                int ch2 = file2.read();
+                if (ch != ch2) {
+                    return false;
+                }
+                ch = file1.read();
+            }
+            int ch2 = file2.read();
+            return ch2 == -1;
         } catch (IOException ex) {
-            System.out.println("Commit - files could not be read and compared.");
+            System.out.println("Could not compare files.");
             System.exit(1);
         }
         return null;
