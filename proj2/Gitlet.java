@@ -630,15 +630,16 @@ public class Gitlet {
 
         } else {
             // It's a file. 
+            System.out.println("Testing if file.");
 
             // 1: Restores the file to its state at the commit at the head of current branch. 
 
             String currBranch = world.getCurrBranch();
-            if (branches.containsKey(thingToCheckout)) {
-                int branchHead2 = branches.get(currBranch);
-                CommitWrapper commitInfo2 = commitWrapper(branchHead2);
-                HashMap<String, Integer> storedFiles2 = commitInfo2.getStoredFiles();
+            int branchHead2 = branches.get(currBranch);
+            CommitWrapper commitInfo2 = commitWrapper(branchHead2);
+            HashMap<String, Integer> storedFiles2 = commitInfo2.getStoredFiles();
 
+            if (storedFiles2.keySet().contains(thingToCheckout)) {
                 int commitID2 = storedFiles2.get(thingToCheckout);
                 overwriteWorkingDirectoryFile(commitID2, thingToCheckout);
             } else {
