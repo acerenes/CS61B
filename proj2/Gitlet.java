@@ -14,17 +14,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 import java.io.IOException;
-import java.lang.ClassNotFoundException;
-import java.io.DataInputStream;
 import java.util.ArrayList;
 import java.io.FileWriter;
-import java.io.Console;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.io.FileNotFoundException;
-import java.io.UnsupportedEncodingException;
 import java.util.Scanner;
 
 public class Gitlet {
@@ -40,7 +35,8 @@ public class Gitlet {
         private HashMap<String, ArrayList<Integer>> commitsByMessage; 
         // --^ Commit message to ID #. 
 
-        private static final long serialVersionUID = 1L; // Apparently do this because force the version number, so won't InvalidClassException when try to deseriazlie it.
+        private static final long serialVersionUID = 1L; 
+        // Force the version number, so won't InvalidClassException when try to deseriazlie it.
 
         private WorldState() {
             // Probably only create a new WorldState at very beginning.
@@ -209,28 +205,6 @@ public class Gitlet {
             this.commitTime = calculateCommitTime();
 
             /* Grab parent commit ID from the file. */
-            // Thanks a million to mkyong.com. Hope this works.
-            /*if (!isRoot) {
-                // You create a CommitWrapper when you make a commit - in main method of Gitlet. So you're in the working directory. 
-                try {
-                    FileInputStream fin = new FileInputStream(".gitlet/WorldState.ser");
-                    ObjectInputStream ois = new ObjectInputStream(fin); 
-                    // --^ These two - IOException.
-                    WorldState worldState = (WorldState) ois.readObject(); 
-                    // --^ ClassNotFoundException.
-                    ois.close();
-                    parentCommit = worldState.getCurrCommit(); 
-                    // Shouldn't have updated yet.
-                } catch (IOException | ClassNotFoundException ex) {
-                    System.out.println("Exception in creating Commit Wrapper.");
-                    System.exit(1);
-                    // This shouldn't happen - WorldState should be the first thing created. 
-                }
-            } else {
-                // It's for commit 0, has no parent.
-                parentCommit = null;
-            }*/
-
             this.parentCommit = calculateParentCommit(this.isRoot);
 
 
@@ -247,95 +221,19 @@ public class Gitlet {
             // Then take out stuff in filesToRemove. 
             removeFiles(this.storedFiles, this.isRoot);
 
-            // Take working directory versions of filesToAdd, stick in folder. Update the map while at it.
+            // Take working directory versions of filesToAdd, stick in folder. 
+            // Update the map while at it.
             addFilesToFolder(this.commitID, this.isRoot, this.storedFiles);
 
 
-
-            // Take all the parent's remembered files.
-          /*  if (!isRoot) {
-                // Only has a parent if it's not the root. 
-                try {
-                    String parentFolderLocation = ".gitlet/snapshots/" + parentCommit + "/CommitWrapper.ser";
-                    FileInputStream finParent = new FileInputStream(parentFolderLocation);
-                    ObjectInputStream oisParent = new ObjectInputStream(finParent);
-                    CommitWrapper parent = (CommitWrapper) oisParent.readObject();
-                    oisParent.close();
-
-                    // According to StackOverflow, b/c String & Integer are immutable, I can do this:
-                    this.storedFiles = new HashMap<String, Integer>(parent.storedFiles);
-                } catch (IOException | ClassNotFoundException ex2) {
-                    System.out.println("Exception in CommitWrapper - couldn't get parent's commitWrapper.");
-                    System.exit(1);
-                }
-                
-
-                // Commit 0, the root, contains no files. 
-                try {
-                    FileInputStream finStaging = new FileInputStream(".gitlet/Staging.ser");
-                    ObjectInputStream oisStaging = new ObjectInputStream(finStaging);
-                    Staging stage = (Staging) oisStaging.readObject();
-                    oisStaging.close();
-
-                    // Take out the stuff in filesToRemove.
-                    if (!stage.filesToRemove.isEmpty()) {
-                        for (String fRemove : stage.filesToRemove) {
-                            if (stage.filesToAdd.contains(fRemove)) {
-                                // Unstage it. 
-                                stage.removeFile(fRemove);
-                            } else {
-                                // Do not inherit it. 
-                                this.storedFiles.remove(fRemove);
-                            }
-                        }
-                    }
-
-                    // Then take the working directory versions of filesToAdd, stick in folder.
-                
-                    if (!stage.filesToAdd.isEmpty()) {
-                        // If there are files to add to the actual folder. 
-                        for (String f : stage.filesToAdd) {
-                            // Create the space in the folder first.
-                            String newFileLocation = ".gitlet/snapshots/" + this.commitID + "/" + f;
-                            File newFile = new File(newFileLocation);
-                            newFile.createNewFile();
-                            // Now copy it over - thanks to examples.javacodegeeks.com.
-                            FileChannel inputChannel = null;
-                            FileChannel outputChannel = null;
-                            try {
-                                inputChannel = new FileInputStream(f).getChannel();
-                                outputChannel = new FileOutputStream(newFileLocation).getChannel();
-                                outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
-                            } finally {
-                                inputChannel.close();
-                                outputChannel.close();
-                            }
-
-                            // Now update the map.
-                            this.storedFiles.put(f, this.commitID);
-                        }
-                    }
-      
-                    // Empty Staging.ser.
-                    stage.emptyStagingInfo();
-
-                } catch (IOException | ClassNotFoundException ex3) {
-                    System.out.println("Exception in CommitWrapper - couldn't get staging info.");
-                    System.exit(1);
-                }
-
-                
-
-                
-            }*/
 
         }
         // FINISHED CONSTRUCTOR
 
 
         /* Add working directory files to folder, but also update map in CommitWrapper object. */
-        private void addFilesToFolder(int commitID, boolean isRoot, HashMap<String, Integer> storedFiles) {
-            if (!isRoot) {
+        private void addFilesToFolder(int commit, boolean root, HashMap<String, Integer> stored) {
+            if (!root) {
                 Staging stage = getStaging();
 
                 if (stage.hasFilesToAdd()) {
@@ -345,7 +243,7 @@ public class Gitlet {
 
 
                         // Create space in folder first.
-                        String filePath = createFileExistence(commitID, file);
+                        String filePath = createFileExistence(commit, file);
 
                         // Copy it over - thanks to examples.javacodegeeks.com.
                         /*FileChannel inputChannel = null;
@@ -362,17 +260,17 @@ public class Gitlet {
                         } 
 
                         // Update map. 
-                        storedFiles.put(file, commitID);
+                        stored.put(file, commit);
                     }
                 }
             }
         }
 
-        private String createFileExistence(int commitID, String file) {
+        private String createFileExistence(int id, String file) {
             // Okay, the thing is, the file might be in some crazy weird folder. 
             // Create weird directories to maintain this file name.
             // Stack overflow, HOPE THIS WORKS.
-            String fileLocation = ".gitlet/snapshots/" + commitID + "/" + file;
+            String fileLocation = ".gitlet/snapshots/" + id + "/" + file;
             File newFile = new File(fileLocation);
             try {
                 newFile.getParentFile().mkdirs();
@@ -385,9 +283,9 @@ public class Gitlet {
             return fileLocation;
         }
 
-        private void removeFiles(HashMap<String, Integer> fileMap, boolean isRoot) {
+        private void removeFiles(HashMap<String, Integer> fileMap, boolean root) {
             // Commit 0 contains no files.
-            if (!isRoot) {
+            if (!root) {
                 Staging stage = getStaging();
 
                 if (stage.hasFilesToRemove()) {
@@ -405,8 +303,8 @@ public class Gitlet {
             }
         }
 
-        private HashMap<String, Integer> parentsFiles(boolean isRoot) {
-            if (!isRoot) {
+        private HashMap<String, Integer> parentsFiles(boolean root) {
+            if (!root) {
                 // Takes lastCommitWrapper like, last commit in WorldState. 
                 // Which is how we calculated parent commit, so I guess it's fine. 
                 CommitWrapper parentCommitWrapper = lastCommitWrapper();
@@ -423,8 +321,8 @@ public class Gitlet {
             return commitTime;
         }
 
-        private Integer calculateParentCommit(boolean isRoot) {
-            if (!isRoot) {
+        private Integer calculateParentCommit(boolean root) {
+            if (!root) {
                 // Calculate parent from WorldState.
                 // DO NOT UPDATE WORLDSTATE TILL VERY END. 
                 // So World State's current commit should be the parent. 
