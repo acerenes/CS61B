@@ -62,6 +62,10 @@ public class Gitlet {
             return this.numCommits;
         }
 
+        public Integer getHeadOfCurrBranch() {
+            return this.branchHeads.get(currBranch);
+        }
+
         private void updateCurrBranch(String newBranch) {
             this.currBranch = newBranch;
         }
@@ -94,7 +98,9 @@ public class Gitlet {
 
         private void createNewBranch(String newBranchName) {
             // DOESN'T SWITCH TO NEW BRANCH.
-            branchHeads.put(newBranchName, currCommit);
+            // The branch points to, like the same thing your current branch does.
+            this.branchHeads.put(newBranchName, currCommit);
+            System.out.println("Branch heads now includes " + newBranchName + " ? " + branchHeads.containsKey(newBranchName));
         }
 
         private HashMap<String, Integer> getBranchHeads() {
@@ -326,6 +332,8 @@ public class Gitlet {
                 // Calculate parent from WorldState.
                 // DO NOT UPDATE WORLDSTATE TILL VERY END. 
                 // So World State's current commit should be the parent. 
+
+                // JK it should be the 
                 return lastCommit();
             } 
             // If you're the root, you have no parent.
@@ -364,9 +372,17 @@ public class Gitlet {
 
     public static void main(String[] args) {
         
-        String command = null; // --^ Initialize, else java mad. 
+        String command = null; // --^ Initialize, else java mad.
+        String input1 = null;
+        String input2 = null; 
         if (args.length > 0) {
             command = args[0];
+            if (args.length > 1) {
+                input1 = args[1];
+                if (args.length > 2) {
+                    input2 = args[2];
+                }
+            }
         } else {
             System.out.println("No command given.");
             return;
@@ -374,52 +390,21 @@ public class Gitlet {
 
         switch (command) {
             case "init":
-                // What would I do w/o StackOverflow. 
-                File f = new File(".gitlet/");
-                if (f.exists() && f.isDirectory()) {
-                    // Already a thing exists in the current directory.
-                    String one = "A gitlet version control system ";
-                    String two = "already exists in the current directory.";
-                    System.out.println(one + two); 
-                    // Darn character limit.
-                } else {
-                    initialize(f);
-                }
+                checkInitialize();
                 break;
 
             case "add":
                 // Can only add 1 file at a time.
                 // Command line arguments split on space, I believe.
-                String addFile = null;
-                if (args.length > 1) {
-                    addFile = args[1];
-                } else {
-                    System.out.println("No file stated to add.");
-                    return;
-                }
-                add(addFile);
+                checkAdd(input1);
                 break;
 
             case "commit":
                  // Commit must have a non-blank message.
-                String commitMessage = null;
-                if (args.length > 1) {
-                    commitMessage = args[1];
-                } else {
-                    System.out.println("Please enter a commit message.");
-                    return;
-                }
-                commit(commitMessage);
+                checkCommit(input1);
                 break;
             case "remove":
-                String removeFile = null;
-                if (args.length > 1) {
-                    removeFile = args[1];
-                } else {
-                    System.out.println("No file stated to remove.");
-                    return;
-                }
-                remove(removeFile);
+                checkRemove(input1);
                 break;
             case "log":
                 log();
@@ -428,14 +413,12 @@ public class Gitlet {
                 globalLog();
                 break; 
             case "find":
-                String findMessage = null;
-                if (args.length > 1) {
-                    findMessage = args[1];
+                String findMessage = input1;
+                if (findMessage != null) {
+                    find(findMessage);
                 } else {
                     System.out.println("Must request message to find.");
-                    return;
                 }
-                find(findMessage);
                 break;
             case "status":
                 status();
@@ -471,10 +454,49 @@ public class Gitlet {
                     return;
                 }
                 break;
+            case "branch":
+                
                  
 
+
+
+
+                 
+                 
+                branch(input1);
+                break;
                
         }
+    }
+
+    private static void branch(String newBranchName) {
+        // Creating branch just gives new head pointer.
+        // At any given time, 1 head pointer = current active head pointer.
+        // Can switch the currently active head pointer with checkout.
+        // Whenever commit = add a new commit in front of the CURRENTLY ACTIVE HEAD POINTER, even if one is already there. --> BRANCHES
+        if (newBranchName == null) {
+            System.out.println("Branch command requires a branch name.");
+            return;
+        }
+
+        WorldState world = getWorldState();
+        HashMap<String, Integer> branchHeads = world.getBranchHeads();
+        // If branch name already exists, error.
+        if (branchHeads.containsKey(newBranchName)) {
+            System.out.println("A branch with that name already exists.");
+            return;
+        }
+        // Creates a new branch - just a name of a head pointer in the commit graph. 
+            // DOESN'T IMMEDIATELY SWITCH TO NEARLY CREATED BRANCH. 
+            // The branch points to, like the same thing your current branch does.
+
+            // So only need to update branchHeads. 
+        world.createNewBranch(newBranchName);
+        System.out.println("New branch: " + newBranchName + " " + branchHeads.get(newBranchName));
+
+        // You updated WorldState - DON'T FORGET TO WRITE BACK.
+        writeBackWorldState(world);
+
     }
 
     private static void checkoutCommit(int commitID, String fileName) {
@@ -501,14 +523,16 @@ public class Gitlet {
 
     private static void checkoutFileOrBranch(String thingToCheckout) {
         // Branch > File. 
+        System.out.println("Checkout file or branch: " + thingToCheckout);
 
         WorldState world = getWorldState();
         HashMap<String, Integer> branches = world.getBranchHeads();
-        if (branches.keySet().contains(thingToCheckout)) {
+        if (branches.containsKey(thingToCheckout)) {
+            System.out.println("It's a branch, possibly.");
             // It's a branch. 
 
             // Check if branch is current branch - error.
-            if (thingToCheckout == world.getCurrBranch()) {
+            if (thingToCheckout.equals(world.getCurrBranch())) {
                 System.out.println("No need to checkout the current branch.");
                 return;
             }
@@ -525,10 +549,17 @@ public class Gitlet {
 
             // Given branch now current branch. 
             world.updateCurrBranch(thingToCheckout);
+            
+            // Should update currCommit as well, to reflect this change in position. 
+                // Should just be head of new current branch. 
+            world.updateHeadPointer(branchHead);
+
+            // Write back world, of course. 
+            writeBackWorldState(world);
 
         } else {
             // It's a file. 
-            System.out.println("Testing if file.");
+            System.out.println("JK Testing if file.");
 
             // 1: Restores the file to its state at the commit at the head of current branch. 
 
@@ -577,7 +608,7 @@ public class Gitlet {
         String currBranch = world.getCurrBranch();
         System.out.println("=== Branches ===");
         for (String branchName : branches) {
-            if (branchName == currBranch) {
+            if (branchName.equals(currBranch)) {
                 System.out.println("*" + branchName);
             } else {
                 System.out.println(branchName);
@@ -641,8 +672,9 @@ public class Gitlet {
     }
 
     private static void log() {
-        // Starts at current head pointer. 
-        int currHead = lastCommit();
+        // Starts at current head pointer FOR CURRENT BRANCH. 
+        WorldState world = getWorldState();
+        int currHead = world.getHeadOfCurrBranch();
         String commitIDLine = "Commit " + currHead + ".";
         CommitWrapper currCommitWrapper = commitWrapper(currHead);
         String timeLine = currCommitWrapper.getCommitTime();
@@ -671,6 +703,16 @@ public class Gitlet {
         System.out.println(time);
         System.out.println(message);
         System.out.println();
+    }
+
+
+    private static void checkCommit(String commitMessage) {
+        if (commitMessage != null) {
+            commit(commitMessage);
+        } else {
+            System.out.println("Please enter a commit message.");
+            return;
+        }
     }
 
 
@@ -764,6 +806,22 @@ public class Gitlet {
         }*/
     }
 
+    /* Checks if .gitlet can be initialized. */
+    private static void checkInitialize() {
+        
+        // What would I do w/o StackOverflow. 
+        File f = new File(".gitlet/");
+        if (f.exists() && f.isDirectory()) {
+            // Already a thing exists in the current directory.
+            String one = "A gitlet version control system ";
+            String two = "already exists in the current directory.";
+            System.out.println(one + two); 
+            // Darn character limit.
+        } else {
+            initialize(f);
+        }
+    }
+
 
     private static void initialize(File newGitlet) {
         // Make new gitlet directory.
@@ -848,6 +906,17 @@ public class Gitlet {
 
     }
 
+    private static void checkAdd(String addFile) {
+        // Can only add 1 file at a time.
+        // Command line arguments split on space, I believe.
+        if (addFile != null) {
+            add(addFile);
+        } else {
+            System.out.println("No file stated to add.");
+            return;
+        }
+    }
+
     
 
     private static void add(String fileName) {
@@ -897,6 +966,15 @@ public class Gitlet {
             System.exit(1);
         }
 
+    }
+
+    private static void checkRemove(String removeFile) {
+        if (removeFile != null) {
+            remove(removeFile);
+        } else {
+            System.out.println("No file stated to remove.");
+            return;
+        }
     }
 
     private static void remove(String fileName) {
