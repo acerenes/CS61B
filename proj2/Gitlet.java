@@ -455,18 +455,45 @@ public class Gitlet {
                 }
                 break;
             case "branch":
-                
-                 
-
-
-
-
-                 
-                 
                 branch(input1);
                 break;
+            case "rm-branch":
+                removeBranch(input1);
+                break;
+
+                
                
         }
+    }
+
+    /* Deletes branch with given name. */
+    private static void removeBranch(String branchName) {
+        if (branchName == null) {
+            System.out.println("Must give a branch name to remove.");
+            return;
+        }
+
+        WorldState world = getWorldState();
+        HashMap<String, Integer> branchHeads = world.getBranchHeads();
+
+        // If try to remove the branch you're currently on, abort. 
+        if (world.getCurrBranch().equals(branchName)) {
+            System.out.println("Cannot remove the current branch.");
+            return;
+        }
+
+        // If branch with given name does not exist, abort.
+        if (!branchHeads.containsKey(branchName)) {
+            System.out.println("A branch with that name does not exist.");
+            return;
+        }
+
+        // Just delete the head pointer associated with the branch. Not like, deleting commits or anything.
+            // So should only change branchHeads. 
+        branchHeads.remove(branchName);
+
+        // DON'T FORGET TO WRITE BACK WORLD. 
+        writeBackWorldState(world);
     }
 
     private static void branch(String newBranchName) {
@@ -549,7 +576,7 @@ public class Gitlet {
 
             // Given branch now current branch. 
             world.updateCurrBranch(thingToCheckout);
-            
+
             // Should update currCommit as well, to reflect this change in position. 
                 // Should just be head of new current branch. 
             world.updateHeadPointer(branchHead);
