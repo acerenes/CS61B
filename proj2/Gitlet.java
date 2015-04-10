@@ -461,11 +461,22 @@ public class Gitlet {
                 removeBranch(input1);
                 break;
             case "reset":
-                
- 
-
-                checkReset(input1); // Danger check first. 
+                checkReset(input1); // Danger check starts it off. 
                 break;
+            case "merge":
+
+                // DANGEROUS
+
+                // Merges files from head of given branch into head of current branch. 
+                    // Find split point of current branch and given branch. 
+                    // Any files modified in given branch (added to any of the commits along the branch and not subsequently removed) but not in current branch since split should be changed to versions in given branch. 
+
+                    // Any files modified in the current branch (added and not subsequently removed) but not in given branch since split --> stay same.
+
+                    // Files modified in both branches since split (added and not subsequently removed) should stay as they are in current branch. However, version of the file from given branch should be copied into the file system with the name [oldfilename].conflicted.
+
+                // If branch with given name odes not exist, error.
+                // If attempt to merge branch with itself, error.
 
                 
                
@@ -510,7 +521,6 @@ public class Gitlet {
                 overwriteWorkingDirectoryFile(whereFileIs, file);
             }
 
-
             // Also moves the current branch's head to that commit node. 
             world.updateBranchHeads(commit);
 
@@ -521,8 +531,7 @@ public class Gitlet {
             // Inputed string not an int. 
             System.out.println("No commit with that id exists.");
             return;
-        }
-        
+        } 
 
     }
 
