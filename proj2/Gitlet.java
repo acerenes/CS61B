@@ -460,11 +460,42 @@ public class Gitlet {
             case "rm-branch":
                 removeBranch(input1);
                 break;
+            case "reset":
+                // Restores all files to their versions in the commit with the given id. 
+                // Also moves the current branch's head to that commit node. 
+                    // A LITTLE REMINISCENT OF CHECKOUT, AMIRITE??
+
+
+
+                // If no commit with given id exists, error. 
+ 
+
+                checkReset(input1); // Danger check first. 
+                break;
 
                 
                
         }
     }
+
+    /* Doing danger check for reset. */
+    private static void checkReset(String commitID) {
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("Warning: The command you entered may alter the files in your working directory. Uncommitted changes may be lost. Are you sure you want to continue? (yes/no)");
+        String input = userInput.next();
+        if (input.equals("yes")) {
+            reset(commitID);
+        } else {
+            return;
+        }
+    }
+
+    /* Actually doing reset. */
+    private static void reset(String commitID) {
+        
+    }
+
+
 
     /* Deletes branch with given name. */
     private static void removeBranch(String branchName) {
