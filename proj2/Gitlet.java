@@ -461,13 +461,7 @@ public class Gitlet {
                 removeBranch(input1);
                 break;
             case "reset":
-                // Restores all files to their versions in the commit with the given id. 
-                // Also moves the current branch's head to that commit node. 
-                    // A LITTLE REMINISCENT OF CHECKOUT, AMIRITE??
-
-
-
-                // If no commit with given id exists, error. 
+                
  
 
                 checkReset(input1); // Danger check first. 
@@ -490,9 +484,46 @@ public class Gitlet {
         }
     }
 
+
     /* Actually doing reset. */
     private static void reset(String commitID) {
+        // If no commit with given id exists, error.
+        try {
+            int commit = Integer.parseInt(commitID);
+            WorldState world = getWorldState();
+            int numCommits = world.getNumCommits();
+            if (commit < 0 || commit > numCommits) {
+                System.out.println("No commit with that id exists.");
+                return;
+            }
+
+            // From this point on, JUST DO IT. NO ERRORS. 
+
+            // Restores all files to their versions in the commit with the given id. 
+                // A LITTLE REMINISCENT OF CHECKOUT, AMIRITE??
+
+            CommitWrapper commitInfo = commitWrapper(commit);
+            HashMap<String, Integer> storedFiles = commitInfo.getStoredFiles();
+
+            for (String file : storedFiles.keySet()) {
+                int whereFileIs = storedFiles.get(file);
+                overwriteWorkingDirectoryFile(whereFileIs, file);
+            }
+
+
+            // Also moves the current branch's head to that commit node. 
+            world.updateBranchHeads(commit);
+
+            // DON'T FORGET TO WRITE BACK WORLD STATE. 
+            writeBackWorldState(world);
+
+        } catch (NumberFormatException ex) { 
+            // Inputed string not an int. 
+            System.out.println("No commit with that id exists.");
+            return;
+        }
         
+
     }
 
 
