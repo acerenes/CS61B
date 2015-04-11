@@ -466,9 +466,10 @@ public class Gitlet {
                 checkReset(input1); // Danger check starts it off. 
                 break;
             case "merge":
-
                 checkMerge(input1);
-               
+               break;
+            case "rebase":
+                
         }
     }
 
