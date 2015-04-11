@@ -336,8 +336,8 @@ public class Gitlet {
                 // JK it should be the 
                 return lastCommit();
             } 
-            // If you're the root, you have no parent.
-            return null;
+            // If you're the root, you have no parent. I'M GOING TO SAY YOUR PARENT IS YOURSELF. 
+            return 0;
         }
         
 
@@ -465,23 +465,189 @@ public class Gitlet {
                 break;
             case "merge":
 
-                // DANGEROUS
-
-                // Merges files from head of given branch into head of current branch. 
-                    // Find split point of current branch and given branch. 
-                    // Any files modified in given branch (added to any of the commits along the branch and not subsequently removed) but not in current branch since split should be changed to versions in given branch. 
-
-                    // Any files modified in the current branch (added and not subsequently removed) but not in given branch since split --> stay same.
-
-                    // Files modified in both branches since split (added and not subsequently removed) should stay as they are in current branch. However, version of the file from given branch should be copied into the file system with the name [oldfilename].conflicted.
-
-                // If branch with given name odes not exist, error.
-                // If attempt to merge branch with itself, error.
-
-                
+                checkMerge(input1);
                
         }
     }
+
+    /* Danger check for merge. */
+    private static void checkMerge(String branchName) {
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("Warning: The command you entered may alter the files in your working directory. Uncommitted changes may be lost. Are you sure you want to continue? (yes/no)");
+        String input = userInput.next();
+        if (input.equals("yes")) {
+            merge(branchName);
+        } else {
+            return;
+        }
+
+    }
+
+    /* Actual doing of merge stuff now. */
+    private static void merge(String givenBranch) {
+        WorldState world = getWorldState();
+        HashMap<String, Integer> branchHeads = world.getBranchHeads();
+        String currBranch = world.getCurrBranch();
+
+        // If branch with given name odes not exist, error.
+        if (!branchHeads.containsKey(givenBranch)) {
+            // Takes care of null case. 
+            System.out.println("A branch with that name does not exist.");
+            return;
+        }
+
+        // If attempt to merge branch with itself, error.
+        if (givenBranch.equals(currBranch)) {
+            System.out.println("Cannot merge a branch with itself.");
+            return;
+        }
+
+        // Merges files from head of given branch into head of current branch. 
+        int givenBranchHead = branchHeads.get(givenBranch);
+        int currBranchHead = branchHeads.get(currBranch);
+
+            // Find split point of current branch and given branch.
+        int splitPointID = splitPoint(givenBranch, currBranch, branchHeads);
+
+
+        HashMap<String, Integer> splitPointFiles = filesInCommit(splitPointID);
+        HashMap<String, Integer> givenBranchFiles = filesInCommit(givenBranchHead);
+        HashMap<String, Integer> currBranchFiles = filesInCommit(currBranchHead);
+
+            // Any files modified in given branch (added to any of the commits along the branch and not subsequently removed) but not in current branch since split should be changed to versions in given branch. 
+        mergeChange1(splitPointFiles, givenBranchFiles, currBranchFiles);
+
+
+            // Any files modified in the current branch (added and not subsequently removed) but not in given branch since split --> stay same.
+                // SO DO NOTTHINNNGGGG. 
+
+
+            // Files modified in both branches since split (added and not subsequently removed) should stay as they are in current branch. 
+            // However, version of the file from given branch should be copied into the file system with the name [oldfilename].conflicted.
+        mergeChange3(splitPointFiles, givenBranchFiles, currBranchFiles);
+
+
+    }
+
+    /* Does the stuf for merge bullet point 3. */
+    private static void mergeChange3 (HashMap<String, Integer> splitPointFiles, 
+        HashMap<String, Integer> givenBranchFiles, 
+        HashMap<String, Integer> currBranchFiles) {
+
+        // Files modified in both branches since split (added and not subsequently removed) should stay as they are in current branch. 
+        // However, version of the file from given branch should be copied into the file system with the name [oldfilename].conflicted.
+
+        for (String file : givenBranchFiles.keySet()) {
+            // First check if it's been modified since split, at least. 
+            if (!givenBranchFiles.get(file).equals(splitPointFiles.get(file))) {
+
+                // Then make sure has been changed in current branch as well. 
+                if (!currBranchFiles.get(file).equals(splitPointFiles.get(file))) {
+                    
+                    // Copy conflicted version into file system.
+
+                        // Create the file existence in working directory first. 
+                    String wdFileLocation = createConflictFileExistenceWD(file); 
+                        // Now "copy" it over. 
+                    genWriteToWorkingDirectory(wdFileLocation, file, givenBranchFiles.get(file));
+                }
+            }
+        }
+
+    }
+
+    /* Creates file existence in working directory - FOR CONFLICTS. . */
+    private String createConflictFileExistenceWD (String originalFileName) {
+        String fileLocation = originalFileName + ".conflicted";
+        File newFile = new File(fileLocation);
+        try {
+            newFile.getParentFile().mkdirs();
+            FileWriter writer = new FileWriter(newFile);
+        } catch (IOException ex) {
+            System.out.println("Merging conflict - could not create file space in working directory.");
+            System.exit(1);
+        }
+        return fileLocation;
+    }
+
+    /* Copies file over - more general than overwriteWorkingDirectoryFile. */
+    private static void genWriteToWorkingDirectory(String wdLocation, String commitFileName, int commitID) {
+        String copyFrom = ".gitlet/snapshots/" + commitID + "/" + commitFileName;
+        Path inCommit = Paths.get(copyFrom);
+        Path workingDirectory = Paths.get(wdLocation);
+        try {
+            Files.copy(inCommit, workingDirectory, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ex) {
+            System.out.println("Could not replace working directory file - genWriteToWorkingDirectory.");
+            System.exit(1);
+        }
+    }
+
+
+
+    /* Changes files for the first part of merge.
+    /* Files modified in given branch since split but not in current branch change to versions in given branch. */
+    private static void mergeChange1 (HashMap<String, Integer> splitPointFiles, 
+        HashMap<String, Integer> givenBranchFiles, 
+        HashMap<String, Integer> currBranchFiles) {
+
+        for (String file : givenBranchFiles.keySet()) {
+            // First check if it's been modified since split, at least. 
+            if (!givenBranchFiles.get(file).equals(splitPointFiles.get(file))) {
+                // Then make sure hasn't been changed in current branch.
+                if (currBranchFiles.get(file).equals(splitPointFiles.get(file))) {
+                    // Change to version in given branch. 
+                    overwriteWorkingDirectoryFile(givenBranchFiles.get(file), file);
+                }
+            }
+        }
+    }
+
+
+
+    /* Files stored in this commit. */
+    private static HashMap<String, Integer> filesInCommit(int commitID) {
+        CommitWrapper cw = commitWrapper(commitID);
+        return cw.getStoredFiles();
+    }
+
+
+
+    /* Find split point (the ID of the last shared commit). */
+    private static int splitPoint(String branch1, String branch2, HashMap<String, Integer> branchHeads) {
+
+        int id1 = branchHeads.get(branch1);
+        int id2 = branchHeads.get(branch2);
+        if (id1 == id2) {
+            return id1;
+        }
+
+        // Else, have to start looking at parents. 
+        int parent1 = parentCommit(id1);
+        int parent2 = parentCommit(id2);
+        while (parent1 != parent2) {
+
+            // DO LIKE A SMART THING. IF 2 > 1, MOVE 2. OTHERWISE MOVE 1. IT'S GOTTA BE EQUAL AT SOME POINT. 
+            if (parent1 > parent2) {
+                // Move parent 1.
+                parent1 = parentCommit(parent1);
+            } else {
+                // Move parent 2.
+                parent2 = parentCommit(parent2);
+            }
+        }
+        return parent1;
+
+    }
+
+    /* Get parent of given commit. */
+    private static int parentCommit(int commitID) {
+        CommitWrapper cw = commitWrapper(commitID);
+        return cw.getParentCommit();
+    }
+         
+
+
 
     /* Doing danger check for reset. */
     private static void checkReset(String commitID) {
@@ -1120,6 +1286,7 @@ public class Gitlet {
         return commitWrapper(currCommit);
     }
 
+    /* Gets Commit Wrapper of given commit ID. */
     private static CommitWrapper commitWrapper(int commitID) {
         // Go into the folder, pull out its CommitWrapper. 
         try {
