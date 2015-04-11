@@ -279,7 +279,9 @@ public class Gitlet {
             String fileLocation = ".gitlet/snapshots/" + id + "/" + file;
             File newFile = new File(fileLocation);
             try {
-                newFile.getParentFile().mkdirs();
+                if (newFile.getParentFile() != null) {
+                    newFile.getParentFile().mkdirs();
+                } 
                 FileWriter writer = new FileWriter(newFile);
             } catch (IOException ex) {
                 System.out.println("Could not create file space in commit folders.");
@@ -556,12 +558,14 @@ public class Gitlet {
 
     }
 
-    /* Creates file existence in working directory - FOR CONFLICTS. . */
-    private String createConflictFileExistenceWD (String originalFileName) {
+    /* Creates file existence in working directory - FOR CONFLICTS. */
+    private static String createConflictFileExistenceWD (String originalFileName) {
         String fileLocation = originalFileName + ".conflicted";
         File newFile = new File(fileLocation);
         try {
-            newFile.getParentFile().mkdirs();
+            if (newFile.getParentFile() != null) {
+                newFile.getParentFile().mkdirs();
+            }
             FileWriter writer = new FileWriter(newFile);
         } catch (IOException ex) {
             System.out.println("Merging conflict - could not create file space in working directory.");
@@ -594,8 +598,10 @@ public class Gitlet {
         for (String file : givenBranchFiles.keySet()) {
             // First check if it's been modified since split, at least. 
             if (!givenBranchFiles.get(file).equals(splitPointFiles.get(file))) {
+                System.out.println("Modified in given branch since split.");
                 // Then make sure hasn't been changed in current branch.
                 if (currBranchFiles.get(file).equals(splitPointFiles.get(file))) {
+                    System.out.println("Not modified in current branch since split.");
                     // Change to version in given branch. 
                     overwriteWorkingDirectoryFile(givenBranchFiles.get(file), file);
                 }
@@ -622,12 +628,19 @@ public class Gitlet {
             return id1;
         }
 
-        // Else, have to start looking at parents. 
-        int parent1 = parentCommit(id1);
-        int parent2 = parentCommit(id2);
-        while (parent1 != parent2) {
+        // Else, have to start looking at parents.
 
-            // DO LIKE A SMART THING. IF 2 > 1, MOVE 2. OTHERWISE MOVE 1. IT'S GOTTA BE EQUAL AT SOME POINT. 
+        // DO LIKE A SMART THING. IF 2 > 1, MOVE 2. OTHERWISE MOVE 1. IT'S GOTTA BE EQUAL AT SOME POINT. 
+
+        int parent1 = id1;
+        int parent2 = id2;
+        if (parent1 > parent2) {
+            parent1 = parentCommit(id1);
+        } else {
+            parent2 = parentCommit(id2);
+        }
+
+        while (parent1 != parent2) {
             if (parent1 > parent2) {
                 // Move parent 1.
                 parent1 = parentCommit(parent1);
