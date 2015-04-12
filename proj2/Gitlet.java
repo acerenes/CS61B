@@ -79,6 +79,11 @@ public class Gitlet {
             this.numCommits = this.numCommits + 1;
         }
 
+        /* Used only for rebase, I would say. */
+        private void newNumCommits(int newSum) {
+            this.numCommits = newSum;
+        }
+
         private void updateBranchHeads(int commitID) {
             branchHeads.put(currBranch, commitID);
         }
@@ -195,6 +200,26 @@ public class Gitlet {
         private HashMap<String, Integer> storedFiles; 
 
         private static final long serialVersionUID = 3L;
+
+
+        /* Constructor to copy Commit Wrapper of another ID. */
+        private CommitWrapper(int newID, CommitWrapper toCopy, int parent, HashMap<String, Integer> neededChanges) {
+
+            // Copy everything, except commitID, maybe isRoot, and parentCommit. 
+            this.commitMessage = toCopy.getCommitMessage();
+
+            this.commitID = newID;
+
+            this.isRoot = false; // Definitely - it has a parent - your initial commit won't be a rebase thing. 
+
+            this.commitTime = toCopy.getCommitTime();
+
+            this.parentCommit = parent;
+
+            this.storedFiles = toCopy.getStoredFiles();
+            // hERE. NEED TO CHANGE. NEED TO ADD IN THE CHANGES. 
+            this.storedFiles.putAll(neededChanges);
+        }
 
 
         /* Fixed constructor. The blood is the remnants of the mess. */
@@ -469,9 +494,262 @@ public class Gitlet {
                 checkMerge(input1);
                break;
             case "rebase":
+                // Find split point of the current branch and given branch.
+                // Snap off the current branch at this point. 
+                // Reattch to head of given branch. 
+
+                // Apparently it's all a lie?
+                // Leave current branch there. Make a copy of the current branch on top of the given branch.
+                // Then move the branch pointer to point to this copy.
+                // So like you pretend you moved it???
+
+                // Replayed commits should have NEW IDS!!!!!!!!!!!!!!!
+                // Can still access the original commits using their old ids (if really wanted to).
+                // Replayed commits have the original timestamps tho. 
+
+
+                // Should not need to make any additional backup copies of files. 
+
+
+                checkRebase(input1);
+
                 
         }
     }
+
+    /* Actual doing of rebase stuff now. */
+    private static void rebase(String branchName) {
+
+        WorldState world = getWorldState();
+        HashMap<String, Integer> branchHeads = world.getBranchHeads();
+        String currBranch = world.getCurrBranch();
+
+        // If branch with given name does not exit, error.
+        if (!branchHeads.containsKey(branchName)) {
+            System.out.println("A branch with that name does not exist.");
+            return;
+        }
+
+        // If given branch name same as current branch name, error.
+        if (branchName.equals(currBranch)) {
+            System.out.println("Cannot rebase a branch onto itself.");
+            return;
+        }
+        // If input branch head in history of current branch head, error. 
+        if (inHistory(branchName, currBranch, branchHeads)) {
+            System.out.println("Already up-to-date.");
+            return;
+        }
+
+        int givenBranchHead = branchHeads.get(branchName);
+        int currBranchHead = branchHeads.get(currBranch);
+
+        // If current branch in history of given branch, just move the current branch to point to the same commit that given branch points to. 
+        // ALSO HAVE TO UPDATE THE FILES.  
+        if (inHistory(currBranch, branchName, branchHeads)) {
+            // Update files in working directory - just like checkout I believe. 
+            checkoutFileOrBranch(branchName);
+
+            world.updateBranchHeads(givenBranchHead);
+            world.updateHeadPointer(givenBranchHead);
+            writeBackWorldState(world);
+            return;
+        }
+
+        // Make new commit? The folder, and a wrapper? And just copy the info? 
+
+
+        // Okay first figure out the first commit to be replayed.
+        // I'm thinking like a while loop? 
+        // Or maybe a set, so I can for loop over the commits I need to copy. 
+
+        // OKAY FIRST GET SET OF ALL COMMITS I NEED TO COPY. 
+            // Find split point of the current branch and given branch.
+        int splitPoint = splitPoint(currBranch, branchName, branchHeads);
+            // Then go along currBranch and store IDs till get to split point. 
+        ArrayList<Integer> commitsToCopy = idHistory(currBranch, splitPoint, branchHeads);
+
+        // rUUURRRRRGGHH HAVE TO DO THE THING WHERE INHERIT ALL MODIFICATIONS IN THE GIVEN BRANCH.
+            // How am I going to do this? 
+            // This is very similar to merge. 
+
+            // Maybe figure out what modifications are needed, and then pass it in to the copier?
+
+        HashMap<String, Integer> splitPointFiles = filesInCommit(splitPoint);
+        HashMap<String, Integer> givenBranchFiles = filesInCommit(givenBranchHead);
+        HashMap<String, Integer> currBranchFiles = filesInCommit(currBranchHead);
+
+            // Part 1: Similar to mergeChange1. 
+        HashMap<String, Integer> neededChanges = rebaseChanges1(splitPointFiles, givenBranchFiles, currBranchFiles);
+
+        // TEEESTTTGGGG
+
+        System.out.println("Given branch files: ");
+        for (String file : givenBranchFiles.keySet()) {
+            System.out.println("file " + file + " in commit " + givenBranchFiles.get(file));
+        }
+        System.out.println("To be changed:");
+        for (String file : neededChanges.keySet()) {
+            System.out.println("file " + file + "new location: " + neededChanges.get(file));
+        }
+
+            // Part 2: Similar to mergeChange3. 
+            // Jk unecessary because we just stick with current branch's copies. 
+
+
+        // Each time passing in the commit to be copied, what its new number should be, and its parent (which is just --^ after each iteration). 
+        int newID = world.getNumCommits() + 1; 
+        int parent = givenBranchHead; // Head of given branch. 
+        for (int i : commitsToCopy) {
+            copyCommits(newID, parent, i, neededChanges);
+            parent = newID; // Just attaching along now like a congo line. 
+            newID = newID + 1;
+        }
+
+
+        // And then at end can update numcommits, branchHeads and currCommit. 
+        int newNumCommits = newID - 1;
+        world.newNumCommits(newNumCommits);
+            // Wait which branch got changed? Should be just currentBranch. 
+        branchHeads.put(currBranch, newNumCommits);
+        world.updateHeadPointer(newNumCommits);
+        
+        // ADFHGLIDUFHGILDUHGLIDSUHGSLIDUGHSLIDUGHSLIDUHGLIAHGILASUHGILASEHULAISEUHFSLIAUHFLISEUHFLASIEUFHASE ALICE NEED TO CHANGE THINGS IN WORKING DIRECTORY TOOOOOOOO I BELIEVEEEEEEEEE
+        changingWDWithCommit(newNumCommits);
+
+        // And write back worldState. 
+        writeBackWorldState(world); 
+    }
+
+
+
+    /* Change stuff in working directory given a specific commit ID.
+    It's like checking out branch, but given the ID instead of the branch. */
+    private static void changingWDWithCommit(int commit) {
+        CommitWrapper commitInfo = commitWrapper(commit);
+        HashMap<String, Integer> storedFiles = commitInfo.getStoredFiles();
+
+        for (String file : storedFiles.keySet()) {
+            int commitID = storedFiles.get(file);
+            overwriteWorkingDirectoryFile(commitID, file);
+        }
+    }
+
+
+    /* For rebase, gathering together all the changes needed for case1. */
+    private static HashMap<String, Integer> rebaseChanges1(HashMap<String, Integer> splitPointFiles, 
+        HashMap<String, Integer> givenBranchFiles, 
+        HashMap<String, Integer> currBranchFiles) {
+
+        HashMap<String, Integer> neededChanges = new HashMap<String, Integer>();
+
+        for (String file : givenBranchFiles.keySet()) {
+            System.out.println("analyzing file in givenBranch: " + file);
+            // If modified since split.
+            if (!givenBranchFiles.get(file).equals(splitPointFiles.get(file))) {
+                System.out.println(file + " has been modified in given branch since split");
+                // Then make sure not changed in current branch.
+                System.out.println("currBranch says " + currBranchFiles.get(file));
+                System.out.println("splitPointFiles says " + splitPointFiles.get(file));
+                if (currBranchFiles.get(file).equals(splitPointFiles.get(file))) {
+
+                    System.out.println(file + " has not been modified in currentBranch"); 
+                    // Get version in given branch. 
+                    neededChanges.put(file, givenBranchFiles.get(file));
+                }
+            }
+        }
+        return neededChanges;
+    }
+
+
+    /* Copying commits for rebase. */
+    private static void copyCommits(int newID, int parent, int commitToCopy, HashMap<String, Integer> neededChanges) {
+
+        // First make the folder. 
+        createCommitFolder(newID);
+
+        // Create CommitWrapper file. 
+        createCommitWrapperLocation(newID);
+
+        // Write the commit wrapper. 
+        copyWrapper(newID, commitToCopy, parent, neededChanges);
+
+        // Only changes are commitID, isRoot(possibly), and parentCommit. 
+
+        // If after the split point, the given branch contains modifications to files that were not modified in the current branch, then these modifications should propagate through the replayed branch. DONE. 
+
+    }
+
+    /* Copy Commit Wrapper and write to file. */
+    private static void copyWrapper (int newID, int copyFromID, int parentCommit, HashMap<String, Integer> neededChanges) {
+        CommitWrapper old = commitWrapper(copyFromID);
+        CommitWrapper newVersion = new CommitWrapper(newID, old, parentCommit, neededChanges); 
+        String writeTo = ".gitlet/snapshots/" + newID + "/CommitWrapper.ser";
+        System.out.println("Location: " + writeTo);
+        try {
+            FileOutputStream fout = new FileOutputStream(writeTo);
+            ObjectOutputStream oos = new ObjectOutputStream(fout);
+            oos.writeObject(newVersion);
+            oos.close();
+        } catch (IOException ex) {
+            System.out.println("Line 677");
+            System.out.println("Could not copy Commit Wrapper to file.");
+            System.exit(1);
+        }
+    }
+
+
+    /* Store IDs of given branch till given point. */
+    private static ArrayList<Integer> idHistory(String branchName, int stopBeforeHere, 
+        HashMap<String, Integer> branchHeads) {
+
+        int head = branchHeads.get(branchName);
+        ArrayList<Integer> history = new ArrayList<Integer>();
+
+        while (head != stopBeforeHere) {
+            history.add(0, head); // Traversing backwards, so need to add to front. 
+            head = parentCommit(head);
+        }
+        return history;
+
+    }
+
+
+
+    /* Check if input branch's head is in history of current branch's head. */
+    private static boolean inHistory(String inputBranch, String currBranch, 
+        HashMap<String, Integer> branchHeads) {
+
+        int inputHead = branchHeads.get(inputBranch);
+        int currHead = branchHeads.get(currBranch);
+
+        if (inputHead == 0) {
+            // Initial commit is in everyone's history. 
+            return true;
+        }
+        while (currHead != 0) {
+            if (currHead == inputHead) {
+                return true;
+            }
+            currHead = parentCommit(currHead);
+        }
+        return false;
+    }
+
+
+    /* Danger check for rebase. */
+    private static void checkRebase(String branchName) {
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("Warning: The command you entered may alter the files in your working directory. Uncommitted changes may be lost. Are you sure you want to continue? (yes/no)");
+        String input = userInput.next();
+        if (input.equals("yes")) {
+            rebase(branchName);
+        } else {
+            return;
+        }
+    }
+
 
     /* Danger check for merge. */
     private static void checkMerge(String branchName) {
@@ -703,6 +981,7 @@ public class Gitlet {
 
             // Also moves the current branch's head to that commit node. 
             world.updateBranchHeads(commit);
+            world.updateHeadPointer(commit);
 
             // DON'T FORGET TO WRITE BACK WORLD STATE. 
             writeBackWorldState(world);
