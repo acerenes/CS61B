@@ -1638,7 +1638,7 @@ public class Gitlet {
         if (addFile != null) {
             add(addFile);
         } else {
-            System.out.println("No file stated to add.");
+            System.out.println("Did not enter enough arguments.");
             return;
         }
     }
@@ -1681,14 +1681,14 @@ public class Gitlet {
 
 
             /* A test.  - COMMENT OUT LATER ALICE. */
-            FileInputStream fin2 = new FileInputStream(".gitlet/Staging.ser");
+            /*FileInputStream fin2 = new FileInputStream(".gitlet/Staging.ser");
             ObjectInputStream ois2 = new ObjectInputStream(fin2);
             Staging stagingInfo2 = (Staging) ois2.readObject();
             ois2.close();
-            System.out.println(fileName + " has been added: " + stagingInfo2.addContains(fileName));
+            System.out.println(fileName + " has been added: " + stagingInfo2.addContains(fileName));*/
 
-        } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("Exception in add.");
+        } catch (IOException ex) {
+            System.out.println("Error - exception in add.");
             System.exit(1);
         }
 
@@ -1698,7 +1698,7 @@ public class Gitlet {
         if (removeFile != null) {
             remove(removeFile);
         } else {
-            System.out.println("No file stated to remove.");
+            System.out.println("Did not enter enough arguments.");
             return;
         }
     }
@@ -1736,7 +1736,7 @@ public class Gitlet {
             return worldState.getCurrCommit();
 
         } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("WorldState.ser could not be read.");
+            System.out.println("Error - WorldState.ser could not be read.");
             ex.printStackTrace();
             System.exit(1);
         }
@@ -1782,7 +1782,6 @@ public class Gitlet {
         HashMap<String, Integer> fileLocationInfo = lastCommit.getStoredFiles();
         int folderNum = fileLocationInfo.get(fileName);
         String filePath = ".gitlet/snapshots/" + folderNum + "/" + fileName;
-        System.out.println("Last commit is ID " + folderNum);
 
         // Now read it in. 
         /*FileInputStream lastCommitFile = new FileInputStream(filePath);
@@ -1794,7 +1793,6 @@ public class Gitlet {
         byte[] last = Files.readAllBytes(lastCommitFile);*/
 
         // Now compare. 
-        System.out.println("Modified: " + !filesEqual(fileName, filePath));
         return !filesEqual(fileName, filePath);
     }
 
@@ -1818,7 +1816,7 @@ public class Gitlet {
             int ch2 = file2.read();
             return ch2 == -1;
         } catch (IOException ex) {
-            System.out.println("Could not compare files.");
+            System.out.println("Error - could not compare files.");
             System.exit(1);
         }
         return null;
@@ -1835,7 +1833,7 @@ public class Gitlet {
             ois.close();
             return staging;
         } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("Could not read in Staging.ser.");
+            System.out.println("Error - could not read in Staging.ser.");
             System.exit(1);
         }
         return null;
@@ -1849,7 +1847,7 @@ public class Gitlet {
             oos.writeObject(updatedStage);
             oos.close();
         } catch (IOException ex) {
-            System.out.println("Could not write back Staging.ser.");
+            System.out.println("Error - could not write back Staging.ser.");
             System.exit(1);
         }
     }
@@ -1902,7 +1900,7 @@ public class Gitlet {
             ois.close();
             return worldState;
         } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("Could not read in WorldState.");
+            System.out.println("Error - could not read in WorldState.");
             System.exit(1);
         }
         return null;
@@ -1915,7 +1913,7 @@ public class Gitlet {
             oos.writeObject(worldState);
             oos.close();
         } catch (IOException ex) {
-            System.out.println("Could not write back WorldState.");
+            System.out.println("Error - could not write back WorldState.");
             System.exit(1);
         }
     }
@@ -1926,7 +1924,7 @@ public class Gitlet {
         try {
             commitWrapper.createNewFile();
         } catch (IOException ex) {
-            System.out.println("Could not create CommitWrapper.");
+            System.out.println("Error - could not create CommitWrapper.");
             System.exit(1);
         }
     }
@@ -1940,7 +1938,7 @@ public class Gitlet {
             oos.writeObject(commitWrapper);
             oos.close();
         } catch (IOException ex) {
-            System.out.println("Could not write commit wrapper to file.");
+            System.out.println("Error - could not write commit wrapper to file.");
             System.exit(1);
         }
     }
