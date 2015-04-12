@@ -39,7 +39,7 @@ public class Gitlet {
         // Force the version number, so won't InvalidClassException when try to deseriazlie it.
 
         private WorldState() {
-            // Probably only create a new WorldState at very beginning.
+            // Prbly only create a new WorldState at very beginning.
             currCommit = 0;
             numCommits = 0;
 
