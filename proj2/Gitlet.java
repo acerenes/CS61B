@@ -201,7 +201,8 @@ public class Gitlet {
         private static final long serialVersionUID = 3L;
 
         /* Special constructor for new message in interactive rebase. */
-        private CommitWrapper(int newID, CommitWrapper toCopy, int parent, HashMap<String, Integer> neededChanges, String newMessage) {
+        private CommitWrapper(int newID, CommitWrapper toCopy, int parent, 
+            HashMap<String, Integer> neededChanges, String newMessage) {
 
             // Just like below's special constructor, but with different message. 
 
@@ -209,7 +210,7 @@ public class Gitlet {
 
             this.commitID = newID;
 
-            this.isRoot = false; // Definitely - it has a parent - your initial commit won't be a rebase thing. 
+            this.isRoot = false; // Defs has a parent - your initial commit won't be from rebase. 
 
             this.commitTime = toCopy.getCommitTime();
 
@@ -222,14 +223,15 @@ public class Gitlet {
 
 
         /* Constructor to copy Commit Wrapper of another ID. */
-        private CommitWrapper(int newID, CommitWrapper toCopy, int parent, HashMap<String, Integer> neededChanges) {
+        private CommitWrapper(int newID, CommitWrapper toCopy, int parent, 
+            HashMap<String, Integer> neededChanges) {
 
             // Copy everything, except commitID, maybe isRoot, and parentCommit. 
             this.commitMessage = toCopy.getCommitMessage();
 
             this.commitID = newID;
 
-            this.isRoot = false; // Definitely - it has a parent - your initial commit won't be a rebase thing. 
+            this.isRoot = false; // Defshas a parent - your initial commit won't be from rebase. 
 
             this.commitTime = toCopy.getCommitTime();
 
@@ -469,34 +471,7 @@ public class Gitlet {
                 break;
             case "checkout":
                 // Thanks to homeandlearn.co.uk for user input stuff. 
-                Scanner userInput = new Scanner(System.in);
-                System.out.println("Warning: The command you entered may alter the files in your working directory. Uncommitted changes may be lost. Are you sure you want to continue? (yes/no)");
-                String input = userInput.next();
-                if (input.equals("yes")) {
-                    if (args.length > 1) {
-                        if (args.length > 2) {
-                            // Case 2. 
-                            try {
-                                int commitID = Integer.parseInt(args[1]);
-                                String fileName = args[2];
-                                checkoutCommit(commitID, fileName);
-                            } catch (NumberFormatException ex) {
-                                // Commit id must be int. 
-                               System.out.println("No commit with that id exists.");
-                               return; 
-                            }
-                        } else {
-                            // Case 1 or 3.
-                            checkoutFileOrBranch(args[1]);
-                        }
-                    } else {
-                        System.out.println("Did not enter enough arguments.");
-                        return;
-                    }
-                } else {
-                    // They said no, do not continue.
-                    return;
-                }
+                checkCheckout(input1, input2);
                 break;
             case "branch":
                 branch(input1);
@@ -509,25 +484,51 @@ public class Gitlet {
                 break;
             case "merge":
                 checkMerge(input1);
-               break;
+                break;
             case "rebase":
                 checkRebase(input1);
                 break;
             case "i-rebase":
-                // Essentially rebase, but diff.
-                // For each node it replays, it allows the user to change the commit's message or skip replaying the commit. 
-                // So need to pause and prompt user for text input before continuing with each commit.
-                // And then print info about the commit.
-                // If continue, replay the commit and continue.
-                // If skip, no replay, then ask about next one.
-                    // DOESN'T MEAN FORGET ABOUT IT THO.
-                // Can't skip initial or final commit of a branch. 
-
                 checkIRebase(input1);
                 break;
             default:
                 System.out.println("Unrecognized command.");
                 break;
+        }
+    }
+
+    /* Danger check for checkout. */
+    private static void checkCheckout(String input1, String input2) {
+        Scanner userInput = new Scanner(System.in);
+        String w1 = "Warning: the command you entered may alter the files in your working ";
+        String w2 = "directory. Uncommitted changes may be lost. ";
+        String w3 = "Are you sure you want to continue? (yes/no)";
+        System.out.println(w1 + w2 + w3);
+        String input = userInput.nextLine();
+        if (input.equals("yes")) {
+            if (input1 != null) {
+                if (input2 != null) {
+                    // Case 2. 
+                    try {
+                        int commitID = Integer.parseInt(input1);
+                        String fileName = input2;
+                        checkoutCommit(commitID, fileName);
+                    } catch (NumberFormatException ex) {
+                        // Commit id must be int. 
+                        System.out.println("No commit with that id exists.");
+                        return; 
+                    }
+                } else {
+                    // Case 1 or 3.
+                    checkoutFileOrBranch(input1);
+                }
+            } else {
+                System.out.println("Did not enter enough arguments.");
+                return;
+            }
+        } else {
+            // They said no, do not continue.
+            return;
         }
     }
 
@@ -574,7 +575,8 @@ public class Gitlet {
         HashMap<String, Integer> givenBranchFiles = filesInCommit(givenBranchHead);
         HashMap<String, Integer> currBranchFiles = filesInCommit(currBranchHead);
 
-        HashMap<String, Integer> neededChanges = rebaseChanges1(splitPointFiles, givenBranchFiles, currBranchFiles);
+        HashMap<String, Integer> neededChanges = rebaseChanges1(splitPointFiles, 
+            givenBranchFiles, currBranchFiles);
 
         int firstCommitToCopy = commitsToCopy.get(0);
         int lastCommitToCopy = commitsToCopy.get(commitsToCopy.size() - 1);
@@ -582,7 +584,8 @@ public class Gitlet {
         int newID = world.getNumCommits() + 1;
         int parent = givenBranchHead;
         for (int i : commitsToCopy) {
-            int increaseCommitBy = interactiveChoice(newID, parent, i, neededChanges, firstCommitToCopy, lastCommitToCopy);
+            int increaseCommitBy = interactiveChoice(newID, parent, i, neededChanges, 
+                firstCommitToCopy, lastCommitToCopy);
             if (increaseCommitBy == 1) {
                 parent = newID;
             }
@@ -596,7 +599,7 @@ public class Gitlet {
         branchHeads.put(currBranch, newNumCommits);
         world.updateHeadPointer(newNumCommits);
         
-        // ADFHGLIDUFHGILDUHGLIDSUHGSLIDUGHSLIDUGHSLIDUHGLIAHGILASUHGILASEHULAISEUHFSLIAUHFLISEUHFLASIEUFHASE ALICE NEED TO CHANGE THINGS IN WORKING DIRECTORY TOOOOOOOO I BELIEVEEEEEEEEE
+        // Need to change things in working directory as well I believe. 
         changingWDWithCommit(newNumCommits);
 
         // And write back worldState. 
@@ -604,7 +607,8 @@ public class Gitlet {
     }
 
     /* For interative rebase - deals with user's choice of csm. */
-    private static int interactiveChoice(int newID, int parent, int commitToCopy, HashMap<String, Integer> neededChanges, int firstID, int lastID) {
+    private static int interactiveChoice(int newID, int parent, int commitToCopy, 
+        HashMap<String, Integer> neededChanges, int firstID, int lastID) {
         System.out.println("Currently replaying:");
 
         // Then print out info about the commit. 
@@ -621,10 +625,13 @@ public class Gitlet {
     }
 
     /* Deals with dissiminating from the user's csm input. */
-    private static int csmChoice(int newID, int parent, int commitToCopy, HashMap<String, Integer> neededChanges, int firstID, int lastID) {
+    private static int csmChoice(int newID, int parent, int commitToCopy, 
+        HashMap<String, Integer> neededChanges, int firstID, int lastID) {
 
         Scanner userInput = new Scanner(System.in);
-        System.out.println("Would you like to (c)ontinue, (s)kip this commit, or change this commit's (m)essage?");
+        String c1 = "Would you like to (c)ontinue, (s)kip this commit, ";
+        String c2 = "or change this commit's (m)essage?";
+        System.out.println(c1 + c2);
         String input = userInput.next();
         if (input.equals("c")) {
             // Should just be like normal rebase, right?
@@ -641,11 +648,13 @@ public class Gitlet {
             takeNewMessage(newID, parent, commitToCopy, neededChanges);
             return 1;
         }
-        return csmChoice(newID, parent, commitToCopy, neededChanges, firstID, lastID); // User inputed something invalid - do it again. 
+        return csmChoice(newID, parent, commitToCopy, neededChanges, firstID, lastID); 
+        // --^ User inputed something invalid - do it again. 
     }
 
     /* Rebase - digests user's new message. */
-    private static void takeNewMessage(int newID, int parent, int commitToCopy, HashMap<String, Integer> neededChanges) {
+    private static void takeNewMessage(int newID, int parent, 
+        int commitToCopy, HashMap<String, Integer> neededChanges) {
         Scanner userInput = new Scanner(System.in);
         System.out.println("Please enter a new message for this commit.");
         String message = userInput.nextLine();
@@ -655,7 +664,8 @@ public class Gitlet {
     }
 
     /* Rebase - makes new commit with the new message. */
-    private static void newMessageCommit(int newID, int parent, int commitToCopy, HashMap<String, Integer> neededChanges, String newMessage) {
+    private static void newMessageCommit(int newID, int parent, int commitToCopy, 
+        HashMap<String, Integer> neededChanges, String newMessage) {
 
         // Reminiscient of copyCommits method. 
 
@@ -669,25 +679,23 @@ public class Gitlet {
         copyWrapper(newID, commitToCopy, parent, neededChanges, newMessage);
     }
 
-    /* Interactive rebase - Copy Commit Wrapper and write to file WITH SPECIAL USER-CHANGED MESSAGE. */
-    private static void copyWrapper(int newID, int copyFromID, int parentCommit, HashMap<String, Integer> neededChanges, String newMessage) {
+    /* I-rebase - Copy Commit Wrapper and write to file WITH SPECIAL USER-CHANGED MESSAGE. */
+    private static void copyWrapper(int newID, int copyFromID, int parentCommit, 
+        HashMap<String, Integer> neededChanges, String newMessage) {
 
         CommitWrapper old = commitWrapper(copyFromID);
-        CommitWrapper newVersion = new CommitWrapper(newID, old, parentCommit, neededChanges, newMessage);
+        CommitWrapper nv = new CommitWrapper(newID, old, parentCommit, neededChanges, newMessage);
         String writeTo = ".gitlet/snapshots/" + newID + "/CommitWrapper.ser";
         try {
             FileOutputStream fout = new FileOutputStream(writeTo);
             ObjectOutputStream oos = new ObjectOutputStream(fout);
-            oos.writeObject(newVersion);
+            oos.writeObject(nv);
             oos.close();
         } catch (IOException ex) {
-            System.out.println("Error - Could not copy CommitWrapper to file - interactive rebase.");
+            System.out.println("Error - Could not copy CommitWrapper to file - i-rebase.");
             System.exit(1);
         }
     }
-
-
-
 
 
 
@@ -707,7 +715,10 @@ public class Gitlet {
     /* Customary danger check for interactive rebase. */
     private static void checkIRebase(String branchName) {
         Scanner userInput = new Scanner(System.in);
-        System.out.println("Warning: The command you entered may alter the files in your working directory. Uncommitted changes may be lost. Are you sure you want to continue? (yes/no)");
+        String w1 = "Warning: the command you entered may alter the files in your working ";
+        String w2 = "directory. Uncommitted changes may be lost. ";
+        String w3 = "Are you sure you want to continue? (yes/no)";
+        System.out.println(w1 + w2 + w3);
         String input = userInput.next();
         if (input.equals("yes")) {
             interactiveRebase(branchName);
@@ -743,19 +754,13 @@ public class Gitlet {
         int givenBranchHead = branchHeads.get(branchName);
         int currBranchHead = branchHeads.get(currBranch);
 
-        // If current branch in history of given branch, just move the current branch to point to the same commit that given branch points to. 
+        // If current branch in history of given branch, 
+        // Just move the current branch to point to the same commit that given branch points to. 
         // ALSO HAVE TO UPDATE THE FILES.  
         if (inHistory(currBranch, branchName, branchHeads)) {
             noReplays(branchName, givenBranchHead, world);
             return;
         }
-
-        // Make new commit? The folder, and a wrapper? And just copy the info? 
-
-
-        // Okay first figure out the first commit to be replayed.
-        // I'm thinking like a while loop? 
-        // Or maybe a set, so I can for loop over the commits I need to copy. 
 
         // OKAY FIRST GET SET OF ALL COMMITS I NEED TO COPY. 
             // Find split point of the current branch and given branch.
@@ -764,24 +769,21 @@ public class Gitlet {
         ArrayList<Integer> commitsToCopy = idHistory(currBranch, splitPoint, branchHeads);
 
         // rUUURRRRRGGHH HAVE TO DO THE THING WHERE INHERIT ALL MODIFICATIONS IN THE GIVEN BRANCH.
-            // How am I going to do this? 
             // This is very similar to merge. 
 
             // Maybe figure out what modifications are needed, and then pass it in to the copier?
 
-        HashMap<String, Integer> splitPointFiles = filesInCommit(splitPoint);
-        HashMap<String, Integer> givenBranchFiles = filesInCommit(givenBranchHead);
-        HashMap<String, Integer> currBranchFiles = filesInCommit(currBranchHead);
+        HashMap<String, Integer> spf = filesInCommit(splitPoint);
+        HashMap<String, Integer> gbf = filesInCommit(givenBranchHead);
+        HashMap<String, Integer> cbf = filesInCommit(currBranchHead);
 
             // Part 1: Similar to mergeChange1. 
-        HashMap<String, Integer> neededChanges = rebaseChanges1(splitPointFiles, givenBranchFiles, currBranchFiles);
+        HashMap<String, Integer> neededChanges = rebaseChanges1(spf, gbf, cbf);
 
 
             // Part 2: Similar to mergeChange3. 
             // Jk unecessary because we just stick with current branch's copies. 
-
-
-        // Each time passing in the commit to be copied, what its new number should be, and its parent (which is just --^ after each iteration). 
+ 
         int newID = world.getNumCommits() + 1; 
         int parent = givenBranchHead; // Head of given branch. 
         for (int i : commitsToCopy) {
@@ -798,7 +800,7 @@ public class Gitlet {
         branchHeads.put(currBranch, newNumCommits);
         world.updateHeadPointer(newNumCommits);
         
-        // ADFHGLIDUFHGILDUHGLIDSUHGSLIDUGHSLIDUGHSLIDUHGLIAHGILASUHGILASEHULAISEUHFSLIAUHFLISEUHFLASIEUFHASE ALICE NEED TO CHANGE THINGS IN WORKING DIRECTORY TOOOOOOOO I BELIEVEEEEEEEEE
+        // Need to change things in working directory too I believe.
         changingWDWithCommit(newNumCommits);
 
         // And write back worldState. 
@@ -821,7 +823,8 @@ public class Gitlet {
 
 
     /* For rebase, gathering together all the changes needed for case1. */
-    private static HashMap<String, Integer> rebaseChanges1(HashMap<String, Integer> splitPointFiles, 
+    private static HashMap<String, Integer> rebaseChanges1(HashMap<String, Integer> 
+        splitPointFiles, 
         HashMap<String, Integer> givenBranchFiles, 
         HashMap<String, Integer> currBranchFiles) {
 
@@ -842,7 +845,8 @@ public class Gitlet {
 
 
     /* Copying commits for rebase. */
-    private static void copyCommits(int newID, int parent, int commitToCopy, HashMap<String, Integer> neededChanges) {
+    private static void copyCommits(int newID, int parent, int commitToCopy, 
+        HashMap<String, Integer> neededChanges) {
 
         // First make the folder. 
         createCommitFolder(newID);
@@ -855,12 +859,16 @@ public class Gitlet {
 
         // Only changes are commitID, isRoot(possibly), and parentCommit. 
 
-        // If after the split point, the given branch contains modifications to files that were not modified in the current branch, then these modifications should propagate through the replayed branch. DONE. 
+        // If after the split point, 
+        // the given branch contains modifications to files 
+        // that were not modified in the current branch, 
+        // then these modifications should propagate through the replayed branch. DONE. 
 
     }
 
     /* Copy Commit Wrapper and write to file. */
-    private static void copyWrapper (int newID, int copyFromID, int parentCommit, HashMap<String, Integer> neededChanges) {
+    private static void copyWrapper(int newID, int copyFromID, int parentCommit, 
+        HashMap<String, Integer> neededChanges) {
         CommitWrapper old = commitWrapper(copyFromID);
         CommitWrapper newVersion = new CommitWrapper(newID, old, parentCommit, neededChanges); 
         String writeTo = ".gitlet/snapshots/" + newID + "/CommitWrapper.ser";
@@ -917,7 +925,10 @@ public class Gitlet {
     /* Danger check for rebase. */
     private static void checkRebase(String branchName) {
         Scanner userInput = new Scanner(System.in);
-        System.out.println("Warning: The command you entered may alter the files in your working directory. Uncommitted changes may be lost. Are you sure you want to continue? (yes/no)");
+        String w1 = "Warning: the command you entered may alter the files in your working ";
+        String w2 = "directory. Uncommitted changes may be lost. ";
+        String w3 = "Are you sure you want to continue? (yes/no)";
+        System.out.println(w1 + w2 + w3);
         String input = userInput.next();
         if (input.equals("yes")) {
             rebase(branchName);
@@ -930,7 +941,10 @@ public class Gitlet {
     /* Danger check for merge. */
     private static void checkMerge(String branchName) {
         Scanner userInput = new Scanner(System.in);
-        System.out.println("Warning: The command you entered may alter the files in your working directory. Uncommitted changes may be lost. Are you sure you want to continue? (yes/no)");
+        String w1 = "Warning: the command you entered may alter the files in your working ";
+        String w2 = "directory. Uncommitted changes may be lost. ";
+        String w3 = "Are you sure you want to continue? (yes/no)";
+        System.out.println(w1 + w2 + w3);
         String input = userInput.next();
         if (input.equals("yes")) {
             merge(branchName);
@@ -971,28 +985,36 @@ public class Gitlet {
         HashMap<String, Integer> givenBranchFiles = filesInCommit(givenBranchHead);
         HashMap<String, Integer> currBranchFiles = filesInCommit(currBranchHead);
 
-            // Any files modified in given branch (added to any of the commits along the branch and not subsequently removed) but not in current branch since split should be changed to versions in given branch. 
+            // Any files modified in given branch 
+            // (added to any of the commits along the branch and not subsequently removed) 
+            // but not in current branch since split should be changed to versions in given branch. 
         mergeChange1(splitPointFiles, givenBranchFiles, currBranchFiles);
 
 
-            // Any files modified in the current branch (added and not subsequently removed) but not in given branch since split --> stay same.
+            // Any files modified in the current branch 
+            // (added and not subsequently removed) 
+            // but not in given branch since split --> stay same.
                 // SO DO NOTTHINNNGGGG. 
 
 
-            // Files modified in both branches since split (added and not subsequently removed) should stay as they are in current branch. 
-            // However, version of the file from given branch should be copied into the file system with the name [oldfilename].conflicted.
+            // Files modified in both branches since split 
+            // (added and not subsequently removed) should stay as they are in current branch. 
+            // However, version of the file from given branch should be copied into the file system 
+            // with the name [oldfilename].conflicted.
         mergeChange3(splitPointFiles, givenBranchFiles, currBranchFiles);
 
 
     }
 
     /* Does the stuf for merge bullet point 3. */
-    private static void mergeChange3 (HashMap<String, Integer> splitPointFiles, 
+    private static void mergeChange3(HashMap<String, Integer> splitPointFiles, 
         HashMap<String, Integer> givenBranchFiles, 
         HashMap<String, Integer> currBranchFiles) {
 
-        // Files modified in both branches since split (added and not subsequently removed) should stay as they are in current branch. 
-        // However, version of the file from given branch should be copied into the file system with the name [oldfilename].conflicted.
+        // Files modified in both branches since split 
+        // (added and not subsequently removed) should stay as they are in current branch. 
+        // However, version of the file from given branch should be copied into the file system 
+        // with the name [oldfilename].conflicted.
 
         for (String file : givenBranchFiles.keySet()) {
             // First check if it's been modified since split, at least. 
@@ -1014,7 +1036,7 @@ public class Gitlet {
     }
 
     /* Creates file existence in working directory - FOR CONFLICTS. */
-    private static String createConflictFileExistenceWD (String originalFileName) {
+    private static String createConflictFileExistenceWD(String originalFileName) {
         String fileLocation = originalFileName + ".conflicted";
         File newFile = new File(fileLocation);
         try {
@@ -1023,14 +1045,15 @@ public class Gitlet {
             }
             FileWriter writer = new FileWriter(newFile);
         } catch (IOException ex) {
-            System.out.println("Error - merging conflict - could not create file space in working directory.");
+            System.out.println("Error - could not create file space in working directory.");
             System.exit(1);
         }
         return fileLocation;
     }
 
     /* Copies file over - more general than overwriteWorkingDirectoryFile. */
-    private static void genWriteToWorkingDirectory(String wdLocation, String commitFileName, int commitID) {
+    private static void genWriteToWorkingDirectory(String wdLocation, 
+        String commitFileName, int commitID) {
         String copyFrom = ".gitlet/snapshots/" + commitID + "/" + commitFileName;
         Path inCommit = Paths.get(copyFrom);
         Path workingDirectory = Paths.get(wdLocation);
@@ -1045,8 +1068,9 @@ public class Gitlet {
 
 
     /* Changes files for the first part of merge.
-    /* Files modified in given branch since split but not in current branch change to versions in given branch. */
-    private static void mergeChange1 (HashMap<String, Integer> splitPointFiles, 
+    /* Files modified in given branch since split 
+    but not in current branch change to versions in given branch. */
+    private static void mergeChange1(HashMap<String, Integer> splitPointFiles, 
         HashMap<String, Integer> givenBranchFiles, 
         HashMap<String, Integer> currBranchFiles) {
 
@@ -1073,7 +1097,8 @@ public class Gitlet {
 
 
     /* Find split point (the ID of the last shared commit). */
-    private static int splitPoint(String branch1, String branch2, HashMap<String, Integer> branchHeads) {
+    private static int splitPoint(String branch1, String branch2, 
+        HashMap<String, Integer> branchHeads) {
 
         int id1 = branchHeads.get(branch1);
         int id2 = branchHeads.get(branch2);
@@ -1083,7 +1108,8 @@ public class Gitlet {
 
         // Else, have to start looking at parents.
 
-        // DO LIKE A SMART THING. IF 2 > 1, MOVE 2. OTHERWISE MOVE 1. IT'S GOTTA BE EQUAL AT SOME POINT. 
+        // DO LIKE A SMART THING. 
+        // IF 2 > 1, MOVE 2. OTHERWISE MOVE 1. IT'S GOTTA BE EQUAL AT SOME POINT. 
 
         int parent1 = id1;
         int parent2 = id2;
@@ -1118,7 +1144,10 @@ public class Gitlet {
     /* Doing danger check for reset. */
     private static void checkReset(String commitID) {
         Scanner userInput = new Scanner(System.in);
-        System.out.println("Warning: The command you entered may alter the files in your working directory. Uncommitted changes may be lost. Are you sure you want to continue? (yes/no)");
+        String w1 = "Warning: the command you entered may alter the files in your working ";
+        String w2 = "directory. Uncommitted changes may be lost. ";
+        String w3 = "Are you sure you want to continue? (yes/no)";
+        System.out.println(w1 + w2 + w3);
         String input = userInput.next();
         if (input.equals("yes")) {
             reset(commitID);
@@ -1192,7 +1221,8 @@ public class Gitlet {
             return;
         }
 
-        // Just delete the head pointer associated with the branch. Not like, deleting commits or anything.
+        // Just delete the head pointer associated with the branch. 
+        // Not like, deleting commits or anything.
             // So should only change branchHeads. 
         branchHeads.remove(branchName);
 
@@ -1204,7 +1234,8 @@ public class Gitlet {
         // Creating branch just gives new head pointer.
         // At any given time, 1 head pointer = current active head pointer.
         // Can switch the currently active head pointer with checkout.
-        // Whenever commit = add a new commit in front of the CURRENTLY ACTIVE HEAD POINTER, even if one is already there. --> BRANCHES
+        // Whenever commit = add a new commit in front of the CURRENTLY ACTIVE HEAD POINTER, 
+        // even if one is already there. --> BRANCHES
         if (newBranchName == null) {
             System.out.println("Did not enter enough arguments.");
             return;
@@ -1264,7 +1295,8 @@ public class Gitlet {
                 System.out.println("No need to checkout the current branch.");
                 return;
             }
-            // 3: Restores all files in working directory to their versions in the commit at the head of the given branch.
+            // 3: Restores all files in working directory to their versions 
+            // in the commit at the head of the given branch.
 
             int branchHead = branches.get(thingToCheckout);
             CommitWrapper commitInfo = commitWrapper(branchHead);
@@ -1300,7 +1332,9 @@ public class Gitlet {
                 overwriteWorkingDirectoryFile(commitID2, thingToCheckout);
             } else {
                 // File does not exist in the previous commit OR No branch with that name exists.
-                System.out.println("File does not exist in the most recent commit, or no such branch exists.");
+                String f1 = "File does not exist in the most recent commit, ";
+                String f2 = "or no such branch exists.";
+                System.out.println(f1 + f2);
                 return;
             }
         }
@@ -1423,7 +1457,8 @@ public class Gitlet {
 
 
     private static void printing(String commitID, String time, String message) {
-        // Display commit ID, time, and message. Don't forget the ==== seperation & empty line in between.
+        // Display commit ID, time, and message. 
+        // Don't forget the ==== seperation & empty line in between.
         System.out.println("====");
         System.out.println(commitID);
         System.out.println(time);
@@ -1494,42 +1529,7 @@ public class Gitlet {
 
 
 
-        /* This is a test - commitWrapper.ser. */
-
-
-        /*try {
-            FileInputStream fin = new FileInputStream(".gitlet/snapshots/" + commitID + "/CommitWrapper.ser");
-            ObjectInputStream ois = new ObjectInputStream(fin);
-            CommitWrapper check = (CommitWrapper) ois.readObject();
-            ois.close();
-            System.out.println("Time of Commit " + commitID + ": " + check.getCommitTime());
-            System.out.println("Parent of Commit " + commitID + ": " + check.getParentCommit());
-
-            HashMap<String, Integer> checkStoredFiles = check.getStoredFiles();
-            for (String file : checkStoredFiles.keySet()) {
-                System.out.println("Tracking " + file + " in ID " + checkStoredFiles.get(file));
-            }
-
-            // Make sure Staging.ser is emptied. 
-            FileInputStream finStaging = new FileInputStream(".gitlet/Staging.ser");
-            ObjectInputStream oisStaging = new ObjectInputStream(finStaging);
-            Staging emptyStage = (Staging) oisStaging.readObject();
-            oisStaging.close();
-            System.out.println("Files to add is empty: " + emptyStage.getFilesToAdd().isEmpty());
-
-            // Make sure WorldState is good. 
-            FileInputStream finWorld = new FileInputStream(".gitlet/WorldState.ser");
-            ObjectInputStream oisWorld = new ObjectInputStream(finWorld);
-            WorldState currWorld = (WorldState) oisWorld.readObject();
-            oisWorld.close();
-            System.out.println("Head pointer: " + currWorld.getCurrCommit());
-            HashMap<String, Integer> branchHeads = currWorld.getBranchHeads();
-            System.out.println("Branch head of master: " + branchHeads.get("master"));
-            
-        } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("Testing commit went wrong.");
-            System.exit(1);
-        }*/
+        
     }
 
     /* Checks if .gitlet can be initialized. */
@@ -1595,40 +1595,8 @@ public class Gitlet {
         }*/
         createCommitWrapperLocation(0);
 
-        /*try {
-            CommitWrapper commitInfo = new CommitWrapper(0);
-            FileOutputStream foutCommitting = new FileOutputStream(".gitlet/snapshots/0/CommitWrapper.ser");
-            ObjectOutputStream oosCommitting = new ObjectOutputStream(foutCommitting);
-            oosCommitting.writeObject(commitInfo);
-            oosCommitting.close();
-        } catch (IOException ex4) {
-            System.out.println("Initialize - could not write CommitWrapper object.");
-            System.exit(1);
-        }*/
         writeCommitWrapperToFile(0, "initial commit");
 
-
-        /* Test. */ 
-
-
-        /*try {
-            FileInputStream fin = new FileInputStream(".gitlet/snapshots/0/CommitWrapper.ser");
-            ObjectInputStream ois = new ObjectInputStream(fin);
-            CommitWrapper initialCommit = (CommitWrapper) ois.readObject();
-            ois.close();
-            System.out.println("Commit 0 time: " + initialCommit.getCommitTime());
-            System.out.println("Commit 0 parent: " + initialCommit.getParentCommit());
-
-            HashMap<String, Integer> storedFiles = initialCommit.getStoredFiles();
-            if (storedFiles.isEmpty()) {
-                System.out.println("Good, no stored files in initial commit.");
-            } else {
-                System.out.println("BAD THERE SHOULD BE NO STORED FILES IN INITIAL COMMIT.");
-            }
-        } catch (IOException | ClassNotFoundException ex) {
-            System.out.println("Testing initial went wrong.");
-            System.exit(1);
-        }*/
 
     }
 
@@ -1680,12 +1648,6 @@ public class Gitlet {
             oos.close();
 
 
-            /* A test.  - COMMENT OUT LATER ALICE. */
-            /*FileInputStream fin2 = new FileInputStream(".gitlet/Staging.ser");
-            ObjectInputStream ois2 = new ObjectInputStream(fin2);
-            Staging stagingInfo2 = (Staging) ois2.readObject();
-            ois2.close();
-            System.out.println(fileName + " has been added: " + stagingInfo2.addContains(fileName));*/
 
         } catch (IOException ex) {
             System.out.println("Error - exception in add.");
@@ -1753,7 +1715,8 @@ public class Gitlet {
         // Go into the folder, pull out its CommitWrapper. 
         try {
             /*System.out.println(".gitlet/snapshots/" + currCommit + "/CommitWrapper.ser");*/
-            FileInputStream fin2 = new FileInputStream(".gitlet/snapshots/" + commitID + "/CommitWrapper.ser");
+            String s1 = ".gitlet/snapshots/" + commitID + "/CommitWrapper.ser";
+            FileInputStream fin2 = new FileInputStream(s1);
             ObjectInputStream ois2 = new ObjectInputStream(fin2);
             CommitWrapper commitInfo = (CommitWrapper) ois2.readObject();
             ois2.close();
