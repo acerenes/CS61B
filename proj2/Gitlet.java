@@ -201,6 +201,26 @@ public class Gitlet {
 
         private static final long serialVersionUID = 3L;
 
+        /* Special constructor for new message in interactive rebase. */
+        private CommitWrapper(int newID, CommitWrapper toCopy, int parent, HashMap<String, Integer> neededChanges, String newMessage) {
+
+            // Just like below's special constructor, but with different message. 
+
+            this.commitMessage = newMessage;
+
+            this.commitID = newID;
+
+            this.isRoot = false; // Definitely - it has a parent - your initial commit won't be a rebase thing. 
+
+            this.commitTime = toCopy.getCommitTime();
+
+            this.parentCommit = parent;
+
+            this.storedFiles = toCopy.getStoredFiles();
+            // hERE. NEED TO CHANGE. NEED TO ADD IN THE CHANGES. 
+            this.storedFiles.putAll(neededChanges);
+        }
+
 
         /* Constructor to copy Commit Wrapper of another ID. */
         private CommitWrapper(int newID, CommitWrapper toCopy, int parent, HashMap<String, Integer> neededChanges) {
@@ -494,26 +514,206 @@ public class Gitlet {
                 checkMerge(input1);
                break;
             case "rebase":
-                // Find split point of the current branch and given branch.
-                // Snap off the current branch at this point. 
-                // Reattch to head of given branch. 
-
-                // Apparently it's all a lie?
-                // Leave current branch there. Make a copy of the current branch on top of the given branch.
-                // Then move the branch pointer to point to this copy.
-                // So like you pretend you moved it???
-
-                // Replayed commits should have NEW IDS!!!!!!!!!!!!!!!
-                // Can still access the original commits using their old ids (if really wanted to).
-                // Replayed commits have the original timestamps tho. 
-
-
-                // Should not need to make any additional backup copies of files. 
-
-
                 checkRebase(input1);
+                break;
+            case "i-rebase":
+                // Essentially rebase, but diff.
+                // For each node it replays, it allows the user to change the commit's message or skip replaying the commit. 
+                // So need to pause and prompt user for text input before continuing with each commit.
+                // And then print info about the commit.
+                // If continue, replay the commit and continue.
+                // If skip, no replay, then ask about next one.
+                    // DOESN'T MEAN FORGET ABOUT IT THO.
+                // Can't skip initial or final commit of a branch. 
 
+                checkIRebase(input1);
+                break;
                 
+        }
+    }
+
+    /* Does the actual interactive rebase stuff. */
+    private static void interactiveRebase(String branchName) {
+
+        WorldState world = getWorldState();
+        HashMap<String, Integer> branchHeads = world.getBranchHeads();
+        String currBranch = world.getCurrBranch();
+
+        // Failures same as rebase. 
+
+        // If branch with given name does not exist, error.
+        if (!branchHeads.containsKey(branchName)) {
+            System.out.println("A branch with that name does not exist.");
+            return;
+        }
+
+        // If given branch name same as current branch name, error.
+        if (branchName.equals(currBranch)) {
+            System.out.println("Cannot rebase a branch onto itself.");
+            return;
+        }
+
+        // If input branch head in history of current branch head, error.
+        if (inHistory(branchName, currBranch, branchHeads)) {
+            System.out.println("Already up-to-date.");
+            return;
+        }
+
+        int givenBranchHead = branchHeads.get(branchName);
+        int currBranchHead = branchHeads.get(currBranch);
+
+        // Current branch in history of given branch - no replays. 
+        if (inHistory(currBranch, branchName, branchHeads)) {
+            noReplays(branchName, givenBranchHead, world);
+            return;
+        }
+
+        int splitPoint = splitPoint(currBranch, branchName, branchHeads);
+        ArrayList<Integer> commitsToCopy = idHistory(currBranch, splitPoint, branchHeads);
+
+        HashMap<String, Integer> splitPointFiles = filesInCommit(splitPoint);
+        HashMap<String, Integer> givenBranchFiles = filesInCommit(givenBranchHead);
+        HashMap<String, Integer> currBranchFiles = filesInCommit(currBranchHead);
+
+        HashMap<String, Integer> neededChanges = rebaseChanges1(splitPointFiles, givenBranchFiles, currBranchFiles);
+
+        int firstCommitToCopy = commitsToCopy.get(0);
+        int lastCommitToCopy = commitsToCopy.get(commitsToCopy.size() - 1);
+
+        int newID = world.getNumCommits() + 1;
+        int parent = givenBranchHead;
+        for (int i : commitsToCopy) {
+            int increaseCommitBy = interactiveChoice(newID, parent, i, neededChanges, firstCommitToCopy, lastCommitToCopy);
+            if (increaseCommitBy == 1) {
+                parent = newID;
+            }
+            newID = newID + increaseCommitBy;
+        }
+
+        // And then at end can update numcommits, branchHeads and currCommit. 
+        int newNumCommits = newID - 1;
+        world.newNumCommits(newNumCommits);
+            // Wait which branch got changed? Should be just currentBranch. 
+        branchHeads.put(currBranch, newNumCommits);
+        world.updateHeadPointer(newNumCommits);
+        
+        // ADFHGLIDUFHGILDUHGLIDSUHGSLIDUGHSLIDUGHSLIDUHGLIAHGILASUHGILASEHULAISEUHFSLIAUHFLISEUHFLASIEUFHASE ALICE NEED TO CHANGE THINGS IN WORKING DIRECTORY TOOOOOOOO I BELIEVEEEEEEEEE
+        changingWDWithCommit(newNumCommits);
+
+        // And write back worldState. 
+        writeBackWorldState(world); 
+    }
+
+    /* For interative rebase - deals with user's choice of csm. */
+    private static int interactiveChoice(int newID, int parent, int commitToCopy, HashMap<String, Integer> neededChanges, int firstID, int lastID) {
+        System.out.println("Currently replaying:");
+
+        // Then print out info about the commit. 
+        String commitIDLine = "Commit " + commitToCopy + ".";
+        CommitWrapper currCommitWrapper = commitWrapper(commitToCopy);
+        String timeLine = currCommitWrapper.getCommitTime();
+        String message = currCommitWrapper.getCommitMessage();
+
+        System.out.println(commitIDLine);
+        System.out.println(timeLine);
+        System.out.println(message);
+
+        return csmChoice(newID, parent, commitToCopy, neededChanges, firstID, lastID);
+    }
+
+    /* Deals with dissiminating from the user's csm input. */
+    private static int csmChoice(int newID, int parent, int commitToCopy, HashMap<String, Integer> neededChanges, int firstID, int lastID) {
+
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("Would you like to (c)ontinue, (s)kip this commit, or change this commit's (m)essage?");
+        String input = userInput.next();
+        if (input.equals("c")) {
+            // Should just be like normal rebase, right?
+            copyCommits(newID, parent, commitToCopy, neededChanges);
+            return 1; // Upped 1 - made the new commit. 
+        } else if (input.equals("s")) {
+            if (commitToCopy == firstID || commitToCopy == lastID) {
+                // Cannot skip the initial or final commit of a branch - ask for input again. 
+                return csmChoice(newID, parent, commitToCopy, neededChanges, firstID, lastID);
+            } else {
+                return 0; // Do nothing, I believe. 
+            }
+        } else if (input.equals("m")) {
+            takeNewMessage(newID, parent, commitToCopy, neededChanges);
+            return 1;
+        }
+        return csmChoice(newID, parent, commitToCopy, neededChanges, firstID, lastID); // User inputed something invalid - do it again. 
+    }
+
+    /* Rebase - digests user's new message. */
+    private static void takeNewMessage(int newID, int parent, int commitToCopy, HashMap<String, Integer> neededChanges) {
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("Please enter a new message for this commit.");
+        String message = userInput.nextLine();
+
+        newMessageCommit(newID, parent, commitToCopy, neededChanges, message);
+
+    }
+
+    /* Rebase - makes new commit with the new message. */
+    private static void newMessageCommit(int newID, int parent, int commitToCopy, HashMap<String, Integer> neededChanges, String newMessage) {
+
+        // Reminiscient of copyCommits method. 
+
+        // Make the folder. 
+        createCommitFolder(newID);
+
+        // Create CommitWrapper file.
+        createCommitWrapperLocation(newID);
+
+        // Write the commit wrapper. 
+        copyWrapper(newID, commitToCopy, parent, neededChanges, newMessage);
+    }
+
+    /* Interactive rebase - Copy Commit Wrapper and write to file WITH SPECIAL USER-CHANGED MESSAGE. */
+    private static void copyWrapper(int newID, int copyFromID, int parentCommit, HashMap<String, Integer> neededChanges, String newMessage) {
+
+        CommitWrapper old = commitWrapper(copyFromID);
+        CommitWrapper newVersion = new CommitWrapper(newID, old, parentCommit, neededChanges, newMessage);
+        String writeTo = ".gitlet/snapshots/" + newID + "/CommitWrapper.ser";
+        try {
+            FileOutputStream fout = new FileOutputStream(writeTo);
+            ObjectOutputStream oos = new ObjectOutputStream(fout);
+            oos.writeObject(newVersion);
+            oos.close();
+        } catch (IOException ex) {
+            System.out.println("Could not copy CommitWrapper to file - interactive rebase.");
+            System.exit(1);
+        }
+    }
+
+
+
+
+
+
+    /* For rebase - no replaying commits. */
+    private static void noReplays(String branchName, int givenBranchHead, WorldState world) {
+        
+        // Update files in working directory - just like checkout I believe. 
+        checkoutFileOrBranch(branchName);
+
+        world.updateBranchHeads(givenBranchHead);
+        world.updateHeadPointer(givenBranchHead);
+        writeBackWorldState(world);
+    }
+
+
+
+    /* Customary danger check for interactive rebase. */
+    private static void checkIRebase(String branchName) {
+        Scanner userInput = new Scanner(System.in);
+        System.out.println("Warning: The command you entered may alter the files in your working directory. Uncommitted changes may be lost. Are you sure you want to continue? (yes/no)");
+        String input = userInput.next();
+        if (input.equals("yes")) {
+            interactiveRebase(branchName);
+        } else {
+            return;
         }
     }
 
@@ -547,12 +747,7 @@ public class Gitlet {
         // If current branch in history of given branch, just move the current branch to point to the same commit that given branch points to. 
         // ALSO HAVE TO UPDATE THE FILES.  
         if (inHistory(currBranch, branchName, branchHeads)) {
-            // Update files in working directory - just like checkout I believe. 
-            checkoutFileOrBranch(branchName);
-
-            world.updateBranchHeads(givenBranchHead);
-            world.updateHeadPointer(givenBranchHead);
-            writeBackWorldState(world);
+            noReplays(branchName, givenBranchHead, world);
             return;
         }
 
