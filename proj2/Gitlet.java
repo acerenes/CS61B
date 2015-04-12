@@ -105,7 +105,6 @@ public class Gitlet {
             // DOESN'T SWITCH TO NEW BRANCH.
             // The branch points to, like the same thing your current branch does.
             this.branchHeads.put(newBranchName, currCommit);
-            System.out.println("Branch heads now includes " + newBranchName + " ? " + branchHeads.containsKey(newBranchName));
         }
 
         private HashMap<String, Integer> getBranchHeads() {
@@ -290,8 +289,6 @@ public class Gitlet {
                 if (stage.hasFilesToAdd()) {
                     for (String file : stage.getFilesToAdd()) {
 
-                        System.out.println("Trying to add this file: " + file);
-
 
                         // Create space in folder first.
                         String filePath = createFileExistence(commit, file);
@@ -306,7 +303,7 @@ public class Gitlet {
                             inputChannel.close();
                             outputChannel.close();
                         } catch (IOException ex) {
-                            System.out.println("Could not copy files to commit folder.");
+                            System.out.println("Error - Could not copy files to commit folder.");
                             System.exit(1);
                         } 
 
@@ -329,7 +326,7 @@ public class Gitlet {
                 } 
                 FileWriter writer = new FileWriter(newFile);
             } catch (IOException ex) {
-                System.out.println("Could not create file space in commit folders.");
+                System.out.println("Error - Could not create file space in commit folders.");
                 ex.printStackTrace();
                 System.exit(1);
             }
@@ -431,7 +428,7 @@ public class Gitlet {
                 }
             }
         } else {
-            System.out.println("No command given.");
+            System.out.println("Please enter a command.");
             return;
         }
 
@@ -464,7 +461,7 @@ public class Gitlet {
                 if (findMessage != null) {
                     find(findMessage);
                 } else {
-                    System.out.println("Must request message to find.");
+                    System.out.println("Did not enter enough arguments.");
                 }
                 break;
             case "status":
@@ -493,7 +490,7 @@ public class Gitlet {
                             checkoutFileOrBranch(args[1]);
                         }
                     } else {
-                        System.out.println("Must input something to checkout.");
+                        System.out.println("Did not enter enough arguments.");
                         return;
                     }
                 } else {
@@ -528,7 +525,9 @@ public class Gitlet {
 
                 checkIRebase(input1);
                 break;
-                
+            default:
+                System.out.println("Unrecognized command.");
+                break;
         }
     }
 
@@ -682,7 +681,7 @@ public class Gitlet {
             oos.writeObject(newVersion);
             oos.close();
         } catch (IOException ex) {
-            System.out.println("Could not copy CommitWrapper to file - interactive rebase.");
+            System.out.println("Error - Could not copy CommitWrapper to file - interactive rebase.");
             System.exit(1);
         }
     }
@@ -777,16 +776,6 @@ public class Gitlet {
             // Part 1: Similar to mergeChange1. 
         HashMap<String, Integer> neededChanges = rebaseChanges1(splitPointFiles, givenBranchFiles, currBranchFiles);
 
-        // TEEESTTTGGGG
-
-        System.out.println("Given branch files: ");
-        for (String file : givenBranchFiles.keySet()) {
-            System.out.println("file " + file + " in commit " + givenBranchFiles.get(file));
-        }
-        System.out.println("To be changed:");
-        for (String file : neededChanges.keySet()) {
-            System.out.println("file " + file + "new location: " + neededChanges.get(file));
-        }
 
             // Part 2: Similar to mergeChange3. 
             // Jk unecessary because we just stick with current branch's copies. 
@@ -839,16 +828,10 @@ public class Gitlet {
         HashMap<String, Integer> neededChanges = new HashMap<String, Integer>();
 
         for (String file : givenBranchFiles.keySet()) {
-            System.out.println("analyzing file in givenBranch: " + file);
             // If modified since split.
             if (!givenBranchFiles.get(file).equals(splitPointFiles.get(file))) {
-                System.out.println(file + " has been modified in given branch since split");
                 // Then make sure not changed in current branch.
-                System.out.println("currBranch says " + currBranchFiles.get(file));
-                System.out.println("splitPointFiles says " + splitPointFiles.get(file));
                 if (currBranchFiles.get(file).equals(splitPointFiles.get(file))) {
-
-                    System.out.println(file + " has not been modified in currentBranch"); 
                     // Get version in given branch. 
                     neededChanges.put(file, givenBranchFiles.get(file));
                 }
@@ -881,15 +864,13 @@ public class Gitlet {
         CommitWrapper old = commitWrapper(copyFromID);
         CommitWrapper newVersion = new CommitWrapper(newID, old, parentCommit, neededChanges); 
         String writeTo = ".gitlet/snapshots/" + newID + "/CommitWrapper.ser";
-        System.out.println("Location: " + writeTo);
         try {
             FileOutputStream fout = new FileOutputStream(writeTo);
             ObjectOutputStream oos = new ObjectOutputStream(fout);
             oos.writeObject(newVersion);
             oos.close();
         } catch (IOException ex) {
-            System.out.println("Line 677");
-            System.out.println("Could not copy Commit Wrapper to file.");
+            System.out.println("Error - Could not copy Commit Wrapper to file.");
             System.exit(1);
         }
     }
@@ -1042,7 +1023,7 @@ public class Gitlet {
             }
             FileWriter writer = new FileWriter(newFile);
         } catch (IOException ex) {
-            System.out.println("Merging conflict - could not create file space in working directory.");
+            System.out.println("Error - merging conflict - could not create file space in working directory.");
             System.exit(1);
         }
         return fileLocation;
@@ -1056,7 +1037,7 @@ public class Gitlet {
         try {
             Files.copy(inCommit, workingDirectory, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
-            System.out.println("Could not replace working directory file - genWriteToWorkingDirectory.");
+            System.out.println("Error - could not replace working directory file.");
             System.exit(1);
         }
     }
@@ -1072,10 +1053,8 @@ public class Gitlet {
         for (String file : givenBranchFiles.keySet()) {
             // First check if it's been modified since split, at least. 
             if (!givenBranchFiles.get(file).equals(splitPointFiles.get(file))) {
-                System.out.println("Modified in given branch since split.");
                 // Then make sure hasn't been changed in current branch.
                 if (currBranchFiles.get(file).equals(splitPointFiles.get(file))) {
-                    System.out.println("Not modified in current branch since split.");
                     // Change to version in given branch. 
                     overwriteWorkingDirectoryFile(givenBranchFiles.get(file), file);
                 }
@@ -1194,7 +1173,7 @@ public class Gitlet {
     /* Deletes branch with given name. */
     private static void removeBranch(String branchName) {
         if (branchName == null) {
-            System.out.println("Must give a branch name to remove.");
+            System.out.println("Did not enter enough arguments.");
             return;
         }
 
@@ -1227,7 +1206,7 @@ public class Gitlet {
         // Can switch the currently active head pointer with checkout.
         // Whenever commit = add a new commit in front of the CURRENTLY ACTIVE HEAD POINTER, even if one is already there. --> BRANCHES
         if (newBranchName == null) {
-            System.out.println("Branch command requires a branch name.");
+            System.out.println("Did not enter enough arguments.");
             return;
         }
 
@@ -1244,7 +1223,6 @@ public class Gitlet {
 
             // So only need to update branchHeads. 
         world.createNewBranch(newBranchName);
-        System.out.println("New branch: " + newBranchName + " " + branchHeads.get(newBranchName));
 
         // You updated WorldState - DON'T FORGET TO WRITE BACK.
         writeBackWorldState(world);
@@ -1275,12 +1253,10 @@ public class Gitlet {
 
     private static void checkoutFileOrBranch(String thingToCheckout) {
         // Branch > File. 
-        System.out.println("Checkout file or branch: " + thingToCheckout);
 
         WorldState world = getWorldState();
         HashMap<String, Integer> branches = world.getBranchHeads();
         if (branches.containsKey(thingToCheckout)) {
-            System.out.println("It's a branch, possibly.");
             // It's a branch. 
 
             // Check if branch is current branch - error.
@@ -1311,7 +1287,6 @@ public class Gitlet {
 
         } else {
             // It's a file. 
-            System.out.println("JK Testing if file.");
 
             // 1: Restores the file to its state at the commit at the head of current branch. 
 
@@ -1336,10 +1311,9 @@ public class Gitlet {
         Path inCommit = Paths.get(inCommitFile);
         Path workingDirectory = Paths.get(fileName);
         try {
-            System.out.println("Trying to copy from " + commitID + " to working directory");
             Files.copy(inCommit, workingDirectory, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException ex) {
-            System.out.println("Could not replace working directory file.");
+            System.out.println("Error - Could not replace working directory file.");
             System.exit(1);
         }
     }
@@ -1588,7 +1562,7 @@ public class Gitlet {
             oosWorldState.writeObject(worldState);
             oosWorldState.close();
         } catch (IOException ex) {
-            System.out.println("Initialize - could not write WorldState.ser");
+            System.out.println("Error - initialize - could not write WorldState.ser");
             System.exit(1);
         }
 
@@ -1600,7 +1574,7 @@ public class Gitlet {
             oosStaging.writeObject(stagingInfo);
             oosStaging.close();
         } catch (IOException ex2) {
-            System.out.println("Initialize - could not write Staging.ser");
+            System.out.println("Error - initialize - could not write Staging.ser");
             System.exit(1);
         }
 
