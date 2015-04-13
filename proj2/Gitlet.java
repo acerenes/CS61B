@@ -385,10 +385,11 @@ public class Gitlet {
 
 
     public static void main(String[] args) {
-        
         String command = null; 
         String input1 = null;
-        String input2 = null; 
+        String input2 = null;
+        String input3 = null;
+        String input4 = null;
 
         if (args.length > 0) {
             command = args[0];
@@ -396,13 +397,18 @@ public class Gitlet {
                 input1 = args[1];
                 if (args.length > 2) {
                     input2 = args[2];
+                    if (args.length > 3) {
+                        input3 = args[3];
+                        if (args.length > 4) {
+                            input4 = args[4];
+                        }
+                    }
                 }
             }
         } else {
             System.out.println("Please enter a command.");
             return;
         }
-
         switch (command) {
             case "init":
                 checkInitialize();
@@ -423,11 +429,7 @@ public class Gitlet {
                 globalLog();
                 break; 
             case "find":
-                if (input1 != null) {
-                    find(input1);
-                } else {
-                    System.out.println("Did not enter enough arguments.");
-                }
+                find(input1);
                 break;
             case "status":
                 status();
@@ -454,11 +456,63 @@ public class Gitlet {
             case "i-rebase":
                 checkIRebase(input1);
                 break;
+            case "add-remote":
+                remoteAdd(input1, input2, input3, input4);
+                break;
             default:
                 System.out.println("Unrecognized command.");
                 break;
         }
     }
+
+    /* Remote - add. */
+    private static void remoteAdd(String name, String serverUN, String server, String location) {
+
+        if (name == null || serverUN == null || server == null || location == null) {
+            System.out.println("Did not enter enough arguments.");
+            return;
+        }
+
+        Remote remote = getRemote();
+
+        // If remote with given name already exists, error.
+        if (remote.hasRemoteName(name)) {
+            System.out.println("A remote with that name already exists.");
+            return;
+        }
+
+        remote.addRemote(name, serverUN, server, location);
+
+        writeBackRemote(remote);
+    }
+
+
+    private static Remote getRemote() {
+        try {
+            FileInputStream fin = new FileInputStream(".gitlet/Remote.ser");
+            ObjectInputStream ois = new ObjectInputStream(fin);
+            Remote remote = (Remote) ois.readObject();
+            ois.close();
+            return remote;
+        } catch (IOException | ClassNotFoundException ex) {
+            System.out.println("Error - could not read in Remote.");
+            System.exit(1);
+        }
+        return null;
+    }
+
+    private static void writeBackRemote(Remote remote) {
+        try {
+            FileOutputStream fout = new FileOutputStream(".gitlet/Remote.ser");
+            ObjectOutputStream oos = new ObjectOutputStream(fout);
+            oos.writeObject(remote);
+            oos.close();
+        } catch (IOException ex) {
+            System.out.println("Error - could not write back Remote.");
+            System.exit(1);
+        }
+    }
+
 
     /* Danger check for checkout. */
     private static void checkCheckout(String input1, String input2) {
@@ -1290,6 +1344,10 @@ public class Gitlet {
 
     /* Print out IDs with this commit message. */
     private static void find(String message) {
+        if (message == null) {
+            System.out.println("Did not enter enough arguments.");
+            return;
+        }
         WorldState world = getWorldState();
         HashMap<String, ArrayList<Integer>> commitsByMessage = world.getCommitsByMessage();
         if (commitsByMessage.containsKey(message)) {
@@ -1448,6 +1506,18 @@ public class Gitlet {
             oosStaging.close();
         } catch (IOException ex2) {
             System.out.println("Error - initialize - could not write Staging.ser");
+            System.exit(1);
+        }
+
+        /* Make Remote.ser. */
+        Remote remoteInfo = new Remote();
+        try {
+            FileOutputStream foutRemote = new FileOutputStream(".gitlet/Remote.ser");
+            ObjectOutputStream oosRemote = new ObjectOutputStream(foutRemote);
+            oosRemote.writeObject(remoteInfo);
+            oosRemote.close();
+        } catch (IOException ex3) {
+            System.out.println("Error - initialize - could not write Remote.ser");
             System.exit(1);
         }
 
@@ -1750,5 +1820,33 @@ public class Gitlet {
             System.out.println("Error - could not write commit wrapper to file.");
             System.exit(1);
         }
+    }
+
+
+
+    /* Remote stuff. */
+    private static class Remote implements Serializable {
+        private HashMap<String, ArrayList<String>> loginInfo;
+
+
+        private Remote() {
+            this.loginInfo = new HashMap<String, ArrayList<String>>();
+        }
+
+        private void addRemote(String remoteName, String serverUserName, 
+            String server, String location) {
+
+            ArrayList<String> info = new ArrayList<String>();
+            info.add(0, serverUserName);
+            info.add(1, server);
+            info.add(2, location);
+            this.loginInfo.put(remoteName, info);
+        }
+
+        private boolean hasRemoteName(String remoteName) {
+            return this.loginInfo.containsKey(remoteName);
+        }
+
+
     }
 }
