@@ -385,10 +385,7 @@ public class Gitlet {
 
 
     public static void main(String[] args) {
-        String command = null; 
-        String input1 = null;
-        String input2 = null;
-        String input3 = null;
+        String command = null; String input1 = null; String input2 = null; String input3 = null;
         String input4 = null;
 
         if (args.length > 0) {
@@ -406,16 +403,13 @@ public class Gitlet {
                 }
             }
         } else {
-            System.out.println("Please enter a command.");
-            return;
+            System.out.println("Please enter a command."); return;
         }
         switch (command) {
             case "init":
-                checkInitialize();
-                break;
+                checkInitialize(); break;
             case "add":
-                checkAdd(input1);
-                break;
+                checkAdd(input1); break;
             case "commit":
                 checkCommit(input1);
                 break;
@@ -459,10 +453,26 @@ public class Gitlet {
             case "add-remote":
                 remoteAdd(input1, input2, input3, input4);
                 break;
-            default:
-                System.out.println("Unrecognized command.");
+            case "rm-remote":
+                remoteRemove(input1);
                 break;
+            default:
+                System.out.println("Unrecognized command."); break;
         }
+    }
+
+    /* Remote remove. */
+    private static void remoteRemove(String remoteName) {
+        Remote remote = getRemote();
+
+        if (!remote.hasRemoteName(remoteName)) {
+            System.out.println("A remote with that name does not exist.");
+            return;
+        }
+
+        remote.removeInfo(remoteName);
+
+        writeBackRemote(remote);
     }
 
     /* Remote - add. */
@@ -1845,6 +1855,14 @@ public class Gitlet {
 
         private boolean hasRemoteName(String remoteName) {
             return this.loginInfo.containsKey(remoteName);
+        }
+
+        private HashMap<String, ArrayList<String>> getLogins() {
+            return this.loginInfo;
+        }
+
+        private void removeInfo(String remoteName) {
+            this.loginInfo.remove(remoteName);
         }
 
 
