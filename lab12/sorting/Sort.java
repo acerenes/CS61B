@@ -252,13 +252,30 @@ public final class Sort {
      *  @param index2 the index of the second int to be swapped.
      **/
     private static void exch(int[] a, int index1, int index2) {
-        /** YOUR CODE HERE! */
+
+        // Is it like, show before and show after?? 
+        // Jk it should only be show after. Show before is the same thing - nothing's changed. 
+
+        // Okay I think red is thing being moved / looked at.
+        // Index1 tends to be the thing on the right, I think. The thing being looked at.  
+
+        // IT LITERALLY JUST DRAWS THE "SORTED" RECTANGLE AS RED, THEN TURNS IT TO BLUE, AND THE RED ONE MOVES ONTO THE NEXT THING YOU SORTED. 
+
+        SortSounds.clearRectangle(index2);
 
         int tmp = a[index1];
         a[index1] = a[index2];
         a[index2] = tmp;
 
-        /** YOUR CODE HERE! */
+        SortSounds.drawRectangle(StdDraw.RED, index1);
+        StdDraw.show(5);
+        SortSounds.play(index1);
+        SortSounds.drawRectangle(StdDraw.CYAN, index1);
+        StdDraw.show(5);
+
+        
+        SortSounds.drawRectangle(StdDraw.CYAN, index2); // So I don't get the blank space?? 
+        StdDraw.show(5);
 
     }
 
