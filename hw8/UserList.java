@@ -207,8 +207,17 @@ public class UserList {
     *    contains one User from userQueue.
     **/
     public CatenableQueue<CatenableQueue<User>> makeQueueOfQueues(){
-        //Replace with solution.
-        return null;
+
+        CatenableQueue<CatenableQueue<User>> metaQueue = new CatenableQueue<CatenableQueue<User>>();
+        
+        while (!this.userQueue.isEmpty()) {
+            User currUser = this.userQueue.dequeue();
+            CatenableQueue<User> innerQueue = new CatenableQueue<User>();
+            innerQueue.enqueue(currUser);
+            metaQueue.enqueue(innerQueue);
+        }
+
+        return metaQueue;
     }
 
     /**
@@ -224,8 +233,66 @@ public class UserList {
     *       sorted from smallest to largest by their sortFeature.
     **/
     public static CatenableQueue<User> mergeTwoQueues(String sortFeature, CatenableQueue<User> q1, CatenableQueue<User> q2){
-        //Replace with solution.
-        return null;
+
+        if (sortFeature.equals("id")) {
+            return mergeTwoQueuesID(q1, q2);
+        } else if (sortFeature.equals("pages")) {
+            return mergeTwoQueuesPages(q1, q2);
+        } else {
+            return null;
+        }
+    }
+
+    private static CatenableQueue<User> mergeTwoQueuesID (CatenableQueue<User> q1, CatenableQueue<User> q2) {
+
+        CatenableQueue<User> sorted = new CatenableQueue<User>();
+
+        while (!q1.isEmpty() && !q2.isEmpty()) {
+            User one = q1.front();
+            User two = q2.front();
+            if (one.getId() <= two.getId()) {
+                one = q1.dequeue();
+                sorted.enqueue(one);
+            } else {
+                two = q2.dequeue();
+                sorted.enqueue(two);
+            }
+        }
+
+        // Leftovers:
+        if (q1.isEmpty()) {
+            sorted.append(q2);
+        } else if (q2.isEmpty()) {
+            sorted.append(q1);
+        }
+
+        return sorted;
+    }
+
+    private static CatenableQueue<User> mergeTwoQueuesPages (CatenableQueue<User> q1, CatenableQueue<User> q2) {
+
+        CatenableQueue<User> sorted = new CatenableQueue<User>();
+
+        while (!q1.isEmpty() && !q2.isEmpty()) {
+            User one = q1.front();
+            User two = q2.front();
+            if (one.getPagesPrinted() <= two.getPagesPrinted()) {
+                one = q1.dequeue();
+                sorted.enqueue(one);
+            } else {
+                two = q2.dequeue();
+                sorted.enqueue(two);
+            }
+        }
+
+        // Leftovers:
+        if (q1.isEmpty()) {
+            sorted.append(q2);
+        } else if (q2.isEmpty()) {
+            sorted.append(q1);
+        }
+
+        return sorted;
     }
 
     /**
@@ -236,7 +303,32 @@ public class UserList {
     *       printed, sortFeatures equals "pages".
     **/
     public void mergeSort(String sortFeature){
-        //Replace with solution.
+        
+        // Break up into N little pieces. 
+        // Then merge into twice as bigs? , and put them into another metaqueue?
+        // Keep going until 1 thing in the metaquee?
+        // And then take out that queue?
+
+        CatenableQueue<CatenableQueue<User>> metaQueue = this.makeQueueOfQueues();
+
+        while (metaQueue.size() != 1) {
+            CatenableQueue<CatenableQueue<User>> old = metaQueue;
+            metaQueue = new CatenableQueue<CatenableQueue<User>>();
+            int i = 0;
+            while (i < old.size() - 1) {
+                CatenableQueue<User> miniMerged = mergeTwoQueues(sortFeature, old.nth(i), old.nth(i + 1));
+                metaQueue.enqueue(miniMerged);
+                i = i + 2;   
+            }
+
+            if (i == old.size() - 1) {
+                // Old #, make sure to put in the last one. 
+                metaQueue.enqueue(old.nth(i));
+            }
+        }
+
+        // So after here, metaQueue should just have one thing, so take it out. 
+        this.userQueue = metaQueue.front();     
     }
 
     /**
@@ -375,6 +467,34 @@ public class UserList {
     }
 
     @Test
+    public void mergeQueuesTest() {
+        CatenableQueue<User> q1 = new CatenableQueue<User>();
+        CatenableQueue<User> q2 = new CatenableQueue<User>();
+
+        q1.enqueue(new User(3, 1));
+        q1.enqueue(new User(0, 20));
+        q2.enqueue(new User(1, 10));
+        q2.enqueue(new User(2, 11));
+
+        CatenableQueue<User> merged = mergeTwoQueues("pages", q1, q2);
+        String mergeByPages = 
+        "[ User ID: 3, Pages Printed: 1,\n  User ID: 1, Pages Printed: 10,\n  User ID: 2, Pages Printed: 11,\n  User ID: 0, Pages Printed: 20 ]";
+        assertEquals(mergeByPages, merged.toString());        
+
+        q1 = new CatenableQueue<User>();
+        q2 = new CatenableQueue<User>();
+        q1.enqueue(new User(0, 20));
+        q1.enqueue(new User(3, 1));
+        q2.enqueue(new User(1, 10));
+        q2.enqueue(new User(2, 11));
+
+        merged = mergeTwoQueues("id", q1, q2);
+        String mergeById = 
+        "[ User ID: 0, Pages Printed: 20,\n  User ID: 1, Pages Printed: 10,\n  User ID: 2, Pages Printed: 11,\n  User ID: 3, Pages Printed: 1 ]";
+        assertEquals(mergeById, merged.toString());   
+    }
+
+    @Test
     public void naiveMergeSortTest() {
         UserList list = new UserList();
         list.add(new User(2, 12));
@@ -390,6 +510,26 @@ public class UserList {
 
         list.mergeSort("pages");
         assertEquals(sorted, list.toString()); 
+    }
+
+    @Test
+    public void mergeSortTest() {
+        UserList list = new UserList();
+        list.add(new User(2, 12));
+        list.add(new User(0, 10));
+        list.add(new User(1, 11));
+        list.add(new User(3, 32));
+        list.add(new User(4, 1));
+
+        list.mergeSort("pages");
+
+        String sorted =
+         "[ User ID: 4, Pages Printed: 1,\n  User ID: 0, Pages Printed: 10,\n  User ID: 1, Pages Printed: 11,\n  User ID: 2, Pages Printed: 12,\n  User ID: 3, Pages Printed: 32 ]";
+
+        assertEquals(sorted, list.toString());
+
+        list.mergeSort("id");
+        String sortedID = "[ User ID: 0, Pages Printed: 10,\n  User ID: 1, Pages Printed: 11,\n  User ID: 2, Pages Printed: 12,\n  User ID: 3, Pages Printed: 32,\n  User ID: 4, Pages Printed: 1 ]";
     }
 
     @Test
