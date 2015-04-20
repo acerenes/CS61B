@@ -376,8 +376,8 @@ public class UserList {
 
         // OH SORT BY ID THEN BY PAGES. OMG. SO BRILLIANT. 
 
-        this.quickSort("id");
-        this.mergeSort("pages");
+        this.mergeSort("id");
+        this.quickSort("pages");
     }
 
 
@@ -586,6 +586,23 @@ public class UserList {
 
         assertEquals(sorted, list.toString());
     } 
+
+    @Test
+    public void sortByBothTest() {
+        UserList list = new UserList();
+        list.add(new User(2, 12));
+        list.add(new User(1, 10));
+        list.add(new User(4, 15));
+        list.add(new User(3, 15));
+        list.add(new User(0, 10));
+
+        list.sortByBothFeatures();
+
+        String sorted =
+         "[ User ID: 0, Pages Printed: 10,\n  User ID: 1, Pages Printed: 10,\n  User ID: 2, Pages Printed: 12,\n  User ID: 3, Pages Printed: 15,\n  User ID: 4, Pages Printed: 15 ]";
+
+        assertEquals(sorted, list.toString());
+    }
 
     
 
