@@ -76,7 +76,6 @@ public class UserList {
             return;
         }
 
-
         if (sortFeature.equals("id")) {
             partitionID(pivot, qUnsorted, qLess, qEqual, qGreater);
         } else if (sortFeature.equals("pages")) {
@@ -151,10 +150,7 @@ public class UserList {
 
         partition("id", q, pivotID, less, equal, greater);
 
-        // Partioning already dequeues it. 
-        q.append(less);
-        q.append(equal);
-        q.append(greater);
+        
 
         // Do it again if not size 1, for less than and greater than. 
 
@@ -164,6 +160,11 @@ public class UserList {
         if (greater.size() > 1) {
             quickSortID(greater);
         }
+
+        // Partioning already dequeues it. 
+        q.append(less);
+        q.append(equal);
+        q.append(greater);
 
     }
 
@@ -395,6 +396,7 @@ public class UserList {
         assertEquals(0, less.size());
         assertEquals(1, equal.size());
         assertEquals(6, greater.size());
+        assertTrue(list.userQueue.isEmpty());
     } 
 
     @Test
@@ -554,7 +556,7 @@ public class UserList {
          "[ User ID: 0, Pages Printed: 10,\n  User ID: 1, Pages Printed: 10,\n  User ID: 2, Pages Printed: 12 ]";
 
         assertEquals(sorted, list.toString());
-    }
+    } 
 
     
 
