@@ -76,14 +76,11 @@ public class UserList {
             return;
         }
 
-        User pivotUser = qUnsorted.nth(pivot);
-        int pivotID = pivotUser.getId();
-        int pivotPages = pivotUser.getPagesPrinted();
 
         if (sortFeature.equals("id")) {
-            partitionID(pivotID, qUnsorted, qLess, qEqual, qGreater);
+            partitionID(pivot, qUnsorted, qLess, qEqual, qGreater);
         } else if (sortFeature.equals("pages")) {
-            partitionPages(pivotPages, qUnsorted, qLess, qEqual, qGreater);
+            partitionPages(pivot, qUnsorted, qLess, qEqual, qGreater);
         } else {
             return;
         }
@@ -149,7 +146,15 @@ public class UserList {
         Random rand = new Random();
         int randomNum = rand.nextInt(q.size());
 
-        partition("id", q, randomNum, less, equal, greater);
+        User pivotUser = q.nth(randomNum);
+        int pivotID = pivotUser.getId();
+
+        partition("id", q, pivotID, less, equal, greater);
+
+        // Partioning already dequeues it. 
+        q.append(less);
+        q.append(equal);
+        q.append(greater);
 
         // Do it again if not size 1, for less than and greater than. 
 
@@ -160,11 +165,6 @@ public class UserList {
             quickSortID(greater);
         }
 
-        // Partioning already dequeues it. 
-        q.append(less);
-        q.append(equal);
-        q.append(greater);
-        
     }
 
     private static void quickSortPages(CatenableQueue<User> q) {
@@ -176,7 +176,10 @@ public class UserList {
         Random rand = new Random();
         int randomNum = rand.nextInt(q.size());
 
-        partition("pages", q, randomNum, less, equal, greater);
+        User pivotUser = q.nth(randomNum);
+        int pivotPages = pivotUser.getPagesPrinted();
+
+        partition("pages", q, pivotPages, less, equal, greater);
 
         // Do it again if not size 1, for less than and greater than. 
 
@@ -389,12 +392,9 @@ public class UserList {
 
         /* Pivot on user 0 by pages. */
         list.partition("pages", list.userQueue, 0, less, equal, greater);
-        assertEquals(4, less.size());
-        assertEquals(2, equal.size());
-        assertEquals(1, greater.size());
-        assertEquals(new User(1, 0), less.front());
-        assertEquals(new User(0, 20), equal.front());
-        assertEquals(new User(6, 40), greater.front());
+        assertEquals(0, less.size());
+        assertEquals(1, equal.size());
+        assertEquals(6, greater.size());
     } 
 
     @Test
