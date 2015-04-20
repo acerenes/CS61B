@@ -324,6 +324,10 @@ public class UserList {
     *       printed, sortFeatures equals "pages".
     **/
     public void mergeSort(String sortFeature){
+
+        if (this.userQueue.size() <= 1) {
+            return;
+        }
         
         // Break up into N little pieces. 
         // Then merge into twice as bigs? , and put them into another metaqueue?
@@ -332,20 +336,31 @@ public class UserList {
 
         CatenableQueue<CatenableQueue<User>> metaQueue = this.makeQueueOfQueues();
 
+        if (metaQueue.size() == 2) {
+            this.userQueue = mergeTwoQueues(sortFeature, metaQueue.nth(0), metaQueue.nth(1));
+            return;  
+        }
+
+
         while (metaQueue.size() != 1) {
-            CatenableQueue<CatenableQueue<User>> old = metaQueue;
+            /* CatenableQueue<CatenableQueue<User>> old = metaQueue;
             metaQueue = new CatenableQueue<CatenableQueue<User>>();
-            int i = 0;
+            /*int i = 0;
             while (i < old.size() - 1) {
                 CatenableQueue<User> miniMerged = mergeTwoQueues(sortFeature, old.nth(i), old.nth(i + 1));
                 metaQueue.enqueue(miniMerged);
                 i = i + 2;   
-            }
+            }*/
 
-            if (i == old.size() - 1) {
+            CatenableQueue<User> first = metaQueue.dequeue();
+            CatenableQueue<User> second = metaQueue.dequeue();
+            CatenableQueue<User> miniMerged = mergeTwoQueues(sortFeature, first, second);
+            metaQueue.enqueue(miniMerged);
+
+            /* if (i == old.size() - 1) {
                 // Old #, make sure to put in the last one. 
                 metaQueue.enqueue(old.nth(i));
-            }
+            } */
         }
 
         // So after here, metaQueue should just have one thing, so take it out. 
