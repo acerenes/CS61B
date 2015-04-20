@@ -72,9 +72,9 @@ public class UserList {
     public static void partition(String sortFeature, CatenableQueue<User> qUnsorted, int pivot, 
         CatenableQueue<User> qLess, CatenableQueue<User> qEqual, CatenableQueue<User> qGreater) {
 
-        if (pivot >= qUnsorted.size()) {
+        /* if (pivot >= qUnsorted.size()) {
             return;
-        }
+        } */
 
         if (sortFeature.equals("id")) {
             partitionID(pivot, qUnsorted, qLess, qEqual, qGreater);
@@ -127,6 +127,7 @@ public class UserList {
     **/
     public static void quickSort(String sortFeature, CatenableQueue<User> q){ 
 
+
         if (sortFeature.equals("id")) {
             quickSortID(q);
         } else if (sortFeature.equals("pages")) {
@@ -134,6 +135,7 @@ public class UserList {
         } else {
             return;
         }
+            
     }
 
     private static void quickSortID(CatenableQueue<User> q) {
@@ -142,6 +144,7 @@ public class UserList {
         CatenableQueue<User> equal = new CatenableQueue<User>();
         CatenableQueue<User> greater = new CatenableQueue<User>();
 
+
         Random rand = new Random();
         int randomNum = rand.nextInt(q.size());
 
@@ -149,8 +152,6 @@ public class UserList {
         int pivotID = pivotUser.getId();
 
         partition("id", q, pivotID, less, equal, greater);
-
-        
 
         // Do it again if not size 1, for less than and greater than. 
 
@@ -181,6 +182,11 @@ public class UserList {
         int pivotPages = pivotUser.getPagesPrinted();
 
         partition("pages", q, pivotPages, less, equal, greater);
+
+        /* System.out.println("After partition: ");
+        System.out.println("Less : " + less.toString());
+        System.out.println("Equal: " + equal.toString());
+        System.out.println("Great: " + greater.toString()); */
 
         // Do it again if not size 1, for less than and greater than. 
 
@@ -373,6 +379,7 @@ public class UserList {
         assertEquals(new User(0, 20), less.front());
         assertEquals(new User(1, 0), equal.front());
         assertEquals(new User(2, 10), greater.front());
+        assertTrue(list.userQueue.isEmpty());
     }
 
     @Test
