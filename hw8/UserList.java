@@ -374,7 +374,7 @@ public class UserList {
     public void sortByBothFeatures(){
         //Replace with solution. Don't overthink this one!
 
-        // OH SORT BY ID THEN BY PAGES. OMG. SO BRILLIANT. 
+        // OH SORT BY ID THEN BY PAGES. OMG. SO BRILLIANT. WOW. 
 
         this.mergeSort("id");
         this.quickSort("pages");
