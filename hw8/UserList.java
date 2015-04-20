@@ -154,7 +154,7 @@ public class UserList {
         User pivotUser = q.nth(randomNum);
         int pivotID = pivotUser.getId();
 
-        partition("id", q, pivotID, less, equal, greater);
+        partitionID(pivotID, q, less, equal, greater);
 
         // Do it again if not size 1, for less than and greater than. 
 
@@ -188,7 +188,7 @@ public class UserList {
         User pivotUser = q.nth(randomNum);
         int pivotPages = pivotUser.getPagesPrinted();
 
-        partition("pages", q, pivotPages, less, equal, greater);
+        partitionPages(pivotPages, q, less, equal, greater);
 
         /* System.out.println("After partition: ");
         System.out.println("Less : " + less.toString());
