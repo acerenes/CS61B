@@ -72,10 +72,6 @@ public class UserList {
     public static void partition(String sortFeature, CatenableQueue<User> qUnsorted, int pivot, 
         CatenableQueue<User> qLess, CatenableQueue<User> qEqual, CatenableQueue<User> qGreater) {
 
-        /* if (pivot >= qUnsorted.size()) {
-            return;
-        } */
-
         if (sortFeature.equals("id")) {
             partitionID(pivot, qUnsorted, qLess, qEqual, qGreater);
         } else if (sortFeature.equals("pages")) {
@@ -189,11 +185,6 @@ public class UserList {
         int pivotPages = pivotUser.getPagesPrinted();
 
         partitionPages(pivotPages, q, less, equal, greater);
-
-        /* System.out.println("After partition: ");
-        System.out.println("Less : " + less.toString());
-        System.out.println("Equal: " + equal.toString());
-        System.out.println("Great: " + greater.toString()); */
 
         // Do it again if not size 1, for less than and greater than. 
 
@@ -343,24 +334,10 @@ public class UserList {
 
 
         while (metaQueue.size() != 1) {
-            /* CatenableQueue<CatenableQueue<User>> old = metaQueue;
-            metaQueue = new CatenableQueue<CatenableQueue<User>>();
-            /*int i = 0;
-            while (i < old.size() - 1) {
-                CatenableQueue<User> miniMerged = mergeTwoQueues(sortFeature, old.nth(i), old.nth(i + 1));
-                metaQueue.enqueue(miniMerged);
-                i = i + 2;   
-            }*/
-
             CatenableQueue<User> first = metaQueue.dequeue();
             CatenableQueue<User> second = metaQueue.dequeue();
             CatenableQueue<User> miniMerged = mergeTwoQueues(sortFeature, first, second);
             metaQueue.enqueue(miniMerged);
-
-            /* if (i == old.size() - 1) {
-                // Old #, make sure to put in the last one. 
-                metaQueue.enqueue(old.nth(i));
-            } */
         }
 
         // So after here, metaQueue should just have one thing, so take it out. 
@@ -376,8 +353,8 @@ public class UserList {
 
         // OH SORT BY ID THEN BY PAGES. OMG. SO BRILLIANT. WOW.
 
-        this.quickSort("id");
-        this.mergeSort("pages");
+        this.mergeSort("id");
+        this.quickSort("pages");
     }
 
 
