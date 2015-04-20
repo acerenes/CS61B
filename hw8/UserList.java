@@ -140,6 +140,10 @@ public class UserList {
 
     private static void quickSortID(CatenableQueue<User> q) {
 
+        if (q.size() <= 0) {
+            return;
+        }
+
         CatenableQueue<User> less = new CatenableQueue<User>();
         CatenableQueue<User> equal = new CatenableQueue<User>();
         CatenableQueue<User> greater = new CatenableQueue<User>();
