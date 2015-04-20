@@ -125,8 +125,7 @@ public class UserList {
     *       printed, sortFeatures equals "pages".
     *   @param q is an unsorted CatenableQueue containing User items.
     **/
-    public static void quickSort(String sortFeature, CatenableQueue<User> q){ 
-
+    public static void quickSort(String sortFeature, CatenableQueue<User> q) {
 
         if (sortFeature.equals("id")) {
             quickSortID(q);
@@ -174,6 +173,10 @@ public class UserList {
     }
 
     private static void quickSortPages(CatenableQueue<User> q) {
+
+        if (q.size() <= 0) {
+            return;
+        }
 
         CatenableQueue<User> less = new CatenableQueue<User>();
         CatenableQueue<User> equal = new CatenableQueue<User>();
