@@ -3,6 +3,7 @@
 import queue.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.util.Random;
 
 public class UserList {
 
@@ -69,9 +70,53 @@ public class UserList {
     *       will be enqueued.  
     **/ 
     public static void partition(String sortFeature, CatenableQueue<User> qUnsorted, int pivot, 
-        CatenableQueue<User> qLess, CatenableQueue<User> qEqual, CatenableQueue<User> qGreater){
-        //Replace with solution.
+        CatenableQueue<User> qLess, CatenableQueue<User> qEqual, CatenableQueue<User> qGreater) {
+
+        User pivotUser = qUnsorted.nth(pivot);
+        int pivotID = pivotUser.getId();
+        int pivotPages = pivotUser.getPagesPrinted();
+
+        if (sortFeature.equals("id")) {
+            partitionID(pivotID, qUnsorted, qLess, qEqual, qGreater);
+        } else if (sortFeature.equals("pages")) {
+            partitionPages(pivotPages, qUnsorted, qLess, qEqual, qGreater);
+        } else {
+            return;
+        }
     }
+
+
+    private static void partitionPages(int pivotValue, CatenableQueue<User> qUnsorted, CatenableQueue<User> qLess, CatenableQueue<User> qEqual, CatenableQueue<User> qGreater) {
+
+        while (!qUnsorted.isEmpty()) {
+            User currUser = qUnsorted.dequeue();
+            if (currUser.getPagesPrinted() > pivotValue) {
+                qGreater.enqueue(currUser);
+            } else if (currUser.getPagesPrinted() < pivotValue) {
+                qLess.enqueue(currUser);
+            } else {
+                qEqual.enqueue(currUser);
+            }
+        }
+    }
+
+
+
+    private static void partitionID(int pivotValue, CatenableQueue<User> qUnsorted, CatenableQueue<User> qLess, CatenableQueue<User> qEqual, CatenableQueue<User> qGreater) {
+
+        while (!qUnsorted.isEmpty()) {
+            User currUser = qUnsorted.dequeue();
+            if (currUser.getId() > pivotValue) {
+                qGreater.enqueue(currUser);
+            } else if (currUser.getId() < pivotValue) {
+                qLess.enqueue(currUser);
+            } else {
+                qEqual.enqueue(currUser);
+            }
+        }
+    }
+
+
 
     /**
     *   quickSort() sorts q from smallest to largest according to sortFeature using quicksort.
@@ -81,7 +126,68 @@ public class UserList {
     *   @param q is an unsorted CatenableQueue containing User items.
     **/
     public static void quickSort(String sortFeature, CatenableQueue<User> q){ 
-        //Replace with solution.
+
+        if (sortFeature.equals("id")) {
+            quickSortID(q);
+        } else if (sortFeature.equals("pages")) {
+            quickSortPages(q);
+        } else {
+            return;
+        }
+    }
+
+    private static void quickSortID(CatenableQueue<User> q) {
+
+        CatenableQueue<User> less = new CatenableQueue<User>();
+        CatenableQueue<User> equal = new CatenableQueue<User>();
+        CatenableQueue<User> greater = new CatenableQueue<User>();
+
+        Random rand = new Random();
+        int randomNum = rand.nextInt(q.size());
+
+        partition("id", q, randomNum, less, equal, greater);
+
+        // Do it again if not size 1, for less than and greater than. 
+
+        if (less.size() > 1) {
+            quickSortID(less);
+        }
+        if (greater.size() > 1) {
+            quickSortID(greater);
+        }
+
+        // Partioning already dequeues it. 
+        q.append(less);
+        q.append(equal);
+        q.append(greater);
+        
+    }
+
+    private static void quickSortPages(CatenableQueue<User> q) {
+
+        CatenableQueue<User> less = new CatenableQueue<User>();
+        CatenableQueue<User> equal = new CatenableQueue<User>();
+        CatenableQueue<User> greater = new CatenableQueue<User>();
+
+        Random rand = new Random();
+        int randomNum = rand.nextInt(q.size());
+
+        partition("pages", q, randomNum, less, equal, greater);
+
+        // Do it again if not size 1, for less than and greater than. 
+
+        if (less.size() > 1) {
+            quickSortPages(less);
+        }
+        if (greater.size() > 1) {
+            quickSortPages(greater);
+        }
+
+        // Partioning already dequeues it. 
+        q.append(less);
+        q.append(equal);
+        q.append(greater);
+        
     }
 
     /**
@@ -165,6 +271,32 @@ public class UserList {
     }
 
     @Test
+    public void partitionTest() {
+        UserList list = new UserList();
+
+        list.add(new User(0, 20));
+        list.add(new User(1, 0));
+        list.add(new User(2, 10));
+        list.add(new User(3, 11));
+        list.add(new User(4, 1));
+        list.add(new User(5, 20));
+        list.add(new User(6, 40));
+
+        CatenableQueue<User> less = new CatenableQueue<User>();
+        CatenableQueue<User> equal = new CatenableQueue<User>();
+        CatenableQueue<User> greater = new CatenableQueue<User>();
+
+        /* Pivot on user 0 by pages. */
+        list.partition("pages", list.userQueue, 0, less, equal, greater);
+        assertEquals(4, less.size());
+        assertEquals(2, equal.size());
+        assertEquals(1, greater.size());
+        assertEquals(new User(1, 0), less.front());
+        assertEquals(new User(0, 20), equal.front());
+        assertEquals(new User(6, 40), greater.front());
+    } 
+
+    @Test
     public void naiveQuickSortTest() {
         UserList list = new UserList();
         list.add(new User(2, 12));
@@ -180,6 +312,28 @@ public class UserList {
 
         list.quickSort("pages");
         assertEquals(sorted, list.toString()); 
+    }
+
+    @Test
+    public void quickSortTest() {
+        UserList list = new UserList();
+        list.add(new User(2, 12));
+        list.add(new User(0, 10));
+        list.add(new User(1, 11));
+        list.add(new User(3, 1));
+        list.add(new User(4, 1));
+
+        list.quickSort("id");
+
+        String sorted =
+         "[ User ID: 0, Pages Printed: 10,\n  User ID: 1, Pages Printed: 11,\n  User ID: 2, Pages Printed: 12,\n  User ID: 3, Pages Printed: 1,\n  User ID: 4, Pages Printed: 1 ]";
+
+        assertEquals(sorted, list.toString());
+
+        list.quickSort("pages");
+
+        String sortedPages = "[ User ID: 3, Pages Printed: 1,\n  User ID: 4, Pages Printed: 1,\n  User ID: 0, Pages Printed: 10,\n  User ID: 1, Pages Printed: 11,\n  User ID: 2, Pages Printed: 12 ]";
+        assertEquals(sortedPages, list.toString()); 
     }
 
     @Test
@@ -253,12 +407,12 @@ public class UserList {
         assertEquals(sorted, list.toString());
     }
 
+    
+
     public static void main(String [] args) {
-        // Naive right-idea tests. Just because these tests pass does NOT mean
-        // your code is bug-free!
 
         // Uncomment the following line when ready
-        // jh61b.junit.textui.runClasses(UserList.class);
+        jh61b.junit.textui.runClasses(UserList.class);
     }
 
 }
