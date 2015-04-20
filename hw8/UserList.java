@@ -72,6 +72,10 @@ public class UserList {
     public static void partition(String sortFeature, CatenableQueue<User> qUnsorted, int pivot, 
         CatenableQueue<User> qLess, CatenableQueue<User> qEqual, CatenableQueue<User> qGreater) {
 
+        if (pivot >= qUnsorted.size()) {
+            return;
+        }
+
         User pivotUser = qUnsorted.nth(pivot);
         int pivotID = pivotUser.getId();
         int pivotPages = pivotUser.getPagesPrinted();
