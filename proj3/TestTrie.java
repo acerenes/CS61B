@@ -19,7 +19,7 @@ public class TestTrie {
 
 
     public static void main(String[] args) {
-            jh61b.junit.textui.runClasses(ULLMapTest.class);
+            jh61b.junit.textui.runClasses(TestTrie.class);
         }
 
 }
