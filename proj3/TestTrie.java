@@ -17,6 +17,18 @@ public class TestTrie {
         assertFalse(t.find("hell", true));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalArgumentExceptionNull() {
+        Trie t2 = new Trie();
+        t2.insert(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testIllegalArgumentExceptionEmpty() {
+        Trie t3 = new Trie();
+        t3.insert("");
+    }
+    
 
     public static void main(String[] args) {
             jh61b.junit.textui.runClasses(TestTrie.class);
