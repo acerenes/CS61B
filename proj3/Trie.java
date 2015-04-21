@@ -8,6 +8,8 @@ public class Trie {
 
     // Merci beaucoup beaucoup to lecture 33's slides. 
 
+    /* Thx 5 million to the Algs textbooks. */
+
     private Node root;
 
     private static class Node {
@@ -41,7 +43,7 @@ public class Trie {
             return true;
         }
     }
-    
+
 
     private Node findNode(String s, Node start, int position) {
 
@@ -75,7 +77,7 @@ public class Trie {
     }
 
 
-    /* Thx 5 million to the Algs textbooks. */
+    
     public void insert(String s) {
 
         if (s == null || s.isEmpty()) {
