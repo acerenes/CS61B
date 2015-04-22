@@ -4,6 +4,11 @@
  * Trie or a prefix.
  * @author 
  */
+
+import java.util.TreeMap; 
+import java.util.Map;
+
+
 public class Trie {
 
     // Merci beaucoup beaucoup to lecture 33's slides. 
@@ -13,13 +18,24 @@ public class Trie {
     private Node root;
 
     private static class Node {
-        /* Char in this node. */
+        // /* Char in this node. */
+        // private char c;
+        // /* Subtries - left, middle, right. */
+        // private Node left;
+        // private Node middle;
+        // private Node right;
+        // private boolean exists;
+
+
+        /* Thanks a million to lecture 33 notes. */
         private char c;
-        /* Subtries - left, middle, right. */
-        private Node left;
-        private Node middle;
-        private Node right;
         private boolean exists;
+        private Map<Character, Node> links;
+
+        public Node() {
+            links = new TreeMap<Character, Node>();
+            exists = false;
+        }
 
     }
 
@@ -62,18 +78,23 @@ public class Trie {
         }
 
         char newChar = s.charAt(position);
-        char currChar = start.c;
+        // System.out.println(newChar);
+        // char currChar = start.c;
 
-        // Greater than - haven't found yet - try go right.
-        if (newChar > currChar) {
-            return findNode(s, start.right, position);
-        }
-        // Less than - haven't found yet - try left.
-        if (newChar < currChar) {
-            return findNode(s, start.left, position);
-        }
+        // // Greater than - haven't found yet - try go right.
+        // if (newChar > currChar) {
+        //     return findNode(s, start.right, position);
+        // }
+        // // Less than - haven't found yet - try left.
+        // if (newChar < currChar) {
+        //     return findNode(s, start.left, position);
+        // }
         // Equal to - great! Try next char, using middle.
-        return findNode(s, start.middle, position + 1);
+        //return findNode(s, start.middle, position + 1);
+
+
+        return findNode(s, start.links.get(newChar), position + 1);
+
     }
 
 
@@ -94,35 +115,52 @@ public class Trie {
             return null; 
         }
 
-        char newChar = key.charAt(position);
-
         if (start == null) {
-            // Should be able to directly insert into this node.
             start = new Node();
-            start.c = newChar;
-
-            if (position == key.length() - 1) {
-                // Last element - exists!
-                start.exists = true;
-            }
         }
 
-        // Okay, now need to continue with the inserting. Start definitely exists now. 
-        if (newChar < start.c) {
-            // I haven't found where I belong yet. 
-            // Less than - have to try at node's "left".
-            start.left = insert(start.left, key, position);
-
-        } else if (newChar > start.c) {
-            // I haven't found where I belong yet either. 
-            // Greater than goes to "right".
-            start.right = insert(start.right, key, position);
-
-        } else {
-            // I've already found home! Move onto next char. 
-            // Equal - insert into middle. 
-            start.middle = insert(start.middle, key, position + 1);
+        if (position == key.length() - 1) {
+            // System.out.println("Key: " + key + "position: " + position);
+            start.exists = true;
+            return start;
         }
+
+        char c = key.charAt(position);
+
+        // Gotta keep on treeing. 
+        start.links.put(c, insert(start.links.get(c), key, position + 1));
+
         return start;
+
+        // char newChar = key.charAt(position);
+
+        // if (start == null) {
+        //     // Should be able to directly insert into this node.
+        //     start = new Node();
+        //     start.c = newChar;
+
+        //     if (position == key.length() - 1) {
+        //         // Last element - exists!
+        //         start.exists = true;
+        //     }
+        // }
+
+        // // Okay, now need to continue with the inserting. Start definitely exists now. 
+        // if (newChar < start.c) {
+        //     // I haven't found where I belong yet. 
+        //     // Less than - have to try at node's "left".
+        //     start.left = insert(start.left, key, position);
+
+        // } else if (newChar > start.c) {
+        //     // I haven't found where I belong yet either. 
+        //     // Greater than goes to "right".
+        //     start.right = insert(start.right, key, position);
+
+        // } else {
+        //     // I've already found home! Move onto next char. 
+        //     // Equal - insert into middle. 
+        //     start.middle = insert(start.middle, key, position + 1);
+        // }
+        // return start;
     }
 }
