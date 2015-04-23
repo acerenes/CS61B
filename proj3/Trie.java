@@ -5,7 +5,7 @@
  * @author 
  */
 
-import java.util.TreeMap; 
+import java.util.HashMap; 
 import java.util.Map;
 
 
@@ -15,9 +15,9 @@ public class Trie {
 
     /* Thx 5 million to the Algs textbooks. */
 
-    private Node root;
+    Node root;
 
-    private static class Node {
+    static class Node {
         // /* Char in this node. */
         // private char c;
         // /* Subtries - left, middle, right. */
@@ -33,8 +33,12 @@ public class Trie {
         private Map<Character, Node> links;
 
         public Node() {
-            links = new TreeMap<Character, Node>();
+            links = new HashMap<Character, Node>();
             exists = false;
+        }
+
+        public char getChar() {
+            return this.c;
         }
 
     }
