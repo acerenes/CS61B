@@ -17,7 +17,7 @@ public class Trie {
 
     Node root;
 
-    static class Node {
+    public static class Node {
         // /* Char in this node. */
         // private char c;
         // /* Subtries - left, middle, right. */
@@ -28,7 +28,7 @@ public class Trie {
 
 
         /* Thanks a million to lecture 33 notes. */
-        private char c;
+        private Character c;
         private boolean exists;
         private Map<Character, Node> links;
 
@@ -37,8 +37,12 @@ public class Trie {
             exists = false;
         }
 
-        public char getChar() {
+        public Character getCharacter() {
             return this.c;
+        }
+
+        public Map<Character, Node> getLinks() {
+            return this.links;
         }
 
     }
@@ -166,5 +170,74 @@ public class Trie {
         //     start.middle = insert(start.middle, key, position + 1);
         // }
         // return start;
+    }
+
+
+    /* For AlphabetSort. */
+    static void preOrder(Node start, String alphabet, String soFar) {
+        // If your char is not null, add your char to the string. 
+
+        System.out.println("In preOrder");
+
+        if (start == null) {
+            return;
+        }
+
+        System.out.println("checked node not null");
+
+        if (start.getCharacter() != null) {
+            soFar = soFar + start.c;
+            //System.out.println("soFar: " + soFar);
+        }
+
+        // If you're "blue", just return the string then.
+        
+        if (start.exists) {
+            System.out.println(soFar);
+        } 
+
+        // Then gotta do for other letters too. grab the first char in the alphabet that you have a child link for. 
+        // And grab that node, and keep...going. I guess. WHAT AM I DOING. 
+        String canChopThisAlphabet = alphabet.substring(0); // Full copy.
+        while (canChopThisAlphabet != null) {
+
+            Character firstChild = firstChild(start, canChopThisAlphabet);
+            System.out.println("First child is " + firstChild);
+            // canChopThisAlphabet will be chopped after this point too.
+            System.out.println("chopped alphabet is " + canChopThisAlphabet);
+            if (firstChild == null) {
+                return;
+            }
+            preOrder(start.getLinks().get(firstChild), alphabet, soFar);
+
+        } 
+
+    }
+
+    private static Character firstChild(Node n, String alphabet) {
+        // Should chop off the alphabet while doing it.
+
+        // Char in case no child - return null.
+
+        if (n == null || n.links.isEmpty()) {
+            return null;
+        }
+
+        Map<Character, Node> children = n.getLinks();
+
+        for (int i = 0; i < alphabet.length(); i = i + 1) {
+            char checkChar = alphabet.charAt(i);
+            System.out.println("In first child - checking char " + checkChar);
+            System.out.println("In first child - node's links keys are " + n.links.keySet());
+            if (children.containsKey(checkChar)) {
+
+                alphabet = alphabet.substring(i + 1); // Want to chop off current one as well. 
+                System.out.println("In first child - chopped alphabet is " + alphabet);
+                return checkChar;
+            }
+        }
+
+        return null;
+
     }
 }
