@@ -133,10 +133,14 @@ public class Trie {
             return start;
         }
 
-        char c = key.charAt(position);
+         
+
+        char ch = key.charAt(position);
+
+        start.c = ch;
 
         // Gotta keep on treeing. 
-        start.links.put(c, insert(start.links.get(c), key, position + 1));
+        start.links.put(ch, insert(start.links.get(ch), key, position + 1));
 
         return start;
 
@@ -177,45 +181,73 @@ public class Trie {
     static void preOrder(Node start, String alphabet, String soFar) {
         // If your char is not null, add your char to the string. 
 
-        System.out.println("In preOrder");
+        //System.out.println("In preOrder");
 
         if (start == null) {
             return;
         }
 
-        System.out.println("checked node not null");
+        //System.out.println("checked node not null");
 
-        if (start.getCharacter() != null) {
-            soFar = soFar + start.c;
-            //System.out.println("soFar: " + soFar);
-        }
+        //System.out.println("This node's char is " + start.getCharacter());
+
+        /*String soFarAdded = null; // Intialize. 
+        boolean addedChar = false;*/
 
         // If you're "blue", just return the string then.
-        
         if (start.exists) {
             System.out.println(soFar);
         } 
 
         // Then gotta do for other letters too. grab the first char in the alphabet that you have a child link for. 
         // And grab that node, and keep...going. I guess. WHAT AM I DOING. 
-        String canChopThisAlphabet = alphabet.substring(0); // Full copy.
-        while (canChopThisAlphabet != null) {
+        StringBuilder canChopThisAlphabet = new StringBuilder(alphabet.substring(0)); // Full copy.
+
+        while (canChopThisAlphabet.toString() != null) {
 
             Character firstChild = firstChild(start, canChopThisAlphabet);
-            System.out.println("First child is " + firstChild);
+            //System.out.println("First child is " + firstChild);
             // canChopThisAlphabet will be chopped after this point too.
-            System.out.println("chopped alphabet is " + canChopThisAlphabet);
+            //System.out.println("chopped alphabet is " + canChopThisAlphabet);
             if (firstChild == null) {
+                //System.out.println("RETURNING FROM THE WHILE LOOP");
+
+                //System.out.println(soFar);
                 return;
             }
-            preOrder(start.getLinks().get(firstChild), alphabet, soFar);
+
+            //System.out.println("Before preOrder call again: child of the char is " + start.getLinks().get(firstChild).getCharacter());
+
+            /*if (addedChar) {
+                // Because you added a char to your string, you want to KEEP THE PROGRESS. 
+                preOrder(start.getLinks().get(firstChild), alphabet, soFarAdded);
+
+            } else {
+                preOrder(start.getLinks().get(firstChild), alphabet, soFar);
+                // You didn't add anything, so...just...keep going with that lack of progress...I guess...
+            }*/
+
+            if (start.getCharacter() != null) {
+                //System.out.println("get character not null");
+                //System.out.println("start.c is " + start.c);
+                preOrder(start.getLinks().get(firstChild), alphabet, soFar + firstChild);
+                // Tbh, don't know why this works and not adding start.c.
+                    // Matt's thoughts: maybe, somehow, start is being reassigned to the last thing seen. the last word seen. And in the test.in, sequentially speaking, death was the last thing seen, so that's why there was all those d's? 
+                    // Just like, weird recursion things were going on. O____O. 
+                // So instead of adding the char when actually at that node, add it preemptively. You know you're about to go down it, so just add it.
+                // EVERYTHING IS WEIRD I DUNNO WHY IT WAS BEING WEIRD.  
+            } else {
+                //System.out.println("Get character was null");
+                preOrder(start.getLinks().get(firstChild), alphabet, soFar);
+            }
 
         } 
 
     }
 
-    private static Character firstChild(Node n, String alphabet) {
-        // Should chop off the alphabet while doing it.
+    /* Should chop off the alphabet while doing it. */
+    private static Character firstChild(Node n, StringBuilder alphabetBuilder) {
+        
 
         // Char in case no child - return null.
 
@@ -223,16 +255,28 @@ public class Trie {
             return null;
         }
 
+        String alphabet = alphabetBuilder.toString();
+
         Map<Character, Node> children = n.getLinks();
 
         for (int i = 0; i < alphabet.length(); i = i + 1) {
             char checkChar = alphabet.charAt(i);
-            System.out.println("In first child - checking char " + checkChar);
-            System.out.println("In first child - node's links keys are " + n.links.keySet());
+            //System.out.println("In first child - checking char " + checkChar);
+            //System.out.println("In first child - node's links keys are " + n.links.keySet());
             if (children.containsKey(checkChar)) {
 
-                alphabet = alphabet.substring(i + 1); // Want to chop off current one as well. 
-                System.out.println("In first child - chopped alphabet is " + alphabet);
+                alphabet = alphabet.substring(i + 1); // Want to chop off current one as well. ]
+
+                // STRING ARE IMMUTABLE. 
+                // SO IT'S NOT CHANGING THE THING PASSED IN. ONLY CHANGING LOCALLY. 
+
+                // Maybe try a StringBuilder? And directly mutate it in here. 
+
+                // alphabetBuilder = new StringBuilder(alphabet);
+                alphabetBuilder.replace(0, alphabetBuilder.length() + 1, alphabet);
+                //System.out.println("In first child - chopped alphabet is " + alphabet);
+                //System.out.println("Alphabet chopped: " + alphabet);
+                //System.out.println("return first child = " + checkChar);
                 return checkChar;
             }
         }
