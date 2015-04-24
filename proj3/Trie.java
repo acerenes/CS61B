@@ -17,40 +17,21 @@ public class Trie {
 
     Node root;
 
-    public static class Node {
-        // /* Char in this node. */
-        // private char c;
-        // /* Subtries - left, middle, right. */
-        // private Node left;
-        // private Node middle;
-        // private Node right;
-        // private boolean exists;
-
-
-        /* Thanks a million to lecture 33 notes. */
-        private Character c;
-        private boolean exists;
-        private Map<Character, Node> links;
-
-        public Node() {
-            links = new HashMap<Character, Node>();
-            exists = false;
-        }
-
-        public Character getCharacter() {
-            return this.c;
-        }
-
-        public Map<Character, Node> getLinks() {
-            return this.links;
-        }
-
+    public Trie() {
+        this.root = new Node();
+        // System.out.println("I CREATED A NEW TRIE");
+        // System.out.println("this.root is null: " + (this.root == null));
     }
 
 
     public boolean find(String s, boolean isFullWord) {
 
-        Node endNode = findNode(s, this.root, 0);
+        //Node endNode = findNode(s, this.root, 0);
+        // Wait. Should prbly call on child. To avoid the null pointer thing. 
+        char firstLetter = s.charAt(0);
+        // System.out.println("searching on firstLetter " + firstLetter);
+        Node child = this.root.links.get(firstLetter);
+        Node endNode = findNode(s, child, 0);
 
         // Or I could do a thing that's like, return the final node, and see if exists or not.
 
@@ -60,32 +41,53 @@ public class Trie {
             return false;
         }
 
+        char lastLetter = s.charAt(s.length() - 1);
+
         if (isFullWord) {
-            return endNode.exists;
+            return endNode.exists && (endNode.c == lastLetter);
         } else {
             // It would only be false if it was null - but already null check - so it has to be true if it's made it this far. 
-            return true;
+            // Check the last letter tho. 
+            // DON'T FORGET TO CHECK LAST LETTER. 
+            return endNode.c == lastLetter;
         }
     }
 
 
     private Node findNode(String s, Node start, int position) {
 
+        // System.out.println("CALLING COMPLICATED FINDNODE");
+        // System.out.println("position is " + position);
+        // System.out.println("root node's character is " + this.root.c);
+
         if (s == null || start == null) {
+            // System.out.println("In null case");
+            // System.out.println("String is " + s);
+            // System.out.println("start node is null: " + (start == null));
+            
+            //System.out.println("Start's character is " + start.c);
             return null;
         }
 
         if (position >= s.length()) {
+            //System.out.println("Overshot");
             // Overshot it. 
             return null;
         }
 
         if (position == s.length() - 1) {
             // On the last thing; return self. 
+            //System.out.println("Just return last node");
+            //System.out.println(start.c);
             return start;
         }
 
-        char newChar = s.charAt(position);
+        if (start.c == null || start.c != s.charAt(position)) {
+            //System.out.println("Line 80. Something's wrong.");
+            return null; // You've already gone wrong. 
+        }
+
+        char newChar = s.charAt(position + 1);
         // System.out.println(newChar);
         // char currChar = start.c;
 
@@ -113,36 +115,61 @@ public class Trie {
             throw new IllegalArgumentException("Cannot add null or empty string to trie.");
         }
 
-        this.root = insert(this.root, s, 0);
+        //System.out.println("103, is root null? " + (this.root == null));
+        Node child = this.root.links.get(s.charAt(0));
+        //child = insert(child, s, 0);
+
+        this.root.links.put(s.charAt(0), insert(child, s, 0));
+        //this.root.links.put(s.charAt(0), insert(this.root.links.get(s.charAt(0)), s, 0)); // Just initialize, before doing stuff. 
+        //this.root.links.get(s.charAt(0)) = insert(this.root.links.get(s.charAt(0), s, 0));
+
+        //this.root = insert(this.root, s, 0);
+
+        //this.root = insert(this.root, s, -1);
 
     }
 
-    private Node insert(Node start, String key, int position) {
+     private Node insert(Node start, String key, int position) {
 
         if (position >= key.length()) {
+            //System.out.println("HIT NULL");
             return null; 
         }
 
         if (start == null) {
             start = new Node();
+            char ch = key.charAt(position);
+
+            start.c = ch;
+            //System.out.println("Node's c: " + start.c);
+        }
+
+        // NEED TO CREATE CHILLLLLDDDDDD. 
+        // So you pass in parent, key, and position of the character the CHILD needs to have. 
+
+        
+
+        if (position < key.length() - 1) {
+            char nextChar = key.charAt(position + 1);
+
+            // Gotta keep on treeing. 
+            Node child = start.links.get(nextChar);
+            //child = insert(child, key, position + 1);
+
+            start.links.put(nextChar, insert(child, key, position + 1));
+
+            //start.links.put(nextChar, insert(start.links.get(nextChar), key, position + 1));
         }
 
         if (position == key.length() - 1) {
             // System.out.println("Key: " + key + "position: " + position);
             start.exists = true;
-            return start;
         }
 
-         
-
-        char ch = key.charAt(position);
-
-        start.c = ch;
-
-        // Gotta keep on treeing. 
-        start.links.put(ch, insert(start.links.get(ch), key, position + 1));
+        //System.out.println("Line 150, is this.root null? " + (this.root == null));
 
         return start;
+
 
         // char newChar = key.charAt(position);
 
@@ -174,114 +201,7 @@ public class Trie {
         //     start.middle = insert(start.middle, key, position + 1);
         // }
         // return start;
-    }
+    } 
+} 
 
 
-    /* For AlphabetSort. */
-    static void preOrder(Node start, String alphabet, String soFar) {
-        // If your char is not null, add your char to the string. 
-
-        //System.out.println("In preOrder");
-
-        if (start == null) {
-            return;
-        }
-
-        //System.out.println("checked node not null");
-
-        //System.out.println("This node's char is " + start.getCharacter());
-
-        /*String soFarAdded = null; // Intialize. 
-        boolean addedChar = false;*/
-
-        // If you're "blue", just return the string then.
-        if (start.exists) {
-            System.out.println(soFar);
-        } 
-
-        // Then gotta do for other letters too. grab the first char in the alphabet that you have a child link for. 
-        // And grab that node, and keep...going. I guess. WHAT AM I DOING. 
-        StringBuilder canChopThisAlphabet = new StringBuilder(alphabet.substring(0)); // Full copy.
-
-        while (canChopThisAlphabet.toString() != null) {
-
-            Character firstChild = firstChild(start, canChopThisAlphabet);
-            //System.out.println("First child is " + firstChild);
-            // canChopThisAlphabet will be chopped after this point too.
-            //System.out.println("chopped alphabet is " + canChopThisAlphabet);
-            if (firstChild == null) {
-                //System.out.println("RETURNING FROM THE WHILE LOOP");
-
-                //System.out.println(soFar);
-                return;
-            }
-
-            //System.out.println("Before preOrder call again: child of the char is " + start.getLinks().get(firstChild).getCharacter());
-
-            /*if (addedChar) {
-                // Because you added a char to your string, you want to KEEP THE PROGRESS. 
-                preOrder(start.getLinks().get(firstChild), alphabet, soFarAdded);
-
-            } else {
-                preOrder(start.getLinks().get(firstChild), alphabet, soFar);
-                // You didn't add anything, so...just...keep going with that lack of progress...I guess...
-            }*/
-
-            if (start.getCharacter() != null) {
-                //System.out.println("get character not null");
-                //System.out.println("start.c is " + start.c);
-                preOrder(start.getLinks().get(firstChild), alphabet, soFar + firstChild);
-                // Tbh, don't know why this works and not adding start.c.
-                    // Matt's thoughts: maybe, somehow, start is being reassigned to the last thing seen. the last word seen. And in the test.in, sequentially speaking, death was the last thing seen, so that's why there was all those d's? 
-                    // Just like, weird recursion things were going on. O____O. 
-                // So instead of adding the char when actually at that node, add it preemptively. You know you're about to go down it, so just add it.
-                // EVERYTHING IS WEIRD I DUNNO WHY IT WAS BEING WEIRD.  
-            } else {
-                //System.out.println("Get character was null");
-                preOrder(start.getLinks().get(firstChild), alphabet, soFar);
-            }
-
-        } 
-
-    }
-
-    /* Should chop off the alphabet while doing it. */
-    private static Character firstChild(Node n, StringBuilder alphabetBuilder) {
-        
-
-        // Char in case no child - return null.
-
-        if (n == null || n.links.isEmpty()) {
-            return null;
-        }
-
-        String alphabet = alphabetBuilder.toString();
-
-        Map<Character, Node> children = n.getLinks();
-
-        for (int i = 0; i < alphabet.length(); i = i + 1) {
-            char checkChar = alphabet.charAt(i);
-            //System.out.println("In first child - checking char " + checkChar);
-            //System.out.println("In first child - node's links keys are " + n.links.keySet());
-            if (children.containsKey(checkChar)) {
-
-                alphabet = alphabet.substring(i + 1); // Want to chop off current one as well. ]
-
-                // STRING ARE IMMUTABLE. 
-                // SO IT'S NOT CHANGING THE THING PASSED IN. ONLY CHANGING LOCALLY. 
-
-                // Maybe try a StringBuilder? And directly mutate it in here. 
-
-                // alphabetBuilder = new StringBuilder(alphabet);
-                alphabetBuilder.replace(0, alphabetBuilder.length() + 1, alphabet);
-                //System.out.println("In first child - chopped alphabet is " + alphabet);
-                //System.out.println("Alphabet chopped: " + alphabet);
-                //System.out.println("return first child = " + checkChar);
-                return checkChar;
-            }
-        }
-
-        return null;
-
-    }
-}
