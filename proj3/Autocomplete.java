@@ -1,6 +1,10 @@
 /**
  * Implements autocomplete on prefixes for a given dictionary of terms and weights.
  */
+
+import java.util.LinkedList;
+
+
 public class Autocomplete {
     /**
      * Initializes required data structures from parallel arrays.
