@@ -16,6 +16,8 @@ public class Autocomplete {
      * @return
      */
     public double weightOf(String term) {
+        // ALL SNUBBING
+        return 0;
     }
 
     /**
@@ -24,6 +26,8 @@ public class Autocomplete {
      * @return Best (highest weight) matching string in the dictionary.
      */
     public String topMatch(String prefix) {
+        // SNUBBING
+        return "drool";
     }
 
     /**
@@ -34,6 +38,8 @@ public class Autocomplete {
      * @return
      */
     public Iterable<String> topMatches(String prefix, int k) {
+        // SNUBBING
+        return null;
     }
 
     /**
