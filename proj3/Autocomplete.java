@@ -12,6 +12,10 @@ public class Autocomplete {
      * @param weights Array of weights.
      */
     public Autocomplete(String[] terms, double[] weights) {
+
+        // So, like, using a TST? 
+        // And a PQ?
+        // And a list or smth???? 
     }
 
     /**
