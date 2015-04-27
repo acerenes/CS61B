@@ -142,14 +142,17 @@ public class TST {
             //System.out.println("Line 103");
             start.left = put(start.left, startParent, key, newWeight, keyPosition);
             start.left.parent = startParent;
+            start.left.maxSubWeight = subMaxWeight(start.left);
         } else if (currKeyChar > start.c) {
             //System.out.println("Line 106");
             start.right = put(start.right, startParent, key, newWeight, keyPosition);
             start.right.parent = startParent;
+            start.right.maxSubWeight = subMaxWeight(start.right);
         } else if (keyPosition < key.length() - 1) {
             //System.out.println("LIne 109");
             start.middle = put(start.middle, start, key, newWeight, keyPosition + 1);
             start.middle.parent = start;
+            start.middle.maxSubWeight = subMaxWeight(start.middle);
         } else {
             // System.out.println("Line 112");
             //System.out.println("Line 113 Start is null: " + (start == null));

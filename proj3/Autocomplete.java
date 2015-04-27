@@ -82,7 +82,7 @@ public class Autocomplete {
      */
     public String topMatch(String prefix) {
         
-        ACNode prefixNode = findNode(allWords.root, prefix, 0);
+        ACNode prefixNode = this.allWords.findNode(allWords.root, prefix, 0);
 
         // If no matching term:
         if (prefixNode == null) {
@@ -92,11 +92,55 @@ public class Autocomplete {
         // Else, you found the node, so you can descend.
         ACNode prefixChild = prefixNode.middle;
 
-        // SHOULD DO LIKE A TRAVERSAL THING NOW????
+        // i HOPE THIS IS RIGHT I'M JUST GOING OFF THE DRAWING AT THIS POINT. 
+        ACNode endHighestNode = highestNode(prefixChild);
+
+        if (endHighestNode == null) {
+            // No matching term, I believe. 
+            return null;
+        }
+        // Else, gonna have to do a walking back up the trie...
+        return walkBackUp(endHighestNode, "");
+
 
     }
 
-    public void modifiedTraversal(ACNode start, String soFar, int numMatches) {
+    public String walkBackUp(ACNode start, String soFar) {
+        if (start == null) {
+            // I'm going to assume you're never going to call this on a null starting node, cause that's just too hard. 
+            // So I'm going to assume this is, you got all the way up, to no more parent. 
+            return soFar;
+        }
+        return walkBackUp(start.parent, start.c + soFar);
+    }
+
+    public ACNode highestNode(ACNode start) {
+
+        if (start == null) {
+            return null;
+        }
+
+        Double lookForThisWeight = start.maxSubWeight;
+        //System.out.println("start.maxsubweight is null: " + (start.maxSubWeight == null));
+
+        //System.out.println("start.ownWeight is null: " + (start.ownWeight == null));
+
+        if (start.ownWeight != null && start.ownWeight.equals(lookForThisWeight)) {
+            return start;
+        }
+
+        // Otherwise, it's gotta be in its left, middle, or right. 
+        if ((start.left != null) && start.left.maxSubWeight.equals(lookForThisWeight)) {
+            return highestNode(start.left);
+        }
+        if ((start.right != null) && start.right.maxSubWeight.equals(lookForThisWeight)) {
+            return highestNode(start.right);
+        }
+        return highestNode(start.middle);
+    }
+
+    /*public void modifiedTraversal(ACNode start, int numMatches) {
+
         // Okay maybe how I'll do it, is stop when the topResults hits a certain length. So for top Match, go till it's length 1?
 
         if (this.topResults.size() >= numMatches) {
@@ -109,7 +153,11 @@ public class Autocomplete {
         // And then traverse them based in order of the priority queue???? SO YOU CAN SAVE 1 STRING AT A TIME IN THE TRAVERSAL???? yeah???/
             // The problem is that once they're in the PQ, I don't know if I have to tack on start's character.
 
-    }
+        // Write a method that returns the highest node in the subtrie????
+
+    }*/
+
+
 
     /**
      * Returns the top k matching terms (in descending order of weight) as an iterable.
@@ -307,14 +355,17 @@ public class Autocomplete {
                 //System.out.println("Line 103");
                 start.left = put(start.left, startParent, key, newWeight, keyPosition);
                 start.left.parent = startParent;
+                start.left.maxSubWeight = subMaxWeight(start.left);
             } else if (currKeyChar > start.c) {
                 //System.out.println("Line 106");
                 start.right = put(start.right, startParent, key, newWeight, keyPosition);
                 start.right.parent = startParent;
+                start.right.maxSubWeight = subMaxWeight(start.right);
             } else if (keyPosition < key.length() - 1) {
                 //System.out.println("LIne 109");
                 start.middle = put(start.middle, start, key, newWeight, keyPosition + 1);
                 start.middle.parent = start;
+                start.middle.maxSubWeight = subMaxWeight(start.middle);
             } else {
                 // System.out.println("Line 112");
                 //System.out.println("Line 113 Start is null: " + (start == null));
