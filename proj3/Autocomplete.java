@@ -60,14 +60,20 @@ public class Autocomplete {
         }
     }
 
+
+
+
     /**
      * Find the weight of a given term. If it is not in the dictionary, return 0.0
      * @param term
      * @return
      */
     public double weightOf(String term) {
-        // ALL SNUBBING
-        return 0;
+        if (this.allWords.getOwnWeight(term) == null) {
+            // The term doesn't exist.
+            return 0.0;
+        }
+        return this.allWords.getOwnWeight(term);
     }
 
     /**
@@ -179,46 +185,6 @@ public class Autocomplete {
             }
             return x.ownWeight;
         }
-
-        /*public ACNode findNode(ACNode start, String key, int startPosition, int endPosition) {
-            if (key == null) {
-                throw new NullPointerException("In findNode, tried to get a null key.");
-            }
-            if (key.length() == 0) {
-                throw new IllegalArgumentException("In findNode, tried to get a key with length 0.");
-            }
-            if (keyPosition >= key.length()) {
-                // Overshot it - it doesn't exist.
-                return null; 
-            }
-            if (start == null) {
-                return null;
-            }
-
-
-            Character currKeyChar = key.charAt(keyPosition);
-            if (start.c != null) {
-                
-                if (startPosition == endPosition) {
-                    return start;
-                }
-                if (currKeyChar < start.c) {
-                    // Obstacle, turn left, you haven't found the char at this position yet, so keep it there. 
-                    return findNode(start.left, key, startPosition, endPosition);
-                }
-                if (currKeyChar > start.c) {
-                    return findNode(start.right, key, startPosition, endPosition);
-                }
-                if (keyPosition < key.length() - 1) {
-                    // You still have to move on; aren't looking for the end of the word yet. 
-                    // But in good news, you found the correct character! So you can move on to the next character!
-                    return findNode(start.middle, key, startPosition + 1, endPosition);
-                }
-            }
-            // Okay, you've found the last character. Return the node you're currently on.
-            return start;
-        }*/
-
 
 
         public ACNode get(ACNode start, String key, int keyPosition) {

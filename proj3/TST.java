@@ -60,7 +60,7 @@ public class TST {
 
         Character currKeyChar = key.charAt(keyPosition);
         if (start.c != null) {
-            
+
             if (startPosition == endPosition) {
                 return start;
             }
