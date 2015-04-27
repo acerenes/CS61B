@@ -56,7 +56,9 @@ public class Autocomplete {
     public class NodeComparator implements Comparator<ACNode> {
 
         public int compare(ACNode node1, ACNode node2) {
-            return (int) (node1.maxSubWeight - node2.maxSubWeight);
+            // Priority Queues implement by least first tho.
+            // Switching it around so I can do most first. 
+            return (int) (node2.maxSubWeight - node1.maxSubWeight);
         }
     }
 
@@ -80,7 +82,33 @@ public class Autocomplete {
      */
     public String topMatch(String prefix) {
         
-        ACNode LIDSUHGLIDUHGLIDSUHGLDISU I WAS HEEERREEE I NEED A FINDNODE FUNCTION
+        ACNode prefixNode = findNode(allWords.root, prefix, 0);
+
+        // If no matching term:
+        if (prefixNode == null) {
+            return null;
+        }
+
+        // Else, you found the node, so you can descend.
+        ACNode prefixChild = prefixNode.middle;
+
+        // SHOULD DO LIKE A TRAVERSAL THING NOW????
+
+    }
+
+    public void modifiedTraversal(ACNode start, String soFar, int numMatches) {
+        // Okay maybe how I'll do it, is stop when the topResults hits a certain length. So for top Match, go till it's length 1?
+
+        if (this.topResults.size() >= numMatches) {
+            return;
+        }
+        // So ya either take the start node's character, OR YOU DON'T. 
+
+        // Okay. You have this start point. You have to take its left, right, and its middle. 
+        // Put them in the priority queue. 
+        // And then traverse them based in order of the priority queue???? SO YOU CAN SAVE 1 STRING AT A TIME IN THE TRAVERSAL???? yeah???/
+            // The problem is that once they're in the PQ, I don't know if I have to tack on start's character.
+
     }
 
     /**

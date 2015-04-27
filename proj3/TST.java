@@ -16,11 +16,14 @@ public class TST {
         ACNode right;
         ACNode middle;
 
+        ACNode parent;
+
         
     }
 
     public TST() {
         this.root = new ACNode();
+        this.root.parent = null;
     }
 
 
@@ -120,12 +123,13 @@ public class TST {
             // According to the spec, throw an IllegalArgumentException if there are duplicate input terms.
             throw new IllegalArgumentException("Duplicate input terms.");
         }
-        this.root = put(this.root, key, ownWeight, 0);
+        this.root = put(this.root, this.root.parent, key, ownWeight, 0);
 
         // Okay I did a thing in put that hopefully does the max sub trie thing. Hopefully. 
     }
 
-    public ACNode put(ACNode start, String key, Double newWeight, int keyPosition) {
+    public ACNode put(ACNode start, ACNode startParent, String key, Double newWeight, int keyPosition) {
+        // Parent is start's parent.
         //System.out.println("Inserting " + key);
         Character currKeyChar = key.charAt(keyPosition);
         if (start == null || start.c == null) {
@@ -136,13 +140,16 @@ public class TST {
 
         if (currKeyChar < start.c) {
             //System.out.println("Line 103");
-            start.left = put(start.left, key, newWeight, keyPosition);
+            start.left = put(start.left, startParent, key, newWeight, keyPosition);
+            start.left.parent = startParent;
         } else if (currKeyChar > start.c) {
             //System.out.println("Line 106");
-            start.right = put(start.right, key, newWeight, keyPosition);
+            start.right = put(start.right, startParent, key, newWeight, keyPosition);
+            start.right.parent = startParent;
         } else if (keyPosition < key.length() - 1) {
             //System.out.println("LIne 109");
-            start.middle = put(start.middle, key, newWeight, keyPosition + 1);
+            start.middle = put(start.middle, start, key, newWeight, keyPosition + 1);
+            start.middle.parent = start;
         } else {
             // System.out.println("Line 112");
             //System.out.println("Line 113 Start is null: " + (start == null));
@@ -150,6 +157,7 @@ public class TST {
             //System.out.println("line 115 start is null: " + (start == null));
             // DO SOMETHING ABOUT MAX SUB WEIGHT HERE. 
             start.maxSubWeight = subMaxWeight(start);
+            start.parent = startParent;
 
         }
         return start;

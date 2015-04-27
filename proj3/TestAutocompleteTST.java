@@ -61,6 +61,20 @@ public class TestAutocompleteTST {
         assertEquals(t3.findNode(t3.root, "spite", 0).ownWeight, 20, 0);
     }
 
+    @Test
+    public void testParent() {
+        TST t4 = new TST();
+        t4.put("smog", (double) 5);
+        t4.put("buck", (double) 10);
+        t4.put("sad", (double) 12);
+        t4.put("spite", (double) 20);
+        t4.put("spit", (double) 15);
+
+        assertTrue(t4.root.middle.middle.parent.c.equals("m".charAt(0)));
+        assertTrue(t4.root.middle.right.parent.c.equals("s".charAt(0)));
+        assertNull(t4.root.left.parent);
+    }
+
 
 
 
