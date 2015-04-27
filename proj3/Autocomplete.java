@@ -60,9 +60,6 @@ public class Autocomplete {
         }
     }
 
-
-
-
     /**
      * Find the weight of a given term. If it is not in the dictionary, return 0.0
      * @param term
@@ -82,8 +79,8 @@ public class Autocomplete {
      * @return Best (highest weight) matching string in the dictionary.
      */
     public String topMatch(String prefix) {
-        // SNUBBING
-        return "drool";
+        
+        ACNode LIDSUHGLIDUHGLIDSUHGLDISU I WAS HEEERREEE I NEED A FINDNODE FUNCTION
     }
 
     /**
@@ -184,6 +181,41 @@ public class Autocomplete {
                 return null;
             }
             return x.ownWeight;
+        }
+
+        public ACNode findNode(ACNode start, String key, int currPosition) {
+            if (key == null) {
+                throw new NullPointerException("In findNode, tried to get a null key.");
+            }
+            if (key.length() == 0) {
+                throw new IllegalArgumentException("In findNode, tried to get a key with length 0.");
+            }
+            if (currPosition >= key.length() || (start == null)) {
+                // Overshot it - it doesn't exist.
+                return null;
+            }
+
+            if (currPosition == key.length() - 1) {
+                // This is the node. 
+                if (start.c != null) {
+                    return start;
+                }
+                // Gotta make sure the last character is right though.
+                return null;
+            }
+            
+            Character currKeyChar = key.charAt(currPosition);
+
+            if (currKeyChar < start.c) {
+                return findNode(start.left, key, currPosition);
+            }
+            if (currKeyChar > start.c) {
+                return findNode(start.right, key, currPosition);
+            }
+            if (currPosition < key.length() - 1) {
+                return findNode(start.middle, key, currPosition + 1);
+            }
+            return null; // I guess, to make Java compiler happy. 
         }
 
 

@@ -42,44 +42,40 @@ public class TST {
         return x.ownWeight;
     }
 
-    /*public ACNode findNode(ACNode start, String key, int startPosition, int endPosition) {
+    public ACNode findNode(ACNode start, String key, int currPosition) {
         if (key == null) {
             throw new NullPointerException("In findNode, tried to get a null key.");
         }
         if (key.length() == 0) {
             throw new IllegalArgumentException("In findNode, tried to get a key with length 0.");
         }
-        if (keyPosition >= key.length()) {
+        if (currPosition >= key.length() || (start == null)) {
             // Overshot it - it doesn't exist.
-            return null; 
-        }
-        if (start == null) {
             return null;
         }
 
-
-        Character currKeyChar = key.charAt(keyPosition);
-        if (start.c != null) {
-
-            if (startPosition == endPosition) {
+        if (currPosition == key.length() - 1) {
+            // This is the node. 
+            if (start.c != null) {
                 return start;
             }
-            if (currKeyChar < start.c) {
-                // Obstacle, turn left, you haven't found the char at this position yet, so keep it there. 
-                return findNode(start.left, key, startPosition, endPosition);
-            }
-            if (currKeyChar > start.c) {
-                return findNode(start.right, key, startPosition, endPosition);
-            }
-            if (keyPosition < key.length() - 1) {
-                // You still have to move on; aren't looking for the end of the word yet. 
-                // But in good news, you found the correct character! So you can move on to the next character!
-                return findNode(start.middle, key, startPosition + 1, endPosition);
-            }
+            // Gotta make sure the last character is right though.
+            return null;
         }
-        // Okay, you've found the last character. Return the node you're currently on.
-        return start;
-    }*/
+        
+        Character currKeyChar = key.charAt(currPosition);
+
+        if (currKeyChar < start.c) {
+            return findNode(start.left, key, currPosition);
+        }
+        if (currKeyChar > start.c) {
+            return findNode(start.right, key, currPosition);
+        }
+        if (currPosition < key.length() - 1) {
+            return findNode(start.middle, key, currPosition + 1);
+        }
+        return null; // I guess, to make Java compiler happy. 
+    }
 
 
 

@@ -49,6 +49,18 @@ public class TestAutocompleteTST {
         assertEquals(t2.subMaxWeight(t2.root.middle.right.middle.middle), 20, 0);
     }
 
+    @Test
+    public void testFindNode() {
+        TST t3 = new TST();
+        t3.put("smog", (double) 5);
+        t3.put("buck", (double) 10);
+        t3.put("sad", (double) 12);
+        t3.put("spite", (double) 20);
+        t3.put("spit", (double) 15);
+
+        assertEquals(t3.findNode(t3.root, "spite", 0).ownWeight, 20, 0);
+    }
+
 
 
 
