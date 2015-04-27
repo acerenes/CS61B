@@ -35,6 +35,7 @@ public class TestAutocompleteTST {
         t2.put("spy", (double) 7);
 
         assertTrue(t2.contains("smog"));
+        assertFalse(t2.contains("sbuck"));
         assertFalse(t2.contains("bucc"));
         assertTrue(t2.contains("spy"));
         assertFalse(t2.contains("soy"));
