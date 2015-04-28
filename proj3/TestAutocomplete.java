@@ -120,6 +120,11 @@ public class TestAutocomplete {
         assertEquals("comply", theMatches[4]);
     }
 
+    /*@Test
+    public void testMCities() {
+        
+    }*/
+
 
     public static void main(String[] args) {
             jh61b.junit.textui.runClasses(TestAutocomplete.class);

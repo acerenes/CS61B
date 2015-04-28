@@ -438,7 +438,7 @@ public class Autocomplete {
                     return start;
                 }
                 // Gotta make sure the last character is right though.
-                // return null;
+                // return null; Don't want to actually return null, because you can keep checking. Let the rest of the code take care of that. 
             }
             
             Character currKeyChar = key.charAt(currPosition);
