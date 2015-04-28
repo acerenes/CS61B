@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 
 public class TestAutocomplete {
 
-    @Test
+    /*@Test
     public void testStructure() {
         String[] terms = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
         double[] weights = {(double) 5, (double) 10, (double) 12, (double) 20, (double) 15, (double) 7};
@@ -96,6 +96,28 @@ public class TestAutocomplete {
         assertEquals("their", theMatches[2]);
         assertEquals("them", theMatches[3]);
         assertEquals("there", theMatches[4]);
+    }*/
+
+    @Test
+    public void testComp() {
+        String[] terms = new String[] {"come", "comes", "comedy", "comely", "company", "complete", "companion", "completely", "comply"};
+        double[] weights = {873007.0, 153299.0, 11718.2, 5122.6, 133159.0, 78039.8, 60384.9, 52050.3, 44817.7};
+        Autocomplete a = new Autocomplete(terms, weights);
+
+        Iterable<String> checkMatches = a.topMatches("comp", 5);
+        String[] theMatches = new String[5];
+        
+        int i = 0;
+        for (String match : checkMatches) {
+            theMatches[i] = match;
+            i = i + 1;
+        }
+
+        assertEquals("company", theMatches[0]);
+        assertEquals("complete", theMatches[1]);
+        assertEquals("companion", theMatches[2]);
+        assertEquals("completely", theMatches[3]);
+        assertEquals("comply", theMatches[4]);
     }
 
 
