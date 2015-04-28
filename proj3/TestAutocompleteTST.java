@@ -13,6 +13,7 @@ public class TestAutocompleteTST {
         t.put("a", (double) 1);
         t.put("Christmas", (double) 9);
         t.put("tree", (double) 4);
+        t.put("Ii", (double) 5);
         assertTrue(t.contains("Christmas"));
         assertFalse(t.contains("lik"));
         assertTrue(t.contains("I"));
@@ -73,6 +74,19 @@ public class TestAutocompleteTST {
         assertTrue(t4.root.middle.middle.parent.c.equals("m".charAt(0)));
         assertTrue(t4.root.middle.right.parent.c.equals("s".charAt(0)));
         assertNull(t4.root.left.parent);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testDuplicateTerms() {
+        TST t = new TST();
+        t.put("I", (double) 1);
+        t.put("lit", (double) 3);
+        t.put("up", (double) 2);
+        t.put("like", (double) 4);
+        t.put("a", (double) 1);
+        t.put("Christmas", (double) 9);
+        t.put("tree", (double) 4);
+        t.put("I", (double) 7);
     }
 
 
