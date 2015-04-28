@@ -120,10 +120,55 @@ public class TestAutocomplete {
         assertEquals("comply", theMatches[4]);
     }
 
-    /*@Test
+    @Test
     public void testMCities() {
+        String[] terms = new String[] {"Mumbai, India", "Mexico City, Distrito Federal, Mexico", "Aye Yo, CA"};
+        double[] weights = {12691836.0, 12294193.0, 3255944.0};
+        Autocomplete a = new Autocomplete(terms, weights);
+
+        Iterable<String> checkMatches = a.topMatches("M", 7);
+        String[] theMatches = new String[2];
         
-    }*/
+        int i = 0;
+        for (String match : checkMatches) {
+            theMatches[i] = match;
+            i = i + 1;
+        }
+
+        assertEquals(2, theMatches.length);
+        assertEquals("Mumbai, India", theMatches[0]);
+        assertEquals("Mexico City, Distrito Federal, Mexico", theMatches[1]);
+    }
+
+    @Test(expected = IllegalArgumentException.class) 
+    public void testDifferentLength() {
+        String[] terms = new String[] {"Mumbai, India", "Mexico City, Distrito Federal, Mexico", "Aye Yo, CA"};
+        double[] weights = {12691836.0, 12294193.0, 3255944.0, 3871829.9};
+        Autocomplete a = new Autocomplete(terms, weights);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testDuplicateInputs() {
+        String[] terms = new String[] {"Mumbai, India", "Mexico City, Distrito Federal, Mexico", "Aye Yo, CA", "Mumbai, India"};
+        double[] weights = {12691836.0, 12294193.0, 3255944.0, 3871829.9};
+        Autocomplete a = new Autocomplete(terms, weights);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNegativeWeights() {
+        String[] terms = new String[] {"Mumbai, India", "Mexico City, Distrito Federal, Mexico", "Aye Yo, CA"};
+        double[] weights = {12691836.0, 12294193.0, -3255944.0};
+        Autocomplete a = new Autocomplete(terms, weights);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testNonPositiveKTerms() {
+        String[] terms = new String[] {"Mumbai, India", "Mexico City, Distrito Federal, Mexico", "Aye Yo, CA"};
+        double[] weights = {12691836.0, 12294193.0, 3255944.0};
+        Autocomplete a = new Autocomplete(terms, weights);
+
+        Iterable<String> checkMatches = a.topMatches("M", 0);
+    }
 
 
     public static void main(String[] args) {

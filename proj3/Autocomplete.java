@@ -493,10 +493,10 @@ public class Autocomplete {
          
         public void put(String key, Double ownWeight) {
 
-            if (this.contains(key)) {
+            /*if (this.contains(key)) {
                 // According to the spec, throw an IllegalArgumentException if there are duplicate input terms.
                 throw new IllegalArgumentException("Duplicate input terms.");
-            }
+            }*/
             this.root = put(this.root, this.root.parent, key, ownWeight, 0);
 
             // Okay I did a thing in put that hopefully does the max sub trie thing. Hopefully. 
@@ -505,6 +505,14 @@ public class Autocomplete {
         public ACNode put(ACNode start, ACNode startParent, String key, Double newWeight, int keyPosition) {
             //System.out.println("Inserting " + key);
             Character currKeyChar = key.charAt(keyPosition);
+
+            // Maybe I'll just do a check for contains here.
+            if ((keyPosition == key.length() - 1) && (start != null) && (start.c == currKeyChar) && (start.ownWeight != null)) {
+                // THEN IT CONTAINS IT. GET MAD. 
+                throw new IllegalArgumentException("Duplicate input terms.");
+            }
+
+
             if (start == null || start.c == null) {
                 //System.out.println("Line 97");
                 start = new ACNode();
@@ -527,6 +535,8 @@ public class Autocomplete {
                 start.middle.parent = start;
                 start.middle.maxSubWeight = subMaxWeight(start.middle);
             } else {
+                // I believe this is the final node. 
+
                 // System.out.println("Line 112");
                 //System.out.println("Line 113 Start is null: " + (start == null));
                 start.ownWeight = newWeight;
