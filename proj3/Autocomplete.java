@@ -172,7 +172,7 @@ public class Autocomplete {
             // JK I'M BACK. NEED TO MOVE IT ALL THE WAY.
             //int i = this.topResults.size() - 1; 
             while (this.topResults.getLast().ownWeight <= start.ownWeight) {
-                System.out.println("LIne 171 DO I EVER EVEN GO IN HERE");
+                //System.out.println("LIne 171 DO I EVER EVEN GO IN HERE");
                 topResults.removeLast();
             }
             topResults.add(start);
@@ -188,37 +188,37 @@ public class Autocomplete {
 
         if (start.ownWeight != null) {
             // Add yourself to the list, yeah?
-            System.out.println("Line 191 trying to add start to list.");
-            System.out.println("start.ownWeight = " + start.ownWeight);
+            // System.out.println("Line 191 trying to add start to list.");
+            // System.out.println("start.ownWeight = " + start.ownWeight);
             // Maybe I should add yourself in order.
             //System.out.println("LINE 192 SUSPICIOUSSSS");
             int i = this.topResults.size();
 
             if (i == 0) {
-                System.out.println("In i = 0 case");
+                //System.out.println("In i = 0 case");
                 this.topResults.add(start);
             } else if (i == 1) {
-                System.out.println("In i = 1 case");
+                //System.out.println("In i = 1 case");
                 // Check if greater or less than the current thing in there. 
                 if (this.topResults.getLast().ownWeight < start.ownWeight) {
-                    System.out.println("i = 1, start took over new head.");
+                    //System.out.println("i = 1, start took over new head.");
                     // Then start takes over new head. 
                     this.topResults.addFirst(start);
                 } else {
                     // Stick to end.
-                    System.out.println("in i = 1, start stuck into end");
+                    //System.out.println("in i = 1, start stuck into end");
                     this.topResults.addLast(start);
                 }
             } else {
 
                 //System.out.println("Am in in line 208 at all?");
-                System.out.println("Gotta do some actual checking");
+                //System.out.println("Gotta do some actual checking");
 
                 int j = i - 1; // Because 0 indexing.
-                System.out.println("Doing actual checking - j = " + j);
+                //System.out.println("Doing actual checking - j = " + j);
 
                 while (j > 0 && this.topResults.get(j).ownWeight < start.ownWeight) {
-                    System.out.println("Am I in here? Line 220");
+                    //System.out.println("Am I in here? Line 220");
                     j = j - 1;
                 }
 
@@ -319,7 +319,7 @@ public class Autocomplete {
         LinkedList<String> finalResults = new LinkedList<String>();
         for (int i = 0; i < k; i = i + 1) {
             ACNode currNode = this.topResults.get(i);
-            System.out.println(walkBackUp(currNode, "") + " weight" + currNode.ownWeight);
+            //System.out.println(walkBackUp(currNode, "") + " weight" + currNode.ownWeight);
             finalResults.add(walkBackUp(currNode, ""));
         }
         return finalResults;
