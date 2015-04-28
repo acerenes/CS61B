@@ -3,7 +3,7 @@ import static org.junit.Assert.*;
 
 public class TestAutocomplete {
 
-    /*@Test
+    @Test
     public void testStructure() {
         String[] terms = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
         double[] weights = {(double) 5, (double) 10, (double) 12, (double) 20, (double) 15, (double) 7};
@@ -96,7 +96,7 @@ public class TestAutocomplete {
         assertEquals("their", theMatches[2]);
         assertEquals("them", theMatches[3]);
         assertEquals("there", theMatches[4]);
-    }*/
+    }
 
     @Test
     public void testComp() {
