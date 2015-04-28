@@ -63,7 +63,7 @@ public class TST {
                 return start;
             }
             // Gotta make sure the last character is right though.
-            return null;
+            //return null;
         }
         
         Character currKeyChar = key.charAt(currPosition);
