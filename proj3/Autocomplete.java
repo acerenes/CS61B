@@ -7,13 +7,15 @@ import java.util.PriorityQueue;
 import java.util.Comparator;
 import java.lang.IllegalArgumentException;
 import java.util.Arrays;
+import java.util.ArrayList;
 
 
 public class Autocomplete {
 
     TST allWords;
     PriorityQueue<ACNode> checkOut;
-    LinkedList<ACNode> topResults; // Should contain a bunch of nodes. 
+    //LinkedList<ACNode> topResults; // Should contain a bunch of nodes.
+    ArrayList<ACNode> topResults; 
 
     /**
      * Initializes required data structures from parallel arrays.
@@ -36,7 +38,8 @@ public class Autocomplete {
             // I DON'T WANNA WRITE A COMPARATOR. 
         checkOut = new PriorityQueue<ACNode>(1, new NodeComparator()); // Default initial capacity is 11. So. Yeah.
         // And a list or smth???? 
-        topResults = new LinkedList<ACNode>();
+        //topResults = new LinkedList<ACNode>();
+        topResults = new ArrayList<ACNode>();
 
 
         
@@ -103,18 +106,18 @@ public class Autocomplete {
             return null;
         }
         // Else, gonna have to do a walking back up the trie...
-        return walkBackUp(endHighestNode, "");
+        return walkBackUp(endHighestNode, new StringBuilder(""));
 
 
     }
 
-    public String walkBackUp(ACNode start, String soFar) {
+    public String walkBackUp(ACNode start, StringBuilder soFar) {
         if (start == null) {
             // I'm going to assume you're never going to call this on a null starting node, cause that's just too hard. 
             // So I'm going to assume this is, you got all the way up, to no more parent. 
-            return soFar;
+            return soFar.toString();
         }
-        return walkBackUp(start.parent, start.c + soFar);
+        return walkBackUp(start.parent, soFar.insert(0, start.c));
     }
 
     public ACNode highestNode(ACNode start) {
@@ -145,15 +148,6 @@ public class Autocomplete {
 
 
     public void modifiedTraversal(ACNode start, int numMatches) {
-        //System.out.println("Starting modified traversal on " + start);
-        // if (start != null) {
-        //     System.out.println("Starting modified traversal: node weight " + start.ownWeight);
-        // }
-
-        // Okay maybe how I'll do it, is stop when the topResults hits a certain length. So for top Match, go till it's length 1?
-
-        // NO. you gotta do the thing they say in the spec. If the thing in the PQ is less than or equal to the weight of the kth heaviest term in the list. 
-
         if (start == null) {
             return;
         }
@@ -165,71 +159,48 @@ public class Autocomplete {
 
         // Checking that kth heaviest thing. 
         if ((this.topResults.size() == numMatches) && (start.ownWeight != null)) {
-            if (start.ownWeight <= topResults.getLast().ownWeight) {
+            //if (start.ownWeight <= topResults.getLast().ownWeight) {
+            if (start.ownWeight <= topResults.get(topResults.size() - 1).ownWeight) {
                 // Can terminate search!
                 return;
             }
-            // Else, you'd have to replace it... I dunno when you'd do this though, because ... you add to the list in order! So.... I'll just say replace the last one... and change it later if necessary.
-
-            // JK I'M BACK. NEED TO MOVE IT ALL THE WAY.
-            //int i = this.topResults.size() - 1; 
-            while (this.topResults.getLast().ownWeight <= start.ownWeight) {
+            //while (this.topResults.getLast().ownWeight <= start.ownWeight) {
+            while (this.topResults.get(this.topResults.size() -1).ownWeight <= start.ownWeight) {
                 //System.out.println("LIne 171 DO I EVER EVEN GO IN HERE");
-                topResults.removeLast();
+                //topResults.removeLast();
+                topResults.remove(topResults.size() - 1);
             }
             topResults.add(start);
         }
 
-        // OKay my comparator is based on max subweight. 
-        // Stop when 
-        // Okay you take it out, and then put in all its children, and then do it again. 
-        // Stop when The node you're on has its own weight?
-        // Then put the node into the list of topResults. And keep traversing, I guess. 
-
-        // YEAAHHH???
 
         if (start.ownWeight != null) {
-            // Add yourself to the list, yeah?
-            // System.out.println("Line 191 trying to add start to list.");
-            // System.out.println("start.ownWeight = " + start.ownWeight);
-            // Maybe I should add yourself in order.
-            //System.out.println("LINE 192 SUSPICIOUSSSS");
             int i = this.topResults.size();
 
             if (i == 0) {
-                //System.out.println("In i = 0 case");
                 this.topResults.add(start);
             } else if (i == 1) {
-                //System.out.println("In i = 1 case");
-                // Check if greater or less than the current thing in there. 
-                if (this.topResults.getLast().ownWeight < start.ownWeight) {
-                    //System.out.println("i = 1, start took over new head.");
-                    // Then start takes over new head. 
-                    this.topResults.addFirst(start);
+                //if (this.topResults.getLast().ownWeight < start.ownWeight) {
+                if (this.topResults.get(this.topResults.size() - 1).ownWeight < start.ownWeight) {
+                    //this.topResults.addFirst(start);
+                    this.topResults.add(0, start);
                 } else {
-                    // Stick to end.
-                    //System.out.println("in i = 1, start stuck into end");
-                    this.topResults.addLast(start);
+                    //this.topResults.addLast(start);
+                    this.topResults.add(start);
                 }
             } else {
 
-                //System.out.println("Am in in line 208 at all?");
-                //System.out.println("Gotta do some actual checking");
-
                 int j = i - 1; // Because 0 indexing.
-                //System.out.println("Doing actual checking - j = " + j);
 
                 while (j > 0 && this.topResults.get(j).ownWeight < start.ownWeight) {
-                    //System.out.println("Am I in here? Line 220");
                     j = j - 1;
                 }
 
                 if (j == i - 1) {
                     // Never moved the pointer, so stick onto last.
-                    this.topResults.addLast(start);
+                    //this.topResults.addLast(start);
+                    this.topResults.add(start);
                 } else {
-                    // Wait but I think the indexing is off by 1.
-                    // Jk no I think it's good. 
                     this.topResults.add(j, start);
                 }
             }
@@ -244,27 +215,6 @@ public class Autocomplete {
         if (start.middle != null) {
             this.checkOut.add(start.middle);
         }
-
-        // Okay, so have added all children to priority queue.
-        // So check out the first one. 
-
-        // HOLD UP.
-        // IF THE THING YOU'RE CHECKING OUT RIGHT NOW WORKS, wait, does this work? Because you start out calling it on just the direct child... so you're not neceesarily already traversing in order...
-        // Wait I think this should be covered by the testing kth element thing. I believe so. Okay can just carry on then I think. I hope. 
-
-        
-
-        // Then uh....do the thing...on the first thing in the priority queue?
-        // WAIT SHOULD YOU TAKE YOURSELF OUT OF THE PRIORITY QUEUE THO??? 
-        // Yeah. Why not. 
-        // System.out.println("Going to do modifiedTraversal on node " + this.checkOut.poll());
-
-        // if (this.checkOut.poll() != null) {
-        //     System.out.println("Going to do modifiedTraversal on node with weight " + this.checkOut.poll().ownWeight);
-        // }
-        // if (this.checkOut.poll() != null) {
-        //     System.out.println("Calling modified Traversal on node with char " + this.checkOut.poll().c);
-        // }
         modifiedTraversal(this.checkOut.poll(), numMatches);
 
     }
@@ -327,7 +277,7 @@ public class Autocomplete {
         for (int i = 0; i < k && i < resultSize; i = i + 1) {
             ACNode currNode = this.topResults.get(i);
             //System.out.println(walkBackUp(currNode, "") + " weight" + currNode.ownWeight);
-            finalResults.add(walkBackUp(currNode, ""));
+            finalResults.add(walkBackUp(currNode, new StringBuilder("")));
         }
 
         //System.out.println("final results size : " + finalResults.size());
