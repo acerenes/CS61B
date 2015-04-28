@@ -28,7 +28,7 @@ public class Autocomplete {
             // DARN IT THE PQ HAS TO ORDER BY MAX SUB WEIGHT THO. LSDFIUGHDLSIUGHDSLIUGHDSLRIGHSDLRIUGHDSLIRUGHLDIRSGHLDSIGUHDLRIGHDLIGHDLIGHDLSIU
             // Darn it I have to write a comparator.
             // I DON'T WANNA WRITE A COMPARATOR. 
-        checkOut = new PriorityQueue<ACNode>(11, new NodeComparator()); // Default initial capacity is 11. So. Yeah.
+        checkOut = new PriorityQueue<ACNode>(1, new NodeComparator()); // Default initial capacity is 11. So. Yeah.
         // And a list or smth???? 
         topResults = new LinkedList<ACNode>();
 
@@ -499,6 +499,9 @@ public class Autocomplete {
             }*/
             this.root = put(this.root, this.root.parent, key, ownWeight, 0);
 
+            // TRYING NOW
+            this.root.maxSubWeight = subMaxWeight(this.root);
+
             // Okay I did a thing in put that hopefully does the max sub trie thing. Hopefully. 
         }
 
@@ -523,17 +526,17 @@ public class Autocomplete {
                 //System.out.println("Line 103");
                 start.left = put(start.left, startParent, key, newWeight, keyPosition);
                 start.left.parent = startParent;
-                start.left.maxSubWeight = subMaxWeight(start.left);
+                //start.left.maxSubWeight = subMaxWeight(start.left);
             } else if (currKeyChar > start.c) {
                 //System.out.println("Line 106");
                 start.right = put(start.right, startParent, key, newWeight, keyPosition);
                 start.right.parent = startParent;
-                start.right.maxSubWeight = subMaxWeight(start.right);
+                //start.right.maxSubWeight = subMaxWeight(start.right);
             } else if (keyPosition < key.length() - 1) {
                 //System.out.println("LIne 109");
                 start.middle = put(start.middle, start, key, newWeight, keyPosition + 1);
                 start.middle.parent = start;
-                start.middle.maxSubWeight = subMaxWeight(start.middle);
+                //start.middle.maxSubWeight = subMaxWeight(start.middle);
             } else {
                 // I believe this is the final node. 
 
@@ -542,7 +545,7 @@ public class Autocomplete {
                 start.ownWeight = newWeight;
                 //System.out.println("line 115 start is null: " + (start == null));
                 // DO SOMETHING ABOUT MAX SUB WEIGHT HERE. 
-                start.maxSubWeight = subMaxWeight(start);
+                //start.maxSubWeight = subMaxWeight(start);
                 start.parent = startParent;
 
             }
@@ -552,6 +555,10 @@ public class Autocomplete {
 
         // Changing it as I go too.....
         public Double subMaxWeight(ACNode start) {
+
+            // What if I start from bottom
+            // WAIT WHAT IF I SET THE SUBMAX WEIGHT ONLY WHEN I'M DONE WITH THE WORD. 
+
             //System.out.println("Line 126 Start is null: " + (start == null));
             if (start == null) {
                 //System.out.println("Line 128");
@@ -561,11 +568,11 @@ public class Autocomplete {
                 return (double) 0;
 
             } else if (start.left == null && start.right == null && start.middle == null) {
-                //System.out.println("LIne 134");
+                //System.out.println("How often do you just take your own weight; letter = " + start.c);
                 start.maxSubWeight = start.ownWeight;
 
             } else {
-                //System.out.println("Line 138");
+                //System.out.println("How often do you actually have to calculate / compare; letter = " + start.c);
                 Double rightAndLeftMax = Math.max(subMaxWeight(start.left), subMaxWeight(start.right));
 
                 if (start.ownWeight == null) {

@@ -4,6 +4,14 @@ import static org.junit.Assert.*;
 public class TestAutocomplete {
 
     @Test
+    public void testStructureBasic() {
+        String[] terms = new String[] {"smog", "buck", "sad"};
+        double[] weights = {(double) 5, (double) 10, (double) 12};
+        Autocomplete a = new Autocomplete(terms, weights);
+        assertNotNull(a);
+    }
+
+    @Test
     public void testStructure() {
         String[] terms = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
         double[] weights = {(double) 5, (double) 10, (double) 12, (double) 20, (double) 15, (double) 7};
