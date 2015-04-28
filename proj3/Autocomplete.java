@@ -6,13 +6,14 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Comparator;
 import java.lang.IllegalArgumentException;
+import java.util.Arrays;
 
 
 public class Autocomplete {
 
     TST allWords;
-    PriorityQueue checkOut;
-    LinkedList topResults;
+    PriorityQueue<ACNode> checkOut;
+    LinkedList<ACNode> topResults; // Should contain a bunch of nodes. 
 
     /**
      * Initializes required data structures from parallel arrays.
@@ -27,9 +28,9 @@ public class Autocomplete {
             // DARN IT THE PQ HAS TO ORDER BY MAX SUB WEIGHT THO. LSDFIUGHDLSIUGHDSLIUGHDSLRIGHSDLRIUGHDSLIRUGHLDIRSGHLDSIGUHDLRIGHDLIGHDLIGHDLSIU
             // Darn it I have to write a comparator.
             // I DON'T WANNA WRITE A COMPARATOR. 
-        checkOut = new PriorityQueue(11, new NodeComparator()); // Default initial capacity is 11. So. Yeah.
+        checkOut = new PriorityQueue<ACNode>(11, new NodeComparator()); // Default initial capacity is 11. So. Yeah.
         // And a list or smth???? 
-        topResults = new LinkedList();
+        topResults = new LinkedList<ACNode>();
 
 
         // Error Cases:
@@ -139,23 +140,133 @@ public class Autocomplete {
         return highestNode(start.middle);
     }
 
-    /*public void modifiedTraversal(ACNode start, int numMatches) {
+
+
+    public void modifiedTraversal(ACNode start, int numMatches) {
+        //System.out.println("Starting modified traversal on " + start);
+        // if (start != null) {
+        //     System.out.println("Starting modified traversal: node weight " + start.ownWeight);
+        // }
 
         // Okay maybe how I'll do it, is stop when the topResults hits a certain length. So for top Match, go till it's length 1?
 
-        if (this.topResults.size() >= numMatches) {
+        // NO. you gotta do the thing they say in the spec. If the thing in the PQ is less than or equal to the weight of the kth heaviest term in the list. 
+
+        if (start == null) {
             return;
         }
-        // So ya either take the start node's character, OR YOU DON'T. 
 
-        // Okay. You have this start point. You have to take its left, right, and its middle. 
-        // Put them in the priority queue. 
-        // And then traverse them based in order of the priority queue???? SO YOU CAN SAVE 1 STRING AT A TIME IN THE TRAVERSAL???? yeah???/
-            // The problem is that once they're in the PQ, I don't know if I have to tack on start's character.
+        // Check to make sure list is within size limits. 
+        if (this.topResults.size() > numMatches) {
+            return;
+        }
 
-        // Write a method that returns the highest node in the subtrie????
+        // Checking that kth heaviest thing. 
+        if ((this.topResults.size() == numMatches) && (start.ownWeight != null)) {
+            if (start.ownWeight <= topResults.getLast().ownWeight) {
+                // Can terminate search!
+                return;
+            }
+            // Else, you'd have to replace it... I dunno when you'd do this though, because ... you add to the list in order! So.... I'll just say replace the last one... and change it later if necessary.
 
-    }*/
+            // JK I'M BACK. NEED TO MOVE IT ALL THE WAY.
+            //int i = this.topResults.size() - 1; 
+            while (this.topResults.getLast().ownWeight <= start.ownWeight) {
+                System.out.println("LIne 171 DO I EVER EVEN GO IN HERE");
+                topResults.removeLast();
+            }
+            topResults.add(start);
+        }
+
+        // OKay my comparator is based on max subweight. 
+        // Stop when 
+        // Okay you take it out, and then put in all its children, and then do it again. 
+        // Stop when The node you're on has its own weight?
+        // Then put the node into the list of topResults. And keep traversing, I guess. 
+
+        // YEAAHHH???
+
+        if (start.ownWeight != null) {
+            // Add yourself to the list, yeah?
+            System.out.println("Line 191 trying to add start to list.");
+            System.out.println("start.ownWeight = " + start.ownWeight);
+            // Maybe I should add yourself in order.
+            //System.out.println("LINE 192 SUSPICIOUSSSS");
+            int i = this.topResults.size();
+
+            if (i == 0) {
+                System.out.println("In i = 0 case");
+                this.topResults.add(start);
+            } else if (i == 1) {
+                System.out.println("In i = 1 case");
+                // Check if greater or less than the current thing in there. 
+                if (this.topResults.getLast().ownWeight < start.ownWeight) {
+                    System.out.println("i = 1, start took over new head.");
+                    // Then start takes over new head. 
+                    this.topResults.addFirst(start);
+                } else {
+                    // Stick to end.
+                    System.out.println("in i = 1, start stuck into end");
+                    this.topResults.addLast(start);
+                }
+            } else {
+
+                //System.out.println("Am in in line 208 at all?");
+                System.out.println("Gotta do some actual checking");
+
+                int j = i - 1; // Because 0 indexing.
+                System.out.println("Doing actual checking - j = " + j);
+
+                while (j > 0 && this.topResults.get(j).ownWeight < start.ownWeight) {
+                    System.out.println("Am I in here? Line 220");
+                    j = j - 1;
+                }
+
+                if (j == i - 1) {
+                    // Never moved the pointer, so stick onto last.
+                    this.topResults.addLast(start);
+                } else {
+                    // Wait but I think the indexing is off by 1.
+                    // Jk no I think it's good. 
+                    this.topResults.add(j, start);
+                }
+            }
+        }
+
+        if (start.left != null) {
+            this.checkOut.add(start.left);
+        }
+        if (start.right != null) {
+            this.checkOut.add(start.right);
+        }
+        if (start.middle != null) {
+            this.checkOut.add(start.middle);
+        }
+
+        // Okay, so have added all children to priority queue.
+        // So check out the first one. 
+
+        // HOLD UP.
+        // IF THE THING YOU'RE CHECKING OUT RIGHT NOW WORKS, wait, does this work? Because you start out calling it on just the direct child... so you're not neceesarily already traversing in order...
+        // Wait I think this should be covered by the testing kth element thing. I believe so. Okay can just carry on then I think. I hope. 
+
+        
+
+        // Then uh....do the thing...on the first thing in the priority queue?
+        // WAIT SHOULD YOU TAKE YOURSELF OUT OF THE PRIORITY QUEUE THO??? 
+        // Yeah. Why not. 
+        // System.out.println("Going to do modifiedTraversal on node " + this.checkOut.poll());
+
+        // if (this.checkOut.poll() != null) {
+        //     System.out.println("Going to do modifiedTraversal on node with weight " + this.checkOut.poll().ownWeight);
+        // }
+        // if (this.checkOut.poll() != null) {
+        //     System.out.println("Calling modified Traversal on node with char " + this.checkOut.poll().c);
+        // }
+        modifiedTraversal(this.checkOut.poll(), numMatches);
+
+    }
+
 
 
 
@@ -167,10 +278,52 @@ public class Autocomplete {
      * @return
      */
     public Iterable<String> topMatches(String prefix, int k) {
-        // SNUBBING
-        return null;
 
         // Trying to find the k top matches for non-positive k. 
+
+        if (k <= 0) {
+            throw new IllegalArgumentException("Trying to find the k top matches for non-positive k.");
+        }
+
+        // Should prbly empty the stuff after every run too. Or empty before every run. 
+        this.checkOut.clear();
+        this.topResults.clear();
+
+        // CALL THE THING
+        ACNode prefixNode = this.allWords.findNode(allWords.root, prefix, 0);
+
+        // If no matching term:
+        if (prefixNode == null) {
+            return null;
+        }
+
+        // Else, found the node, so can descend.
+        ACNode prefixChild = prefixNode.middle;
+
+        // I HOPE THIS IS RIGHT I REALLY HOPE SO.
+
+        modifiedTraversal(prefixChild, k);
+
+        // THEN TAKE THE FIRST K ELEMENTS OF THE ARRAY.
+        // ACNode[] allResults = this.topResults.toArray(new ACNode[1]);
+        // ACNode[] kResults = Arrays.copyOfRange(allResults, 0, k); // Upper bound is exclusive. 
+
+        // // THEN MAKE SURE TO CHANGE THEM ALL BACK INTO STRINGS - walk back up the trie. 
+        // String[] finalResults = new String[k];
+        // for (int i = 0; i < k; i = i + 1) {
+        //     finalResults[i] = walkBackUp(kResults[i], "");
+        // }
+        // return finalResults;
+
+
+        LinkedList<String> finalResults = new LinkedList<String>();
+        for (int i = 0; i < k; i = i + 1) {
+            ACNode currNode = this.topResults.get(i);
+            System.out.println(walkBackUp(currNode, "") + " weight" + currNode.ownWeight);
+            finalResults.add(walkBackUp(currNode, ""));
+        }
+        return finalResults;
+
     }
 
     /**

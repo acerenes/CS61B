@@ -32,6 +32,26 @@ public class TestAutocomplete {
         assertNull(a3.topMatch("soie"));
     }
 
+    @Test
+    public void testTopMatches() {
+        String[] terms4 = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
+        double[] weights4 = {(double) 5, (double) 10, (double) 12, (double) 20, (double) 15, (double) 7};
+        Autocomplete a4 = new Autocomplete(terms4, weights4);
+
+        Iterable<String> checkMatches = a4.topMatches("s", 3);
+        String[] theMatches = new String[3];
+        
+        int i = 0;
+        for (String match : checkMatches) {
+            theMatches[i] = match;
+            i = i + 1;
+        }
+
+        assertEquals("spite", theMatches[0]);
+        assertEquals("spit", theMatches[1]);
+        assertEquals("sad", theMatches[2]);
+    }
+
 
     public static void main(String[] args) {
             jh61b.junit.textui.runClasses(TestAutocomplete.class);
