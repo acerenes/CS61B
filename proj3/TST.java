@@ -59,7 +59,7 @@ public class TST {
 
         if (currPosition == key.length() - 1) {
             // This is the node. 
-            if (start.c != null) {
+            if ((start.c != null) && (start.c == key.charAt(currPosition))) {
                 return start;
             }
             // Gotta make sure the last character is right though.
