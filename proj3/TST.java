@@ -119,10 +119,10 @@ public class TST {
      
     public void put(String key, Double ownWeight) {
 
-        if (this.contains(key)) {
+        /*if (this.contains(key)) {
             // According to the spec, throw an IllegalArgumentException if there are duplicate input terms.
             throw new IllegalArgumentException("Duplicate input terms.");
-        }
+        }*/
         this.root = put(this.root, this.root.parent, key, ownWeight, 0);
 
         // Okay I did a thing in put that hopefully does the max sub trie thing. Hopefully. 
@@ -132,6 +132,13 @@ public class TST {
         // Parent is start's parent.
         //System.out.println("Inserting " + key);
         Character currKeyChar = key.charAt(keyPosition);
+
+        // Maybe I'll just do a check for contains here.
+        if ((keyPosition == key.length() - 1) && (start != null) && (start.c == currKeyChar) && (start.ownWeight != null)) {
+            // THEN IT CONTAINS IT. GET MAD. 
+            throw new IllegalArgumentException("Duplicate input terms.");
+        }
+
         if (start == null || start.c == null) {
             //System.out.println("Line 97");
             start = new ACNode();
