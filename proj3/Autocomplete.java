@@ -22,6 +22,12 @@ public class Autocomplete {
      */
     public Autocomplete(String[] terms, double[] weights) {
 
+        // Error Cases:
+            // Length of the terms and weight arrays are different.
+        if (terms.length != weights.length) {
+            throw new IllegalArgumentException("Length of terms and weights arrays different.");
+        }
+
         // So, like, using a TST? 
         this.allWords = new TST();
         // And a PQ?
@@ -33,11 +39,7 @@ public class Autocomplete {
         topResults = new LinkedList<ACNode>();
 
 
-        // Error Cases:
-            // Length of the terms and weight arrays are different.
-        if (terms.length != weights.length) {
-            throw new IllegalArgumentException("Length of terms and weights arrays different.");
-        }
+        
 
             
         for (int i = 0; i < terms.length; i = i + 1) {
