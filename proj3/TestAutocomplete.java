@@ -76,6 +76,28 @@ public class TestAutocomplete {
         assertEquals("spy", theMatches[3]);
     }
 
+    @Test
+    public void testTopMatchesWithSelf() {
+        String[] terms = new String[] {"the", "they", "their", "them", "there"};
+        double[] weights = {56271872.0, 3340398.0, 2820265.0, 2509917.0, 1961200.0};
+        Autocomplete a = new Autocomplete(terms, weights);
+
+        Iterable<String> checkMatches = a.topMatches("the", 5);
+        String[] theMatches = new String[5];
+        
+        int i = 0;
+        for (String match : checkMatches) {
+            theMatches[i] = match;
+            i = i + 1;
+        }
+
+        assertEquals("the", theMatches[0]);
+        assertEquals("they", theMatches[1]);
+        assertEquals("their", theMatches[2]);
+        assertEquals("them", theMatches[3]);
+        assertEquals("there", theMatches[4]);
+    }
+
 
     public static void main(String[] args) {
             jh61b.junit.textui.runClasses(TestAutocomplete.class);

@@ -297,6 +297,10 @@ public class Autocomplete {
             return null;
         }
 
+        if (prefixNode.ownWeight != null) {
+            this.topResults.add(prefixNode);
+        }
+
         // Else, found the node, so can descend.
         ACNode prefixChild = prefixNode.middle;
 
@@ -317,11 +321,14 @@ public class Autocomplete {
 
 
         LinkedList<String> finalResults = new LinkedList<String>();
-        for (int i = 0; i < k; i = i + 1) {
+        int resultSize = this.topResults.size();
+        for (int i = 0; i < k && i < resultSize; i = i + 1) {
             ACNode currNode = this.topResults.get(i);
             //System.out.println(walkBackUp(currNode, "") + " weight" + currNode.ownWeight);
             finalResults.add(walkBackUp(currNode, ""));
         }
+
+        //System.out.println("final results size : " + finalResults.size());
         return finalResults;
 
     }
