@@ -2,6 +2,8 @@
  * Implements autocomplete on prefixes for a given dictionary of terms and weights.
  */
 
+// LIDRUHGLDIRUHGLDSIHLIU ALICE TAKE OUT TINY.TXT OKAY OKAY
+
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Comparator;
@@ -96,10 +98,11 @@ public class Autocomplete {
         }
 
         // Else, you found the node, so you can descend.
-        ACNode prefixChild = prefixNode.middle;
+        //ACNode prefixChild = prefixNode.middle;
 
         // i HOPE THIS IS RIGHT I'M JUST GOING OFF THE DRAWING AT THIS POINT. 
-        ACNode endHighestNode = highestNode(prefixChild);
+        //ACNode endHighestNode = highestNode(prefixChild);
+        ACNode endHighestNode = highestNode(prefixNode);
 
         if (endHighestNode == null) {
             // No matching term, I believe. 

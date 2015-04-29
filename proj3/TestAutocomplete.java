@@ -202,6 +202,38 @@ public class TestAutocomplete {
     }
 
 
+    // TAKE THIS OUTDLUGHDLRSIUHGDLIUHTIRUHTDLSIUHRTLDISHLTDISRUHILTRUHILTRUHGLDIURHGLIDSHGILTDSHGLIDSUHLIDHSLISUD
+    @Test
+    public void testTiny() {
+        String[] terms = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
+        double[] weights = {5.0, 10.0, 12.0, 20.0, 15.0, 7.0};
+        Autocomplete a = new Autocomplete(terms, weights);
+
+        Iterable<String> checkMatches = a.topMatches("buck", 1);
+        String[] theMatches = new String[1];
+        
+        int i = 0;
+        for (String match : checkMatches) {
+            theMatches[i] = match;
+            i = i + 1;
+        }
+
+        assertEquals("buck", theMatches[0]);
+    }
+
+    @Test
+    public void testTinyWeight() {
+        String[] terms = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
+        double[] weights = {5.0, 10.0, 12.0, 20.0, 15.0, 7.0};
+        Autocomplete a = new Autocomplete(terms, weights);
+
+        assertEquals(10.0, a.weightOf("buck"), 0);
+        assertEquals("buck", a.topMatch("buck"));
+        assertEquals(10.0, a.weightOf(a.topMatch("buck")), 0);
+    }
+
+
+
     public static void main(String[] args) {
             jh61b.junit.textui.runClasses(TestAutocomplete.class);
         }
