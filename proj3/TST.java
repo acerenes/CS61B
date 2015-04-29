@@ -33,7 +33,8 @@ public class TST {
 
     public Double getOwnWeight(String key) {
         if (key == null) {
-            throw new NullPointerException("Tried to check if TST contains null string.");
+            //throw new NullPointerException("Tried to check if TST contains null string.");
+            return null;
         }
         if (key.length() == 0) {
             throw new IllegalArgumentException("Tried to check if TST contains string of length 0.");
