@@ -178,6 +178,10 @@ public class Autocomplete {
         //     return;
         // }
 
+        // How on earth did buried get added 2x???
+        // I think it's cause you add yourself to topResults, but also to the queue. 
+        // URGGGHHHH
+
         // Checking that kth heaviest thing. 
         //WAIT GO BACK HERE
         if ((this.topResults.size() == numMatches) && (start.ownWeight != null)) {
@@ -187,7 +191,10 @@ public class Autocomplete {
             //     return;
             // }
 
-            if (start.ownWeight <= topResults.get(numMatches - 1).ownWeight) {
+            // Check to make sure you're not already in topResults already, maybe.
+            // It's not this. Because it's not going in here.
+
+            if ((start.ownWeight <= topResults.get(numMatches - 1).ownWeight) || (topResults.contains(start))) {
                 return;
             }
 
@@ -210,7 +217,7 @@ public class Autocomplete {
         }
 
 
-        if (start.ownWeight != null) {
+        if (start.ownWeight != null && !topResults.contains(start)) {
             int i = this.topResults.size();
             //System.out.println("i = " + i);
 
