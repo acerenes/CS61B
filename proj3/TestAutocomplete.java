@@ -128,10 +128,10 @@ public class TestAutocomplete {
         assertEquals("comply", theMatches[4]);
     }
 
-    /*@Test
+    @Test
     public void testAOrder() {
-        String[] terms = new String[] {"ase", "at", "and", "an", "a"};
-        double[] weights = {7037543.0, 5091841.0, 29944184.0, 2641417.0, 1135294.0};
+        String[] terms = new String[] {"and", "as", "at", "an", "a"};
+        double[] weights = {29944184.0, 7037543.0, 5091841.0, 2641417.0, 1135294.0};
         Autocomplete a = new Autocomplete(terms, weights);
 
         Iterable<String> checkMatches = a.topMatches("a", 5);
@@ -145,11 +145,11 @@ public class TestAutocomplete {
         }
 
         assertEquals("and", theMatches[0]);
-        assertEquals("ase", theMatches[1]);
+        assertEquals("as", theMatches[1]);
         assertEquals("at", theMatches[2]);
         assertEquals("an", theMatches[3]);
         assertEquals("a", theMatches[4]);
-    }*/
+    }
 
     @Test
     public void testMCities() {
