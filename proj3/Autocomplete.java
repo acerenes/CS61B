@@ -174,9 +174,9 @@ public class Autocomplete {
         }
 
         // Check to make sure list is within size limits. 
-        // if (this.topResults.size() > numMatches) {
-        //     return;
-        // }
+        if (this.topResults.size() > numMatches) {
+            return;
+        }
 
         // How on earth did buried get added 2x???
         // I think it's cause you add yourself to topResults, but also to the queue. 
@@ -185,6 +185,8 @@ public class Autocomplete {
         // Checking that kth heaviest thing. 
         //WAIT GO BACK HERE
         if ((this.topResults.size() == numMatches) && (start.ownWeight != null)) {
+            //System.out.println("Checking kth thing - " + start.ownWeight);
+
             //if (start.ownWeight <= topResults.getLast().ownWeight) {
             // if (start.ownWeight <= topResults.get(topResults.size() - 1).ownWeight) {
             //     // Can terminate search!
@@ -194,18 +196,21 @@ public class Autocomplete {
             // Check to make sure you're not already in topResults already, maybe.
             // It's not this. Because it's not going in here.
 
-            if ((start.ownWeight <= topResults.get(numMatches - 1).ownWeight) || (topResults.contains(start))) {
+            if ((start.ownWeight <= topResults.get(numMatches - 1).ownWeight)) {
                 return;
             }
 
             //while (this.topResults.getLast().ownWeight <= start.ownWeight) {
             // Try an indexing thing instead.
-            int k = this.topResults.size() - 1;
-            while (this.topResults.get(k).ownWeight < start.ownWeight) {
-                k = k - 1;
+            if (!topResults.contains(start)) {        
+                int k = this.topResults.size() - 1;
+                while (this.topResults.get(k).ownWeight < start.ownWeight) {
+                    k = k - 1;
+                }
+                //System.out.println("Line 179 adding node with weight " + start.ownWeight);
+                topResults.remove((topResults.size()) - 1); // Remove the last thing? 
+                topResults.add(k + 1, start);
             }
-            //System.out.println("Line 179 adding node with weight " + start.ownWeight);
-            topResults.add(k, start);
 
 
             /*while (this.topResults.get(this.topResults.size() -1).ownWeight <= start.ownWeight) {
@@ -214,10 +219,7 @@ public class Autocomplete {
                 topResults.remove(topResults.size() - 1);
             }
             topResults.add(start);*/
-        }
-
-
-        if (start.ownWeight != null && !topResults.contains(start)) {
+        } else if (start.ownWeight != null && !topResults.contains(start)) {
             int i = this.topResults.size();
             //System.out.println("i = " + i);
 
@@ -249,10 +251,12 @@ public class Autocomplete {
                     // Never moved the pointer, so stick onto last.
                     //this.topResults.addLast(start);
                     //System.out.println("Line 221 added node with weight " + start.ownWeight);
+                    //System.out.println("start weight = " + start.ownWeight + " being added to end");
                     this.topResults.add(start);
                 } else {
                     //System.out.println("Line 224 added node with weight " + start.ownWeight + " in position " + j + 1);
                     //this.topResults.add(j, start);
+                    //System.out.println("start weight = " + start.ownWeight + " at position " + (j + 1));
                     this.topResults.add(j + 1, start);
                 }
                 //this.topResults.add(i, start);
