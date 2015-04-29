@@ -255,6 +255,17 @@ public class TestAutocomplete {
     }
 
     @Test
+    public void testTinySm() {
+        String[] terms = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
+        double[] weights = {5.0, 10.0, 12.0, 20.0, 15.0, 7.0};
+        Autocomplete a = new Autocomplete(terms, weights);
+
+        assertEquals(5.0, a.weightOf("smog"), 0);
+        assertEquals("smog", a.topMatch("sm"));
+        assertEquals(5.0, a.weightOf(a.topMatch("sm")), 0);
+    }
+
+    @Test
     public void testSimilarNames() {
         String[] terms = new String[] {"Bree", "Brandin", "Brandie", "Brandio", "Brandii", "Brandik", "Brandic", "Brandiy", "Brandit", "Brandkick", "Brandraisin"};
         double[] weights = {0.1, 28.0, 20.0, 37.7, 48.3, 94.2, 102.1, 674.0, 675.1, 2040.1, 6700.4};
@@ -280,6 +291,8 @@ public class TestAutocomplete {
         assertEquals("Brandin", theMatches[8]);
         assertEquals("Brandie", theMatches[9]);
     }
+
+
 
 
 

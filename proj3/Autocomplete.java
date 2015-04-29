@@ -97,19 +97,37 @@ public class Autocomplete {
             return null;
         }
 
+        //System.out.println("Prefix node's character: " + prefixNode.c);
+        // Oh fml I think I know the problem. I go the whole way down, without checking if it's part of the word. DARN IT. 
+
         // Else, you found the node, so you can descend.
-        //ACNode prefixChild = prefixNode.middle;
+        ACNode prefixChild = prefixNode.middle;
 
         // i HOPE THIS IS RIGHT I'M JUST GOING OFF THE DRAWING AT THIS POINT. 
-        //ACNode endHighestNode = highestNode(prefixChild);
-        ACNode endHighestNode = highestNode(prefixNode);
+        ACNode endHighestNode = highestNode(prefixChild);
+        //ACNode endHighestNode = highestNode(prefixNode);
+        //System.out.println("endHighestNode's character: " + endHighestNode.c );
 
-        if (endHighestNode == null) {
-            // No matching term, I believe. 
-            return null;
+        // Maybe I'll just compare prefix child and self. 
+
+
+        // if (endHighestNode == null) {
+        //     // No matching term, I believe. 
+        //     return null;
+        // }
+
+        ACNode theHighNode = prefixNode;
+        //System.out.println("prefix Node's own Weight: " + prefixNode.ownWeight);
+
+        if ((prefixNode.ownWeight == null) || (endHighestNode != null && (endHighestNode.ownWeight > prefixNode.ownWeight))) {
+
+            //System.out.println("AM I EVEN GOING IN HERE");
+            theHighNode = endHighestNode;
         }
+
+
         // Else, gonna have to do a walking back up the trie...
-        return walkBackUp(endHighestNode, new StringBuilder(""));
+        return walkBackUp(theHighNode, new StringBuilder(""));
 
 
     }
