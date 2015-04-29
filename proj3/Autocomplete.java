@@ -176,7 +176,7 @@ public class Autocomplete {
             while (this.topResults.get(k).ownWeight < start.ownWeight) {
                 k = k - 1;
             }
-            System.out.println("Line 179 adding node with weight " + start.ownWeight);
+            //System.out.println("Line 179 adding node with weight " + start.ownWeight);
             topResults.add(k, start);
 
 
@@ -191,20 +191,20 @@ public class Autocomplete {
 
         if (start.ownWeight != null) {
             int i = this.topResults.size();
-            System.out.println("i = " + i);
+            //System.out.println("i = " + i);
 
             if (i == 0) {
-                System.out.println("Line 196 adding node with weight " + start.ownWeight);
+                //System.out.println("Line 196 adding node with weight " + start.ownWeight);
                 this.topResults.add(start);
             } else if (i == 1) {
                 //if (this.topResults.getLast().ownWeight < start.ownWeight) {
                 if (this.topResults.get(0).ownWeight < start.ownWeight) {
                     //this.topResults.addFirst(start);
-                    System.out.println("Line 202 adding node, to front, with weight " + start.ownWeight);
+                    //System.out.println("Line 202 adding node, to front, with weight " + start.ownWeight);
                     this.topResults.add(0, start);
                 } else {
                     //this.topResults.addLast(start);
-                    System.out.println("Line 206 adding node with weight " + start.ownWeight);
+                    //System.out.println("Line 206 adding node with weight " + start.ownWeight);
                     this.topResults.add(start);
                 }
             } else {
@@ -213,17 +213,17 @@ public class Autocomplete {
                 
 
                 while (j >= 0 && this.topResults.get(j).ownWeight < start.ownWeight) {
-                    System.out.println("Line 215, j = " + j);
+                    //System.out.println("Line 215, j = " + j);
                     j = j - 1;
                 }
 
                 if (j == i - 1) {
                     // Never moved the pointer, so stick onto last.
                     //this.topResults.addLast(start);
-                    System.out.println("Line 221 added node with weight " + start.ownWeight);
+                    //System.out.println("Line 221 added node with weight " + start.ownWeight);
                     this.topResults.add(start);
                 } else {
-                    System.out.println("Line 224 added node with weight " + start.ownWeight + " in position " + j + 1);
+                    //System.out.println("Line 224 added node with weight " + start.ownWeight + " in position " + j + 1);
                     //this.topResults.add(j, start);
                     this.topResults.add(j + 1, start);
                 }
