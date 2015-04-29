@@ -210,7 +210,7 @@ public class Autocomplete {
             } else {
 
                 int j = i - 1; // Because 0 indexing.
-                //i = i - 1;
+                
 
                 while (j >= 0 && this.topResults.get(j).ownWeight < start.ownWeight) {
                     System.out.println("Line 215, j = " + j);
