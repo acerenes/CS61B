@@ -140,7 +140,7 @@ public class TestAutocomplete {
         int i = 0;
         for (String match : checkMatches) {
             theMatches[i] = match;
-            System.out.println(match);
+            //System.out.println(match);
             i = i + 1;
         }
 
@@ -219,6 +219,17 @@ public class TestAutocomplete {
         }
 
         assertEquals("buck", theMatches[0]);
+
+        checkMatches = a.topMatches("sa", 1);
+        theMatches = new String[1];
+        
+        i = 0;
+        for (String match : checkMatches) {
+            theMatches[i] = match;
+            i = i + 1;
+        }
+
+        assertEquals("sad", theMatches[0]);
     }
 
     @Test
@@ -230,6 +241,44 @@ public class TestAutocomplete {
         assertEquals(10.0, a.weightOf("buck"), 0);
         assertEquals("buck", a.topMatch("buck"));
         assertEquals(10.0, a.weightOf(a.topMatch("buck")), 0);
+    }
+
+    @Test
+    public void testTinyWeightSa() {
+        String[] terms = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
+        double[] weights = {5.0, 10.0, 12.0, 20.0, 15.0, 7.0};
+        Autocomplete a = new Autocomplete(terms, weights);
+
+        assertEquals(12.0, a.weightOf("sad"), 0);
+        assertEquals("sad", a.topMatch("sa"));
+        assertEquals(12.0, a.weightOf(a.topMatch("sa")), 0);
+    }
+
+    @Test
+    public void testSimilarNames() {
+        String[] terms = new String[] {"Bree", "Brandin", "Brandie", "Brandio", "Brandii", "Brandik", "Brandic", "Brandiy", "Brandit", "Brandkick", "Brandraisin"};
+        double[] weights = {0.1, 28.0, 20.0, 37.7, 48.3, 94.2, 102.1, 674.0, 675.1, 2040.1, 6700.4};
+        Autocomplete a = new Autocomplete(terms, weights);
+
+        Iterable<String> checkMatches = a.topMatches("Brand", 10);
+        String[] theMatches = new String[10];
+        
+        int i = 0;
+        for (String match : checkMatches) {
+            theMatches[i] = match;
+            i = i + 1;
+        }
+
+        assertEquals("Brandraisin", theMatches[0]);
+        assertEquals("Brandkick", theMatches[1]);
+        assertEquals("Brandit", theMatches[2]);
+        assertEquals("Brandiy", theMatches[3]);
+        assertEquals("Brandic", theMatches[4]);
+        assertEquals("Brandik", theMatches[5]);
+        assertEquals("Brandii", theMatches[6]);
+        assertEquals("Brandio", theMatches[7]);
+        assertEquals("Brandin", theMatches[8]);
+        assertEquals("Brandie", theMatches[9]);
     }
 
 
