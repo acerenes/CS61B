@@ -128,6 +128,29 @@ public class TestAutocomplete {
         assertEquals("comply", theMatches[4]);
     }
 
+    /*@Test
+    public void testAOrder() {
+        String[] terms = new String[] {"ase", "at", "and", "an", "a"};
+        double[] weights = {7037543.0, 5091841.0, 29944184.0, 2641417.0, 1135294.0};
+        Autocomplete a = new Autocomplete(terms, weights);
+
+        Iterable<String> checkMatches = a.topMatches("a", 5);
+        String[] theMatches = new String[5];
+        
+        int i = 0;
+        for (String match : checkMatches) {
+            theMatches[i] = match;
+            System.out.println(match);
+            i = i + 1;
+        }
+
+        assertEquals("and", theMatches[0]);
+        assertEquals("ase", theMatches[1]);
+        assertEquals("at", theMatches[2]);
+        assertEquals("an", theMatches[3]);
+        assertEquals("a", theMatches[4]);
+    }*/
+
     @Test
     public void testMCities() {
         String[] terms = new String[] {"Mumbai, India", "Mexico City, Distrito Federal, Mexico", "Aye Yo, CA"};

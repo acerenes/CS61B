@@ -153,24 +153,38 @@ public class Autocomplete {
         }
 
         // Check to make sure list is within size limits. 
-        if (this.topResults.size() > numMatches) {
-            return;
-        }
+        // if (this.topResults.size() > numMatches) {
+        //     return;
+        // }
 
         // Checking that kth heaviest thing. 
+        //WAIT GO BACK HERE
         if ((this.topResults.size() == numMatches) && (start.ownWeight != null)) {
             //if (start.ownWeight <= topResults.getLast().ownWeight) {
-            if (start.ownWeight <= topResults.get(topResults.size() - 1).ownWeight) {
-                // Can terminate search!
+            // if (start.ownWeight <= topResults.get(topResults.size() - 1).ownWeight) {
+            //     // Can terminate search!
+            //     return;
+            // }
+
+            if (start.ownWeight <= topResults.get(numMatches - 1).ownWeight) {
                 return;
             }
+
             //while (this.topResults.getLast().ownWeight <= start.ownWeight) {
-            while (this.topResults.get(this.topResults.size() -1).ownWeight <= start.ownWeight) {
-                //System.out.println("LIne 171 DO I EVER EVEN GO IN HERE");
+            // Try an indexing thing instead.
+            int k = this.topResults.size() - 1;
+            while (this.topResults.get(k).ownWeight < start.ownWeight) {
+                k = k - 1;
+            }
+            topResults.add(k, start);
+
+
+            /*while (this.topResults.get(this.topResults.size() -1).ownWeight <= start.ownWeight) {
+                System.out.println("LIne 169 DO I EVER EVEN GO IN HERE WHERE I'M TRYING TO scootch all the stuff over");
                 //topResults.removeLast();
                 topResults.remove(topResults.size() - 1);
             }
-            topResults.add(start);
+            topResults.add(start);*/
         }
 
 
@@ -181,7 +195,7 @@ public class Autocomplete {
                 this.topResults.add(start);
             } else if (i == 1) {
                 //if (this.topResults.getLast().ownWeight < start.ownWeight) {
-                if (this.topResults.get(this.topResults.size() - 1).ownWeight < start.ownWeight) {
+                if (this.topResults.get(0).ownWeight < start.ownWeight) {
                     //this.topResults.addFirst(start);
                     this.topResults.add(0, start);
                 } else {
@@ -191,6 +205,7 @@ public class Autocomplete {
             } else {
 
                 int j = i - 1; // Because 0 indexing.
+                //i = i - 1;
 
                 while (j > 0 && this.topResults.get(j).ownWeight < start.ownWeight) {
                     j = j - 1;
@@ -203,6 +218,7 @@ public class Autocomplete {
                 } else {
                     this.topResults.add(j, start);
                 }
+                //this.topResults.add(i, start);
             }
         }
 
@@ -452,7 +468,9 @@ public class Autocomplete {
             this.root = put(this.root, this.root.parent, key, ownWeight, 0);
 
             // TRYING NOW
-            this.root.maxSubWeight = subMaxWeight(this.root);
+            // Urgh okay no do maxSubweight AS YOU TRAVERSE. 
+            // I WAS HEERRREEEE
+            //this.root.maxSubWeight = subMaxWeight(this.root);
 
             // Okay I did a thing in put that hopefully does the max sub trie thing. Hopefully. 
         }
@@ -476,11 +494,13 @@ public class Autocomplete {
 
             if (currKeyChar < start.c) {
                 //System.out.println("Line 103");
+                
                 start.left = put(start.left, startParent, key, newWeight, keyPosition);
                 start.left.parent = startParent;
                 //start.left.maxSubWeight = subMaxWeight(start.left);
             } else if (currKeyChar > start.c) {
                 //System.out.println("Line 106");
+                
                 start.right = put(start.right, startParent, key, newWeight, keyPosition);
                 start.right.parent = startParent;
                 //start.right.maxSubWeight = subMaxWeight(start.right);
@@ -501,11 +521,37 @@ public class Autocomplete {
                 start.parent = startParent;
 
             }
+
+            // TRY DOING THE MAXSUBWEIGHT STUFF NOWWWWW
+            // Compare all 3 children, your curr maxsubweight, your curr weight, and the current thing you're inserting's weight (jk that's yourself). Take the max, that's your maxsubweight. 
+            Double maxWeight = (double) 0; // Your weight can't be negative.
+            // Your curr maxsubweight.
+            if (start.maxSubWeight != null) {
+                maxWeight = Math.max(maxWeight, start.maxSubWeight);
+            }
+            // Your own weight.
+            if (start.ownWeight != null) {
+                maxWeight = Math.max(maxWeight, start.ownWeight);
+            }
+            // COMPARE ALL CHILDREN.
+            // Try left.
+            if (start.left != null) {
+                maxWeight = Math.max(maxWeight, start.left.maxSubWeight);
+            }
+            // Try right.
+            if (start.right != null) {
+                maxWeight = Math.max(maxWeight, start.right.maxSubWeight);
+            }
+            // Try middle.
+            if (start.middle != null) {
+                maxWeight = Math.max(maxWeight, start.middle.maxSubWeight);
+            }
+            start.maxSubWeight = maxWeight;
             return start;
         }
 
 
-        // Changing it as I go too.....
+        /*// Changing it as I go too.....
         public Double subMaxWeight(ACNode start) {
 
             // What if I start from bottom
@@ -537,7 +583,7 @@ public class Autocomplete {
             }
 
             return start.maxSubWeight;
-        }
+        }*/
 
     }
 }
