@@ -171,134 +171,30 @@ public class Autocomplete {
 
 
     public void modifiedTraversal(ACNode start, int numMatches) {
+        //System.out.println("Calling modified traversal");
         if (start == null) {
             System.out.println("Returning line 175");
             return;
         }
 
         // Check to make sure list is within size limits. 
-        // if (this.topResults.size() > numMatches) {
-        //     return;
-        // }
-
-
-
-        // Checking that kth heaviest thing. 
-        System.out.println("start ownWeight " + start.ownWeight);
-        System.out.println("start maxSubWeight " + start.maxSubWeight);
-
-        // NEW STUFF
-        if ((alongTheWay.size() > 0) && (start.maxSubWeight < alongTheWay.get(0).maxSubWeight) && (start.ownWeight != null) && ((alongTheWay.size() + topResults.size()) >= numMatches)) {
-            // Need to put in yourself tho. 
-            // Merge and return? 
-            System.out.println("Do you merge and return");
-            System.out.println("top results length " + topResults.size());
-            System.out.println("along the way length " + alongTheWay.size());
-            // Maybe just add yourself to alongTheWay, because why not?
-            int k = this.alongTheWay.size();
-            //System.out.println("i = " + i);
-
-            if (k == 0) {
-                //System.out.println("Line 196 adding node with weight " + start.ownWeight);
-                //System.out.println("Line 304, adding node at end with weight " + start.ownWeight);
-                this.alongTheWay.add(start);
-            } else if (k == 1) {
-                //if (this.topResults.getLast().ownWeight < start.ownWeight) {
-                if (this.alongTheWay.get(0).ownWeight < start.ownWeight) {
-                    //this.topResults.addFirst(start);
-                    //System.out.println("Line 202 adding node, to front, with weight " + start.ownWeight);
-                    //System.out.println("Line 235, adding node at front with weight " + start.ownWeight);
-                    this.alongTheWay.add(0, start);
-                } else {
-                    //this.topResults.addLast(start);
-                    //System.out.println("Line 206 adding node with weight " + start.ownWeight);
-                    //System.out.println("Line 240, adding node to end with weight " + start.ownWeight);
-                    this.alongTheWay.add(start);
-                }
-            } else {
-
-                int m = k - 1; // Because 0 indexing.
-                
-                while (m >= 0 && this.alongTheWay.get(m).ownWeight < start.ownWeight) {
-                    //System.out.println("Line 215, j = " + j);
-                    m = m - 1;
-                }
-
-                if (m == k - 1) {
-                    // Never moved the pointer, so stick onto last.
-                    //this.topResults.addLast(start);
-                    //System.out.println("Line 221 added node with weight " + start.ownWeight);
-                    //System.out.println("start weight = " + start.ownWeight + " being added to end");
-                    //System.out.println("Line 258, adding node with weight " + start.ownWeight);
-                    this.alongTheWay.add(start);
-                } else {
-                    //System.out.println("Line 224 added node with weight " + start.ownWeight + " in position " + j + 1);
-                    //this.topResults.add(j, start);
-                    //System.out.println("start weight = " + start.ownWeight + " at position " + (j + 1));
-                    //System.out.println("Line 264, adding node at position " + (j + 1) + " with weight " + start.ownWeight);
-                    this.alongTheWay.add(m + 1, start);
-                }
-            }
-            
-            // Okay I don't think I can just add it in. I may need to sort it. 
-            topResults.addAll(alongTheWay);
-            //System.out.println("Line 407 return");
+<<<<<<< HEAD
+        
+=======
+        if ((this.topResults.size() > numMatches) && (start.maxSubWeight < topResults.get(topResults.size() - 1).ownWeight)) {
+>>>>>>> tryingStuffProj3
             return;
         }
 
         if (start.ownWeight != null && start.ownWeight.equals(start.maxSubWeight)) {
 
-            System.out.println("Line 189 own weight = max sub weight " + start.c);
-
-            int b = topResults.size();
-            if (b == 0) {
-                //System.out.println("Line 196 adding node with weight " + start.ownWeight);
-                //System.out.println("Line 228, adding node at end with weight " + start.ownWeight);
-                this.topResults.add(start);
-            } else if (b == 1) {
-                //if (this.topResults.getLast().ownWeight < start.ownWeight) {
-                if (this.topResults.get(0).ownWeight < start.ownWeight) {
-                    //this.topResults.addFirst(start);
-                    //System.out.println("Line 202 adding node, to front, with weight " + start.ownWeight);
-                    //System.out.println("Line 235, adding node at front with weight " + start.ownWeight);
-                    this.topResults.add(0, start);
-                } else {
-                    //this.topResults.addLast(start);
-                    //System.out.println("Line 206 adding node with weight " + start.ownWeight);
-                    //System.out.println("Line 240, adding node to end with weight " + start.ownWeight);
-                    this.topResults.add(start);
-                }
-            } else {
-
-                int c = b - 1; // Because 0 indexing.
-                
-
-                while (c >= 0 && this.topResults.get(c).ownWeight < start.ownWeight) {
-                    //System.out.println("Line 215, j = " + j);
-                    c = c - 1;
-                }
-
-                if (c == b - 1) {
-                    // Never moved the pointer, so stick onto last.
-                    //this.topResults.addLast(start);
-                    //System.out.println("Line 221 added node with weight " + start.ownWeight);
-                    //System.out.println("start weight = " + start.ownWeight + " being added to end");
-                    //System.out.println("Line 258, adding node with weight " + start.ownWeight);
-                    this.topResults.add(start);
-                } else {
-                    //System.out.println("Line 224 added node with weight " + start.ownWeight + " in position " + j + 1);
-                    //this.topResults.add(j, start);
-                    //System.out.println("start weight = " + start.ownWeight + " at position " + (j + 1));
-                    //System.out.println("Line 264, adding node at position " + (j + 1) + " with weight " + start.ownWeight);
-                    this.topResults.add(c + 1, start);
-                }
-                //this.topResults.add(i, start);
-            }
-
-        // } else if ((this.topResults.size() == numMatches) && (start.ownWeight != null)) {
-
-
-        //if ((this.topResults.size() == numMatches) && (start.ownWeight != null)) {
+<<<<<<< HEAD
+            
+=======
+        // Checking that kth heaviest thing. 
+        //WAIT GO BACK HERE
+        if ((this.topResults.size() == numMatches) && (start.ownWeight != null) && (start.ownWeight > topResults.get(topResults.size() - 1).ownWeight)) {
+>>>>>>> tryingStuffProj3
             //System.out.println("Checking kth thing - " + start.ownWeight);
 
             //if (start.ownWeight <= topResults.getLast().ownWeight) {
@@ -310,35 +206,36 @@ public class Autocomplete {
             // Check to make sure you're not already in topResults already, maybe.
             // It's not this. Because it's not going in here.
 
+<<<<<<< HEAD
 
-            // LDIUGHDRSLIGHDRLISGHDLS USED TO HAVE THIS STUFF. 
-            // if ((start.ownWeight <= topResults.get(numMatches - 1).ownWeight)) {
-            //     return;
-            // }
+            
+=======
 
-            // So like, only add nodes that are their own maxSubWeights to topResults. Otherwise, add to alongTheWay.
-
-            // Try an indexing thing instead.
-            // if (!topResults.contains(start)) {        
-            //     int k = this.topResults.size() - 1;
-            //     while (this.topResults.get(k).ownWeight < start.ownWeight) {
-            //         k = k - 1;
-            //     }
-            //     System.out.println("Line 179 adding node with weight " + start.ownWeight + " at position " + (k + 1));
-            //     topResults.remove((topResults.size()) - 1); // Remove the last thing? 
-            //     topResults.add(k + 1, start);
-            // }
+            // THIS HERE USED TO BE HERE. 
+            /*if ((start.ownWeight <= topResults.get(numMatches - 1).ownWeight)) {
+                return;
+            }*/
 
 
-            // if (!alongTheWay.contains(start)) {        
-            //     int k = this.alongTheWay.size() - 1;
-            //     while (alongTheWay.get(k).ownWeight < start.ownWeight) {
-            //         k = k - 1;
-            //     }
-            //     //System.out.println("Line 179 adding node with weight " + start.ownWeight + " at position " + (k + 1));
-            //     //topResults.remove((topResults.size()) - 1); // Remove the last thing? 
-            //     alongTheWay.add(k + 1, start);
-            // }
+            if (!topResults.contains(start)) { 
+                int m = this.topResults.size() - 1;   
+                int k = m;
+                while (this.topResults.get(k).ownWeight < start.ownWeight) {
+                    k = k - 1;
+                }
+                //System.out.println("removing node with weight " + topResults.get(topResults.size() - 1).ownWeight);
+
+                topResults.remove((topResults.size()) - 1); // Remove the last thing? 
+                if (k == m) {
+                    // DIdn't move, so add to end.
+                    //System.out.println("Line 216 Added to end: " + start.ownWeight);
+                    topResults.add(start);
+                } else {
+                    //System.out.println("Line 219 Added to position " + (k + 1) + " weight " + start.ownWeight);
+                    topResults.add(k + 1, start);
+                }
+            }
+>>>>>>> tryingStuffProj3
 
 
             /*while (this.topResults.get(this.topResults.size() -1).ownWeight <= start.ownWeight) {
@@ -411,21 +308,26 @@ public class Autocomplete {
             //System.out.println("i = " + i);
 
             if (i == 0) {
-                //System.out.println("Line 196 adding node with weight " + start.ownWeight);
-                //System.out.println("Line 304, adding node at end with weight " + start.ownWeight);
-                this.alongTheWay.add(start);
+<<<<<<< HEAD
+                
+=======
+                //System.out.println("Line 236 adding node to end  with weight " + start.ownWeight);
+                this.topResults.add(start);
+>>>>>>> tryingStuffProj3
             } else if (i == 1) {
                 //if (this.topResults.getLast().ownWeight < start.ownWeight) {
                 if (this.alongTheWay.get(0).ownWeight < start.ownWeight) {
                     //this.topResults.addFirst(start);
-                    //System.out.println("Line 202 adding node, to front, with weight " + start.ownWeight);
-                    //System.out.println("Line 235, adding node at front with weight " + start.ownWeight);
-                    this.alongTheWay.add(0, start);
+<<<<<<< HEAD
+                    
+=======
+                    //System.out.println("Line 242 adding node, to front, with weight " + start.ownWeight);
+                    this.topResults.add(0, start);
                 } else {
                     //this.topResults.addLast(start);
-                    //System.out.println("Line 206 adding node with weight " + start.ownWeight);
-                    //System.out.println("Line 240, adding node to end with weight " + start.ownWeight);
-                    this.alongTheWay.add(start);
+                    //System.out.println("Line 246 adding node to end with weight " + start.ownWeight);
+                    this.topResults.add(start);
+>>>>>>> tryingStuffProj3
                 }
             } else {
 
@@ -440,15 +342,17 @@ public class Autocomplete {
                     // Never moved the pointer, so stick onto last.
                     //this.topResults.addLast(start);
                     //System.out.println("Line 221 added node with weight " + start.ownWeight);
-                    //System.out.println("start weight = " + start.ownWeight + " being added to end");
-                    //System.out.println("Line 258, adding node with weight " + start.ownWeight);
-                    this.alongTheWay.add(start);
+<<<<<<< HEAD
+                    
+=======
+                    //System.out.println("Line 263 start weight = " + start.ownWeight + " being added to end");
+                    this.topResults.add(start);
                 } else {
                     //System.out.println("Line 224 added node with weight " + start.ownWeight + " in position " + j + 1);
                     //this.topResults.add(j, start);
-                    //System.out.println("start weight = " + start.ownWeight + " at position " + (j + 1));
-                    //System.out.println("Line 264, adding node at position " + (j + 1) + " with weight " + start.ownWeight);
-                    this.alongTheWay.add(j + 1, start);
+                    //System.out.println("Line 268 start weight = " + start.ownWeight + " at position " + (j + 1));
+                    this.topResults.add(j + 1, start);
+>>>>>>> tryingStuffProj3
                 }
                 //this.topResults.add(i, start);
             }
@@ -526,9 +430,11 @@ public class Autocomplete {
 
         ArrayList<String> finalResults = new ArrayList<String>();
         int resultSize = this.topResults.size();
-        for (int i = 0; i < k && i < resultSize; i = i + 1) {
+        int goTil = Math.min(k, resultSize);
+        //System.out.println("go til " + goTil);
+        for (int i = 0; i < goTil; i = i + 1) {
             ACNode currNode = this.topResults.get(i);
-            //System.out.println(walkBackUp(currNode, "") + " weight" + currNode.ownWeight);
+            //System.out.println(walkBackUp(currNode, new StringBuilder("")) + " weight" + currNode.ownWeight);
             finalResults.add(walkBackUp(currNode, new StringBuilder("")));
         }
 
