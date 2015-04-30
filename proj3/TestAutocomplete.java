@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class TestAutocomplete {
 
-    @Test
+    /*@Test
     public void testStructureBasic() {
         String[] terms = new String[] {"smog", "buck", "sad"};
         double[] weights = {(double) 5, (double) 10, (double) 12};
@@ -313,6 +313,25 @@ public class TestAutocomplete {
 
         ArrayList<String> shouldBeEmpty = (ArrayList<String>) a.topMatches("sdiushiuh", 20);
         assertTrue(shouldBeEmpty.isEmpty());
+    }*/
+
+    @Test
+    public void testWhyStackOverflow() {
+        In in = new In("wiktionary.txt");
+        int N = in.readInt();
+        String[] terms = new String[N];
+        double[] weights = new double[N];
+        for (int i = 0; i < N; i++) {
+            weights[i] = in.readDouble();   // read the next weight
+            in.readChar();                  // scan past the tab
+            terms[i] = in.readLine();       // read the next term
+        }
+
+        Autocomplete autocomplete = new Autocomplete(terms, weights);
+
+        for (String term : autocomplete.topMatches("", 20)) {
+            StdOut.printf("%14.1f  %s\n", autocomplete.weightOf(term), term);
+        }
     }
 
 

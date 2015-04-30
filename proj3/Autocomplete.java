@@ -165,6 +165,12 @@ public class Autocomplete {
             return;
         }
 
+        // What if, you just don't take the node out of the PQ until you put it in the list. 
+        // And don't add unless your weight = your max subweight, or your max subweight is = the max subweight of the last thing in the list? 
+            // Because it's only if you're an "along the way" node - 
+                // If your max subweight is less, you should grab the one whose max subweight is their weight first.
+                // If greater, WHY AREN'T YOU ALREADY IN THE QUEUE. 
+
         // Check to make sure list is within size limits. 
         if ((this.topResults.size() > numMatches) && (start.maxSubWeight < topResults.get(topResults.size() - 1).ownWeight)) {
             return;
@@ -274,7 +280,10 @@ public class Autocomplete {
         if (start.middle != null) {
             this.checkOut.add(start.middle);
         }
-        modifiedTraversal(this.checkOut.poll(), numMatches);
+        System.out.print("top results length: " + topResults.size());
+        System.out.println("num matches: " + numMatches);
+        ACNode p = this.checkOut.poll();
+        modifiedTraversal(p, numMatches);
 
     }
 
