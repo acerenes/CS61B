@@ -89,30 +89,41 @@ public class Autocomplete {
      * @return Best (highest weight) matching string in the dictionary.
      */
     public String topMatch(String prefix) {
-        
-        ACNode prefixNode = this.allWords.findNode(allWords.root, prefix, 0);
 
-        // If no matching term:
-        if (prefixNode == null) {
+        if (prefix == null) {
             return null;
         }
 
-        // Else, you found the node, so you can descend.
-        ACNode prefixChild = prefixNode.middle;
+        ACNode prefixNode = null;
+        if (prefix.length() == 0) {
+            prefixNode = highestNode(this.allWords.root);
 
-        // i HOPE THIS IS RIGHT I'M JUST GOING OFF THE DRAWING AT THIS POINT. 
-        ACNode endHighestNode = highestNode(prefixChild);
+        } else {
+        
+            prefixNode = this.allWords.findNode(allWords.root, prefix, 0);
+            
 
-        ACNode theHighNode = prefixNode;
+            // If no matching term:
+            if (prefixNode == null) {
+                return null;
+            }
 
-        if ((prefixNode.ownWeight == null) || (endHighestNode != null && (endHighestNode.ownWeight > prefixNode.ownWeight))) {
+            // Else, you found the node, so you can descend.
+            ACNode prefixChild = prefixNode.middle;
 
-           
-            theHighNode = endHighestNode;
+            // i HOPE THIS IS RIGHT I'M JUST GOING OFF THE DRAWING AT THIS POINT. 
+            ACNode endHighestNode = highestNode(prefixChild);
+
+            //theHighNode = prefixNode;
+
+            if ((prefixNode.ownWeight == null) || (endHighestNode != null && (endHighestNode.ownWeight > prefixNode.ownWeight))) {
+
+                prefixNode = endHighestNode;
+            }
         }
 
 
-        return walkBackUp(theHighNode, new StringBuilder(""));
+        return walkBackUp(prefixNode, new StringBuilder(""));
 
 
     }
@@ -441,30 +452,23 @@ public class Autocomplete {
             if (key == null) {
                 throw new NullPointerException("In findNode, tried to get a null key.");
             }
-            if (key.length() == 0) {
-                //throw new IllegalArgumentException("In findNode, tried to get a key with length 0.");
-                return null;
-            }
-            if (currPosition >= key.length() || (start == null)) {
-                // Overshot it - it doesn't exist.
+            if (key.length() == 0 || currPosition >= key.length() || (start == null)) {
                 return null;
             }
 
-            if (currPosition == key.length() - 1) {
+            Character startC = start.c;
+
+            if ((currPosition == key.length() - 1) && (startC != null) && (startC == key.charAt(currPosition))) {
                 // This is the node. 
-                if ((start.c != null) && (start.c == key.charAt(currPosition))) {
-                    return start;
-                }
-                // Gotta make sure the last character is right though.
-                // return null; Don't want to actually return null, because you can keep checking. Let the rest of the code take care of that. 
+                return start;
             }
             
             Character currKeyChar = key.charAt(currPosition);
 
-            if (currKeyChar < start.c) {
+            if (currKeyChar < startC) {
                 return findNode(start.left, key, currPosition);
             }
-            if (currKeyChar > start.c) {
+            if (currKeyChar > startC) {
                 return findNode(start.right, key, currPosition);
             }
             if (currPosition < key.length() - 1) {

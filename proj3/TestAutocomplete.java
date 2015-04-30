@@ -310,6 +310,8 @@ public class TestAutocomplete {
         assertEquals("the", theMatches[0]);
         assertEquals("and", theMatches[1]);
         assertEquals("I", theMatches[2]);
+
+        assertEquals("the", a.topMatch(""));
     }
 
 
