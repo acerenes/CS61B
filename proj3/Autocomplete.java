@@ -182,7 +182,7 @@ public class Autocomplete {
             return;
         }
 
-        if (start.ownWeight != null && start.ownWeight.equals(start.maxSubWeight)) {
+        //if (start.ownWeight != null && start.ownWeight.equals(start.maxSubWeight)) {
 
         // Checking that kth heaviest thing. 
         //WAIT GO BACK HERE
