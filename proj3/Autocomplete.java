@@ -91,7 +91,7 @@ public class Autocomplete {
     public String topMatch(String prefix) {
 
         if (prefix == null) {
-            return null;
+            throw new NullPointerException("Cannot find top match for null prefix.");
         }
 
         ACNode prefixNode = null;
