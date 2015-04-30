@@ -295,7 +295,7 @@ public class Autocomplete {
 
 
         if (prefix == null) {
-            return null;
+            throw new NullPointerException("Trying to find top matches for null prefix.");
         } else if (prefix.length() == 0) {
             prefixChild = this.allWords.root;
         } else {
