@@ -292,6 +292,26 @@ public class TestAutocomplete {
         assertEquals("Brandie", theMatches[9]);
     }
 
+    @Test
+    public void testEmptyPrefix() {
+        String[] terms = new String[] {"the", "and", "I"};
+        double[] weights = {1000.0, 500.0, 250.0};
+        Autocomplete a = new Autocomplete(terms, weights);
+
+        Iterable<String> checkMatches = a.topMatches("", 10);
+        String[] theMatches = new String[3];
+        
+        int i = 0;
+        for (String match : checkMatches) {
+            theMatches[i] = match;
+            i = i + 1;
+        }
+
+        assertEquals("the", theMatches[0]);
+        assertEquals("and", theMatches[1]);
+        assertEquals("I", theMatches[2]);
+    }
+
 
 
 

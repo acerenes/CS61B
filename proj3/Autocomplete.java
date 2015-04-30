@@ -97,36 +97,21 @@ public class Autocomplete {
             return null;
         }
 
-        //System.out.println("Prefix node's character: " + prefixNode.c);
-        // Oh fml I think I know the problem. I go the whole way down, without checking if it's part of the word. DARN IT. 
-
         // Else, you found the node, so you can descend.
         ACNode prefixChild = prefixNode.middle;
 
         // i HOPE THIS IS RIGHT I'M JUST GOING OFF THE DRAWING AT THIS POINT. 
         ACNode endHighestNode = highestNode(prefixChild);
-        //ACNode endHighestNode = highestNode(prefixNode);
-        //System.out.println("endHighestNode's character: " + endHighestNode.c );
-
-        // Maybe I'll just compare prefix child and self. 
-
-
-        // if (endHighestNode == null) {
-        //     // No matching term, I believe. 
-        //     return null;
-        // }
 
         ACNode theHighNode = prefixNode;
-        //System.out.println("prefix Node's own Weight: " + prefixNode.ownWeight);
 
         if ((prefixNode.ownWeight == null) || (endHighestNode != null && (endHighestNode.ownWeight > prefixNode.ownWeight))) {
 
-            //System.out.println("AM I EVEN GOING IN HERE");
+           
             theHighNode = endHighestNode;
         }
 
 
-        // Else, gonna have to do a walking back up the trie...
         return walkBackUp(theHighNode, new StringBuilder(""));
 
 
@@ -147,20 +132,17 @@ public class Autocomplete {
             return null;
         }
 
-        Double lookForThisWeight = start.maxSubWeight;
-        //System.out.println("start.maxsubweight is null: " + (start.maxSubWeight == null));
+        double lookForThisWeight = start.maxSubWeight;
 
-        //System.out.println("start.ownWeight is null: " + (start.ownWeight == null));
-
-        if (start.ownWeight != null && start.ownWeight.equals(lookForThisWeight)) {
+        if (start.ownWeight != null && start.ownWeight == lookForThisWeight) {
             return start;
         }
 
         // Otherwise, it's gotta be in its left, middle, or right. 
-        if ((start.left != null) && start.left.maxSubWeight.equals(lookForThisWeight)) {
+        if ((start.left != null) && start.left.maxSubWeight == lookForThisWeight) {
             return highestNode(start.left);
         }
-        if ((start.right != null) && start.right.maxSubWeight.equals(lookForThisWeight)) {
+        if ((start.right != null) && start.right.maxSubWeight == lookForThisWeight) {
             return highestNode(start.right);
         }
         return highestNode(start.middle);
@@ -309,24 +291,36 @@ public class Autocomplete {
         this.checkOut.clear();
         this.topResults.clear();
 
-        // CALL THE THING
-        ACNode prefixNode = this.allWords.findNode(allWords.root, prefix, 0);
+        ACNode prefixChild = null;
 
-        // If no matching term:
-        if (prefixNode == null) {
+
+        if (prefix == null) {
             return null;
-        }
+        } else if (prefix.length() == 0) {
+            prefixChild = this.allWords.root;
+        } else {
 
-        if (prefixNode.ownWeight != null) {
-            this.topResults.add(prefixNode);
-        }
+            // CALL THE THING
+            ACNode prefixNode = this.allWords.findNode(allWords.root, prefix, 0);
 
-        // Else, found the node, so can descend.
-        ACNode prefixChild = prefixNode.middle;
+            // If no matching term:
+            if (prefixNode == null) {
+                return null;
+            }
+
+            // Else, found the node, so can descend.
+            prefixChild = prefixNode.middle;
+
+            if (prefixNode.ownWeight != null) {
+                this.topResults.add(prefixNode);
+            }
+        }     
 
         // I HOPE THIS IS RIGHT I REALLY HOPE SO.
 
         modifiedTraversal(prefixChild, k);
+
+        
 
         // THEN TAKE THE FIRST K ELEMENTS OF THE ARRAY.
         // ACNode[] allResults = this.topResults.toArray(new ACNode[1]);
