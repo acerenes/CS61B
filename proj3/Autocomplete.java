@@ -114,7 +114,7 @@ public class Autocomplete {
             // i HOPE THIS IS RIGHT I'M JUST GOING OFF THE DRAWING AT THIS POINT. 
             ACNode endHighestNode = highestNode(prefixChild);
 
-            //theHighNode = prefixNode;
+            
 
             if ((prefixNode.ownWeight == null) || (endHighestNode != null && (endHighestNode.ownWeight > prefixNode.ownWeight))) {
 
