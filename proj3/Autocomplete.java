@@ -312,9 +312,10 @@ public class Autocomplete {
             // CALL THE THING
             ACNode prefixNode = this.allWords.findNode(allWords.root, prefix, 0);
 
+
             // If no matching term:
             if (prefixNode == null) {
-                return null;
+                return new ArrayList<String>(); // Return Iterable with no elements in it. 
             }
 
             // Else, found the node, so can descend.
@@ -344,6 +345,8 @@ public class Autocomplete {
 
 
         ArrayList<String> finalResults = new ArrayList<String>();
+
+        
         int resultSize = this.topResults.size();
         int goTil = Math.min(k, resultSize);
         //System.out.println("go til " + goTil);

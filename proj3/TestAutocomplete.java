@@ -1,5 +1,6 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.util.ArrayList;
 
 public class TestAutocomplete {
 
@@ -74,9 +75,6 @@ public class TestAutocomplete {
             theMatches[i] = match;
             i = i + 1;
         }
-
-        Iterable<String> checkMatchesNull = a5.topMatches("smoggy", 1);
-        assertNull(checkMatchesNull);
 
         assertEquals("spite", theMatches[0]);
         assertEquals("spit", theMatches[1]);
@@ -298,7 +296,7 @@ public class TestAutocomplete {
         double[] weights = {1000.0, 500.0, 250.0};
         Autocomplete a = new Autocomplete(terms, weights);
 
-        Iterable<String> checkMatches = a.topMatches("", 10);
+        Iterable<String> checkMatches = a.topMatches("", 20);
         String[] theMatches = new String[3];
         
         int i = 0;
@@ -312,6 +310,9 @@ public class TestAutocomplete {
         assertEquals("I", theMatches[2]);
 
         assertEquals("the", a.topMatch(""));
+
+        ArrayList<String> shouldBeEmpty = (ArrayList<String>) a.topMatches("sdiushiuh", 20);
+        assertTrue(shouldBeEmpty.isEmpty());
     }
 
 
