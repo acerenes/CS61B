@@ -18,6 +18,7 @@ public class Autocomplete {
     PriorityQueue<ACNode> checkOut;
     //LinkedList<ACNode> topResults; // Should contain a bunch of nodes.
     ArrayList<ACNode> topResults; 
+    int numMaxSubWeights = 0;
 
     /**
      * Initializes required data structures from parallel arrays.
@@ -165,14 +166,19 @@ public class Autocomplete {
             return;
         }
 
+        // Maybe have a count of how many submaxweights you've looked at.
+        // If you've looked at more, then just stop. 
+
         // What if, you just don't take the node out of the PQ until you put it in the list. 
         // And don't add unless your weight = your max subweight, or your max subweight is = the max subweight of the last thing in the list? 
             // Because it's only if you're an "along the way" node - 
                 // If your max subweight is less, you should grab the one whose max subweight is their weight first.
                 // If greater, WHY AREN'T YOU ALREADY IN THE QUEUE. 
 
-        // Check to make sure list is within size limits. 
-        if ((this.topResults.size() > numMatches) && (start.maxSubWeight < topResults.get(topResults.size() - 1).ownWeight)) {
+        //Check to make sure list is within size limits. 
+
+
+        if ((this.topResults.size() > numMatches) && ((this.numMaxSubWeights > numMatches) || (start.maxSubWeight < topResults.get(topResults.size() - 1).ownWeight))) {
             return;
         }
 
@@ -217,6 +223,10 @@ public class Autocomplete {
                 } else {
                     //System.out.println("Line 219 Added to position " + (k + 1) + " weight " + start.ownWeight);
                     topResults.add(k + 1, start);
+                }
+
+                if (start.ownWeight.equals(start.maxSubWeight)) {
+                    this.numMaxSubWeights = this.numMaxSubWeights + 1;
                 }
             }
 
@@ -269,6 +279,9 @@ public class Autocomplete {
                 }
                 //this.topResults.add(i, start);
             }
+            if (start.ownWeight.equals(start.maxSubWeight)) {
+                this.numMaxSubWeights = this.numMaxSubWeights + 1;
+            }
         }
 
         if (start.left != null) {
@@ -308,6 +321,7 @@ public class Autocomplete {
         // Should prbly empty the stuff after every run too. Or empty before every run. 
         this.checkOut.clear();
         this.topResults.clear();
+        this.numMaxSubWeights = 0;
 
         ACNode prefixChild = null;
 

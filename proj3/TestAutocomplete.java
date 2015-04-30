@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class TestAutocomplete {
 
-    /*@Test
+    @Test
     public void testStructureBasic() {
         String[] terms = new String[] {"smog", "buck", "sad"};
         double[] weights = {(double) 5, (double) 10, (double) 12};
@@ -313,7 +313,7 @@ public class TestAutocomplete {
 
         ArrayList<String> shouldBeEmpty = (ArrayList<String>) a.topMatches("sdiushiuh", 20);
         assertTrue(shouldBeEmpty.isEmpty());
-    }*/
+    }
 
     @Test
     public void testWhyStackOverflow() {
