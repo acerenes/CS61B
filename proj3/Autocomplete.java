@@ -532,55 +532,49 @@ public class Autocomplete {
         }
 
         public ACNode put(ACNode start, ACNode startParent, String key, Double newWeight, int keyPosition) {
-            //System.out.println("Inserting " + key);
+
+            int i = key.length();
+
             Character currKeyChar = key.charAt(keyPosition);
 
             // Maybe I'll just do a check for contains here.
-            if ((keyPosition == key.length() - 1) && (start != null) && (start.c == currKeyChar) && (start.ownWeight != null)) {
+            if ((keyPosition == i - 1) && (start != null) && (start.c == currKeyChar) && (start.ownWeight != null)) {
                 // THEN IT CONTAINS IT. GET MAD. 
                 throw new IllegalArgumentException("Duplicate input terms.");
             }
 
 
             if (start == null || start.c == null) {
-                //System.out.println("Line 97");
                 start = new ACNode();
                 start.c = currKeyChar;
             }
 
             if (currKeyChar < start.c) {
-                //System.out.println("Line 103");
                 
                 start.left = put(start.left, startParent, key, newWeight, keyPosition);
                 start.left.parent = startParent;
-                //start.left.maxSubWeight = subMaxWeight(start.left);
+
             } else if (currKeyChar > start.c) {
-                //System.out.println("Line 106");
                 
                 start.right = put(start.right, startParent, key, newWeight, keyPosition);
                 start.right.parent = startParent;
-                //start.right.maxSubWeight = subMaxWeight(start.right);
-            } else if (keyPosition < key.length() - 1) {
-                //System.out.println("LIne 109");
+
+            } else if (keyPosition < i - 1) {
+
                 start.middle = put(start.middle, start, key, newWeight, keyPosition + 1);
                 start.middle.parent = start;
-                //start.middle.maxSubWeight = subMaxWeight(start.middle);
+                
             } else {
                 // I believe this is the final node. 
 
-                // System.out.println("Line 112");
-                //System.out.println("Line 113 Start is null: " + (start == null));
                 start.ownWeight = newWeight;
-                //System.out.println("line 115 start is null: " + (start == null));
-                // DO SOMETHING ABOUT MAX SUB WEIGHT HERE. 
-                //start.maxSubWeight = subMaxWeight(start);
                 start.parent = startParent;
 
             }
 
             // TRY DOING THE MAXSUBWEIGHT STUFF NOWWWWW
             // Compare all 3 children, your curr maxsubweight, your curr weight, and the current thing you're inserting's weight (jk that's yourself). Take the max, that's your maxsubweight. 
-            Double maxWeight = (double) 0; // Your weight can't be negative.
+            Double maxWeight = 0.0; // Your weight can't be negative.
             // Your curr maxsubweight.
             if (start.maxSubWeight != null) {
                 maxWeight = Math.max(maxWeight, start.maxSubWeight);
@@ -606,40 +600,6 @@ public class Autocomplete {
             return start;
         }
 
-
-        /*// Changing it as I go too.....
-        public Double subMaxWeight(ACNode start) {
-
-            // What if I start from bottom
-            // WAIT WHAT IF I SET THE SUBMAX WEIGHT ONLY WHEN I'M DONE WITH THE WORD. 
-
-            //System.out.println("Line 126 Start is null: " + (start == null));
-            if (start == null) {
-                //System.out.println("Line 128");
-                //System.out.println("Line 129 Start is null: " + (start == null));
-                //System.out.println("Start.maxSubWeight = " + start.maxSubWeight);
-                //start.maxSubWeight = (double) 0;
-                return (double) 0;
-
-            } else if (start.left == null && start.right == null && start.middle == null) {
-                //System.out.println("How often do you just take your own weight; letter = " + start.c);
-                start.maxSubWeight = start.ownWeight;
-
-            } else {
-                //System.out.println("How often do you actually have to calculate / compare; letter = " + start.c);
-                Double rightAndLeftMax = Math.max(subMaxWeight(start.left), subMaxWeight(start.right));
-
-                if (start.ownWeight == null) {
-                    // Then don't have to worry about own weight.
-                    start.maxSubWeight = Math.max(rightAndLeftMax, subMaxWeight(start.middle));
-                } else {
-                    Double selfAndMiddleMax = Math.max(start.ownWeight, subMaxWeight(start.middle));
-                    start.maxSubWeight = Math.max(rightAndLeftMax, selfAndMiddleMax);
-                }
-            }
-
-            return start.maxSubWeight;
-        }*/
 
     }
 }
