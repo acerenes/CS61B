@@ -18,7 +18,6 @@ public class Autocomplete {
     PriorityQueue<ACNode> checkOut;
     //LinkedList<ACNode> topResults; // Should contain a bunch of nodes.
     ArrayList<ACNode> topResults; 
-    ArrayList<ACNode> alongTheWay;
 
     /**
      * Initializes required data structures from parallel arrays.
@@ -43,7 +42,6 @@ public class Autocomplete {
         // And a list or smth???? 
         //topResults = new LinkedList<ACNode>();
         topResults = new ArrayList<ACNode>();
-        alongTheWay = new ArrayList<ACNode>();
 
 
         
@@ -173,16 +171,17 @@ public class Autocomplete {
     public void modifiedTraversal(ACNode start, int numMatches) {
         //System.out.println("Calling modified traversal");
         if (start == null) {
-            System.out.println("Returning line 175");
             return;
         }
 
-        // Check to make sure list is within size limits.
+        // Check to make sure list is within size limits. 
         if ((this.topResults.size() > numMatches) && (start.maxSubWeight < topResults.get(topResults.size() - 1).ownWeight)) {
             return;
         }
 
-        //if (start.ownWeight != null && start.ownWeight.equals(start.maxSubWeight)) {
+        // How on earth did buried get added 2x???
+        // I think it's cause you add yourself to topResults, but also to the queue. 
+        // URGGGHHHH
 
         // Checking that kth heaviest thing. 
         //WAIT GO BACK HERE
@@ -231,67 +230,8 @@ public class Autocomplete {
                 topResults.remove(topResults.size() - 1);
             }
             topResults.add(start);*/
-        // } else if (start.ownWeight != null && !topResults.contains(start)) {
-        //     // If you just add every single thing along the way that works, it's not going to be in greatest order. 
-        //     // What if do, 2 lists? One is the official thing, and the other, you add the nodes you see along the way. 
-        //     // Once the last element of officlal list is smaller than first element of along-list, terminate. And merge into official list.
-
-        //     int i = this.topResults.size();
-        //     //System.out.println("i = " + i);
-
-        //     if (i == 0) {
-        //         //System.out.println("Line 196 adding node with weight " + start.ownWeight);
-        //         System.out.println("Line 228, adding node at end with weight " + start.ownWeight);
-        //         this.topResults.add(start);
-        //     } else if (i == 1) {
-        //         //if (this.topResults.getLast().ownWeight < start.ownWeight) {
-        //         if (this.topResults.get(0).ownWeight < start.ownWeight) {
-        //             //this.topResults.addFirst(start);
-        //             //System.out.println("Line 202 adding node, to front, with weight " + start.ownWeight);
-        //             System.out.println("Line 235, adding node at front with weight " + start.ownWeight);
-        //             this.topResults.add(0, start);
-        //         } else {
-        //             //this.topResults.addLast(start);
-        //             //System.out.println("Line 206 adding node with weight " + start.ownWeight);
-        //             System.out.println("Line 240, adding node to end with weight " + start.ownWeight);
-        //             this.topResults.add(start);
-        //         }
-        //     } else {
-
-        //         int j = i - 1; // Because 0 indexing.
-                
-
-        //         while (j >= 0 && this.topResults.get(j).ownWeight < start.ownWeight) {
-        //             //System.out.println("Line 215, j = " + j);
-        //             j = j - 1;
-        //         }
-
-        //         if (j == i - 1) {
-        //             // Never moved the pointer, so stick onto last.
-        //             //this.topResults.addLast(start);
-        //             //System.out.println("Line 221 added node with weight " + start.ownWeight);
-        //             //System.out.println("start weight = " + start.ownWeight + " being added to end");
-        //             System.out.println("Line 258, adding node with weight " + start.ownWeight);
-        //             this.topResults.add(start);
-        //         } else {
-        //             //System.out.println("Line 224 added node with weight " + start.ownWeight + " in position " + j + 1);
-        //             //this.topResults.add(j, start);
-        //             //System.out.println("start weight = " + start.ownWeight + " at position " + (j + 1));
-        //             System.out.println("Line 264, adding node at position " + (j + 1) + " with weight " + start.ownWeight);
-        //             this.topResults.add(j + 1, start);
-        //         }
-        //         //this.topResults.add(i, start);
-        //     }
-        // }
-
-
-        } else if (start.ownWeight != null && !alongTheWay.contains(start)) {
-            System.out.println("Just into alongTheWay then " + start.c);
-            // If you just add every single thing along the way that works, it's not going to be in greatest order. 
-            // What if do, 2 lists? One is the official thing, and the other, you add the nodes you see along the way. 
-            // Once the last element of officlal list is smaller than first element of along-list, terminate. And merge into official list.
-
-            int i = this.alongTheWay.size();
+        } else if (start.ownWeight != null && !topResults.contains(start)) {
+            int i = this.topResults.size();
             //System.out.println("i = " + i);
 
             if (i == 0) {
@@ -299,7 +239,7 @@ public class Autocomplete {
                 this.topResults.add(start);
             } else if (i == 1) {
                 //if (this.topResults.getLast().ownWeight < start.ownWeight) {
-                if (this.alongTheWay.get(0).ownWeight < start.ownWeight) {
+                if (this.topResults.get(0).ownWeight < start.ownWeight) {
                     //this.topResults.addFirst(start);
                     //System.out.println("Line 242 adding node, to front, with weight " + start.ownWeight);
                     this.topResults.add(0, start);
@@ -312,7 +252,8 @@ public class Autocomplete {
 
                 int j = i - 1; // Because 0 indexing.
                 
-                while (j >= 0 && this.alongTheWay.get(j).ownWeight < start.ownWeight) {
+
+                while (j >= 0 && this.topResults.get(j).ownWeight < start.ownWeight) {
                     //System.out.println("Line 215, j = " + j);
                     j = j - 1;
                 }
@@ -332,9 +273,6 @@ public class Autocomplete {
                 //this.topResults.add(i, start);
             }
         }
-
-        
-
 
         if (start.left != null) {
             this.checkOut.add(start.left);
@@ -370,7 +308,6 @@ public class Autocomplete {
         // Should prbly empty the stuff after every run too. Or empty before every run. 
         this.checkOut.clear();
         this.topResults.clear();
-        this.alongTheWay.clear();
 
         // CALL THE THING
         ACNode prefixNode = this.allWords.findNode(allWords.root, prefix, 0);
