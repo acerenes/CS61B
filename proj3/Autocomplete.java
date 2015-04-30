@@ -293,10 +293,9 @@ public class Autocomplete {
         if (start.middle != null) {
             this.checkOut.add(start.middle);
         }
-        System.out.print("top results length: " + topResults.size());
-        System.out.println("num matches: " + numMatches);
-        ACNode p = this.checkOut.poll();
-        modifiedTraversal(p, numMatches);
+        //System.out.print("top results length: " + topResults.size());
+        //System.out.println("num matches: " + numMatches);
+        modifiedTraversal(this.checkOut.poll(), numMatches);
 
     }
 
