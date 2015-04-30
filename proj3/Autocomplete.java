@@ -169,12 +169,13 @@ public class Autocomplete {
 
 
     public void modifiedTraversal(ACNode start, int numMatches) {
+        //System.out.println("Calling modified traversal");
         if (start == null) {
             return;
         }
 
         // Check to make sure list is within size limits. 
-        if (this.topResults.size() > numMatches) {
+        if ((this.topResults.size() > numMatches) && (start.maxSubWeight < topResults.get(topResults.size() - 1).ownWeight)) {
             return;
         }
 
@@ -184,7 +185,7 @@ public class Autocomplete {
 
         // Checking that kth heaviest thing. 
         //WAIT GO BACK HERE
-        if ((this.topResults.size() == numMatches) && (start.ownWeight != null)) {
+        if ((this.topResults.size() == numMatches) && (start.ownWeight != null) && (start.ownWeight > topResults.get(topResults.size() - 1).ownWeight)) {
             //System.out.println("Checking kth thing - " + start.ownWeight);
 
             //if (start.ownWeight <= topResults.getLast().ownWeight) {
@@ -196,20 +197,30 @@ public class Autocomplete {
             // Check to make sure you're not already in topResults already, maybe.
             // It's not this. Because it's not going in here.
 
-            if ((start.ownWeight <= topResults.get(numMatches - 1).ownWeight)) {
-                return;
-            }
 
-            //while (this.topResults.getLast().ownWeight <= start.ownWeight) {
-            // Try an indexing thing instead.
-            if (!topResults.contains(start)) {        
-                int k = this.topResults.size() - 1;
+            // THIS HERE USED TO BE HERE. 
+            /*if ((start.ownWeight <= topResults.get(numMatches - 1).ownWeight)) {
+                return;
+            }*/
+
+
+            if (!topResults.contains(start)) { 
+                int m = this.topResults.size() - 1;   
+                int k = m;
                 while (this.topResults.get(k).ownWeight < start.ownWeight) {
                     k = k - 1;
                 }
-                //System.out.println("Line 179 adding node with weight " + start.ownWeight);
+                //System.out.println("removing node with weight " + topResults.get(topResults.size() - 1).ownWeight);
+
                 topResults.remove((topResults.size()) - 1); // Remove the last thing? 
-                topResults.add(k + 1, start);
+                if (k == m) {
+                    // DIdn't move, so add to end.
+                    //System.out.println("Line 216 Added to end: " + start.ownWeight);
+                    topResults.add(start);
+                } else {
+                    //System.out.println("Line 219 Added to position " + (k + 1) + " weight " + start.ownWeight);
+                    topResults.add(k + 1, start);
+                }
             }
 
 
@@ -224,17 +235,17 @@ public class Autocomplete {
             //System.out.println("i = " + i);
 
             if (i == 0) {
-                //System.out.println("Line 196 adding node with weight " + start.ownWeight);
+                //System.out.println("Line 236 adding node to end  with weight " + start.ownWeight);
                 this.topResults.add(start);
             } else if (i == 1) {
                 //if (this.topResults.getLast().ownWeight < start.ownWeight) {
                 if (this.topResults.get(0).ownWeight < start.ownWeight) {
                     //this.topResults.addFirst(start);
-                    //System.out.println("Line 202 adding node, to front, with weight " + start.ownWeight);
+                    //System.out.println("Line 242 adding node, to front, with weight " + start.ownWeight);
                     this.topResults.add(0, start);
                 } else {
                     //this.topResults.addLast(start);
-                    //System.out.println("Line 206 adding node with weight " + start.ownWeight);
+                    //System.out.println("Line 246 adding node to end with weight " + start.ownWeight);
                     this.topResults.add(start);
                 }
             } else {
@@ -251,12 +262,12 @@ public class Autocomplete {
                     // Never moved the pointer, so stick onto last.
                     //this.topResults.addLast(start);
                     //System.out.println("Line 221 added node with weight " + start.ownWeight);
-                    //System.out.println("start weight = " + start.ownWeight + " being added to end");
+                    //System.out.println("Line 263 start weight = " + start.ownWeight + " being added to end");
                     this.topResults.add(start);
                 } else {
                     //System.out.println("Line 224 added node with weight " + start.ownWeight + " in position " + j + 1);
                     //this.topResults.add(j, start);
-                    //System.out.println("start weight = " + start.ownWeight + " at position " + (j + 1));
+                    //System.out.println("Line 268 start weight = " + start.ownWeight + " at position " + (j + 1));
                     this.topResults.add(j + 1, start);
                 }
                 //this.topResults.add(i, start);
@@ -331,9 +342,11 @@ public class Autocomplete {
 
         ArrayList<String> finalResults = new ArrayList<String>();
         int resultSize = this.topResults.size();
-        for (int i = 0; i < k && i < resultSize; i = i + 1) {
+        int goTil = Math.min(k, resultSize);
+        //System.out.println("go til " + goTil);
+        for (int i = 0; i < goTil; i = i + 1) {
             ACNode currNode = this.topResults.get(i);
-            //System.out.println(walkBackUp(currNode, "") + " weight" + currNode.ownWeight);
+            //System.out.println(walkBackUp(currNode, new StringBuilder("")) + " weight" + currNode.ownWeight);
             finalResults.add(walkBackUp(currNode, new StringBuilder("")));
         }
 
