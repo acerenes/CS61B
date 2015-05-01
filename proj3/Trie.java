@@ -43,7 +43,6 @@ public class Trie {
         if (isFullWord) {
             return endNode.exists && (endNode.c == lastLetter);
         } else {
-            // Would only be false if null - but already null checked - so if it's made it this far, true. 
             // But don't forget to check last letter.
             return endNode.c == lastLetter;
         }
@@ -123,7 +122,7 @@ public class Trie {
             start.c = ch;
         }
 
-        // Create child: pass in parent, key, and position of the character the child needs to have. 
+        // Create child: pass in parent, key, position of the character the child needs to have.
 
         if (position < key.length() - 1) {
             char nextChar = key.charAt(position + 1);

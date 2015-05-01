@@ -182,12 +182,10 @@ public class Autocomplete {
         }
         int resultSize = this.topResults.size(); 
         ACNode lastResult = null; Double lastWeight = null; Double startWeight = start.ownWeight;
-
         if (resultSize > 0) {
             lastResult = topResults.get(resultSize - 1);
             lastWeight = lastResult.ownWeight;
         }
-
         // Sorry for weird nesting - character count problems.
         if (resultSize > numMatches) {
             if ((numMaxSubWeights > numMatches)) {
@@ -197,40 +195,14 @@ public class Autocomplete {
                 return;
             }
         }
-
         // Checking that kth heaviest thing - might have to remove it to keep size / numMatches. 
         if ((resultSize == numMatches) && (startWeight != null) && (startWeight > lastWeight)) {
-
-            // Hmmm .contains is linear time. Do I need it?
-            // I don't think so actually. LEMME TRY.LDRUGHDRSLIGHDRLIGHDRSLIUGHDLSIGUHDLSIGHLDSIUHGLDSIUGHDLIUHGDLIHGDLSIGUDHSLIU
-            // if (!topResults.contains(start)) { 
-            //     int m = this.topResults.size() - 1;   
-            //     int k = m;
-            //     while (this.topResults.get(k).ownWeight < start.ownWeight) {
-            //         k = k - 1;
-            //     }
-
-            //     // Have to remove the last thing to keep within size.
-            //     topResults.remove((topResults.size()) - 1);
-
-            //     if (k == m) {
-            //         // Didn't move, so add to end.
-            //         topResults.add(start);
-            //     } else {
-            //         topResults.add(k + 1, start);
-            //     }
-
-            //     if (start.ownWeight.equals(start.maxSubWeight)) {
-            //         this.numMaxSubWeights = this.numMaxSubWeights + 1;
-            //     }
-            // }
 
             int m = this.topResults.size() - 1;   
             int k = m;
             while (this.topResults.get(k).ownWeight < start.ownWeight) {
                 k = k - 1;
             }
-
             // Have to remove the last thing to keep within size.
             topResults.remove((topResults.size()) - 1);
 
@@ -244,39 +216,6 @@ public class Autocomplete {
             if (start.ownWeight.equals(start.maxSubWeight)) {
                 this.numMaxSubWeights = this.numMaxSubWeights + 1;
             }
-
-        // ACTUALLY DO I EVER NEED TO CHECK IF TOPRESULTS CONTAINS SOMETHING???
-        // I'll never call on it ever again, will I.
-        // Let's hope not. 
-
-        // } else if (start.ownWeight != null && !topResults.contains(start)) {
-        //     int i = this.topResults.size();
-        //     if (i == 0) {
-        //         this.topResults.add(start);
-        //     } else if (i == 1) {
-        //         if (this.topResults.get(0).ownWeight < start.ownWeight) {
-        //             this.topResults.add(0, start);
-        //         } else {
-        //             this.topResults.add(start);
-        //         }
-        //     } else {
-        //         int j = i - 1; // Because 0 indexing.
-        //         while (j >= 0 && this.topResults.get(j).ownWeight < start.ownWeight) {
-        //             j = j - 1;
-        //         }
-        //         if (j == i - 1) {
-        //             // Never moved the pointer, so stick onto last.
-        //             this.topResults.add(start);
-        //         } else {
-        //             this.topResults.add(j + 1, start);
-        //         } 
-        //     }
-        //     if (start.ownWeight.equals(start.maxSubWeight)) {
-        //         this.numMaxSubWeights = this.numMaxSubWeights + 1;
-        //     }
-        // }
-
-
         } else if (start.ownWeight != null) {
             int i = this.topResults.size();
             if (i == 0) {
@@ -304,8 +243,6 @@ public class Autocomplete {
                 this.numMaxSubWeights = this.numMaxSubWeights + 1;
             }
         }
-
-
         if (start.left != null) {
             this.checkOut.add(start.left);
         }
