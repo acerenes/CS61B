@@ -147,7 +147,6 @@ public class Autocomplete {
      */
     public String walkBackUp(ACNode start, StringBuilder soFar) {
         if (start == null) {
-            // I'm going to assume you're never going to call this on a null starting node, cause that's just too hard. 
             // So I'm going to assume this is, you got all the way up, to no more parent. 
             return soFar.toString();
         }
@@ -189,99 +188,74 @@ public class Autocomplete {
      * @param numMatches the number of matches we are looking for.
      */
     public void modifiedTraversal(ACNode start, int numMatches) {
-        //System.out.println("Calling modified traversal");
         if (start == null) {
             return;
         }
 
-        // Maybe have a count of how many submaxweights you've looked at.
-        // If you've looked at more, then just stop. 
+        //Check to make sure list is within size limits.
+        int resultSize = this.topResults.size(); 
 
-        // What if, you just don't take the node out of the PQ until you put it in the list. 
-        // And don't add unless your weight = your max subweight, or your max subweight is = the max subweight of the last thing in the list? 
-            // Because it's only if you're an "along the way" node - 
-                // If your max subweight is less, you should grab the one whose max subweight is their weight first.
-                // If greater, WHY AREN'T YOU ALREADY IN THE QUEUE. 
+        // if ((resultSize > numMatches) && ((numMaxSubWeights > numMatches) || (start.maxSubWeight < topResults.get(resultSize - 1).ownWeight))) {
+        //     return;
 
-        //Check to make sure list is within size limits. 
+        // } 
 
+        ACNode lastResult = null;
+        Double lastWeight = null;
+        Double startWeight = start.ownWeight;
 
-        if ((this.topResults.size() > numMatches) && ((this.numMaxSubWeights > numMatches) || (start.maxSubWeight < topResults.get(topResults.size() - 1).ownWeight))) {
-            return;
+        if (resultSize > 0) {
+            lastResult = topResults.get(resultSize - 1);
+            lastWeight = lastResult.ownWeight;
+        }
+
+        // DARN YOU CHARACTER COUNT.
+        if (resultSize > numMatches) {
+            if ((numMaxSubWeights > numMatches)) {
+                return;
+            }
+            if ((start.maxSubWeight < topResults.get(resultSize - 1).ownWeight)) {
+                return;
+            }
         }
 
 
-        // How on earth did buried get added 2x???
-        // I think it's cause you add yourself to topResults, but also to the queue. 
-        // URGGGHHHH
-
         // Checking that kth heaviest thing. 
-        //WAIT GO BACK HERE
-        if ((this.topResults.size() == numMatches) && (start.ownWeight != null) && (start.ownWeight > topResults.get(topResults.size() - 1).ownWeight)) {
-            //System.out.println("Checking kth thing - " + start.ownWeight);
+        if ((resultSize == numMatches) && (startWeight != null) && (startWeight > lastWeight)) {
 
-            //if (start.ownWeight <= topResults.getLast().ownWeight) {
-            // if (start.ownWeight <= topResults.get(topResults.size() - 1).ownWeight) {
-            //     // Can terminate search!
-            //     return;
-            // }
+            // DARN CHARACTER COUNT.
+            // if (start.ownWeight > topResults.get(resultSize - 1).ownWeight) {
 
-            // Check to make sure you're not already in topResults already, maybe.
-            // It's not this. Because it's not going in here.
+                if (!topResults.contains(start)) { 
+                    int m = this.topResults.size() - 1;   
+                    int k = m;
+                    while (this.topResults.get(k).ownWeight < start.ownWeight) {
+                        k = k - 1;
+                    }
 
+                    topResults.remove((topResults.size()) - 1); // Remove the last thing? 
+                    if (k == m) {
+                        // DIdn't move, so add to end.
+                        topResults.add(start);
+                    } else {
+                        topResults.add(k + 1, start);
+                    }
 
-            // THIS HERE USED TO BE HERE. 
-            /*if ((start.ownWeight <= topResults.get(numMatches - 1).ownWeight)) {
-                return;
-            }*/
-
-
-            if (!topResults.contains(start)) { 
-                int m = this.topResults.size() - 1;   
-                int k = m;
-                while (this.topResults.get(k).ownWeight < start.ownWeight) {
-                    k = k - 1;
+                    if (start.ownWeight.equals(start.maxSubWeight)) {
+                        this.numMaxSubWeights = this.numMaxSubWeights + 1;
+                    }
                 }
-                //System.out.println("removing node with weight " + topResults.get(topResults.size() - 1).ownWeight);
+            
 
-                topResults.remove((topResults.size()) - 1); // Remove the last thing? 
-                if (k == m) {
-                    // DIdn't move, so add to end.
-                    //System.out.println("Line 216 Added to end: " + start.ownWeight);
-                    topResults.add(start);
-                } else {
-                    //System.out.println("Line 219 Added to position " + (k + 1) + " weight " + start.ownWeight);
-                    topResults.add(k + 1, start);
-                }
-
-                if (start.ownWeight.equals(start.maxSubWeight)) {
-                    this.numMaxSubWeights = this.numMaxSubWeights + 1;
-                }
-            }
-
-
-            /*while (this.topResults.get(this.topResults.size() -1).ownWeight <= start.ownWeight) {
-                System.out.println("LIne 169 DO I EVER EVEN GO IN HERE WHERE I'M TRYING TO scootch all the stuff over");
-                //topResults.removeLast();
-                topResults.remove(topResults.size() - 1);
-            }
-            topResults.add(start);*/
         } else if (start.ownWeight != null && !topResults.contains(start)) {
             int i = this.topResults.size();
-            //System.out.println("i = " + i);
 
             if (i == 0) {
-                //System.out.println("Line 236 adding node to end  with weight " + start.ownWeight);
                 this.topResults.add(start);
             } else if (i == 1) {
-                //if (this.topResults.getLast().ownWeight < start.ownWeight) {
                 if (this.topResults.get(0).ownWeight < start.ownWeight) {
-                    //this.topResults.addFirst(start);
-                    //System.out.println("Line 242 adding node, to front, with weight " + start.ownWeight);
                     this.topResults.add(0, start);
                 } else {
-                    //this.topResults.addLast(start);
-                    //System.out.println("Line 246 adding node to end with weight " + start.ownWeight);
                     this.topResults.add(start);
                 }
             } else {
@@ -290,23 +264,16 @@ public class Autocomplete {
                 
 
                 while (j >= 0 && this.topResults.get(j).ownWeight < start.ownWeight) {
-                    //System.out.println("Line 215, j = " + j);
                     j = j - 1;
                 }
 
                 if (j == i - 1) {
                     // Never moved the pointer, so stick onto last.
-                    //this.topResults.addLast(start);
-                    //System.out.println("Line 221 added node with weight " + start.ownWeight);
-                    //System.out.println("Line 263 start weight = " + start.ownWeight + " being added to end");
                     this.topResults.add(start);
                 } else {
-                    //System.out.println("Line 224 added node with weight " + start.ownWeight + " in position " + j + 1);
-                    //this.topResults.add(j, start);
-                    //System.out.println("Line 268 start weight = " + start.ownWeight + " at position " + (j + 1));
                     this.topResults.add(j + 1, start);
                 }
-                //this.topResults.add(i, start);
+                
             }
             if (start.ownWeight.equals(start.maxSubWeight)) {
                 this.numMaxSubWeights = this.numMaxSubWeights + 1;
@@ -322,8 +289,6 @@ public class Autocomplete {
         if (start.middle != null) {
             this.checkOut.add(start.middle);
         }
-        //System.out.print("top results length: " + topResults.size());
-        //System.out.println("num matches: " + numMatches);
         modifiedTraversal(this.checkOut.poll(), numMatches);
 
     }
