@@ -192,19 +192,12 @@ public class Autocomplete {
             return;
         }
         int resultSize = this.topResults.size(); 
-
-        // if ((resultSize > numMatches) && ((numMaxSubWeights > numMatches) || (start.maxSubWeight < topResults.get(resultSize - 1).ownWeight))) {
-        //     return;
-
-        // } 
-
         ACNode lastResult = null; Double lastWeight = null; Double startWeight = start.ownWeight;
 
         if (resultSize > 0) {
             lastResult = topResults.get(resultSize - 1);
             lastWeight = lastResult.ownWeight;
         }
-
         // DARN YOU CHARACTER COUNT.
         if (resultSize > numMatches) {
             if ((numMaxSubWeights > numMatches)) {
@@ -215,12 +208,8 @@ public class Autocomplete {
             }
         }
 
-
         // Checking that kth heaviest thing. 
         if ((resultSize == numMatches) && (startWeight != null) && (startWeight > lastWeight)) {
-
-            // DARN CHARACTER COUNT.
-            // if (start.ownWeight > topResults.get(resultSize - 1).ownWeight) {
 
             if (!topResults.contains(start)) { 
                 int m = this.topResults.size() - 1;   
@@ -236,16 +225,13 @@ public class Autocomplete {
                 } else {
                     topResults.add(k + 1, start);
                 }
-
                 if (start.ownWeight.equals(start.maxSubWeight)) {
                     this.numMaxSubWeights = this.numMaxSubWeights + 1;
                 }
             }
             
-
         } else if (start.ownWeight != null && !topResults.contains(start)) {
             int i = this.topResults.size();
-
             if (i == 0) {
                 this.topResults.add(start);
             } else if (i == 1) {
@@ -255,27 +241,21 @@ public class Autocomplete {
                     this.topResults.add(start);
                 }
             } else {
-
                 int j = i - 1; // Because 0 indexing.
-                
-
                 while (j >= 0 && this.topResults.get(j).ownWeight < start.ownWeight) {
                     j = j - 1;
                 }
-
                 if (j == i - 1) {
                     // Never moved the pointer, so stick onto last.
                     this.topResults.add(start);
                 } else {
                     this.topResults.add(j + 1, start);
-                }
-                
+                } 
             }
             if (start.ownWeight.equals(start.maxSubWeight)) {
                 this.numMaxSubWeights = this.numMaxSubWeights + 1;
             }
         }
-
         if (start.left != null) {
             this.checkOut.add(start.left);
         }
@@ -286,7 +266,6 @@ public class Autocomplete {
             this.checkOut.add(start.middle);
         }
         modifiedTraversal(this.checkOut.poll(), numMatches);
-
     }
 
 
