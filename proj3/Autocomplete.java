@@ -191,8 +191,6 @@ public class Autocomplete {
         if (start == null) {
             return;
         }
-
-        //Check to make sure list is within size limits.
         int resultSize = this.topResults.size(); 
 
         // if ((resultSize > numMatches) && ((numMaxSubWeights > numMatches) || (start.maxSubWeight < topResults.get(resultSize - 1).ownWeight))) {
@@ -200,9 +198,7 @@ public class Autocomplete {
 
         // } 
 
-        ACNode lastResult = null;
-        Double lastWeight = null;
-        Double startWeight = start.ownWeight;
+        ACNode lastResult = null; Double lastWeight = null; Double startWeight = start.ownWeight;
 
         if (resultSize > 0) {
             lastResult = topResults.get(resultSize - 1);
@@ -226,25 +222,25 @@ public class Autocomplete {
             // DARN CHARACTER COUNT.
             // if (start.ownWeight > topResults.get(resultSize - 1).ownWeight) {
 
-                if (!topResults.contains(start)) { 
-                    int m = this.topResults.size() - 1;   
-                    int k = m;
-                    while (this.topResults.get(k).ownWeight < start.ownWeight) {
-                        k = k - 1;
-                    }
-
-                    topResults.remove((topResults.size()) - 1); // Remove the last thing? 
-                    if (k == m) {
-                        // DIdn't move, so add to end.
-                        topResults.add(start);
-                    } else {
-                        topResults.add(k + 1, start);
-                    }
-
-                    if (start.ownWeight.equals(start.maxSubWeight)) {
-                        this.numMaxSubWeights = this.numMaxSubWeights + 1;
-                    }
+            if (!topResults.contains(start)) { 
+                int m = this.topResults.size() - 1;   
+                int k = m;
+                while (this.topResults.get(k).ownWeight < start.ownWeight) {
+                    k = k - 1;
                 }
+
+                topResults.remove((topResults.size()) - 1); // Remove the last thing? 
+                if (k == m) {
+                    // DIdn't move, so add to end.
+                    topResults.add(start);
+                } else {
+                    topResults.add(k + 1, start);
+                }
+
+                if (start.ownWeight.equals(start.maxSubWeight)) {
+                    this.numMaxSubWeights = this.numMaxSubWeights + 1;
+                }
+            }
             
 
         } else if (start.ownWeight != null && !topResults.contains(start)) {
@@ -308,7 +304,7 @@ public class Autocomplete {
         // Trying to find the k top matches for non-positive k. 
 
         if (k <= 0) {
-            throw new IllegalArgumentException("Trying to find the k top matches for non-positive k.");
+            throw new IllegalArgumentException("K must be positive for topMatches.");
         }
 
         // Should prbly empty the stuff after every run too. Or empty before every run. 
@@ -368,7 +364,6 @@ public class Autocomplete {
         //System.out.println("go til " + goTil);
         for (int i = 0; i < goTil; i = i + 1) {
             ACNode currNode = this.topResults.get(i);
-            //System.out.println(walkBackUp(currNode, new StringBuilder("")) + " weight" + currNode.ownWeight);
             finalResults.add(walkBackUp(currNode, new StringBuilder("")));
         }
 
@@ -392,8 +387,9 @@ public class Autocomplete {
     }
     /**
      * Test client. Reads the data from the file, 
-     * then repeatedly reads autocomplete queries from standard input and prints out the top k matching terms.
-     * @param args takes the name of an input file and an integer k as command-line arguments
+     * then repeatedly reads autocomplete queries from std input 
+     * and prints out the top k matching terms.
+     * @param args takes name of an input file and an integer k as command-line arguments
      */
     public static void main(String[] args) {
         // initialize autocomplete data structure
@@ -413,8 +409,9 @@ public class Autocomplete {
         int k = Integer.parseInt(args[1]);
         while (StdIn.hasNextLine()) {
             String prefix = StdIn.readLine();
-            for (String term : autocomplete.topMatches(prefix, k))
+            for (String term : autocomplete.topMatches(prefix, k)) {
                 StdOut.printf("%14.1f  %s\n", autocomplete.weightOf(term), term);
+            }
         }
     }
 
@@ -425,16 +422,16 @@ public class Autocomplete {
      */
     public class ACNode {
 
-            Character c; 
-            Double ownWeight;
-            Double maxSubWeight;
+        Character c; 
+        Double ownWeight;
+        Double maxSubWeight;
 
-            ACNode left;
-            ACNode right;
-            ACNode middle;
+        ACNode left;
+        ACNode right;
+        ACNode middle;
 
-            ACNode parent;
-        }
+        ACNode parent;
+    }
 
 
     /**
@@ -473,7 +470,7 @@ public class Autocomplete {
                 return null;
             }
             if (key.length() == 0) {
-                throw new IllegalArgumentException("Tried to check if TST contains string of length 0.");
+                throw new IllegalArgumentException("TST does not contain string of length 0.");
             }
             //ACNode x = get(this.root, key, 0); // Trying to get the Node for the end of the word. 
             ACNode x = findNode(this.root, key, 0);
@@ -488,34 +485,37 @@ public class Autocomplete {
          * Returns endNode for the key. 
          * @param start which node we are starting from.
          * @param key the string whose end we are searching for.
-         * @param currPosition the current position in the string key we are looking for.
+         * @param currPos the current position in the string key we are looking for.
          * @return node that is the key's end. 
          */
-        public ACNode findNode(ACNode start, String key, int currPosition) {
+        public ACNode findNode(ACNode start, String key, int currPos) {
             if (key == null) {
                 throw new NullPointerException("In findNode, tried to get a null key.");
             }
-            if (key.length() == 0 || currPosition >= key.length() || (start == null)) {
+
+            int keyL = key.length();
+
+            if (keyL == 0 || currPos >= keyL || (start == null)) {
                 return null;
             }
 
             Character startC = start.c;
 
-            if ((currPosition == key.length() - 1) && (startC != null) && (startC == key.charAt(currPosition))) {
+            if ((currPos == keyL - 1) && (startC != null) && (startC == key.charAt(currPos))) {
                 // This is the node. 
                 return start;
             }
             
-            Character currKeyChar = key.charAt(currPosition);
+            Character currKeyChar = key.charAt(currPos);
 
             if (currKeyChar < startC) {
-                return findNode(start.left, key, currPosition);
+                return findNode(start.left, key, currPos);
             }
             if (currKeyChar > startC) {
-                return findNode(start.right, key, currPosition);
+                return findNode(start.right, key, currPos);
             }
-            if (currPosition < key.length() - 1) {
-                return findNode(start.middle, key, currPosition + 1);
+            if (currPos < key.length() - 1) {
+                return findNode(start.middle, key, currPos + 1);
             }
             return null; // I guess, to make Java compiler happy. 
         }
@@ -545,7 +545,8 @@ public class Autocomplete {
             Character currKeyChar = key.charAt(keyPosition);
             if (start.c != null) {
                 if (currKeyChar < start.c) {
-                    // Obstacle, turn left, you haven't found the char at this position yet, so keep it there. 
+                    // Obstacle, turn left, 
+                    // you haven't found the char at this position yet, so keep it there. 
                     return get(start.left, key, keyPosition);
                 }
                 if (currKeyChar > start.c) {
@@ -553,7 +554,8 @@ public class Autocomplete {
                 }
                 if (keyPosition < key.length() - 1) {
                     // You still have to move on; aren't looking for the end of the word yet. 
-                    // But in good news, you found the correct character! So you can move on to the next character!
+                    // Found the correct character! 
+                    // So you can move on to the next character!
                     return get(start.middle, key, keyPosition + 1);
                 }
             }
@@ -562,12 +564,14 @@ public class Autocomplete {
         }*/
 
          
+        /**
+         * Puts the key and weight into the TST.
+         * @param key the string we insert into the TST.
+         * @param ownWeight the value associated with this key.
+         */
         public void put(String key, Double ownWeight) {
 
-            /*if (this.contains(key)) {
-                // According to the spec, throw an IllegalArgumentException if there are duplicate input terms.
-                throw new IllegalArgumentException("Duplicate input terms.");
-            }*/
+            
             this.root = put(this.root, this.root.parent, key, ownWeight, 0);
 
             // TRYING NOW
@@ -578,14 +582,28 @@ public class Autocomplete {
             // Okay I did a thing in put that hopefully does the max sub trie thing. Hopefully. 
         }
 
-        public ACNode put(ACNode start, ACNode startParent, String key, Double newWeight, int keyPosition) {
+
+        /**
+         * Returns node, self after all its information set.
+         * @param start the node at which we start to traverse.
+         * @param parent the node that will be the parent of this node.
+         * @param key the string we're putting into the TST.
+         * @param newWeight weight of this key.
+         * @param keyPos the position in the key currrently being examined.
+         * @return the node after all its info is set.
+         */
+        public ACNode put(ACNode start, ACNode parent, String key, Double newWeight, int keyPos) {
 
             int i = key.length();
 
-            Character currKeyChar = key.charAt(keyPosition);
+            Character keyChar = key.charAt(keyPos);
+            Double sw = null;
+            if (start != null) {
+                sw = start.ownWeight;
+            }
 
             // Maybe I'll just do a check for contains here.
-            if ((keyPosition == i - 1) && (start != null) && (start.c == currKeyChar) && (start.ownWeight != null)) {
+            if ((keyPos == i - 1) && (start != null) && (start.c == keyChar) && (sw != null)) {
                 // THEN IT CONTAINS IT. GET MAD. 
                 throw new IllegalArgumentException("Duplicate input terms.");
             }
@@ -593,29 +611,29 @@ public class Autocomplete {
 
             if (start == null || start.c == null) {
                 start = new ACNode();
-                start.c = currKeyChar;
+                start.c = keyChar;
             }
 
-            if (currKeyChar < start.c) {
+            if (keyChar < start.c) {
                 
-                start.left = put(start.left, startParent, key, newWeight, keyPosition);
-                start.left.parent = startParent;
+                start.left = put(start.left, parent, key, newWeight, keyPos);
+                start.left.parent = parent;
 
-            } else if (currKeyChar > start.c) {
+            } else if (keyChar > start.c) {
                 
-                start.right = put(start.right, startParent, key, newWeight, keyPosition);
-                start.right.parent = startParent;
+                start.right = put(start.right, parent, key, newWeight, keyPos);
+                start.right.parent = parent;
 
-            } else if (keyPosition < i - 1) {
+            } else if (keyPos < i - 1) {
 
-                start.middle = put(start.middle, start, key, newWeight, keyPosition + 1);
+                start.middle = put(start.middle, start, key, newWeight, keyPos + 1);
                 start.middle.parent = start;
                 
             } else {
                 // I believe this is the final node. 
 
                 start.ownWeight = newWeight;
-                start.parent = startParent;
+                start.parent = parent;
 
             }
 
