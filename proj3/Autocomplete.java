@@ -198,25 +198,29 @@ public class Autocomplete {
         // Checking that kth heaviest thing - might have to remove it to keep size / numMatches. 
         if ((resultSize == numMatches) && (startWeight != null) && (startWeight > lastWeight)) {
 
-            int m = this.topResults.size() - 1;   
-            int k = m;
-            while (this.topResults.get(k).ownWeight < start.ownWeight) {
-                k = k - 1;
-            }
-            // Have to remove the last thing to keep within size.
-            topResults.remove((topResults.size()) - 1);
+            // CHANGE HERE:
+            if (!this.topResults.contains(start)) {
 
-            if (k == m) {
-                // Didn't move, so add to end.
-                topResults.add(start);
-            } else {
-                topResults.add(k + 1, start);
-            }
+                int m = this.topResults.size() - 1;   
+                int k = m;
+                while (this.topResults.get(k).ownWeight < start.ownWeight) {
+                    k = k - 1;
+                }
+                // Have to remove the last thing to keep within size.
+                topResults.remove((topResults.size()) - 1);
 
-            if (start.ownWeight.equals(start.maxSubWeight)) {
-                this.numMaxSubWeights = this.numMaxSubWeights + 1;
+                if (k == m) {
+                    // Didn't move, so add to end.
+                    topResults.add(start);
+                } else {
+                    topResults.add(k + 1, start);
+                }
+
+                if (start.ownWeight.equals(start.maxSubWeight)) {
+                    this.numMaxSubWeights = this.numMaxSubWeights + 1;
+                }
             }
-        } else if (start.ownWeight != null) {
+        } else if (start.ownWeight != null && !topResults.contains(start)) {
             int i = this.topResults.size();
             if (i == 0) {
                 this.topResults.add(start);
