@@ -2,11 +2,8 @@
  * Prefix-Trie. Supports linear time find() and insert(). 
  * Should support determining whether a word is a full word in the 
  * Trie or a prefix.
- * @author 
+ * @author Alice Tarng.
  */
-
-import java.util.HashMap; 
-import java.util.Map;
 
 
 public class Trie {
@@ -17,13 +14,20 @@ public class Trie {
 
     Node root;
 
+    /**
+     * Constructor for the Trie data structure.
+     */
     public Trie() {
         this.root = new Node();
-        // System.out.println("I CREATED A NEW TRIE");
-        // System.out.println("this.root is null: " + (this.root == null));
     }
 
 
+    /**
+     * Checks whether word exists in the trie.
+     * @param s "word" being looked for.
+     * @param isFullWord whether or not we're looking for prefix or full word.
+     * @return boolean whether the word and its conditions are in the trie.
+     */
     public boolean find(String s, boolean isFullWord) {
 
         //Node endNode = findNode(s, this.root, 0);
@@ -46,7 +50,7 @@ public class Trie {
         if (isFullWord) {
             return endNode.exists && (endNode.c == lastLetter);
         } else {
-            // It would only be false if it was null - but already null check - so it has to be true if it's made it this far. 
+            // Only be false if null - but already null check - so true if it's made it this far. 
             // Check the last letter tho. 
             // DON'T FORGET TO CHECK LAST LETTER. 
             return endNode.c == lastLetter;
@@ -54,18 +58,17 @@ public class Trie {
     }
 
 
+
+    /**
+     * Finds the end node for the string.
+     * @param s string being looked for.
+     * @param start node from which we begin to search.
+     * @param position current position in the string we're at.
+     * @return end node at which the string is contained.
+     */
     private Node findNode(String s, Node start, int position) {
 
-        // System.out.println("CALLING COMPLICATED FINDNODE");
-        // System.out.println("position is " + position);
-        // System.out.println("root node's character is " + this.root.c);
-
         if (s == null || start == null) {
-            // System.out.println("In null case");
-            // System.out.println("String is " + s);
-            // System.out.println("start node is null: " + (start == null));
-            
-            //System.out.println("Start's character is " + start.c);
             return null;
         }
 
@@ -108,7 +111,10 @@ public class Trie {
     }
 
 
-    
+    /**
+     * Inserts string into the trie.
+     * @param s string being inserted into the trie.
+     */
     public void insert(String s) {
 
         if (s == null || s.isEmpty()) {
@@ -120,16 +126,18 @@ public class Trie {
         //child = insert(child, s, 0);
 
         this.root.links.put(s.charAt(0), insert(child, s, 0));
-        //this.root.links.put(s.charAt(0), insert(this.root.links.get(s.charAt(0)), s, 0)); // Just initialize, before doing stuff. 
-        //this.root.links.get(s.charAt(0)) = insert(this.root.links.get(s.charAt(0), s, 0));
-
-        //this.root = insert(this.root, s, 0);
-
-        //this.root = insert(this.root, s, -1);
 
     }
 
-     private Node insert(Node start, String key, int position) {
+
+    /**
+     * Does the actual, under the cover inserting for the trie.
+     * @param start node from which we begin to traverse the trie.
+     * @param key string being inserted.
+     * @param position position in the string currently being considered.
+     * @return self as node, all pretty and complete.
+     */
+    private Node insert(Node start, String key, int position) {
 
         if (position >= key.length()) {
             //System.out.println("HIT NULL");

@@ -1,17 +1,17 @@
-/**
- * Implements autocomplete on prefixes for a given dictionary of terms and weights.
- */
+
 
 // LIDRUHGLDIRUHGLDSIHLIU ALICE TAKE OUT TINY.TXT OKAY OKAY
 
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Comparator;
-import java.lang.IllegalArgumentException;
-import java.util.Arrays;
 import java.util.ArrayList;
 
 
+/**
+ * Implements autocomplete on prefixes for a given dictionary of terms and weights.
+ * @author Alice Tarng.
+ */
 public class Autocomplete {
 
     TST allWords;
@@ -36,10 +36,7 @@ public class Autocomplete {
         // So, like, using a TST? 
         this.allWords = new TST();
         // And a PQ?
-            // DARN IT THE PQ HAS TO ORDER BY MAX SUB WEIGHT THO. LSDFIUGHDLSIUGHDSLIUGHDSLRIGHSDLRIUGHDSLIRUGHLDIRSGHLDSIGUHDLRIGHDLIGHDLIGHDLSIU
-            // Darn it I have to write a comparator.
-            // I DON'T WANNA WRITE A COMPARATOR. 
-        checkOut = new PriorityQueue<ACNode>(1, new NodeComparator()); // Default initial capacity is 11. So. Yeah.
+        checkOut = new PriorityQueue<ACNode>(1, new NodeComparator()); 
         // And a list or smth???? 
         //topResults = new LinkedList<ACNode>();
         topResults = new ArrayList<ACNode>();
@@ -50,7 +47,7 @@ public class Autocomplete {
             
         for (int i = 0; i < terms.length; i = i + 1) {
             // Duplicate input terms.
-            // Okay according to what I have in TST.java, if the thing I'm trying to put is already in there, I throw an IllegalArgumentException, so that should be fine. 
+            // In TST.java, if duplicate, throws IllegalArgumentException already. 
 
             // Negative weights.
             if (weights[i] < 0) {
@@ -62,8 +59,18 @@ public class Autocomplete {
             
     }
 
+    /**
+     * Implements comparator for nodes based on their maxSubWeight.
+     * @author Alice Tarng.
+     */
     public class NodeComparator implements Comparator<ACNode> {
 
+        /**
+         * Does the actual comparing of maxSubWeights.
+         * @param node1 first node being compared.
+         * @param node2 second node being compared.
+         * @return int positive, 0, or negative for comparison.
+         */
         public int compare(ACNode node1, ACNode node2) {
             // Priority Queues implement by least first tho.
             // Switching it around so I can do most first. 
@@ -73,8 +80,8 @@ public class Autocomplete {
 
     /**
      * Find the weight of a given term. If it is not in the dictionary, return 0.0
-     * @param term
-     * @return
+     * @param term string whose weight we want.
+     * @return double that is the node / term's weight.
      */
     public double weightOf(String term) {
         if (this.allWords.getOwnWeight(term) == null) {
@@ -115,8 +122,13 @@ public class Autocomplete {
             // i HOPE THIS IS RIGHT I'M JUST GOING OFF THE DRAWING AT THIS POINT. 
             ACNode endHighestNode = highestNode(prefixChild);
 
-            if ((prefixNode.ownWeight == null) || (endHighestNode != null && (endHighestNode.ownWeight > prefixNode.ownWeight))) {
+            if (prefixNode.ownWeight == null) {
 
+                prefixNode = endHighestNode;
+
+            } else if (endHighestNode != null && endHighestNode.ownWeight > prefixNode.ownWeight) {
+
+                // Just because 100 character limit.
                 prefixNode = endHighestNode;
             }
         }
@@ -127,6 +139,12 @@ public class Autocomplete {
 
     }
 
+    /**
+     * Return the string for the node we are at.
+     * @param start node currently being examined.
+     * @param soFar stringBuilder of the string we have so far for the node. 
+     * @return string of the entire word.
+     */
     public String walkBackUp(ACNode start, StringBuilder soFar) {
         if (start == null) {
             // I'm going to assume you're never going to call this on a null starting node, cause that's just too hard. 
@@ -136,6 +154,12 @@ public class Autocomplete {
         return walkBackUp(start.parent, soFar.insert(0, start.c));
     }
 
+
+    /**
+     * Return the node with the highest weight.
+     * @param start node whose highest node we want.
+     * @return node that is the node with the highest weight under start.
+     */
     public ACNode highestNode(ACNode start) {
 
         if (start == null) {
@@ -159,7 +183,11 @@ public class Autocomplete {
     }
 
 
-
+    /**
+     * Traverses trie and adds nodes to the list of highest matches.
+     * @param start node at which we start examining.
+     * @param numMatches the number of matches we are looking for.
+     */
     public void modifiedTraversal(ACNode start, int numMatches) {
         //System.out.println("Calling modified traversal");
         if (start == null) {
@@ -306,9 +334,9 @@ public class Autocomplete {
     /**
      * Returns the top k matching terms (in descending order of weight) as an iterable.
      * If there are less than k matches, return all the matching terms.
-     * @param prefix
-     * @param k
-     * @return
+     * @param prefix String under who we must look.
+     * @param k how many matches we want.
+     * @return an interable of Strings of the top matches.
      */
     public Iterable<String> topMatches(String prefix, int k) {
 
@@ -426,6 +454,10 @@ public class Autocomplete {
     }
 
 
+    /**
+     * Node class that stores all info for the TST.
+     * @author Alice Tarng.
+     */
     public class ACNode {
 
             Character c; 
@@ -440,23 +472,36 @@ public class Autocomplete {
         }
 
 
+    /**
+     * The TST data structure used for autocomplete.
+     * @author Alice Tarng.
+     */
     public class TST {
 
 
         ACNode root;
 
         
-
+        /**
+         * Constructor for the TST.
+         */
         public TST() {
             this.root = new ACNode();
             this.root.parent = null;
         }
 
 
-        public boolean contains(String key) {
-            return getOwnWeight(key) != null;
-        }
 
+        // public boolean contains(String key) {
+        //     return getOwnWeight(key) != null;
+        // }
+
+
+        /**
+         * Returns weight of the key.
+         * @param key the string whose information we want.
+         * @return double of the key's weight.
+         */
         public Double getOwnWeight(String key) {
             if (key == null) {
                 //throw new NullPointerException("Tried to check if TST contains null string.");
@@ -465,13 +510,22 @@ public class Autocomplete {
             if (key.length() == 0) {
                 throw new IllegalArgumentException("Tried to check if TST contains string of length 0.");
             }
-            ACNode x = get(this.root, key, 0); // Trying to get the Node for the end of the word. 
+            //ACNode x = get(this.root, key, 0); // Trying to get the Node for the end of the word. 
+            ACNode x = findNode(this.root, key, 0);
             if (x == null) {
                 return null;
             }
             return x.ownWeight;
         }
 
+
+        /**
+         * Returns endNode for the key. 
+         * @param start which node we are starting from.
+         * @param key the string whose end we are searching for.
+         * @param currPosition the current position in the string key we are looking for.
+         * @return node that is the key's end. 
+         */
         public ACNode findNode(ACNode start, String key, int currPosition) {
             if (key == null) {
                 throw new NullPointerException("In findNode, tried to get a null key.");
@@ -502,7 +556,13 @@ public class Autocomplete {
         }
 
 
-        public ACNode get(ACNode start, String key, int keyPosition) {
+
+        /**
+         * Returns node 
+         * @param key the string whose information we want.
+         * @return double of the key's weight.
+         */
+        /*public ACNode get(ACNode start, String key, int keyPosition) {
             if (key == null) {
                 throw new NullPointerException("In ACNode, tried to get a null key.");
             }
@@ -534,7 +594,7 @@ public class Autocomplete {
             }
             // Okay, you've found the last character. Return the node you're currently on.
             return start;
-        }
+        }*/
 
          
         public void put(String key, Double ownWeight) {

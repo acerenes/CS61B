@@ -1,20 +1,17 @@
-// Am I... radix sorting this? I think so yeah. MSD sort? 
+ 
 import java.util.HashSet;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Map;
 import java.io.InputStreamReader;
 
+
+/**
+ * Implements AlphabetSort for given alphabet and words.
+ * @author Alice Tarng.
+ */
 public class AlphabetSort {
 
-
-
-    // Traverse lexicographically, but in given order. 
-    // Don't need to change how to insert. 
-
-    // Wait, would you.... start at the root...then in the order of the alphabet, if the link exists, go through that link? 
-        // How's the runtime tho?????????????????????????????????????????????????????????????
-        // I hope it's okay?
 
     // Really hope I'm doing this StdIn stuff right. Thx to mkyong.com.
 

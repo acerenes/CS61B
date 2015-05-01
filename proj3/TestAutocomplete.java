@@ -2,8 +2,16 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.ArrayList;
 
+
+/**
+ * Tests Autocomplete on a variety of inputs.
+ * @author Alice Tarng.
+ */
 public class TestAutocomplete {
 
+    /**
+     * Tests that Autocomplete can be initialized.
+     */
     @Test
     public void testStructureBasic() {
         String[] terms = new String[] {"smog", "buck", "sad"};
@@ -12,6 +20,9 @@ public class TestAutocomplete {
         assertNotNull(a);
     }
 
+    /**
+     * Another structure test. 
+     */
     @Test
     public void testStructure() {
         String[] terms = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
@@ -20,6 +31,10 @@ public class TestAutocomplete {
         assertNotNull(a);
     }
 
+    
+    /**
+     * Testing that weightOf works.
+     */
     @Test
     public void testWeightOf() {
         String[] terms2 = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
@@ -31,6 +46,9 @@ public class TestAutocomplete {
         assertEquals(a2.weightOf("smmg"), 0, 0);
     }
 
+    /**
+     * Testing that topMatch works.
+     */
     @Test
     public void testTopMatch() {
         String[] terms3 = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
@@ -41,6 +59,10 @@ public class TestAutocomplete {
         assertNull(a3.topMatch("soie"));
     }
 
+
+    /**
+     * Testing that topMatches works.
+     */
     @Test
     public void testTopMatches() {
         String[] terms4 = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
@@ -61,6 +83,9 @@ public class TestAutocomplete {
         assertEquals("sad", theMatches[2]);
     }
 
+    /**
+     * Another test for topMatches.
+     */
     @Test
     public void testTopMatches2() {
         String[] terms5 = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
@@ -82,6 +107,9 @@ public class TestAutocomplete {
         assertEquals("spy", theMatches[3]);
     }
 
+    /**
+     * Another test for topMatches.
+     */
     @Test
     public void testTopMatchesWithSelf() {
         String[] terms = new String[] {"the", "they", "their", "them", "there"};
@@ -104,6 +132,9 @@ public class TestAutocomplete {
         assertEquals("there", theMatches[4]);
     }
 
+    /**
+     * Still testing topMatches.
+     */
     @Test
     public void testComp() {
         String[] terms = new String[] {"come", "comes", "comedy", "comely", "company", "complete", "companion", "completely", "comply"};
@@ -126,6 +157,9 @@ public class TestAutocomplete {
         assertEquals("comply", theMatches[4]);
     }
 
+    /**
+     * And still testing topMatches.
+     */
     @Test
     public void testAOrder() {
         String[] terms = new String[] {"and", "as", "at", "an", "a"};
@@ -149,6 +183,9 @@ public class TestAutocomplete {
         assertEquals("a", theMatches[4]);
     }
 
+    /**
+     * Testing topMatches on cities.
+     */
     @Test
     public void testMCities() {
         String[] terms = new String[] {"Mumbai, India", "Mexico City, Distrito Federal, Mexico", "Aye Yo, CA"};
@@ -169,6 +206,9 @@ public class TestAutocomplete {
         assertEquals("Mexico City, Distrito Federal, Mexico", theMatches[1]);
     }
 
+    /**
+     * Testing that correct errors being thrown.
+     */
     @Test(expected = IllegalArgumentException.class) 
     public void testDifferentLength() {
         String[] terms = new String[] {"Mumbai, India", "Mexico City, Distrito Federal, Mexico", "Aye Yo, CA"};
@@ -176,6 +216,9 @@ public class TestAutocomplete {
         Autocomplete a = new Autocomplete(terms, weights);
     }
 
+    /**
+     * Testing that duplicate entries throws right error. 
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testDuplicateInputs() {
         String[] terms = new String[] {"Mumbai, India", "Mexico City, Distrito Federal, Mexico", "Aye Yo, CA", "Mumbai, India"};
@@ -183,6 +226,9 @@ public class TestAutocomplete {
         Autocomplete a = new Autocomplete(terms, weights);
     }
 
+   /**
+     * Testing that negative weights throws right error. 
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testNegativeWeights() {
         String[] terms = new String[] {"Mumbai, India", "Mexico City, Distrito Federal, Mexico", "Aye Yo, CA"};
@@ -190,6 +236,9 @@ public class TestAutocomplete {
         Autocomplete a = new Autocomplete(terms, weights);
     }
 
+    /**
+     * Testing that non-positive k throws right error. 
+     */
     @Test(expected = IllegalArgumentException.class)
     public void testNonPositiveKTerms() {
         String[] terms = new String[] {"Mumbai, India", "Mexico City, Distrito Federal, Mexico", "Aye Yo, CA"};
@@ -200,7 +249,9 @@ public class TestAutocomplete {
     }
 
 
-    // TAKE THIS OUTDLUGHDLRSIUHGDLIUHTIRUHTDLSIUHRTLDISHLTDISRUHILTRUHILTRUHGLDIURHGLIDSHGILTDSHGLIDSUHLIDHSLISUD
+    /**
+     * Testing based on diagram in spec. 
+     */
     @Test
     public void testTiny() {
         String[] terms = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
@@ -230,6 +281,9 @@ public class TestAutocomplete {
         assertEquals("sad", theMatches[0]);
     }
 
+    /**
+     * Testing weights and topMatch.
+     */
     @Test
     public void testTinyWeight() {
         String[] terms = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
@@ -241,6 +295,9 @@ public class TestAutocomplete {
         assertEquals(10.0, a.weightOf(a.topMatch("buck")), 0);
     }
 
+    /**
+     * More testing of weights and topMatch.
+     */
     @Test
     public void testTinyWeightSa() {
         String[] terms = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
@@ -252,6 +309,9 @@ public class TestAutocomplete {
         assertEquals(12.0, a.weightOf(a.topMatch("sa")), 0);
     }
 
+    /**
+     * Still testing weight and topMatch.
+     */
     @Test
     public void testTinySm() {
         String[] terms = new String[] {"smog", "buck", "sad", "spite", "spit", "spy"};
@@ -263,7 +323,9 @@ public class TestAutocomplete {
         assertEquals(5.0, a.weightOf(a.topMatch("sm")), 0);
     }
 
-    @Test
+    /**
+     * Testing ridiculous names - edge cases. 
+     */
     public void testSimilarNames() {
         String[] terms = new String[] {"Bree", "Brandin", "Brandie", "Brandio", "Brandii", "Brandik", "Brandic", "Brandiy", "Brandit", "Brandkick", "Brandraisin"};
         double[] weights = {0.1, 28.0, 20.0, 37.7, 48.3, 94.2, 102.1, 674.0, 675.1, 2040.1, 6700.4};
@@ -292,7 +354,9 @@ public class TestAutocomplete {
     }
 
     
-
+    /**
+     * Testing that autocomplete can do empty prefixes as well.
+     */
     @Test
     public void testEmptyPrefix() {
         String[] terms = new String[] {"the", "and", "I"};
@@ -318,6 +382,10 @@ public class TestAutocomplete {
         assertTrue(shouldBeEmpty.isEmpty());
     }
 
+
+    /**
+     * Make sure no stack overflow. 
+     */
     @Test
     public void testWhyStackOverflow() {
         In in = new In("wiktionary.txt");
@@ -336,8 +404,6 @@ public class TestAutocomplete {
             StdOut.printf("%14.1f  %s\n", autocomplete.weightOf(term), term);
         }
     }
-
-
 
 
 
