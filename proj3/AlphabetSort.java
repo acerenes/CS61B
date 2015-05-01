@@ -16,7 +16,13 @@ public class AlphabetSort {
     // Really hope I'm doing this StdIn stuff right. Thx to mkyong.com.
 
     
-
+    /**
+     * Checks that alphabet does not repeat letters.
+     * @param s string that we don't want to have repeated lettters.
+     * @param seenLetters the letters we've already seen. Don't repeat.
+     * @param position position in the string we're currently looking at.
+     * @return boolean whether the alphabet repeated letters.
+     */
     public static boolean repeatsLetters(String s, HashSet<Character> seenLetters, int position) {
 
         if (s == null || position >= s.length()) {
@@ -34,7 +40,12 @@ public class AlphabetSort {
 
     }
 
-    /* For AlphabetSort. */
+    /**
+     * Traverses through the trie in order of the alphabet, printing along way.
+     * @param start node we're currently examining.
+     * @param alphabet given alphabet whose order we must follow.
+     * @param soFar is string we have so far, of the word.
+     */
     static void preOrder(Node start, String alphabet, String soFar) {
         // If your char is not null, add your char to the string. 
 
@@ -57,7 +68,8 @@ public class AlphabetSort {
             System.out.println(soFar);
         } 
 
-        // Then gotta do for other letters too. grab the first char in the alphabet that you have a child link for. 
+        // Then gotta do for other letters too. 
+        // grab the first char in the alphabet that you have a child link for. 
         // And grab that node, and keep...going. I guess. WHAT AM I DOING. 
         StringBuilder canChopThisAlphabet = new StringBuilder(alphabet.substring(0)); // Full copy.
 
@@ -74,43 +86,18 @@ public class AlphabetSort {
                 return;
             }
 
-            //System.out.println("Before preOrder call again: child of the char is " + start.getLinks().get(firstChild).getCharacter());
-
-            /*if (addedChar) {
-                // Because you added a char to your string, you want to KEEP THE PROGRESS. 
-                preOrder(start.getLinks().get(firstChild), alphabet, soFarAdded);
-
-            } else {
-                preOrder(start.getLinks().get(firstChild), alphabet, soFar);
-                // You didn't add anything, so...just...keep going with that lack of progress...I guess...
-            }*/
-
-            // if (start.getCharacter() != null) {
-            //     //System.out.println("get character not null");
-            //     //System.out.println("start.c is " + start.c);
-            //     preOrder(start.getLinks().get(firstChild), alphabet, soFar + firstChild);
-            //     // Tbh, don't know why this works and not adding start.c.
-            //         // Matt's thoughts: maybe, somehow, start is being reassigned to the last thing seen. the last word seen. And in the test.in, sequentially speaking, death was the last thing seen, so that's why there was all those d's? 
-            //         // Just like, weird recursion things were going on. O____O. 
-            //     // So instead of adding the char when actually at that node, add it preemptively. You know you're about to go down it, so just add it.
-            //     // EVERYTHING IS WEIRD I DUNNO WHY IT WAS BEING WEIRD.  
-            // } else {
-            //     //System.out.println("Get character was null");
-            //     preOrder(start.getLinks().get(firstChild), alphabet, soFar);
-            // }
-
-            //System.out.println("First child is " + firstChild);
-            // if (start.getLinks().get(firstChild) != null) {
-            //     System.out.println("First child, node, character is " + start.getLinks().get(firstChild).c);
-            // }
-
             preOrder(start.links.get(firstChild), alphabet, soFar + firstChild);
 
         } 
 
     }
 
-    /* Should chop off the alphabet while doing it. */
+    /**
+     * Returns character that is the earliest one node n has a child for.
+     * @param n node whose children we're currently examining.
+     * @param alphabetBuilder possibly chopped alphabet whose letters we run through.
+     * @return character that is the earliest one in alphabet n has child for.
+     */
     private static Character firstChild(Node n, StringBuilder alphabetBuilder) {
         
 
@@ -151,10 +138,14 @@ public class AlphabetSort {
     }
 
 
+    /**
+     * Test client. Reads the data from input file, containing info to be sorted.
+     * @param args takes name of an input file.
+     */
+    public static void main(String[] args) {
 
-    public static void main (String args[]) {
-
-        // IllegalArgumentException when no words or alphabet given, OR letter appears multiple times in alphabet. Or if StdIn is empty. 
+        // IllegalArgumentException when no words or alphabet given, 
+        //OR letter appears multiple times in alphabet. Or if StdIn is empty. 
 
         // Shoot how do multiple times in alphabet?
 

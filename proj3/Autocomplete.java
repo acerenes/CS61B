@@ -638,7 +638,9 @@ public class Autocomplete {
             }
 
             // TRY DOING THE MAXSUBWEIGHT STUFF NOWWWWW
-            // Compare all 3 children, your curr maxsubweight, your curr weight, and the current thing you're inserting's weight (jk that's yourself). Take the max, that's your maxsubweight. 
+            // Compare all 3 children, 
+            // your curr maxsubweight, your curr weight, 
+            // Take the max, that's your maxsubweight. 
             Double maxWeight = 0.0; // Your weight can't be negative.
             // Your curr maxsubweight.
             if (start.maxSubWeight != null) {
