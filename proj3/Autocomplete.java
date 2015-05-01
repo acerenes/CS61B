@@ -1,7 +1,3 @@
-
-
-// LIDRUHGLDIRUHGLDSIHLIU ALICE TAKE OUT TINY.TXT OKAY OKAY
-
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Comparator;
@@ -12,13 +8,14 @@ import java.util.ArrayList;
  * Implements autocomplete on prefixes for a given dictionary of terms and weights.
  * @author Alice Tarng.
  */
+
 public class Autocomplete {
 
     TST allWords;
     PriorityQueue<ACNode> checkOut;
-    //LinkedList<ACNode> topResults; // Should contain a bunch of nodes.
     ArrayList<ACNode> topResults; 
     int numMaxSubWeights = 0;
+
 
     /**
      * Initializes required data structures from parallel arrays.
@@ -27,29 +24,19 @@ public class Autocomplete {
      */
     public Autocomplete(String[] terms, double[] weights) {
 
-        // Error Cases:
-            // Length of the terms and weight arrays are different.
         if (terms.length != weights.length) {
             throw new IllegalArgumentException("Length of terms and weights arrays different.");
         }
 
-        // So, like, using a TST? 
         this.allWords = new TST();
-        // And a PQ?
         checkOut = new PriorityQueue<ACNode>(1, new NodeComparator()); 
-        // And a list or smth???? 
-        //topResults = new LinkedList<ACNode>();
         topResults = new ArrayList<ACNode>();
-
-
-        
 
             
         for (int i = 0; i < terms.length; i = i + 1) {
-            // Duplicate input terms.
-            // In TST.java, if duplicate, throws IllegalArgumentException already. 
 
-            // Negative weights.
+            // In TST class, if duplicate input terms, throws IllegalArgumentException. 
+
             if (weights[i] < 0) {
                 throw new IllegalArgumentException("Weights cannot be negative.");
             }
@@ -58,6 +45,7 @@ public class Autocomplete {
             
             
     }
+
 
     /**
      * Implements comparator for nodes based on their maxSubWeight.
@@ -72,11 +60,13 @@ public class Autocomplete {
          * @return int positive, 0, or negative for comparison.
          */
         public int compare(ACNode node1, ACNode node2) {
-            // Priority Queues implement by least first tho.
-            // Switching it around so I can do most first. 
+
+            // Priority Queues implement by smallest first.
+            // Switching node 1 & 2 around so queue will be largest first. 
             return (int) (node2.maxSubWeight - node1.maxSubWeight);
         }
     }
+
 
     /**
      * Find the weight of a given term. If it is not in the dictionary, return 0.0
@@ -90,6 +80,7 @@ public class Autocomplete {
         }
         return this.allWords.getOwnWeight(term);
     }
+
 
     /**
      * Return the top match for given prefix, or null if there is no matching term.
@@ -110,34 +101,31 @@ public class Autocomplete {
         
             prefixNode = this.allWords.findNode(allWords.root, prefix, 0);
             
-
             // If no matching term:
             if (prefixNode == null) {
                 return null;
             }
 
-            // Else, you found the node, so you can descend.
+            // Else, found the node, so descend.
             ACNode prefixChild = prefixNode.middle;
 
-            // i HOPE THIS IS RIGHT I'M JUST GOING OFF THE DRAWING AT THIS POINT. 
             ACNode endHighestNode = highestNode(prefixChild);
 
+
+            // Sorry for the weird double cases - character count couldn't do single if statement.
             if (prefixNode.ownWeight == null) {
 
                 prefixNode = endHighestNode;
 
             } else if (endHighestNode != null && endHighestNode.ownWeight > prefixNode.ownWeight) {
 
-                // Just because 100 character limit.
                 prefixNode = endHighestNode;
             }
         }
 
-
         return walkBackUp(prefixNode, new StringBuilder(""));
-
-
     }
+
 
     /**
      * Return the string for the node we are at.
@@ -147,7 +135,7 @@ public class Autocomplete {
      */
     public String walkBackUp(ACNode start, StringBuilder soFar) {
         if (start == null) {
-            // So I'm going to assume this is, you got all the way up, to no more parent. 
+            // Got all the way up, to no more parent. 
             return soFar.toString();
         }
         return walkBackUp(start.parent, soFar.insert(0, start.c));
@@ -171,7 +159,7 @@ public class Autocomplete {
             return start;
         }
 
-        // Otherwise, it's gotta be in its left, middle, or right. 
+        // Otherwise, it'll be in its left, middle, or right. 
         if ((start.left != null) && start.left.maxSubWeight == lookForThisWeight) {
             return highestNode(start.left);
         }
@@ -188,6 +176,7 @@ public class Autocomplete {
      * @param numMatches the number of matches we are looking for.
      */
     public void modifiedTraversal(ACNode start, int numMatches) {
+
         if (start == null) {
             return;
         }
@@ -198,7 +187,8 @@ public class Autocomplete {
             lastResult = topResults.get(resultSize - 1);
             lastWeight = lastResult.ownWeight;
         }
-        // DARN YOU CHARACTER COUNT.
+
+        // Sorry for weird nesting - character count problems.
         if (resultSize > numMatches) {
             if ((numMaxSubWeights > numMatches)) {
                 return;
@@ -208,26 +198,51 @@ public class Autocomplete {
             }
         }
 
-        // Checking that kth heaviest thing. 
+        // Checking that kth heaviest thing - might have to remove it to keep size / numMatches. 
         if ((resultSize == numMatches) && (startWeight != null) && (startWeight > lastWeight)) {
 
-            if (!topResults.contains(start)) { 
-                int m = this.topResults.size() - 1;   
-                int k = m;
-                while (this.topResults.get(k).ownWeight < start.ownWeight) {
-                    k = k - 1;
-                }
+            // Hmmm .contains is linear time. Do I need it?
+            // I don't think so actually. LEMME TRY.LDRUGHDRSLIGHDRLIGHDRSLIUGHDLSIGUHDLSIGHLDSIUHGLDSIUGHDLIUHGDLIHGDLSIGUDHSLIU
+            // if (!topResults.contains(start)) { 
+            //     int m = this.topResults.size() - 1;   
+            //     int k = m;
+            //     while (this.topResults.get(k).ownWeight < start.ownWeight) {
+            //         k = k - 1;
+            //     }
 
-                topResults.remove((topResults.size()) - 1); // Remove the last thing? 
-                if (k == m) {
-                    // DIdn't move, so add to end.
-                    topResults.add(start);
-                } else {
-                    topResults.add(k + 1, start);
-                }
-                if (start.ownWeight.equals(start.maxSubWeight)) {
-                    this.numMaxSubWeights = this.numMaxSubWeights + 1;
-                }
+            //     // Have to remove the last thing to keep within size.
+            //     topResults.remove((topResults.size()) - 1);
+
+            //     if (k == m) {
+            //         // Didn't move, so add to end.
+            //         topResults.add(start);
+            //     } else {
+            //         topResults.add(k + 1, start);
+            //     }
+
+            //     if (start.ownWeight.equals(start.maxSubWeight)) {
+            //         this.numMaxSubWeights = this.numMaxSubWeights + 1;
+            //     }
+            // }
+
+            int m = this.topResults.size() - 1;   
+            int k = m;
+            while (this.topResults.get(k).ownWeight < start.ownWeight) {
+                k = k - 1;
+            }
+
+            // Have to remove the last thing to keep within size.
+            topResults.remove((topResults.size()) - 1);
+
+            if (k == m) {
+                // Didn't move, so add to end.
+                topResults.add(start);
+            } else {
+                topResults.add(k + 1, start);
+            }
+
+            if (start.ownWeight.equals(start.maxSubWeight)) {
+                this.numMaxSubWeights = this.numMaxSubWeights + 1;
             }
             
         } else if (start.ownWeight != null && !topResults.contains(start)) {
