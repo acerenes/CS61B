@@ -178,16 +178,7 @@ public class Autocomplete {
         //Check to make sure list is within size limits. 
 
 
-        /*if ((this.topResults.size() > numMatches) && ((this.numMaxSubWeights > numMatches) || (start.maxSubWeight < topResults.get(topResults.size() - 1).ownWeight))) {
-            return;
-        }*/
-
-        if (this.numMaxSubWeights > numMatches) {
-            return;
-        }
-
-
-        if (this.topResults.size() > numMatches && (start.maxSubWeight < topResults.get(topResults.size() - 1).ownWeight)) {
+        if ((this.topResults.size() > numMatches) && ((this.numMaxSubWeights > numMatches) || (start.maxSubWeight < topResults.get(topResults.size() - 1).ownWeight))) {
             return;
         }
 
