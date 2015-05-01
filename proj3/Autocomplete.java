@@ -244,8 +244,40 @@ public class Autocomplete {
             if (start.ownWeight.equals(start.maxSubWeight)) {
                 this.numMaxSubWeights = this.numMaxSubWeights + 1;
             }
-            
-        } else if (start.ownWeight != null && !topResults.contains(start)) {
+
+        // ACTUALLY DO I EVER NEED TO CHECK IF TOPRESULTS CONTAINS SOMETHING???
+        // I'll never call on it ever again, will I.
+        // Let's hope not. 
+
+        // } else if (start.ownWeight != null && !topResults.contains(start)) {
+        //     int i = this.topResults.size();
+        //     if (i == 0) {
+        //         this.topResults.add(start);
+        //     } else if (i == 1) {
+        //         if (this.topResults.get(0).ownWeight < start.ownWeight) {
+        //             this.topResults.add(0, start);
+        //         } else {
+        //             this.topResults.add(start);
+        //         }
+        //     } else {
+        //         int j = i - 1; // Because 0 indexing.
+        //         while (j >= 0 && this.topResults.get(j).ownWeight < start.ownWeight) {
+        //             j = j - 1;
+        //         }
+        //         if (j == i - 1) {
+        //             // Never moved the pointer, so stick onto last.
+        //             this.topResults.add(start);
+        //         } else {
+        //             this.topResults.add(j + 1, start);
+        //         } 
+        //     }
+        //     if (start.ownWeight.equals(start.maxSubWeight)) {
+        //         this.numMaxSubWeights = this.numMaxSubWeights + 1;
+        //     }
+        // }
+
+
+        } else if (start.ownWeight != null) {
             int i = this.topResults.size();
             if (i == 0) {
                 this.topResults.add(start);
@@ -271,6 +303,8 @@ public class Autocomplete {
                 this.numMaxSubWeights = this.numMaxSubWeights + 1;
             }
         }
+
+
         if (start.left != null) {
             this.checkOut.add(start.left);
         }
