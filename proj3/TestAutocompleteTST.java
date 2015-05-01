@@ -1,6 +1,8 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+
+/* I used to have my TST as a seperate public class. These were the tests I used to test it. */
 public class TestAutocompleteTST {
 
     @Test
@@ -46,7 +48,6 @@ public class TestAutocompleteTST {
 
         assertEquals(t2.subMaxWeight(t2.root), 20, 0);
 
-        //ACNode tOfSpit = t2.root.middle.right.middle.middle;
         assertEquals(t2.subMaxWeight(t2.root.middle.right.middle.middle), 20, 0);
     }
 
@@ -88,7 +89,6 @@ public class TestAutocompleteTST {
         t.put("tree", (double) 4);
         t.put("I", (double) 7);
     }
-
 
 
 

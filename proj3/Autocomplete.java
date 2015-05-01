@@ -288,7 +288,8 @@ public class Autocomplete {
                     this.topResults.add(start);
                 }
             } else {
-                int j = i - 1; // Because 0 indexing.
+                // 0 indexing.
+                int j = i - 1; 
                 while (j >= 0 && this.topResults.get(j).ownWeight < start.ownWeight) {
                     j = j - 1;
                 }
@@ -318,8 +319,6 @@ public class Autocomplete {
     }
 
 
-
-
     /**
      * Returns the top k matching terms (in descending order of weight) as an iterable.
      * If there are less than k matches, return all the matching terms.
@@ -329,19 +328,16 @@ public class Autocomplete {
      */
     public Iterable<String> topMatches(String prefix, int k) {
 
-        // Trying to find the k top matches for non-positive k. 
-
         if (k <= 0) {
             throw new IllegalArgumentException("K must be positive for topMatches.");
         }
 
-        // Should prbly empty the stuff after every run too. Or empty before every run. 
+        // Make sure starting queues & lists are empty.
         this.checkOut.clear();
         this.topResults.clear();
         this.numMaxSubWeights = 0;
 
         ACNode prefixChild = null;
-
 
         if (prefix == null) {
             throw new NullPointerException("Trying to find top matches for null prefix.");
@@ -349,53 +345,34 @@ public class Autocomplete {
             prefixChild = this.allWords.root;
         } else {
 
-            // CALL THE THING
             ACNode prefixNode = this.allWords.findNode(allWords.root, prefix, 0);
 
-
-            // If no matching term:
+            // If no matching term, return Iterable with no elements in it.
             if (prefixNode == null) {
-                return new ArrayList<String>(); // Return Iterable with no elements in it. 
+                return new ArrayList<String>(); 
             }
 
             // Else, found the node, so can descend.
             prefixChild = prefixNode.middle;
 
+            // The word itself is a possible top match.
             if (prefixNode.ownWeight != null) {
                 this.topResults.add(prefixNode);
             }
         }     
 
-        // I HOPE THIS IS RIGHT I REALLY HOPE SO.
-
         modifiedTraversal(prefixChild, k);
-
-        
-
-        // THEN TAKE THE FIRST K ELEMENTS OF THE ARRAY.
-        // ACNode[] allResults = this.topResults.toArray(new ACNode[1]);
-        // ACNode[] kResults = Arrays.copyOfRange(allResults, 0, k); // Upper bound is exclusive. 
-
-        // // THEN MAKE SURE TO CHANGE THEM ALL BACK INTO STRINGS - walk back up the trie. 
-        // String[] finalResults = new String[k];
-        // for (int i = 0; i < k; i = i + 1) {
-        //     finalResults[i] = walkBackUp(kResults[i], "");
-        // }
-        // return finalResults;
-
 
         ArrayList<String> finalResults = new ArrayList<String>();
 
-        
         int resultSize = this.topResults.size();
         int goTil = Math.min(k, resultSize);
-        //System.out.println("go til " + goTil);
+
         for (int i = 0; i < goTil; i = i + 1) {
             ACNode currNode = this.topResults.get(i);
             finalResults.add(walkBackUp(currNode, new StringBuilder("")));
         }
 
-        //System.out.println("final results size : " + finalResults.size());
         return finalResults;
 
     }
@@ -468,7 +445,6 @@ public class Autocomplete {
      */
     public class TST {
 
-
         ACNode root;
 
         
@@ -481,26 +457,21 @@ public class Autocomplete {
         }
 
 
-
-        // public boolean contains(String key) {
-        //     return getOwnWeight(key) != null;
-        // }
-
-
         /**
          * Returns weight of the key.
          * @param key the string whose information we want.
          * @return double of the key's weight.
          */
         public Double getOwnWeight(String key) {
+
             if (key == null) {
-                //throw new NullPointerException("Tried to check if TST contains null string.");
                 return null;
             }
+
             if (key.length() == 0) {
                 throw new IllegalArgumentException("TST does not contain string of length 0.");
             }
-            //ACNode x = get(this.root, key, 0); // Trying to get the Node for the end of the word. 
+
             ACNode x = findNode(this.root, key, 0);
             if (x == null) {
                 return null;
@@ -545,51 +516,8 @@ public class Autocomplete {
             if (currPos < key.length() - 1) {
                 return findNode(start.middle, key, currPos + 1);
             }
-            return null; // I guess, to make Java compiler happy. 
+            return null;  
         }
-
-
-
-        /**
-         * Returns node 
-         * @param key the string whose information we want.
-         * @return double of the key's weight.
-         */
-        /*public ACNode get(ACNode start, String key, int keyPosition) {
-            if (key == null) {
-                throw new NullPointerException("In ACNode, tried to get a null key.");
-            }
-            if (key.length() == 0) {
-                throw new IllegalArgumentException("In ACNode, tried to get a key with length 0.");
-            }
-            if (keyPosition >= key.length()) {
-                // Overshot it - it doesn't exist.
-                return null; 
-            }
-            if (start == null) {
-                return null;
-            }
-
-            Character currKeyChar = key.charAt(keyPosition);
-            if (start.c != null) {
-                if (currKeyChar < start.c) {
-                    // Obstacle, turn left, 
-                    // you haven't found the char at this position yet, so keep it there. 
-                    return get(start.left, key, keyPosition);
-                }
-                if (currKeyChar > start.c) {
-                    return get(start.right, key, keyPosition);
-                }
-                if (keyPosition < key.length() - 1) {
-                    // You still have to move on; aren't looking for the end of the word yet. 
-                    // Found the correct character! 
-                    // So you can move on to the next character!
-                    return get(start.middle, key, keyPosition + 1);
-                }
-            }
-            // Okay, you've found the last character. Return the node you're currently on.
-            return start;
-        }*/
 
          
         /**
@@ -598,16 +526,8 @@ public class Autocomplete {
          * @param ownWeight the value associated with this key.
          */
         public void put(String key, Double ownWeight) {
-
             
             this.root = put(this.root, this.root.parent, key, ownWeight, 0);
-
-            // TRYING NOW
-            // Urgh okay no do maxSubweight AS YOU TRAVERSE. 
-            // I WAS HEERRREEEE
-            //this.root.maxSubWeight = subMaxWeight(this.root);
-
-            // Okay I did a thing in put that hopefully does the max sub trie thing. Hopefully. 
         }
 
 
@@ -630,9 +550,8 @@ public class Autocomplete {
                 sw = start.ownWeight;
             }
 
-            // Maybe I'll just do a check for contains here.
+            // Check for already contains.
             if ((keyPos == i - 1) && (start != null) && (start.c == keyChar) && (sw != null)) {
-                // THEN IT CONTAINS IT. GET MAD. 
                 throw new IllegalArgumentException("Duplicate input terms.");
             }
 
@@ -641,6 +560,7 @@ public class Autocomplete {
                 start = new ACNode();
                 start.c = keyChar;
             }
+
 
             if (keyChar < start.c) {
                 
@@ -658,18 +578,21 @@ public class Autocomplete {
                 start.middle.parent = start;
                 
             } else {
-                // I believe this is the final node. 
+                // Final node.
 
                 start.ownWeight = newWeight;
                 start.parent = parent;
 
             }
 
-            // TRY DOING THE MAXSUBWEIGHT STUFF NOWWWWW
+            // MaxSubWeight calculations here.
             // Compare all 3 children, 
-            // your curr maxsubweight, your curr weight, 
+            // your curr maxsubweight, and your curr weight. 
             // Take the max, that's your maxsubweight. 
-            Double maxWeight = 0.0; // Your weight can't be negative.
+
+            // Weight cannot be negative.
+            Double maxWeight = 0.0; 
+
             // Your curr maxsubweight.
             if (start.maxSubWeight != null) {
                 maxWeight = Math.max(maxWeight, start.maxSubWeight);
@@ -678,7 +601,6 @@ public class Autocomplete {
             if (start.ownWeight != null) {
                 maxWeight = Math.max(maxWeight, start.ownWeight);
             }
-            // COMPARE ALL CHILDREN.
             // Try left.
             if (start.left != null) {
                 maxWeight = Math.max(maxWeight, start.left.maxSubWeight);
