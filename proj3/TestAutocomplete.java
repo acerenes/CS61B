@@ -288,7 +288,10 @@ public class TestAutocomplete {
         assertEquals("Brandio", theMatches[7]);
         assertEquals("Brandin", theMatches[8]);
         assertEquals("Brandie", theMatches[9]);
+
     }
+
+    
 
     @Test
     public void testEmptyPrefix() {

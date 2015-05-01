@@ -178,9 +178,19 @@ public class Autocomplete {
         //Check to make sure list is within size limits. 
 
 
-        if ((this.topResults.size() > numMatches) && ((this.numMaxSubWeights > numMatches) || (start.maxSubWeight < topResults.get(topResults.size() - 1).ownWeight))) {
+        /*if ((this.topResults.size() > numMatches) && ((this.numMaxSubWeights > numMatches) || (start.maxSubWeight < topResults.get(topResults.size() - 1).ownWeight))) {
+            return;
+        }*/
+
+        if (this.numMaxSubWeights > numMatches) {
             return;
         }
+
+
+        if (this.topResults.size() > numMatches && (start.maxSubWeight < topResults.get(topResults.size() - 1).ownWeight)) {
+            return;
+        }
+
 
         // How on earth did buried get added 2x???
         // I think it's cause you add yourself to topResults, but also to the queue. 
